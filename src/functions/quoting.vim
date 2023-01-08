@@ -14,20 +14,18 @@ function QuoteExpression(quote)
 endfunction
 
 function ReadNumber()
-  let lower = char2nr("0")
-  let upper = char2nr("9")
+  let [lower, upper] = map(["0", "9"], {x -> char2nr(x)})
 
-  let x = 0
-  let c = getchar()
-  while lower <= c && c <= upper
-    let x = x * 10 + c - lower
-    let c = getchar()
+  let acc = 0
+  let char = getchar()
+  while lower <= char && char <= upper
+    let acc = acc * 10 + char - lower
+    let char = getchar()
   endwhile
 
-  return [x, nr2char(c)]
+  return [acc, nr2char(char)]
 endfunction
 
 function QuoteVisual()
-  let quote = getcharstr()
-  execute "normal " .. QuoteExpression(quote)
+  execute "normal " .. QuoteExpression(getcharstr())
 endfunction
