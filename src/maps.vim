@@ -7,3 +7,4 @@ nmap <leader>q :call QuoteNormal()<CR>
 vmap <leader>q :call QuoteVisual()<CR>
 nmap <leader>l :call EnableLSP()<CR>
 nmap <leader>L :call DisableLSP()<CR>
+nmap <leader>d :call delete(@%)<CR>
