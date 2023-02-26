@@ -1,6 +1,7 @@
 packadd cfilter
 
 call plug#begin()
-Plug 'tpope/vim-fugitive'
+Plug 'LnL7/vim-nix'
 Plug 'pearofducks/ansible-vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
