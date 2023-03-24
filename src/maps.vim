@@ -1,4 +1,3 @@
-nmap <leader>u :source $XDG_CONFIG_HOME/nvim/init.vim<CR>
 nmap <leader>s :%s/\s\+$//gc<CR>
 nmap <leader>t vip:!column -ts ' '<CR>
 vmap <leader>t :!column -ts ' '<CR>
