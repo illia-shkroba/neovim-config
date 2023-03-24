@@ -2,7 +2,10 @@ function SetHaskellOptions()
   map <buffer> <leader>c :w !stack ghci <CR>
   nmap <buffer> <leader>C :up <CR>n:terminal stack ghci # <CR>
   map <buffer> gh :up \| %!hlint --refactor % <CR>
-  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab formatprg=hindent makeprg=hlint
+  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=hlint
+
+  let l:stylish_config = stdpath("config") .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
+  execute "setl formatprg=stylish-haskell\\ --config\\ " .. l:stylish_config
 
   let b:lsp_start="vim.lsp.start({
   \   name = 'haskell-lsp',
