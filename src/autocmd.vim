@@ -18,8 +18,20 @@ autocmd BufEnter *Dockerfile call SetDockerfileOptions()
 autocmd BufEnter *nginx.conf call SetNginxOptions()
 autocmd BufEnter site.yaml call SetAnsibleOptions()
 
-autocmd BufNewFile *.scala 0r $XDG_CONFIG_HOME/nvim/template/template.scala | normal Gdd
-autocmd BufNewFile *.java 0r $XDG_CONFIG_HOME/nvim/template/template.java | normal Gdd
-autocmd BufNewFile *.cpp 0r $XDG_CONFIG_HOME/nvim/template/template.cpp | normal Gdd
-autocmd BufNewFile *.md 0r $XDG_CONFIG_HOME/nvim/template/template.md | normal Gdd
-autocmd BufNewFile *.hs 0r $XDG_CONFIG_HOME/nvim/template/template.hs | normal Gdd
+function s:AddTemplateByExtension(extension)
+  let l:templates_dir = stdpath("config") .. "/etc/templates/"
+  call s:AddTemplate("*." .. a:extension, l:templates_dir .. "template." .. a:extension)
+endfunction
+
+function s:AddTemplate(pattern, template_path)
+  execute "autocmd BufNewFile " .. a:pattern .. " 0r " .. a:template_path .. " | normal Gdd"
+endfunction
+
+call s:AddTemplateByExtension("scala")
+call s:AddTemplateByExtension("java")
+call s:AddTemplateByExtension("cpp")
+call s:AddTemplateByExtension("md")
+call s:AddTemplateByExtension("hs")
+
+delfunction s:AddTemplateByExtension
+delfunction s:AddTemplate
