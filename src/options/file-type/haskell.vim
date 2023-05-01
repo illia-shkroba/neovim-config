@@ -1,7 +1,8 @@
 function SetHaskellOptions()
   map <buffer> <leader>c :w !stack ghci <CR>
-  nmap <buffer> <leader>C :up <CR>n:terminal stack ghci # <CR>
   map <buffer> gh :up \| %!hlint --refactor % <CR>
+  nmap <buffer> <leader>C :up <CR>n:terminal stack ghci # <CR>
+  nmap <buffer> <leader>g :silent !fast-tags -R --qualified . <CR>
   setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=stack\ build\ --cabal-verbosity\ 0
   setl errorformat=
     \%-G,
