@@ -2,7 +2,14 @@ function SetHaskellOptions()
   map <buffer> <leader>c :w !stack ghci <CR>
   nmap <buffer> <leader>C :up <CR>n:terminal stack ghci # <CR>
   map <buffer> gh :up \| %!hlint --refactor % <CR>
-  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=hlint
+  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=stack\ build\ --cabal-verbosity\ 0
+  setl errorformat=
+    \%-G,
+    \%-Z,
+    \%W%f:%l:%c:\ Warning:\ %m,
+    \%E%f:%l:%c:\ Error:,
+    \%E%>%f:%l:%c:,
+    \%W%>%f:%l:%c:,
 
   let l:stylish_config = stdpath("config") .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
   execute "setl formatprg=stylish-haskell\\ --config\\ " .. l:stylish_config
