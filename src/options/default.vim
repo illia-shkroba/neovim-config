@@ -25,16 +25,18 @@ function SetDefaultOptions()
   let g:netrw_banner = 0
   let g:mapleader = ' '
 
-  nmap <leader>s :%s/\s\+$//gc<CR>
-  nmap <leader>t vip:!column -ts ' '<CR>
-  vmap <leader>t :!column -ts ' '<CR>
   map <leader>o :lua vim.lsp.buf.hover()<CR>
-  nmap <leader>q :call QuoteNormal()<CR>
-  vmap <leader>q :call QuoteVisual()<CR>
-  nmap <leader>l :call EnableLSP()<CR>
   nmap <leader>L :call DisableLSP()<CR>
+  nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>d :call delete(@%)<CR>
   nmap <leader>fb :Telescope buffers<CR>
   nmap <leader>ff :Telescope find_files<CR>
   nmap <leader>fm :Telescope marks<CR>
+  nmap <leader>l :call EnableLSP()<CR>
+  nmap <leader>q :call QuoteNormal()<CR>
+  nmap <leader>s :%s/\s\+$//gc<CR>
+  nmap <leader>t vip:!column -ts ' '<CR>
+  vmap <leader>S :call SearchVisual()<CR>
+  vmap <leader>q :call QuoteVisual()<CR>
+  vmap <leader>t :!column -ts ' '<CR>
 endfunction

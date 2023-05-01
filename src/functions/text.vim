@@ -1,5 +1,5 @@
 function StripWS() range
-  let r = @/
+  let register = @/
   execute a:firstline .. ',' .. a:lastline .. 'substitute/\s\+/ /g'
-  let @/ = r
+  let @/ = register
 endfunction

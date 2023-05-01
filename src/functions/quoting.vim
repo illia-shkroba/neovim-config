@@ -6,26 +6,13 @@ function QuoteNormal()
     let text_object ..= getcharstr()
   endif
 
-  execute "normal v" .. (count ? count : "") .. text_object .. QuoteExpression(quote)
-endfunction
-
-function QuoteExpression(quote)
-  return "`>a" .. a:quote .. "`<i" .. a:quote .. ""
-endfunction
-
-function ReadNumber()
-  let [lower, upper] = map(["0", "9"], {x -> char2nr(x)})
-
-  let acc = 0
-  let char = getchar()
-  while lower <= char && char <= upper
-    let acc = acc * 10 + char - lower
-    let char = getchar()
-  endwhile
-
-  return [acc, nr2char(char)]
+  execute "normal v" .. (count ? count : "") .. text_object .. Quote(quote)
 endfunction
 
 function QuoteVisual()
-  execute "normal " .. QuoteExpression(getcharstr())
+  execute "normal " .. Quote(getcharstr())
+endfunction
+
+function Quote(quote)
+  return "`>a" .. a:quote .. "`<i" .. a:quote .. ""
 endfunction
