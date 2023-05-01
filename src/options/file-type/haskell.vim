@@ -11,8 +11,8 @@ function SetHaskellOptions()
     \%E%>%f:%l:%c:,
     \%W%>%f:%l:%c:,
 
-  let l:stylish_config = stdpath("config") .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
-  execute "setl formatprg=stylish-haskell\\ --config\\ " .. l:stylish_config
+  let stylish_config = stdpath("config") .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
+  execute "setl formatprg=stylish-haskell\\ --config\\ " .. stylish_config
 
   let b:lsp_start="vim.lsp.start({
   \   name = 'haskell-lsp',

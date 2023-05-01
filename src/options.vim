@@ -23,8 +23,8 @@ autocmd BufEnter site.yaml call SetAnsibleOptions()
 call SetDefaultOptions()
 
 function s:AddTemplateByExtension(extension)
-  let l:templates_dir = stdpath("config") .. "/etc/templates/"
-  call s:AddTemplate("*." .. a:extension, l:templates_dir .. "template." .. a:extension)
+  let templates_dir = stdpath("config") .. "/etc/templates/"
+  call s:AddTemplate("*." .. a:extension, templates_dir .. "template." .. a:extension)
 endfunction
 
 function s:AddTemplate(pattern, template_path)
