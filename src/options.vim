@@ -1,31 +1,41 @@
-function SetDefaultOptions()
-  set autoindent
-  set background=dark
-  set encoding=utf-8
-  set expandtab
-  set hidden
-  set incsearch
-  set linebreak
-  set noerrorbells vb t_vb= " disable beeping no error bells
-  set nohlsearch
-  set nowrapscan
-  set number
-  set path=**,./**
-  set relativenumber
-  set shiftwidth=2
-  set smartindent
-  set softtabstop=2
-  set splitbelow splitright
-  set tabstop=2
-  set wildignore=*.pyc,*venv/*
-  set wildmenu
-  set modeline
-  set omnifunc=syntaxcomplete#Complete
-  set completeopt=menu
-  let g:netrw_banner = 0
-  let g:mapleader = ' '
-endfunction
+runtime src/functions.vim
+runtime! src/options/**/*.vim
 
+autocmd BufWritePost *config.h silent !sudo make install
+" autocmd BufWritePost *help.md silent !pandoc -t beamer % -o %.pdf
+autocmd BufWritePost *.Xresources silent !xrdb %
+
+autocmd BufEnter *.cs call SetDotnetOptions()
+autocmd BufEnter *.hs call SetHaskellOptions()
+autocmd BufEnter *.java call SetJavaOptions()
+autocmd BufEnter *.json call SetJSONOptions()
+autocmd BufEnter *.md,*.tex,*.txt call SetTextOptions()
+autocmd BufEnter *.nix call SetNixOptions()
+autocmd BufEnter *.py call SetPythonOptions()
+autocmd BufEnter *.sh call SetShellScriptOptions()
+autocmd BufEnter *.sql call SetSQLOptions()
+autocmd BufEnter *.tf call SetTerraformOptions()
+autocmd BufEnter *.vim call SetVimOptions()
+autocmd BufEnter *.yaml,*.yml call SetYAMLOptions()
+autocmd BufEnter *Dockerfile call SetDockerfileOptions()
+autocmd BufEnter *nginx.conf call SetNginxOptions()
+autocmd BufEnter site.yaml call SetAnsibleOptions()
 call SetDefaultOptions()
 
-runtime! src/options/file-type-options/**.vim
+function s:AddTemplateByExtension(extension)
+  let l:templates_dir = stdpath("config") .. "/etc/templates/"
+  call s:AddTemplate("*." .. a:extension, l:templates_dir .. "template." .. a:extension)
+endfunction
+
+function s:AddTemplate(pattern, template_path)
+  execute "autocmd BufNewFile " .. a:pattern .. " 0r " .. a:template_path .. " | normal Gdd"
+endfunction
+
+call s:AddTemplateByExtension("scala")
+call s:AddTemplateByExtension("java")
+call s:AddTemplateByExtension("cpp")
+call s:AddTemplateByExtension("md")
+call s:AddTemplateByExtension("hs")
+
+delfunction s:AddTemplateByExtension
+delfunction s:AddTemplate
