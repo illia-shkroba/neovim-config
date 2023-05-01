@@ -26,8 +26,11 @@ function SetDefaultOptions()
   let g:mapleader = ' '
 
   map <leader>o :lua vim.lsp.buf.hover()<CR>
+  nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>L :call DisableLSP()<CR>
   nmap <leader>S :call SearchNormal()<CR>
+  nmap <leader>X :call ResetQuickfixList()<CR>
+  nmap <leader>a :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
   nmap <leader>d :call delete(@%)<CR>
   nmap <leader>fb :Telescope buffers<CR>
   nmap <leader>ff :Telescope find_files<CR>
@@ -36,6 +39,7 @@ function SetDefaultOptions()
   nmap <leader>q :call QuoteNormal()<CR>
   nmap <leader>s :%s/\s\+$//gc<CR>
   nmap <leader>t vip:!column -ts ' '<CR>
+  nmap <leader>x :call CreateQuickfixListByPrompt()<CR>
   vmap <leader>S :call SearchVisual()<CR>
   vmap <leader>q :call QuoteVisual()<CR>
   vmap <leader>t :!column -ts ' '<CR>
