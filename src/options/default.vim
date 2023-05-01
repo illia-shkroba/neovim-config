@@ -30,6 +30,7 @@ function SetDefaultOptions()
   nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>L :call DisableLSP()<CR>
   nmap <leader>S :call SearchNormal()<CR>
+  nmap <leader>T :NvimTreeFindFileToggle<CR>
   nmap <leader>X :call ResetQuickfixList()<CR>
   nmap <leader>a :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
   nmap <leader>d :call delete(@%)<CR>
@@ -39,10 +40,11 @@ function SetDefaultOptions()
   nmap <leader>fm :Telescope marks<CR>
   nmap <leader>l :call EnableLSP()<CR>
   nmap <leader>q :call QuoteNormal()<CR>
+  nmap <leader>r vip:!column -ts ' '<CR>
   nmap <leader>s :%s/\s\+$//gc<CR>
-  nmap <leader>t vip:!column -ts ' '<CR>
+  nmap <leader>t :NvimTreeToggle<CR>
   nmap <leader>x :call CreateQuickfixListByPrompt()<CR>
   vmap <leader>S :call SearchVisual()<CR>
   vmap <leader>q :call QuoteVisual()<CR>
-  vmap <leader>t :!column -ts ' '<CR>
+  vmap <leader>r :!column -ts ' '<CR>
 endfunction
