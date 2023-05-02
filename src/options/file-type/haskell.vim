@@ -7,6 +7,8 @@ function SetHaskellOptions()
   setl errorformat=
     \%-G,
     \%-Z,
+    \%W%\\S%#>\ %f:%l:%c:\ Warning:\ %m,
+    \%E%\\S%#>\ %f:%l:%c:\ Error:,
     \%W%f:%l:%c:\ Warning:\ %m,
     \%E%f:%l:%c:\ Error:,
     \%E%>%f:%l:%c:,
