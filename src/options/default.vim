@@ -23,7 +23,6 @@ function SetDefaultOptions()
   set splitbelow splitright
   set tabstop=2
   set termguicolors
-  set wildignore=*.pyc,*venv/*
   set wildmenu
 
   map <leader>o :lua vim.lsp.buf.hover()<CR>
