@@ -2,7 +2,6 @@ function SetDefaultOptions()
   let g:mapleader = ' '
   let g:netrw_banner = 0
   set autoindent
-  set background=dark
   set completeopt=menu
   set encoding=utf-8
   set expandtab
