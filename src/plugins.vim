@@ -12,6 +12,22 @@ Plug 'purescript-contrib/purescript-vim'
 Plug 'tpope/vim-fugitive'
 call plug#end()
 
+function s:EnableColorscheme()
+  lua require("tokyonight").setup({
+  \   style = "moon",
+  \   transparent = true,
+  \   terminal_colors = true,
+  \   dim_inactive = true
+  \ })
+
+  colorscheme tokyonight-moon
+  highlight clear LineNr
+
+  lua vim.api.nvim_set_hl(0, "LineNrAbove", { fg="gray",  bold=true })
+  lua vim.api.nvim_set_hl(0, "LineNr",      { fg="white", bold=true })
+  lua vim.api.nvim_set_hl(0, "LineNrBelow", { fg="gray",  bold=true })
+endfunction
+
 function s:EnableNvimTree()
   " disable netrw
   lua vim.g.loaded_netrw = 1
@@ -24,26 +40,30 @@ function s:EnablePureScript()
   let g:purescript_unicode_conceal_enable = 0
 endfunction
 
-function s:EnableColorscheme()
-  lua require("tokyonight").setup({
-  \   style = "moon",
-  \   transparent = true,
-  \   terminal_colors = true,
-  \   dim_inactive = true
-  \ })
-
-  colorscheme tokyonight-moon
-  highlight clear LineNr
-
-  lua vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='gray',  bold=true })
-  lua vim.api.nvim_set_hl(0, 'LineNr',      { fg='white', bold=true })
-  lua vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='gray',  bold=true })
+function s:EnableTelescope()
+  lua require("telescope").setup {
+  \   pickers = {
+  \     find_files = {
+  \       mappings = {
+  \         n = {
+  \           ["<C-c>"] = "close",
+  \           ["<C-d>"] = "results_scrolling_down",
+  \           ["<C-u>"] = "results_scrolling_up",
+  \           ["d"] = "preview_scrolling_down",
+  \           ["u"] = "preview_scrolling_up",
+  \         }
+  \       },
+  \     },
+  \   }
+  \ }
 endfunction
 
+call s:EnableColorscheme()
 call s:EnableNvimTree()
 call s:EnablePureScript()
-call s:EnableColorscheme()
+call s:EnableTelescope()
 
+delfunction s:EnableColorscheme
 delfunction s:EnableNvimTree
 delfunction s:EnablePureScript
-delfunction s:EnableColorscheme
+delfunction s:EnableTelescope
