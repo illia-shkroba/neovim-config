@@ -26,6 +26,7 @@ function SetDefaultOptions()
 
   map <leader>o :lua vim.lsp.buf.hover()<CR>
   nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
+  nmap <leader>F :Telescope live_grep<CR>
   nmap <leader>L :call DisableLSP()<CR>
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
