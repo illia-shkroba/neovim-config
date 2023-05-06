@@ -1,4 +1,4 @@
 # Installation
 
-Before starting `neovim` install [vim-plug](https://github.com/junegunn/vim-plug#installation).
-After installing, open `neovim` and run `:PlugInstall`.
+Before starting `neovim` install [packer.nvim](https://github.com/wbthomason/packer.nvim#quickstart).
+After installing, open `neovim` and run `:PackerInstall`.
