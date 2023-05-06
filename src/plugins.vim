@@ -41,21 +41,35 @@ function s:EnablePureScript()
 endfunction
 
 function s:EnableTelescope()
-  lua require("telescope").setup {
-  \   pickers = {
-  \     find_files = {
-  \       mappings = {
-  \         n = {
-  \           ["<C-c>"] = "close",
-  \           ["<C-d>"] = "results_scrolling_down",
-  \           ["<C-u>"] = "results_scrolling_up",
-  \           ["d"] = "preview_scrolling_down",
-  \           ["u"] = "preview_scrolling_up",
-  \         }
-  \       },
-  \     },
-  \   }
-  \ }
+lua << EOF
+  local mappings = {
+    mappings = {
+      n = {
+        ["<C-c>"] = "close",
+        ["<C-d>"] = "results_scrolling_down",
+        ["<C-u>"] = "results_scrolling_up",
+        ["d"] = "preview_scrolling_down",
+        ["u"] = "preview_scrolling_up",
+      },
+      i = {
+        ["<C-d>"] = "results_scrolling_down",
+        ["<C-u>"] = "results_scrolling_up",
+      }
+    }
+  }
+  require("telescope").setup {
+    pickers = {
+      buffers = mappings,
+      colorscheme = mappings,
+      find_files = mappings,
+      live_grep = mappings,
+      marks = mappings,
+      oldfiles = mappings,
+      spell_suggest = mappings,
+      tags = mappings,
+    }
+  }
+EOF
 endfunction
 
 call s:EnableColorscheme()

@@ -25,6 +25,7 @@ function SetDefaultOptions()
   set wildmenu
 
   map <leader>o :lua vim.lsp.buf.hover()<CR>
+  nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>F :Telescope live_grep<CR>
   nmap <leader>L :call DisableLSP()<CR>
@@ -37,6 +38,8 @@ function SetDefaultOptions()
   nmap <leader>fc :Telescope colorscheme<CR>
   nmap <leader>ff :Telescope find_files<CR>
   nmap <leader>fm :Telescope marks<CR>
+  nmap <leader>fr :Telescope oldfiles<CR>
+  nmap <leader>ft :Telescope tags<CR>
   nmap <leader>l :call EnableLSP()<CR>
   nmap <leader>q :call QuoteNormal()<CR>
   nmap <leader>r vip:!column -ts ' '<CR>
