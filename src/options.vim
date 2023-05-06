@@ -1,9 +1,9 @@
 runtime src/functions.vim
 runtime! src/options/**/*.vim
 
-autocmd BufWritePost *config.h silent !sudo make install
-" autocmd BufWritePost *help.md silent !pandoc -t beamer % -o %.pdf
 autocmd BufWritePost *.Xresources silent !xrdb %
+autocmd BufWritePost *config.h silent !sudo make install
+autocmd BufWritePost plugins.lua source % | PackerCompile
 
 autocmd BufEnter *.cs call SetDotnetOptions()
 autocmd BufEnter *.hs call SetHaskellOptions()
