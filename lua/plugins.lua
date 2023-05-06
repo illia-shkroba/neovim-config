@@ -6,7 +6,7 @@ vim.cmd [[
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
-  use "LnL7/vim-nix"
+  use { "LnL7/vim-nix", ft = { "nix" } }
   use {
     "folke/tokyonight.nvim",
     branch = "main",
@@ -72,7 +72,7 @@ return require("packer").startup(function(use)
       require("nvim-tree").setup()
     end,
   }
-  use "pearofducks/ansible-vim"
+  use { "pearofducks/ansible-vim", ft = { "yaml" } }
   use {
     "purescript-contrib/purescript-vim",
     config = function()
@@ -80,6 +80,7 @@ return require("packer").startup(function(use)
         let g:purescript_unicode_conceal_enable = 0
       ]]
     end,
+    ft = { "purescript" },
   }
   use "tpope/vim-fugitive"
 end)
