@@ -1,7 +1,36 @@
+utils = require "utils"
+
 vim.cmd [[
   packadd cfilter
-  packadd packer.nvim
 ]]
+
+local function create_packer_bootstrap()
+  local fn = vim.fn
+  local path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+  local is_installed = string.len(fn.glob(path)) > 0
+
+  if is_installed then
+    return function() end
+  end
+
+  fn.system {
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    path,
+  }
+  vim.cmd [[
+    packadd packer.nvim
+  ]]
+
+  return function()
+    require("packer").sync()
+  end
+end
+
+local packer_bootstrap = create_packer_bootstrap()
 
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
@@ -11,17 +40,21 @@ return require("packer").startup(function(use)
     "folke/tokyonight.nvim",
     branch = "main",
     config = function()
-      require("tokyonight").setup {
-        style = "moon",
-        transparent = true,
-        terminal_colors = true,
-        dim_inactive = true,
-      }
+      local tokyonight = utils.require_safe "tokyonight"
 
-      vim.cmd [[
-        colorscheme tokyonight-moon
-        highlight clear LineNr
-      ]]
+      if tokyonight then
+        tokyonight.setup {
+          style = "moon",
+          transparent = true,
+          terminal_colors = true,
+          dim_inactive = true,
+        }
+
+        vim.cmd [[
+          colorscheme tokyonight-moon
+          highlight clear LineNr
+        ]]
+      end
 
       vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "gray", bold = true })
       vim.api.nvim_set_hl(0, "LineNr", { fg = "white", bold = true })
@@ -47,7 +80,7 @@ return require("packer").startup(function(use)
           },
         },
       }
-      require("telescope").setup {
+      utils.require_or("telescope", utils.dummy_ids { "setup" }).setup {
         pickers = {
           buffers = mappings,
           colorscheme = mappings,
@@ -69,7 +102,7 @@ return require("packer").startup(function(use)
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
 
-      require("nvim-tree").setup()
+      utils.require_or("nvim-tree", utils.dummy_ids { "setup" }).setup()
     end,
   }
   use { "pearofducks/ansible-vim", ft = { "yaml" } }
@@ -83,4 +116,6 @@ return require("packer").startup(function(use)
     ft = { "purescript" },
   }
   use "tpope/vim-fugitive"
+
+  packer_bootstrap()
 end)
