@@ -1,8 +1,8 @@
 runtime src/functions.vim
 runtime! src/options/**/*.vim
 
-autocmd BufWritePost *.Xresources silent !xrdb %
-autocmd BufWritePost *config.h silent !sudo make install
+autocmd BufWritePost .Xresources,xresources silent !xrdb %
+autocmd BufWritePost config.h silent !sudo make install
 autocmd BufWritePost plugins.lua source % | PackerCompile
 
 autocmd BufEnter *.cs call SetDotnetOptions()
