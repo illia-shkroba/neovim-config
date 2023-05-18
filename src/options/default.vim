@@ -46,6 +46,8 @@ function SetDefaultOptions()
   nmap <leader>s :%s/\s\+$//gc<CR>
   nmap <leader>t :NvimTreeToggle<CR>
   nmap <leader>x :call CreateQuickfixListByPrompt()<CR>
+  vmap <C-j> :move '>+1<CR>gv
+  vmap <C-k> :move '<-2<CR>gv
   vmap <leader>S :call SearchVisual()<CR>
   vmap <leader>q :call QuoteVisual()<CR>
   vmap <leader>r :!column -to ' '<CR>
