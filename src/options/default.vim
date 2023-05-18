@@ -42,11 +42,11 @@ function SetDefaultOptions()
   nmap <leader>ft :Telescope tags<CR>
   nmap <leader>l :call EnableLSP()<CR>
   nmap <leader>q :call QuoteNormal()<CR>
-  nmap <leader>r vip:!column -ts ' '<CR>
+  nmap <leader>r vip:!column -to ' '<CR>
   nmap <leader>s :%s/\s\+$//gc<CR>
   nmap <leader>t :NvimTreeToggle<CR>
   nmap <leader>x :call CreateQuickfixListByPrompt()<CR>
   vmap <leader>S :call SearchVisual()<CR>
   vmap <leader>q :call QuoteVisual()<CR>
-  vmap <leader>r :!column -ts ' '<CR>
+  vmap <leader>r :!column -to ' '<CR>
 endfunction
