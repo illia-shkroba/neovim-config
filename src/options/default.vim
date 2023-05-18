@@ -24,10 +24,13 @@ function SetDefaultOptions()
   set termguicolors
   set wildmenu
 
+  map <leader>" :execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>
+  map <leader>% :execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>
   map <leader>dd :execute "cd " .. system("dirname " .. @%)<CR>
   map <leader>dl :execute "lcd " .. system("dirname " .. @%)<CR>
   map <leader>dt :execute "tcd " .. system("dirname " .. @%)<CR>
   map <leader>o :lua vim.lsp.buf.hover()<CR>
+  map <leader>v :execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
   nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>D :call delete(@%)<CR>
