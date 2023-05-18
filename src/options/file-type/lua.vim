@@ -8,5 +8,4 @@ function SetLuaOptions()
   \   name = 'lua-lsp',
   \   cmd = {'lua-language-server'}
   \ })"
-  call LSPCallback()
 endfunction

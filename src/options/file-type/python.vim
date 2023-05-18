@@ -12,5 +12,4 @@ function SetPythonOptions()
   \   cmd_env = { VIRTUAL_ENV = os.getenv('HOME') .. '/.local/share/nvim/lsp_servers/pylsp/venv' },
   \   root_dir = vim.fs.dirname(vim.fs.find({'setup.py', 'pyproject.toml'}, { upward = true })[1])
   \ })"
-  call LSPCallback()
 endfunction

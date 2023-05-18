@@ -3,5 +3,4 @@ function SetAnsibleOptions()
   \   name = 'ansible-lsp',
   \   cmd = {'ansible-language-server', '--stdio'},
   \ })"
-  call LSPCallback()
 endfunction

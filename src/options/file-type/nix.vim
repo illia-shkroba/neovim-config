@@ -6,5 +6,4 @@ function SetNixOptions()
   \   name = 'nix-lsp',
   \   cmd = {'rnix-lsp'},
   \ })"
-  call LSPCallback()
 endfunction

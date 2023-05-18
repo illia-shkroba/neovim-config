@@ -5,5 +5,4 @@ function SetVimOptions()
   \   name = 'vim-lsp',
   \   cmd = {'vim-language-server', '--stdio'},
   \ })"
-  call LSPCallback()
 endfunction

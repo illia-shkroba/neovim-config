@@ -5,5 +5,4 @@ function SetTerraformOptions()
   \   name = 'terraform-lsp',
   \   cmd = {'terraform-ls', 'serve'},
   \ })"
-  call LSPCallback()
 endfunction

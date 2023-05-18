@@ -17,5 +17,4 @@ function SetPureScriptOptions()
   \   cmd = {'purescript-language-server', '--stdio'},
   \   root_dir = vim.fs.dirname(vim.fs.find({'spago.dhall', 'packages.dhall', 'package.json'}, { upward = true })[1])
   \ })"
-  call LSPCallback()
 endfunction

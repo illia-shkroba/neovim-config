@@ -5,5 +5,4 @@ function SetDockerfileOptions()
   \   name = 'docker-lsp',
   \   cmd = {'docker-langserver', '--stdio'},
   \ })"
-  call LSPCallback()
 endfunction

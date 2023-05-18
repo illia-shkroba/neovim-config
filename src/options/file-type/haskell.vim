@@ -22,5 +22,4 @@ function SetHaskellOptions()
   \   cmd = {'haskell-language-server-wrapper', 'lsp'},
   \   root_dir = vim.fs.dirname(vim.fs.find({'package.yaml', 'stack.yaml', 'Setup.hs'}, { upward = true })[1])
   \ })"
-  call LSPCallback()
 endfunction
