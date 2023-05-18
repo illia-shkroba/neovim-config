@@ -1,3 +1,8 @@
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 function SetShellScriptOptions()
   map <buffer> <leader>c :w !bash <CR>
   nmap <buffer> <leader>C :up <CR>n:terminal bash --init-file # <CR>
@@ -5,3 +10,5 @@ function SetShellScriptOptions()
 
   execute "setl formatprg=shfmt\\ -s\\ -i\\ " .. &tabstop .. "\\ -bn\\ -ci\\ -sr"
 endfunction
+
+call SetShellScriptOptions()

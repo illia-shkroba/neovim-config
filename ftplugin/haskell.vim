@@ -1,3 +1,8 @@
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 function SetHaskellOptions()
   map <buffer> <leader>c :w !stack ghci <CR>
   map <buffer> gh :up \| %!hlint --refactor % <CR>
@@ -23,3 +28,5 @@ function SetHaskellOptions()
   \   root_dir = vim.fs.dirname(vim.fs.find({'package.yaml', 'stack.yaml', 'Setup.hs'}, { upward = true })[1])
   \ })"
 endfunction
+
+call SetHaskellOptions()

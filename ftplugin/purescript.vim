@@ -1,3 +1,8 @@
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 function SetPureScriptOptions()
   nmap <buffer> <leader>g :silent !fast-tags -R --qualified . <CR>
   setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=spago\ build
@@ -18,3 +23,5 @@ function SetPureScriptOptions()
   \   root_dir = vim.fs.dirname(vim.fs.find({'spago.dhall', 'packages.dhall', 'package.json'}, { upward = true })[1])
   \ })"
 endfunction
+
+call SetPureScriptOptions()

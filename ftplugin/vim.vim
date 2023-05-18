@@ -1,3 +1,8 @@
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 function SetVimOptions()
   setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
@@ -6,3 +11,5 @@ function SetVimOptions()
   \   cmd = {'vim-language-server', '--stdio'},
   \ })"
 endfunction
+
+call SetVimOptions()

@@ -1,3 +1,8 @@
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
+
 function SetLuaOptions()
   map <buffer> <leader>c :w !lua <CR>
   nmap <buffer> <leader>C :up <CR>n:terminal lua -i # <CR>
@@ -9,3 +14,5 @@ function SetLuaOptions()
   \   cmd = {'lua-language-server'}
   \ })"
 endfunction
+
+call SetLuaOptions()
