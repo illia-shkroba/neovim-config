@@ -26,6 +26,7 @@ function SetDefaultOptions()
 
   map <leader>" :execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>
   map <leader>% :execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>
+  map <leader>. :lua vim.lsp.buf.code_action()<CR>
   map <leader>dd :execute "cd " .. system("dirname " .. @%)<CR>
   map <leader>dl :execute "lcd " .. system("dirname " .. @%)<CR>
   map <leader>dt :execute "tcd " .. system("dirname " .. @%)<CR>
