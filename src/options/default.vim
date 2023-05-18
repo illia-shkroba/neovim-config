@@ -24,16 +24,19 @@ function SetDefaultOptions()
   set termguicolors
   set wildmenu
 
+  map <leader>dd :execute "cd " .. system("dirname " .. @%)<CR>
+  map <leader>dl :execute "lcd " .. system("dirname " .. @%)<CR>
+  map <leader>dt :execute "tcd " .. system("dirname " .. @%)<CR>
   map <leader>o :lua vim.lsp.buf.hover()<CR>
   nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
+  nmap <leader>D :call delete(@%)<CR>
   nmap <leader>F :Telescope live_grep<CR>
   nmap <leader>L :call DisableLSP()<CR>
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
   nmap <leader>X :call ResetQuickfixList()<CR>
   nmap <leader>a :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
-  nmap <leader>d :call delete(@%)<CR>
   nmap <leader>fb :Telescope buffers<CR>
   nmap <leader>fc :Telescope colorscheme<CR>
   nmap <leader>ff :Telescope find_files<CR>
