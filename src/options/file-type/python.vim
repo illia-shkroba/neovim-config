@@ -1,9 +1,9 @@
 function SetPythonOptions()
   map <buffer> <leader>c :w !python <CR>
-  nmap <buffer> <leader>C :up <CR>n:terminal ipython -i # <CR>
   map <buffer> gh :up \| !black % && isort % <CR>
-  nmap <leader>ii yiwggofrom itertools import p
-  nmap <leader>in yiwggofrom nonion import p
+  nmap <buffer> <leader>C :up <CR>n:terminal ipython -i # <CR>
+  nmap <buffer> <leader>ii yiwggofrom itertools import p
+  nmap <buffer> <leader>in yiwggofrom nonion import p
   setl tabstop=4 softtabstop=4 shiftwidth=4 expandtab makeprg=pylint
 
   let b:lsp_start="vim.lsp.start({
