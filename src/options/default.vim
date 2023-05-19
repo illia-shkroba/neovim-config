@@ -30,7 +30,14 @@ function SetDefaultOptions()
   map <leader>dd :execute "cd " .. system("dirname " .. @%)<CR>
   map <leader>dl :execute "lcd " .. system("dirname " .. @%)<CR>
   map <leader>dt :execute "tcd " .. system("dirname " .. @%)<CR>
+  map <leader>fc :lua require("telescope.builtin").lsp_references()<CR>
+  map <leader>fd :lua require("telescope.builtin").lsp_definitions()<CR>
+  map <leader>fi :lua require("telescope.builtin").lsp_incoming_calls()<CR>
+  map <leader>fo :lua require("telescope.builtin").lsp_outgoing_calls()<CR>
   map <leader>o :lua vim.lsp.buf.hover()<CR>
+  map <leader>qc :lua vim.lsp.buf.references()<CR>
+  map <leader>qi :lua vim.lsp.buf.incoming_calls()<CR>
+  map <leader>qo :lua vim.lsp.buf.outgoing_calls()<CR>
   map <leader>v :execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
   nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>D :call delete(@%)<CR>
@@ -39,8 +46,8 @@ function SetDefaultOptions()
   nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
+  nmap <leader>fC :Telescope colorscheme<CR>
   nmap <leader>fb :Telescope buffers<CR>
-  nmap <leader>fc :Telescope colorscheme<CR>
   nmap <leader>ff :Telescope find_files<CR>
   nmap <leader>fm :Telescope marks<CR>
   nmap <leader>fr :Telescope oldfiles<CR>
