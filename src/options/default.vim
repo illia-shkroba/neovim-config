@@ -33,31 +33,32 @@ function SetDefaultOptions()
   map <leader>o :lua vim.lsp.buf.hover()<CR>
   map <leader>v :execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
   nmap <leader>= :Telescope spell_suggest<CR>
-  nmap <leader>A :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>D :call delete(@%)<CR>
   nmap <leader>F :Telescope live_grep<CR>
   nmap <leader>L :call DisableLSP()<CR>
   nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
-  nmap <leader>X :call ResetQuickfixList()<CR>
-  nmap <leader>a :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
   nmap <leader>fb :Telescope buffers<CR>
   nmap <leader>fc :Telescope colorscheme<CR>
   nmap <leader>ff :Telescope find_files<CR>
   nmap <leader>fm :Telescope marks<CR>
   nmap <leader>fr :Telescope oldfiles<CR>
   nmap <leader>ft :Telescope tags<CR>
+  nmap <leader>gd :lua vim.lsp.buf.definition()<CR>
+  nmap <leader>gq :call QuoteNormal()<CR>
   nmap <leader>l :call EnableLSP()<CR>
   nmap <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
-  nmap <leader>q :call QuoteNormal()<CR>
+  nmap <leader>qA :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
+  nmap <leader>qX :call ResetQuickfixList()<CR>
+  nmap <leader>qa :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
+  nmap <leader>qx :call CreateQuickfixListByPrompt()<CR>
   nmap <leader>r vip:!column -to ' '<CR>
   nmap <leader>s :%s/\s\+$//gc<CR>
   nmap <leader>t :NvimTreeToggle<CR>
-  nmap <leader>x :call CreateQuickfixListByPrompt()<CR>
   vmap <C-j> :move '>+1<CR>gv
   vmap <C-k> :move '<-2<CR>gv
   vmap <leader>S :call SearchVisual()<CR>
-  vmap <leader>q :call QuoteVisual()<CR>
+  vmap <leader>gq :call QuoteVisual()<CR>
   vmap <leader>r :!column -to ' '<CR>
 endfunction
