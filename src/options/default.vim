@@ -37,6 +37,7 @@ function SetDefaultOptions()
   nmap <leader>D :call delete(@%)<CR>
   nmap <leader>F :Telescope live_grep<CR>
   nmap <leader>L :call DisableLSP()<CR>
+  nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
   nmap <leader>X :call ResetQuickfixList()<CR>
@@ -48,6 +49,7 @@ function SetDefaultOptions()
   nmap <leader>fr :Telescope oldfiles<CR>
   nmap <leader>ft :Telescope tags<CR>
   nmap <leader>l :call EnableLSP()<CR>
+  nmap <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>q :call QuoteNormal()<CR>
   nmap <leader>r vip:!column -to ' '<CR>
   nmap <leader>s :%s/\s\+$//gc<CR>

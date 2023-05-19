@@ -4,10 +4,6 @@ endif
 let b:did_ftplugin = 1
 
 function SetHaskellOptions()
-  map <buffer> <leader><CR> :w !stack ghci <CR>
-  map <buffer> gh :up \| %!hlint --refactor % <CR>
-  nmap <buffer> <leader><Tab> :up <CR>n:terminal stack ghci # <CR>
-  nmap <buffer> <leader>g :silent !fast-tags -R --qualified . <CR>
   setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=stack\ build\ --cabal-verbosity\ 0
   setl errorformat=
     \%-G,
@@ -21,6 +17,11 @@ function SetHaskellOptions()
 
   let stylish_config = stdpath("config") .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
   execute "setl formatprg=stylish-haskell\\ --config\\ " .. stylish_config
+
+  map <buffer> <leader><CR> :w !stack ghci<CR>
+  map <buffer> gh :up \| %!hlint --refactor %<CR>
+  nmap <buffer> <leader><Tab> :up <CR>n:terminal stack ghci #<CR>
+  nmap <buffer> <leader>g :silent !fast-tags -R --qualified .<CR>
 
   let b:lsp_start="vim.lsp.start({
   \   name = 'haskell-lsp',
