@@ -41,7 +41,7 @@ function SetDefaultOptions()
   map <leader>v :execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
   nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>D :call delete(@%)<CR>
-  nmap <leader>F :Telescope live_grep<CR>
+  nmap <leader>F :lua require("telescope.builtin").grep_string()<CR>
   nmap <leader>L :lua disable_lsp()<CR>
   nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S :call SearchNormal()<CR>
@@ -49,6 +49,7 @@ function SetDefaultOptions()
   nmap <leader>fC :Telescope colorscheme<CR>
   nmap <leader>fb :Telescope buffers<CR>
   nmap <leader>ff :Telescope find_files<CR>
+  nmap <leader>fg :Telescope live_grep<CR>
   nmap <leader>fm :Telescope marks<CR>
   nmap <leader>fr :Telescope oldfiles<CR>
   nmap <leader>ft :Telescope tags<CR>
@@ -65,7 +66,8 @@ function SetDefaultOptions()
   nmap <leader>t :NvimTreeToggle<CR>
   vmap <C-j> :move '>+1<CR>gv
   vmap <C-k> :move '<-2<CR>gv
-  vmap <leader>S :call SearchVisual()<CR>
+  vmap <leader>F :lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>
+  vmap <leader>S :call SearchVisual()<CR>
   vmap <leader>gq :call QuoteVisual()<CR>
   vmap <leader>r :!column -to ' '<CR>
 endfunction
