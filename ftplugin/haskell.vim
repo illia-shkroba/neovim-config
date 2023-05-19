@@ -4,9 +4,9 @@ endif
 let b:did_ftplugin = 1
 
 function SetHaskellOptions()
-  map <buffer> <leader>c :w !stack ghci <CR>
+  map <buffer> <leader><CR> :w !stack ghci <CR>
   map <buffer> gh :up \| %!hlint --refactor % <CR>
-  nmap <buffer> <leader>C :up <CR>n:terminal stack ghci # <CR>
+  nmap <buffer> <leader><Tab> :up <CR>n:terminal stack ghci # <CR>
   nmap <buffer> <leader>g :silent !fast-tags -R --qualified . <CR>
   setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab makeprg=stack\ build\ --cabal-verbosity\ 0
   setl errorformat=
