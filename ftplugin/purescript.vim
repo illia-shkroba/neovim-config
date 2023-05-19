@@ -18,11 +18,20 @@ function SetPureScriptOptions()
 
   nmap <buffer> <leader>g :silent !fast-tags -R --qualified .<CR>
 
-  let b:lsp_start="vim.lsp.start({
-  \   name = 'purescript-lsp',
-  \   cmd = {'purescript-language-server', '--stdio'},
-  \   root_dir = vim.fs.dirname(vim.fs.find({'spago.dhall', 'packages.dhall', 'package.json'}, { upward = true })[1])
-  \ })"
+  lua << EOF
+  function vim.b.lsp_start()
+    vim.lsp.start {
+      name = "purescript-lsp",
+      cmd = { "purescript-language-server", "--stdio" },
+      root_dir = vim.fs.dirname(
+        vim.fs.find(
+          { "spago.dhall", "packages.dhall", "package.json" },
+          { upward = true }
+        )[1]
+      ),
+    }
+  end
+EOF
 endfunction
 
 call SetPureScriptOptions()

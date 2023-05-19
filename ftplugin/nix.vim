@@ -8,10 +8,14 @@ function SetNixOptions()
 
   map <buffer> <leader><CR> :up \| !nix-instantiate --eval --strict %<CR>
 
-  let b:lsp_start="vim.lsp.start({
-  \   name = 'nix-lsp',
-  \   cmd = {'rnix-lsp'},
-  \ })"
+  lua << EOF
+  function vim.b.lsp_start()
+    vim.lsp.start {
+      name = "nix-lsp",
+      cmd = { "rnix-lsp" },
+    }
+  end
+EOF
 endfunction
 
 call SetNixOptions()

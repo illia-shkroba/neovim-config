@@ -10,10 +10,14 @@ function SetLuaOptions()
   map <buffer> <leader><CR> :w !lua<CR>
   nmap <buffer> <leader><Tab> :up <CR>n:terminal lua -i #<CR>
 
-  let b:lsp_start="vim.lsp.start({
-  \   name = 'lua-lsp',
-  \   cmd = {'lua-language-server'}
-  \ })"
+  lua << EOF
+  function vim.b.lsp_start()
+    vim.lsp.start {
+      name = "lua-lsp",
+      cmd = { "lua-language-server" },
+    }
+  end
+EOF
 endfunction
 
 call SetLuaOptions()

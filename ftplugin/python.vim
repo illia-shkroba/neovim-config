@@ -10,12 +10,21 @@ function SetPythonOptions()
   map <buffer> gh :up \| !black % && isort %<CR>
   nmap <buffer> <leader><Tab> :up <CR>n:terminal ipython -i #<CR>
 
-  let b:lsp_start="vim.lsp.start({
-  \   name = 'python-lsp',
-  \   cmd = {'pylsp'},
-  \   cmd_env = { VIRTUAL_ENV = os.getenv('HOME') .. '/.local/share/nvim/lsp_servers/pylsp/venv' },
-  \   root_dir = vim.fs.dirname(vim.fs.find({'setup.py', 'pyproject.toml'}, { upward = true })[1])
-  \ })"
+  lua << EOF
+  function vim.b.lsp_start()
+    vim.lsp.start {
+      name = "python-lsp",
+      cmd = { "pylsp" },
+      cmd_env = {
+        VIRTUAL_ENV = os.getenv "HOME"
+          .. "/.local/share/nvim/lsp_servers/pylsp/venv",
+      },
+      root_dir = vim.fs.dirname(
+        vim.fs.find({ "setup.py", "pyproject.toml" }, { upward = true })[1]
+      ),
+    }
+  end
+EOF
 endfunction
 
 call SetPythonOptions()

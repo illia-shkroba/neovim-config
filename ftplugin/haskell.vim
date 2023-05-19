@@ -23,11 +23,17 @@ function SetHaskellOptions()
   nmap <buffer> <leader><Tab> :up <CR>n:terminal stack ghci #<CR>
   nmap <buffer> <leader>g :silent !fast-tags -R --qualified .<CR>
 
-  let b:lsp_start="vim.lsp.start({
-  \   name = 'haskell-lsp',
-  \   cmd = {'haskell-language-server-wrapper', 'lsp'},
-  \   root_dir = vim.fs.dirname(vim.fs.find({'package.yaml', 'stack.yaml', 'Setup.hs'}, { upward = true })[1])
-  \ })"
+  lua << EOF
+  function vim.b.lsp_start()
+    vim.lsp.start {
+      name = "haskell-lsp",
+      cmd = { "haskell-language-server-wrapper", "lsp" },
+      root_dir = vim.fs.dirname(
+        vim.fs.find({ "package.yaml", "stack.yaml", "Setup.hs" }, { upward = true })[1]
+      ),
+    }
+  end
+EOF
 endfunction
 
 call SetHaskellOptions()
