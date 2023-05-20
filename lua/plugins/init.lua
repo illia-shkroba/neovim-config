@@ -1,36 +1,8 @@
-utils = require "utils"
-
 vim.cmd [[
   packadd cfilter
 ]]
 
-local function create_packer_bootstrap()
-  local fn = vim.fn
-  local path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-  local is_installed = string.len(fn.glob(path)) > 0
-
-  if is_installed then
-    return function() end
-  end
-
-  fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    path,
-  }
-  vim.cmd [[
-    packadd packer.nvim
-  ]]
-
-  return function()
-    require("packer").sync()
-  end
-end
-
-local packer_bootstrap = create_packer_bootstrap()
+local packer_bootstrap = require("plugins.bootstrap").create_packer_bootstrap()
 
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
@@ -40,7 +12,7 @@ return require("packer").startup(function(use)
     "folke/tokyonight.nvim",
     branch = "main",
     config = function()
-      local tokyonight = utils.require_safe "tokyonight"
+      local tokyonight = require("utils").require_safe "tokyonight"
 
       if tokyonight then
         tokyonight.setup {
@@ -80,7 +52,7 @@ return require("packer").startup(function(use)
           },
         },
       }
-      utils.require_or("telescope", utils.dummy_ids { "setup" }).setup {
+      require "plugins.setup" "telescope" {
         pickers = {
           buffers = mappings,
           colorscheme = mappings,
@@ -102,16 +74,14 @@ return require("packer").startup(function(use)
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
 
-      utils.require_or("nvim-tree", utils.dummy_ids { "setup" }).setup()
+      require "plugins.setup" "nvim-tree"()
     end,
   }
   use { "pearofducks/ansible-vim", ft = { "yaml" } }
   use {
     "purescript-contrib/purescript-vim",
     config = function()
-      vim.cmd [[
-        let g:purescript_unicode_conceal_enable = 0
-      ]]
+      vim.g.purescript_unicode_conceal_enable = 0
     end,
     ft = { "purescript" },
   }
