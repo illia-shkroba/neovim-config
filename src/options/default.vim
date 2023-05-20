@@ -42,7 +42,7 @@ function SetDefaultOptions()
   nmap <leader>= :Telescope spell_suggest<CR>
   nmap <leader>D :call delete(@%)<CR>
   nmap <leader>F :lua require("telescope.builtin").grep_string()<CR>
-  nmap <leader>L :lua disable_lsp()<CR>
+  nmap <leader>L :lua require("lsp").disable_lsp()<CR>
   nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S :call SearchNormal()<CR>
   nmap <leader>T :NvimTreeFindFileToggle<CR>
@@ -55,7 +55,7 @@ function SetDefaultOptions()
   nmap <leader>ft :Telescope tags<CR>
   nmap <leader>gd :lua vim.lsp.buf.definition()<CR>
   nmap <leader>gq :call QuoteNormal()<CR>
-  nmap <leader>l :lua enable_lsp()<CR>
+  nmap <leader>l :lua require("lsp").enable_lsp()<CR>
   nmap <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>qA :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>qX :call ResetQuickfixList()<CR>

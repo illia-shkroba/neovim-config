@@ -7,15 +7,15 @@ autocmd BufWritePost .Xresources,xresources silent !xrdb %
 autocmd BufWritePost config.h silent !sudo make install
 autocmd BufWritePost plugins.lua source % | PackerCompile
 
-autocmd BufEnter *.hs lua lsp_callback()
-autocmd BufEnter *.lua lua lsp_callback()
-autocmd BufEnter *.nix lua lsp_callback()
-autocmd BufEnter *.purs lua lsp_callback()
-autocmd BufEnter *.py lua lsp_callback()
-autocmd BufEnter *.tf lua lsp_callback()
-autocmd BufEnter *.vim lua lsp_callback()
-autocmd BufEnter *Dockerfile lua lsp_callback()
-autocmd BufEnter site.yaml lua lsp_callback()
+autocmd BufEnter *.hs lua require("lsp").lsp_callback()
+autocmd BufEnter *.lua lua require("lsp").lsp_callback()
+autocmd BufEnter *.nix lua require("lsp").lsp_callback()
+autocmd BufEnter *.purs lua require("lsp").lsp_callback()
+autocmd BufEnter *.py lua require("lsp").lsp_callback()
+autocmd BufEnter *.tf lua require("lsp").lsp_callback()
+autocmd BufEnter *.vim lua require("lsp").lsp_callback()
+autocmd BufEnter *Dockerfile lua require("lsp").lsp_callback()
+autocmd BufEnter site.yaml lua require("lsp").lsp_callback()
 
 call SetDefaultOptions()
 
