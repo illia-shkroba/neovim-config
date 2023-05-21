@@ -2,3 +2,4 @@
 lua require("plugins")
 
 runtime src/options.vim
+lua require("options")
