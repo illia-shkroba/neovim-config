@@ -43,7 +43,7 @@ function SetDefaultOptions()
   nmap <leader>D <Cmd>call delete(@%)<CR>
   nmap <leader>F <Cmd>lua require("telescope.builtin").grep_string()<CR>
   nmap <leader>L <Cmd>lua require("lsp").disable_lsp()<CR>
-  nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
+  nmap <silent> <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>S <Cmd>call SearchNormal()<CR>
   nmap <leader>T <Cmd>NvimTreeFindFileToggle<CR>
   nmap <leader>fC <Cmd>Telescope colorscheme<CR>
@@ -56,7 +56,7 @@ function SetDefaultOptions()
   nmap <leader>gd <Cmd>lua vim.lsp.buf.definition()<CR>
   nmap <leader>gq <Cmd>call QuoteNormal()<CR>
   nmap <leader>l <Cmd>lua require("lsp").enable_lsp()<CR>
-  nmap <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
+  nmap <silent> <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
   nmap <leader>qA <Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
   nmap <leader>qX <Cmd>call ResetQuickfixList()<CR>
   nmap <leader>qa <Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
@@ -68,6 +68,6 @@ function SetDefaultOptions()
   vmap <C-k> :move '<-2<CR>gv
   vmap <leader>F :lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>
   vmap <leader>S :call SearchVisual()<CR>
-  vmap <leader>gq :call QuoteVisual()<CR>
-  vmap <leader>r :!column -to ' '<CR>
+  vmap <silent> <leader>gq :call QuoteVisual()<CR>
+  vmap <silent> <leader>r :!column -to ' '<CR>
 endfunction
