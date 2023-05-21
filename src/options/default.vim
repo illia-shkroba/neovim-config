@@ -24,46 +24,46 @@ function SetDefaultOptions()
   set termguicolors
   set wildmenu
 
-  map <leader>" :execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>
-  map <leader>% :execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>
-  map <leader>. :lua vim.lsp.buf.code_action()<CR>
-  map <leader>dd :execute "cd " .. system("dirname " .. @%)<CR>
-  map <leader>dl :execute "lcd " .. system("dirname " .. @%)<CR>
-  map <leader>dt :execute "tcd " .. system("dirname " .. @%)<CR>
-  map <leader>fc :lua require("telescope.builtin").lsp_references()<CR>
-  map <leader>fd :lua require("telescope.builtin").lsp_definitions()<CR>
-  map <leader>fi :lua require("telescope.builtin").lsp_incoming_calls()<CR>
-  map <leader>fo :lua require("telescope.builtin").lsp_outgoing_calls()<CR>
-  map <leader>o :lua vim.lsp.buf.hover()<CR>
-  map <leader>qc :lua vim.lsp.buf.references()<CR>
-  map <leader>qi :lua vim.lsp.buf.incoming_calls()<CR>
-  map <leader>qo :lua vim.lsp.buf.outgoing_calls()<CR>
-  map <leader>v :execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
-  nmap <leader>= :Telescope spell_suggest<CR>
-  nmap <leader>D :call delete(@%)<CR>
-  nmap <leader>F :lua require("telescope.builtin").grep_string()<CR>
-  nmap <leader>L :lua require("lsp").disable_lsp()<CR>
+  map <leader>" <Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>
+  map <leader>% <Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>
+  map <leader>. <Cmd>lua vim.lsp.buf.code_action()<CR>
+  map <leader>dd <Cmd>execute "cd " .. system("dirname " .. @%)<CR>
+  map <leader>dl <Cmd>execute "lcd " .. system("dirname " .. @%)<CR>
+  map <leader>dt <Cmd>execute "tcd " .. system("dirname " .. @%)<CR>
+  map <leader>fc <Cmd>lua require("telescope.builtin").lsp_references()<CR>
+  map <leader>fd <Cmd>lua require("telescope.builtin").lsp_definitions()<CR>
+  map <leader>fi <Cmd>lua require("telescope.builtin").lsp_incoming_calls()<CR>
+  map <leader>fo <Cmd>lua require("telescope.builtin").lsp_outgoing_calls()<CR>
+  map <leader>o <Cmd>lua vim.lsp.buf.hover()<CR>
+  map <leader>qc <Cmd>lua vim.lsp.buf.references()<CR>
+  map <leader>qi <Cmd>lua vim.lsp.buf.incoming_calls()<CR>
+  map <leader>qo <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>
+  map <leader>v <Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>
+  nmap <leader>= <Cmd>Telescope spell_suggest<CR>
+  nmap <leader>D <Cmd>call delete(@%)<CR>
+  nmap <leader>F <Cmd>lua require("telescope.builtin").grep_string()<CR>
+  nmap <leader>L <Cmd>lua require("lsp").disable_lsp()<CR>
   nmap <leader>N :cprevious<CR>:copen<CR>zt:wincmd p<CR>zz
-  nmap <leader>S :call SearchNormal()<CR>
-  nmap <leader>T :NvimTreeFindFileToggle<CR>
-  nmap <leader>fC :Telescope colorscheme<CR>
-  nmap <leader>fb :Telescope buffers<CR>
-  nmap <leader>ff :Telescope find_files<CR>
-  nmap <leader>fg :Telescope live_grep<CR>
-  nmap <leader>fm :Telescope marks<CR>
-  nmap <leader>fr :Telescope oldfiles<CR>
-  nmap <leader>ft :Telescope tags<CR>
-  nmap <leader>gd :lua vim.lsp.buf.definition()<CR>
-  nmap <leader>gq :call QuoteNormal()<CR>
-  nmap <leader>l :lua require("lsp").enable_lsp()<CR>
+  nmap <leader>S <Cmd>call SearchNormal()<CR>
+  nmap <leader>T <Cmd>NvimTreeFindFileToggle<CR>
+  nmap <leader>fC <Cmd>Telescope colorscheme<CR>
+  nmap <leader>fb <Cmd>Telescope buffers<CR>
+  nmap <leader>ff <Cmd>Telescope find_files<CR>
+  nmap <leader>fg <Cmd>Telescope live_grep<CR>
+  nmap <leader>fm <Cmd>Telescope marks<CR>
+  nmap <leader>fr <Cmd>Telescope oldfiles<CR>
+  nmap <leader>ft <Cmd>Telescope tags<CR>
+  nmap <leader>gd <Cmd>lua vim.lsp.buf.definition()<CR>
+  nmap <leader>gq <Cmd>call QuoteNormal()<CR>
+  nmap <leader>l <Cmd>lua require("lsp").enable_lsp()<CR>
   nmap <leader>n :cnext<CR>:copen<CR>zt:wincmd p<CR>zz
-  nmap <leader>qA :call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
-  nmap <leader>qX :call ResetQuickfixList()<CR>
-  nmap <leader>qa :call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
-  nmap <leader>qx :call CreateQuickfixListByPrompt()<CR>
+  nmap <leader>qA <Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>
+  nmap <leader>qX <Cmd>call ResetQuickfixList()<CR>
+  nmap <leader>qa <Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>
+  nmap <leader>qx <Cmd>call CreateQuickfixListByPrompt()<CR>
   nmap <leader>r vip:!column -to ' '<CR>
-  nmap <leader>s :%s/\s\+$//gc<CR>
-  nmap <leader>t :NvimTreeToggle<CR>
+  nmap <leader>s <Cmd>%s/\s\+$//gc<CR>
+  nmap <leader>t <Cmd>NvimTreeToggle<CR>
   vmap <C-j> :move '>+1<CR>gv
   vmap <C-k> :move '<-2<CR>gv
   vmap <leader>F :lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>
