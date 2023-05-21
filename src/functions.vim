@@ -1,1 +1,0 @@
-runtime! src/functions/**/*.vim

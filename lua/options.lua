@@ -1,5 +1,8 @@
 local function set_default_options()
+  local cmd = vim.cmd
   local opt = vim.opt
+
+  cmd.filetype "on"
 
   opt.autoindent = true
   opt.completeopt = "menu"
@@ -99,7 +102,64 @@ local function set_default_bindings(options)
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
 end
 
+local function set_default_autocommands()
+  local autocmd = vim.api.nvim_create_autocmd
+
+  autocmd(
+    "BufWritePost",
+    { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
+  )
+  autocmd(
+    "BufWritePost",
+    { pattern = "config.h", command = "silent !sudo make install" }
+  )
+  autocmd(
+    "BufWritePost",
+    { pattern = "plugins.lua", command = "source % | PackerCompile" }
+  )
+
+  local function enable_lsp(pattern)
+    autocmd(
+      "BufEnter",
+      { pattern = pattern, callback = require("lsp").lsp_callback }
+    )
+  end
+
+  enable_lsp "*.hs"
+  enable_lsp "*.lua"
+  enable_lsp "*.nix"
+  enable_lsp "*.purs"
+  enable_lsp "*.py"
+  enable_lsp "*.tf"
+  enable_lsp "*.vim"
+  enable_lsp "*Dockerfile"
+  enable_lsp "site.yaml"
+end
+
+local function enable_templates()
+  local autocmd = vim.api.nvim_create_autocmd
+  local fn = vim.fn
+
+  local templates_dir = fn.stdpath "config" .. "/etc/templates/"
+
+  local function enable_template(extension)
+    local template_path = templates_dir .. "template." .. extension
+    autocmd("BufNewFile", {
+      pattern = "*." .. extension,
+      command = "0r " .. template_path .. " | normal Gdd",
+    })
+  end
+
+  enable_template "cpp"
+  enable_template "hs"
+  enable_template "java"
+  enable_template "md"
+  enable_template "scala"
+end
+
 return {
+  enable_templates = enable_templates,
+  set_default_autocommands = set_default_autocommands,
   set_default_bindings = set_default_bindings,
   set_default_options = set_default_options,
 }
