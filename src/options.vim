@@ -17,8 +17,6 @@ autocmd BufEnter *.vim lua require("lsp").lsp_callback()
 autocmd BufEnter *Dockerfile lua require("lsp").lsp_callback()
 autocmd BufEnter site.yaml lua require("lsp").lsp_callback()
 
-call SetDefaultOptions()
-
 function s:AddTemplateByExtension(extension)
   let templates_dir = stdpath("config") .. "/etc/templates/"
   call s:AddTemplate("*." .. a:extension, templates_dir .. "template." .. a:extension)
