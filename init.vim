@@ -10,4 +10,3 @@ lua << EOF
 EOF
 
 runtime! src/functions/**/*.vim
-runtime! src/options/**/*.vim
