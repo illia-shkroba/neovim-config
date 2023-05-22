@@ -13,7 +13,7 @@ opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
 set("", [[<leader><CR>]], [[<Cmd>w !python<CR>]], { buffer = true })
-set("", [[gh]], [[<Cmd>up \| !black % && isort %<CR>]], { buffer = true })
+set("", [[gh]], [[<Cmd>up | !black % && isort %<CR>]], { buffer = true })
 set("n", [[<leader><Tab>]], [[<Cmd>up<CR>:new<CR>:terminal ipython -i #<CR>]], { buffer = true })
 
 function vim.b.lsp_start()

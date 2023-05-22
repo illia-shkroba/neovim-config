@@ -61,7 +61,7 @@ local function set_default_bindings(options)
   set("n", [[<leader>n]], [[:cnext<CR>:copen<CR>zt:wincmd p<CR>zz]], { silent = true})
   set("n", [[<leader>qA]], [[<Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>]])
   set("n", [[<leader>qX]], [[<Cmd>call ResetQuickfixList()<CR>]])
-  set("n", [[<leader>qa]], [[<Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) \| clast<CR>]])
+  set("n", [[<leader>qa]], [[<Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) | clast<CR>]])
   set("n", [[<leader>qx]], [[<Cmd>call CreateQuickfixListByPrompt()<CR>]])
 
   -- tmux
