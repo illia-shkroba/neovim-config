@@ -13,7 +13,6 @@ return require("packer").startup(function(use)
     branch = "main",
     config = function()
       local tokyonight = require("utils").require_safe "tokyonight"
-
       if tokyonight then
         tokyonight.setup {
           style = "moon",

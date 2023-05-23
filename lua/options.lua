@@ -39,8 +39,6 @@ local function set_default_bindings(options)
     g.mapleader = " "
   end
 
-  local telescope = require "telescope.builtin"
-
   -- cwd
   set("", [[<leader>dd]], [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]])
   set("", [[<leader>dl]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]])
@@ -70,20 +68,23 @@ local function set_default_bindings(options)
   set("", [[<leader>v]], [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]])
 
   -- telescope
-  set("n", [[<leader>=]], telescope.spell_suggest)
-  set("n", [[<leader>F]], telescope.grep_string)
-  set("n", [[<leader>fC]], telescope.colorscheme)
-  set("n", [[<leader>fb]], telescope.buffers)
-  set("n", [[<leader>ff]], telescope.find_files)
-  set("n", [[<leader>fg]], telescope.live_grep)
-  set("n", [[<leader>fm]], telescope.marks)
-  set("n", [[<leader>fr]], telescope.oldfiles)
-  set("n", [[<leader>ft]], telescope.tags)
-  set("", [[<leader>fc]], telescope.lsp_references)
-  set("", [[<leader>fd]], telescope.lsp_definitions)
-  set("", [[<leader>fi]], telescope.lsp_incoming_calls)
-  set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
-  set("v", [[<leader>F]], [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]])
+  local telescope = require("utils").require_safe "telescope.builtin"
+  if telescope then
+    set("n", [[<leader>=]], telescope.spell_suggest)
+    set("n", [[<leader>F]], telescope.grep_string)
+    set("n", [[<leader>fC]], telescope.colorscheme)
+    set("n", [[<leader>fb]], telescope.buffers)
+    set("n", [[<leader>ff]], telescope.find_files)
+    set("n", [[<leader>fg]], telescope.live_grep)
+    set("n", [[<leader>fm]], telescope.marks)
+    set("n", [[<leader>fr]], telescope.oldfiles)
+    set("n", [[<leader>ft]], telescope.tags)
+    set("", [[<leader>fc]], telescope.lsp_references)
+    set("", [[<leader>fd]], telescope.lsp_definitions)
+    set("", [[<leader>fi]], telescope.lsp_incoming_calls)
+    set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
+    set("v", [[<leader>F]], [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]])
+  end
 
   -- nvim-tree
   set("n", [[<leader>T]], [[<Cmd>NvimTreeFindFileToggle<CR>]])
