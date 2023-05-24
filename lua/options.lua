@@ -70,6 +70,10 @@ local function set_default_bindings(options)
   -- telescope
   local telescope = require("utils").require_safe "telescope.builtin"
   if telescope then
+    set("", [[<leader>fc]], telescope.lsp_references)
+    set("", [[<leader>fd]], telescope.lsp_definitions)
+    set("", [[<leader>fi]], telescope.lsp_incoming_calls)
+    set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
     set("n", [[<leader>=]], telescope.spell_suggest)
     set("n", [[<leader>F]], telescope.grep_string)
     set("n", [[<leader>fC]], telescope.colorscheme)
@@ -77,12 +81,9 @@ local function set_default_bindings(options)
     set("n", [[<leader>ff]], telescope.find_files)
     set("n", [[<leader>fg]], telescope.live_grep)
     set("n", [[<leader>fm]], telescope.marks)
+    set("n", [[<leader>fq]], telescope.quickfixhistory)
     set("n", [[<leader>fr]], telescope.oldfiles)
     set("n", [[<leader>ft]], telescope.tags)
-    set("", [[<leader>fc]], telescope.lsp_references)
-    set("", [[<leader>fd]], telescope.lsp_definitions)
-    set("", [[<leader>fi]], telescope.lsp_incoming_calls)
-    set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
     set("v", [[<leader>F]], [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]])
   end
 
