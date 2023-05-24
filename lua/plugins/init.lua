@@ -49,10 +49,14 @@ return require("packer").startup(function(use)
             ["<C-u>"] = actions.results_scrolling_up,
             ["d"] = actions.preview_scrolling_down,
             ["u"] = actions.preview_scrolling_up,
+            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
           },
           i = {
             ["<C-d>"] = actions.results_scrolling_down,
             ["<C-u>"] = actions.results_scrolling_up,
+            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
           },
         },
       }
