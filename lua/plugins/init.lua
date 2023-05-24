@@ -36,22 +36,27 @@ return require("packer").startup(function(use)
     "nvim-telescope/telescope.nvim",
     requires = { "nvim-lua/plenary.nvim" },
     config = function()
+      local actions = require("utils").require_safe "telescope.actions"
+      if not actions then
+        return
+      end
+
       local mappings = {
         mappings = {
           n = {
-            ["<C-c>"] = "close",
-            ["<C-d>"] = "results_scrolling_down",
-            ["<C-u>"] = "results_scrolling_up",
-            ["d"] = "preview_scrolling_down",
-            ["u"] = "preview_scrolling_up",
+            ["<C-c>"] = actions.close,
+            ["<C-d>"] = actions.results_scrolling_down,
+            ["<C-u>"] = actions.results_scrolling_up,
+            ["d"] = actions.preview_scrolling_down,
+            ["u"] = actions.preview_scrolling_up,
           },
           i = {
-            ["<C-d>"] = "results_scrolling_down",
-            ["<C-u>"] = "results_scrolling_up",
+            ["<C-d>"] = actions.results_scrolling_down,
+            ["<C-u>"] = actions.results_scrolling_up,
           },
         },
       }
-      require "plugins.setup" "telescope" {
+      require("telescope").setup {
         pickers = {
           buffers = mappings,
           colorscheme = mappings,
