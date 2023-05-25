@@ -1,4 +1,6 @@
-local function create_packer_bootstrap()
+local M = {}
+
+function M.create_packer_bootstrap()
   local path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 
   local is_installed = string.len(vim.fn.glob(path)) > 0
@@ -21,6 +23,4 @@ local function create_packer_bootstrap()
   return require("packer").sync
 end
 
-return {
-  create_packer_bootstrap = create_packer_bootstrap,
-}
+return M

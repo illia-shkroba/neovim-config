@@ -1,4 +1,6 @@
-local function set_default_options()
+local M = {}
+
+function M.set_default_options()
   local cmd = vim.cmd
   local opt = vim.opt
 
@@ -28,7 +30,7 @@ local function set_default_options()
   opt.wildmenu = true
 end
 
-local function set_default_bindings(options)
+function M.set_default_bindings(options)
   local g = vim.g
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
@@ -104,7 +106,7 @@ local function set_default_bindings(options)
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
 end
 
-local function set_default_autocommands()
+function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
 
   autocmd(
@@ -138,7 +140,7 @@ local function set_default_autocommands()
   enable_lsp "site.yaml"
 end
 
-local function enable_templates()
+function M.enable_templates()
   local autocmd = vim.api.nvim_create_autocmd
   local fn = vim.fn
 
@@ -159,9 +161,4 @@ local function enable_templates()
   enable_template "scala"
 end
 
-return {
-  enable_templates = enable_templates,
-  set_default_autocommands = set_default_autocommands,
-  set_default_bindings = set_default_bindings,
-  set_default_options = set_default_options,
-}
+return M
