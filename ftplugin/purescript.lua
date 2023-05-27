@@ -3,7 +3,10 @@ if vim.b.did_purescript_ftplugin then
 end
 vim.b.did_purescript_ftplugin = true
 
+local api = vim.api
 local fn = vim.fn
+local fs = vim.fs
+local loop = vim.loop
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
@@ -30,11 +33,13 @@ function vim.b.lsp_start()
   vim.lsp.start {
     name = "purescript-lsp",
     cmd = { "purescript-language-server", "--stdio" },
-    root_dir = vim.fs.dirname(
-      vim.fs.find(
-        { "spago.dhall", "packages.dhall", "package.json" },
-        { upward = true }
-      )[1]
+    root_dir = fs.dirname(
+      fs.find({ "spago.dhall", "packages.dhall", "package.json" }, {
+        path = api.nvim_buf_get_name(0),
+        upward = true,
+        stop = loop.os_homedir(),
+        type = "file",
+      })[1]
     ),
   }
 end

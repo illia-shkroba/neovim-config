@@ -3,7 +3,10 @@ if vim.b.did_haskell_ftplugin then
 end
 vim.b.did_haskell_ftplugin = true
 
+local api = vim.api
 local fn = vim.fn
+local fs = vim.fs
+local loop = vim.loop
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
@@ -35,11 +38,13 @@ function vim.b.lsp_start()
   vim.lsp.start {
     name = "haskell-lsp",
     cmd = { "haskell-language-server-wrapper", "lsp" },
-    root_dir = vim.fs.dirname(
-      vim.fs.find(
-        { "package.yaml", "stack.yaml", "Setup.hs" },
-        { upward = true }
-      )[1]
+    root_dir = fs.dirname(
+      fs.find({ "package.yaml", "stack.yaml", "Setup.hs" }, {
+        path = api.nvim_buf_get_name(0),
+        upward = true,
+        stop = loop.os_homedir(),
+        type = "file",
+      })[1]
     ),
   }
 end
