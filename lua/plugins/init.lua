@@ -76,6 +76,7 @@ return require("packer").startup(function(use)
           find_files = {
             mappings = union(find_files_mappings, global_mappings),
           },
+          grep_string = { mappings = global_mappings },
           live_grep = { mappings = global_mappings },
           marks = { mappings = global_mappings },
           oldfiles = { mappings = global_mappings },
