@@ -3,6 +3,9 @@ if vim.b.did_python_ftplugin then
 end
 vim.b.did_python_ftplugin = true
 
+local api = vim.api
+local fs = vim.fs
+local loop = vim.loop
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
@@ -21,10 +24,18 @@ function vim.b.lsp_start()
     name = "python-lsp",
     cmd = { "pylsp" },
     cmd_env = {
-      VIRTUAL_ENV = os.getenv "XDG_DATA_HOME" .. "/nvim/lsp_servers/pylsp/venv",
+      VIRTUAL_ENV = fs.find({ "venv" }, {
+        path = api.nvim_buf_get_name(0),
+        upward = true,
+        stop = loop.os_homedir(),
+        type = "directory",
+      })[1],
     },
-    root_dir = vim.fs.dirname(
-      vim.fs.find({ "setup.py", "pyproject.toml" }, { upward = true })[1]
-    ),
+    root_dir = fs.find({ "setup.py", "pyproject.toml" }, {
+      path = api.nvim_buf_get_name(0),
+      upward = true,
+      stop = loop.os_homedir(),
+      type = "file",
+    })[1],
   }
 end
