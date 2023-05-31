@@ -7,6 +7,18 @@ local packer_bootstrap = require("plugins.bootstrap").create_packer_bootstrap()
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
+  use {
+    "AckslD/nvim-neoclip.lua",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require "plugins.setup" "neoclip"()
+
+      local telescope = require("utils").require_safe "telescope"
+      if telescope then
+        telescope.load_extension "neoclip"
+      end
+    end,
+  }
   use { "LnL7/vim-nix", ft = { "nix" } }
   use {
     "folke/tokyonight.nvim",

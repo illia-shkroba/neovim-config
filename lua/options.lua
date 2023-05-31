@@ -31,6 +31,7 @@ function M.set_default_options()
 end
 
 function M.set_default_bindings(options)
+  local cmd = vim.cmd
   local g = vim.g
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
@@ -79,6 +80,7 @@ function M.set_default_bindings(options)
     set("", [[<leader>fd]], telescope.lsp_definitions)
     set("", [[<leader>fi]], telescope.lsp_incoming_calls)
     set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
+    set("n", [[<leader>+]], function() cmd.Telescope("neoclip") end)
     set("n", [[<leader>=]], telescope.spell_suggest)
     set("n", [[<leader>F]], telescope.grep_string)
     set("n", [[<leader>fC]], telescope.colorscheme)
