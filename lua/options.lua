@@ -42,9 +42,12 @@ function M.set_default_bindings(options)
   end
 
   -- cwd
-  set("", [[<leader>dd]], [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]])
-  set("", [[<leader>dl]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]])
-  set("", [[<leader>dt]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]])
+  set("", [[<leader>dD]], [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]])
+  set("", [[<leader>dL]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]])
+  set("", [[<leader>dT]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]])
+  set("", [[<leader>dd]], [[<Cmd>execute "cd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
+  set("", [[<leader>dl]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
+  set("", [[<leader>dt]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
 
   -- lsp
   set("", [[<leader>.]], lsp.code_action)
