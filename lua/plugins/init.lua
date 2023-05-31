@@ -49,6 +49,8 @@ return require("packer").startup(function(use)
           ["<C-c>"] = actions.close,
           ["<C-d>"] = actions.results_scrolling_down,
           ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+          ["<C-j>"] = "cycle_history_next",
+          ["<C-k>"] = "cycle_history_prev",
           ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           ["<C-u>"] = actions.results_scrolling_up,
           ["d"] = actions.preview_scrolling_down,
@@ -57,6 +59,8 @@ return require("packer").startup(function(use)
         i = {
           ["<C-d>"] = actions.results_scrolling_down,
           ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+          ["<C-j>"] = "cycle_history_next",
+          ["<C-k>"] = "cycle_history_prev",
           ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           ["<C-u>"] = actions.results_scrolling_up,
         },
@@ -70,6 +74,12 @@ return require("packer").startup(function(use)
         },
       }
       require("telescope").setup {
+        defaults = {
+          history = {
+            path = vim.fn.stdpath "data" .. "/telescope_history",
+            limit = 1000,
+          },
+        },
         pickers = {
           buffers = { mappings = global_mappings },
           colorscheme = { mappings = global_mappings },
