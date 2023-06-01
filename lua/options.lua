@@ -43,6 +43,9 @@ function M.set_default_bindings(options)
   end
 
   -- cwd
+  set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]])
+  set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]])
+  set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]])
   set("", [[<leader>dD]], [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]])
   set("", [[<leader>dL]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]])
   set("", [[<leader>dT]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]])
@@ -76,15 +79,15 @@ function M.set_default_bindings(options)
   -- telescope
   local telescope = require("utils").require_safe "telescope.builtin"
   if telescope then
+    set("", [[<leader>=]], telescope.spell_suggest)
     set("", [[<leader>fc]], telescope.lsp_references)
-    set("", [[<leader>fd]], telescope.lsp_definitions)
     set("", [[<leader>fi]], telescope.lsp_incoming_calls)
     set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
     set("n", [[<leader>+]], function() cmd.Telescope("neoclip") end)
-    set("n", [[<leader>=]], telescope.spell_suggest)
     set("n", [[<leader>F]], telescope.grep_string)
     set("n", [[<leader>fC]], telescope.colorscheme)
     set("n", [[<leader>fb]], telescope.buffers)
+    set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
     set("n", [[<leader>fg]], telescope.live_grep)
     set("n", [[<leader>fm]], telescope.marks)
@@ -98,9 +101,12 @@ function M.set_default_bindings(options)
   set("n", [[<leader>T]], [[<Cmd>NvimTreeFindFileToggle<CR>]])
   set("n", [[<leader>t]], [[<Cmd>NvimTreeToggle<CR>]])
 
+  -- yield
+  set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
+
   -- other
-  set("n", [[<leader>D]], [[<Cmd>call delete(@%)<CR>]])
   set("n", [[<leader>S]], [[<Cmd>call SearchNormal()<CR>]])
+  set("n", [[<leader>X]], [[<Cmd>call delete(@%)<CR>]])
   set("n", [[<leader>gq]], [[<Cmd>call QuoteNormal()<CR>]])
   set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
   set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
