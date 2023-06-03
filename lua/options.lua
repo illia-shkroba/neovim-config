@@ -46,12 +46,36 @@ function M.set_default_bindings(options)
   set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]])
   set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]])
   set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]])
-  set("", [[<leader>dD]], [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]])
-  set("", [[<leader>dL]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]])
-  set("", [[<leader>dT]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]])
-  set("", [[<leader>dd]], [[<Cmd>execute "cd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
-  set("", [[<leader>dl]], [[<Cmd>execute "lcd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
-  set("", [[<leader>dt]], [[<Cmd>execute "tcd " .. system("dirname " .. @%)->split("/")[0]<CR>]])
+  set(
+    "",
+    [[<leader>dD]],
+    [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]]
+  )
+  set(
+    "",
+    [[<leader>dL]],
+    [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]]
+  )
+  set(
+    "",
+    [[<leader>dT]],
+    [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]]
+  )
+  set(
+    "",
+    [[<leader>dd]],
+    [[<Cmd>execute "cd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
+  )
+  set(
+    "",
+    [[<leader>dl]],
+    [[<Cmd>execute "lcd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
+  )
+  set(
+    "",
+    [[<leader>dt]],
+    [[<Cmd>execute "tcd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
+  )
 
   -- lsp
   set("", [[<leader>.]], lsp.code_action)
@@ -64,17 +88,47 @@ function M.set_default_bindings(options)
   set("n", [[<leader>l]], require("lsp").enable_lsp)
 
   -- quickfix
-  set("n", [[<leader>N]], [[:cprevious<CR>:copen<CR>zt:wincmd p<CR>zz]], { silent = true })
-  set("n", [[<leader>n]], [[:cnext<CR>:copen<CR>zt:wincmd p<CR>zz]], { silent = true})
-  set("n", [[<leader>qA]], [[<Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>]])
+  set(
+    "n",
+    [[<leader>N]],
+    [[:cprevious<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    { silent = true }
+  )
+  set(
+    "n",
+    [[<leader>n]],
+    [[:cnext<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    { silent = true }
+  )
+  set(
+    "n",
+    [[<leader>qA]],
+    [[<Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>]]
+  )
   set("n", [[<leader>qX]], [[<Cmd>call ResetQuickfixList()<CR>]])
-  set("n", [[<leader>qa]], [[<Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) | clast<CR>]])
+  set(
+    "n",
+    [[<leader>qa]],
+    [[<Cmd>call AddQuickfixListItem(CreateCurrentPositionItem()) | clast<CR>]]
+  )
   set("n", [[<leader>qx]], [[<Cmd>call CreateQuickfixListByPrompt()<CR>]])
 
   -- tmux
-  set("", [[<leader>"]], [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]])
-  set("", [[<leader>%]], [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]])
-  set("", [[<leader>v]], [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]])
+  set(
+    "",
+    [[<leader>"]],
+    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]]
+  )
+  set(
+    "",
+    [[<leader>%]],
+    [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]]
+  )
+  set(
+    "",
+    [[<leader>v]],
+    [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]]
+  )
 
   -- telescope
   local telescope = require("utils").require_safe "telescope.builtin"
@@ -83,10 +137,19 @@ function M.set_default_bindings(options)
     set("", [[<leader>fc]], telescope.lsp_references)
     set("", [[<leader>fi]], telescope.lsp_incoming_calls)
     set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
-    set("n", [[<leader>+]], function() cmd.Telescope("neoclip") end)
-    set("n", [[<leader>F]], function() telescope.grep_string { word_match = "-w" } end)
+    set("n", [[<leader>+]], function()
+      cmd.Telescope "neoclip"
+    end)
+    set("n", [[<leader>F]], function()
+      telescope.grep_string { word_match = "-w" }
+    end)
     set("n", [[<leader>fC]], telescope.colorscheme)
-    set("n", [[<leader>fG]], [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*" } }]] .. string.rep("<Left>", 5))
+    set(
+      "n",
+      [[<leader>fG]],
+      [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*" } }]]
+        .. string.rep("<Left>", 5)
+    )
     set("n", [[<leader>fb]], telescope.buffers)
     set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
@@ -96,7 +159,11 @@ function M.set_default_bindings(options)
     set("n", [[<leader>fr]], telescope.oldfiles)
     set("n", [[<leader>fs]], telescope.resume)
     set("n", [[<leader>ft]], telescope.tags)
-    set("v", [[<leader>F]], [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]])
+    set(
+      "v",
+      [[<leader>F]],
+      [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]]
+    )
   end
 
   -- nvim-tree
