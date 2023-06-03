@@ -5,20 +5,16 @@ local builtin = require "telescope.builtin"
 
 M.is_hidden_in_find_files = false
 function M.toggle_hidden_in_find_files(buffer_number)
-  local find_files
-  if M.is_hidden_in_find_files then
-    find_files = builtin.find_files
-  else
-    find_files = function()
-      return builtin.find_files {
-        hidden = true,
-        no_ignore = true,
-        no_ignore_parent = true,
-      }
-    end
-  end
-
   M.is_hidden_in_find_files = not M.is_hidden_in_find_files
+
+  local is_hidden = M.is_hidden_in_find_files or nil
+  local find_files = function()
+    return builtin.find_files {
+      hidden = is_hidden,
+      no_ignore = is_hidden,
+      no_ignore_parent = is_hidden,
+    }
+  end
 
   M.with_line(find_files)(buffer_number)
 end
