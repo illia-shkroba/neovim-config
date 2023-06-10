@@ -31,7 +31,10 @@ function M.set_default_options()
 end
 
 function M.set_default_bindings(options)
+  local api = vim.api
   local cmd = vim.cmd
+  local fn = vim.fn
+  local fs = vim.fs
   local g = vim.g
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
@@ -43,6 +46,16 @@ function M.set_default_bindings(options)
   end
 
   -- cwd
+  local function step_into_buffer_dir()
+    local src_dir, dest_dir = fn.getcwd(), api.nvim_buf_get_name(0)
+    local step = require("path").step_into(src_dir, dest_dir)
+    if fn.isdirectory(step) == 1 then
+      return step
+    else
+      return fs.dirname(step)
+    end
+  end
+
   set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]])
   set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]])
   set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]])
@@ -61,21 +74,15 @@ function M.set_default_bindings(options)
     [[<leader>dT]],
     [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]]
   )
-  set(
-    "",
-    [[<leader>dd]],
-    [[<Cmd>execute "cd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
-  )
-  set(
-    "",
-    [[<leader>dl]],
-    [[<Cmd>execute "lcd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
-  )
-  set(
-    "",
-    [[<leader>dt]],
-    [[<Cmd>execute "tcd " .. system("dirname " .. @%)->split("/")[0]<CR>]]
-  )
+  set("", [[<leader>dd]], function()
+    cmd.cd(step_into_buffer_dir())
+  end)
+  set("", [[<leader>dl]], function()
+    cmd.lcd(step_into_buffer_dir())
+  end)
+  set("", [[<leader>dt]], function()
+    cmd.tcd(step_into_buffer_dir())
+  end)
 
   -- lsp
   set("", [[<leader>.]], lsp.code_action)
