@@ -110,7 +110,7 @@ function M.set_default_bindings(options)
   set(
     "n",
     [[<leader>qA]],
-    [[<Cmd>call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>]]
+    [[<Cmd>echo "Removed quickfix item: " .. GetCurrentQuickfixListItem().text->trim() | call RemoveQuickfixListItem(GetCurrentQuickfixListItem())<CR>]]
   )
   set("n", [[<leader>qX]], [[<Cmd>call ResetQuickfixList()<CR>]])
   set(
@@ -215,7 +215,11 @@ function M.set_default_bindings(options)
 
   -- other
   set("n", [[<leader>S]], [[<Cmd>call SearchNormal()<CR>]])
-  set("n", [[<leader>X]], [[<Cmd>call delete(@%)<CR>]])
+  set(
+    "n",
+    [[<leader>X]],
+    [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
+  )
   set("n", [[<leader>gq]], [[<Cmd>call QuoteNormal()<CR>]])
   set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
   set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
