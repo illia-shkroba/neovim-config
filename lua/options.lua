@@ -174,8 +174,41 @@ function M.set_default_bindings(options)
   end
 
   -- nvim-tree
-  set("n", [[<leader>T]], [[<Cmd>NvimTreeFindFileToggle<CR>]])
-  set("n", [[<leader>t]], [[<Cmd>NvimTreeToggle<CR>]])
+  local nvim_tree = require("utils").require_safe "nvim-tree.api"
+  if nvim_tree then
+    local nvim_tree_mode
+    set("n", [[<leader>T]], function()
+      if not nvim_tree.tree.is_visible() then
+        nvim_tree_mode = nil
+      end
+
+      if nvim_tree_mode == 2 then
+        nvim_tree.tree.close()
+      end
+
+      nvim_tree.tree.toggle {
+        path = fs.dirname(api.nvim_buf_get_name(0)),
+        find_file = true,
+        focus = true,
+      }
+      nvim_tree_mode = 1
+    end)
+    set("n", [[<leader>t]], function()
+      if not nvim_tree.tree.is_visible() then
+        nvim_tree_mode = nil
+      end
+
+      if nvim_tree_mode == 1 then
+        nvim_tree.tree.close()
+      end
+
+      nvim_tree.tree.toggle {
+        path = fn.getcwd(),
+        focus = true,
+      }
+      nvim_tree_mode = 2
+    end)
+  end
 
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
