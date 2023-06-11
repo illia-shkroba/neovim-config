@@ -4,6 +4,8 @@ end
 vim.b.did_python_ftplugin = true
 
 local api = vim.api
+local cmd = vim.cmd
+local fn = vim.fn
 local fs = vim.fs
 local loop = vim.loop
 local opt_local = vim.opt_local
@@ -15,21 +17,59 @@ opt_local.shiftwidth = 4
 opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
-set("", [[<leader><CR>]], [[<Cmd>w !python<CR>]], { buffer = true })
+local function find_virtual_environment()
+  return fs.find({ "env", "venv", ".env", ".venv" }, {
+    path = api.nvim_buf_get_name(0),
+    upward = true,
+    stop = loop.os_homedir(),
+    type = "directory",
+  })[1]
+end
+
 set("", [[gh]], [[<Cmd>up | !black % && isort %<CR>]], { buffer = true })
-set("n", [[<leader><Tab>]], [[<Cmd>up<CR>:new<CR>:terminal ipython -i #<CR>]], { buffer = true })
+set("n", [[<leader><CR>]], function()
+  local virtual_environment = find_virtual_environment()
+
+  local variables
+  if virtual_environment then
+    variables = "PATH='"
+      .. virtual_environment
+      .. "/bin:"
+      .. fn.getenv "PATH"
+      .. "' "
+  else
+    variables = ""
+  end
+
+  cmd.update()
+  cmd.new()
+
+  cmd.terminal(variables .. "sh -c 'python #'")
+  cmd.startinsert()
+end, { buffer = true })
+set("n", [[<leader><Tab>]], function()
+  local virtual_environment = find_virtual_environment()
+
+  local variables
+  if virtual_environment then
+    variables = "VIRTUAL_ENV='" .. virtual_environment .. "' "
+  else
+    variables = ""
+  end
+
+  cmd.update()
+  cmd.new()
+
+  cmd.terminal(variables .. "ipython --no-banner -i '#'")
+  cmd.startinsert()
+end, { buffer = true })
 
 function vim.b.lsp_start()
   vim.lsp.start {
     name = "python-lsp",
     cmd = { "pylsp" },
     cmd_env = {
-      VIRTUAL_ENV = fs.find({ "venv" }, {
-        path = api.nvim_buf_get_name(0),
-        upward = true,
-        stop = loop.os_homedir(),
-        type = "directory",
-      })[1],
+      VIRTUAL_ENV = find_virtual_environment(),
     },
     root_dir = fs.find({ "setup.py", "pyproject.toml" }, {
       path = api.nvim_buf_get_name(0),
