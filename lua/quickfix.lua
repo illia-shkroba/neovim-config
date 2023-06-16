@@ -68,4 +68,8 @@ function M.create_current_position_item()
   }
 end
 
+function M.get_title()
+  return fn.getqflist({ title = "" }).title
+end
+
 return M
