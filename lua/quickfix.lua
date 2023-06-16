@@ -6,19 +6,19 @@ local fn = vim.fn
 
 local utils = require "utils"
 
-function M.create_quickfix_list_by_prompt()
-  M.create_quickfix_list(fn.input "Enter quickfix list: ")
+function M.create_by_prompt()
+  M.create(fn.input "Enter quickfix list: ")
 end
 
-function M.create_quickfix_list(name)
+function M.create(name)
   fn.setqflist({}, " ", { nr = "$", title = name })
 end
 
-function M.reset_quickfix_list()
-  M.set_quickfix_list_items {}
+function M.reset()
+  M.set_items {}
 end
 
-function M.remove_quickfix_list_item(item)
+function M.remove_item(item)
   local items = utils.deepcopy(fn.getqflist())
 
   local filtered = {}
@@ -28,31 +28,31 @@ function M.remove_quickfix_list_item(item)
     end
   end
 
-  M.set_quickfix_list_items(filtered)
+  M.set_items(filtered)
 end
 
-function M.set_quickfix_list_items(items)
-  local quickfix_list = fn.getqflist { all = "" }
+function M.set_items(items)
+  local quickfix = fn.getqflist { all = "" }
 
-  local new_quickfix_list = M.clear_quickfix_list(quickfix_list)
-  new_quickfix_list["items"] = items
+  local new_quickfix = M.clear(quickfix)
+  new_quickfix["items"] = items
 
-  fn.setqflist({}, "r", new_quickfix_list)
+  fn.setqflist({}, "r", new_quickfix)
 end
 
-function M.clear_quickfix_list(quickfix_list)
-  local new_quickfix_list = {}
+function M.clear(quickfix)
+  local new_quickfix = {}
   for _, key in pairs { "quickfixtextfunc", "id", "nr", "winid", "title" } do
-    new_quickfix_list[key] = quickfix_list[key]
+    new_quickfix[key] = quickfix[key]
   end
-  return new_quickfix_list
+  return new_quickfix
 end
 
-function M.add_quickfix_list_item(item)
+function M.add_item(item)
   fn.setqflist({ item }, "a")
 end
 
-function M.get_current_quickfix_list_item()
+function M.get_current_item()
   local items = fn.getqflist()
   return items[fn.getqflist({ idx = 0 }).idx] or {}
 end

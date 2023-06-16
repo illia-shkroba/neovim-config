@@ -95,7 +95,7 @@ function M.set_default_bindings(options)
   set("n", [[<leader>l]], require("lsp").enable_lsp)
 
   -- quickfix
-  local quickfix = require "quickfix-list"
+  local quickfix = require "quickfix"
   set(
     "n",
     [[<leader>N]],
@@ -109,16 +109,16 @@ function M.set_default_bindings(options)
     { silent = true }
   )
   set("n", [[<leader>qA]], function()
-    local item = quickfix.get_current_quickfix_list_item()
-    quickfix.remove_quickfix_list_item(item)
+    local item = quickfix.get_current_item()
+    quickfix.remove_item(item)
     print("Removed quickfix item: " .. vim.trim(item.text))
   end)
-  set("n", [[<leader>qX]], quickfix.reset_quickfix_list)
+  set("n", [[<leader>qX]], quickfix.reset)
   set("n", [[<leader>qa]], function()
-    quickfix.add_quickfix_list_item(quickfix.create_current_position_item())
+    quickfix.add_item(quickfix.create_current_position_item())
     cmd.clast()
   end)
-  set("n", [[<leader>qx]], quickfix.create_quickfix_list_by_prompt)
+  set("n", [[<leader>qx]], quickfix.create_by_prompt)
 
   -- tmux
   set(
