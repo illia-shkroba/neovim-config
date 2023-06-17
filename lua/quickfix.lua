@@ -1,7 +1,6 @@
 local M = {}
 
 local api = vim.api
-local deep_equal = vim.deep_equal
 local fn = vim.fn
 
 local utils = require "utils"
@@ -23,13 +22,9 @@ end
 
 function M.remove_item(item)
   local items = utils.deepcopy(fn.getqflist())
-
-  local filtered = {}
-  for _, x in pairs(items) do
-    if not deep_equal(x, item) then
-      table.insert(filtered, x)
-    end
-  end
+  local filtered = vim.tbl_filter(function(x)
+    return not vim.deep_equal(x, item)
+  end, items)
 
   M.set_items(filtered)
 end

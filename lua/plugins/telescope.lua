@@ -1,5 +1,7 @@
 local M = {}
 
+local cmd = vim.cmd
+
 local action_state = require "telescope.actions.state"
 local builtin = require "telescope.builtin"
 
@@ -23,7 +25,7 @@ function M.with_line(f)
   local function g(buffer_number)
     local line = action_state.get_current_line(buffer_number)
     f()
-    vim.cmd.normal("i" .. line)
+    cmd.normal("i" .. line)
   end
   return g
 end

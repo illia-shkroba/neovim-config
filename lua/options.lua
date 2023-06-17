@@ -18,7 +18,7 @@ function M.set_default_options()
   opt.wrapscan = false
   opt.number = true
   opt.omnifunc = "syntaxcomplete#Complete"
-  opt.path = "**,./**"
+  opt.path = { "**", "./**" }
   opt.relativenumber = true
   opt.shiftwidth = 2
   opt.smartindent = true
