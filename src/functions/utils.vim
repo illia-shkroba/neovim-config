@@ -12,16 +12,3 @@ function GetVisualSelection()
 
   return join(lines, "\n")
 endfunction
-
-function ReadNumber()
-  let [lower, upper] = map(["0", "9"], {x -> char2nr(x)})
-
-  let acc = 0
-  let char = getchar()
-  while lower <= char && char <= upper
-    let acc = acc * 10 + char - lower
-    let char = getchar()
-  endwhile
-
-  return [acc, nr2char(char)]
-endfunction

@@ -1,5 +1,7 @@
 local M = {}
 
+local fn = vim.fn
+
 function M.require_safe(module_name)
   return M.try(require, module_name)
 end
@@ -96,6 +98,22 @@ function M.max(x, y)
   else
     return y
   end
+end
+
+function M.read_number()
+  local lower, upper = fn.char2nr "0", fn.char2nr "9"
+
+  local acc = 0
+  local char = fn.getchar()
+  while lower <= char and char <= upper do
+    acc = acc * 10 + char - lower
+    char = fn.getchar()
+  end
+
+  return {
+    number = acc,
+    rest = fn.nr2char(char),
+  }
 end
 
 return M

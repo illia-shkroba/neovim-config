@@ -115,7 +115,7 @@ function M.set_default_bindings(options)
     local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
     quickfix.remove_item(item)
-    utils.try(cmd, [[cc ]] .. tostring(index))
+    utils.try(cmd, [[cc ]] .. index)
     if item.text then
       print("Removed quickfix item: " .. vim.trim(item.text))
     end
@@ -230,6 +230,16 @@ function M.set_default_bindings(options)
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
 
+  -- quote
+  local quote = require "quote"
+  set("n", [[<leader>gq]], quote.normal)
+  set(
+    "v",
+    [[<leader>gq]],
+    [[:lua require("quote").visual()<CR>]],
+    { silent = true }
+  )
+
   -- other
   set("n", [[<leader>S]], [[<Cmd>call SearchNormal()<CR>]])
   set(
@@ -237,13 +247,11 @@ function M.set_default_bindings(options)
     [[<leader>X]],
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
-  set("n", [[<leader>gq]], [[<Cmd>call QuoteNormal()<CR>]])
   set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
   set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
   set("v", [[<leader>S]], [[:call SearchVisual()<CR>]])
-  set("v", [[<leader>gq]], [[:call QuoteVisual()<CR>]], { silent = true })
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
 end
 
