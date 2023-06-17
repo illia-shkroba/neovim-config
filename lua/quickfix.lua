@@ -7,7 +7,10 @@ local fn = vim.fn
 local utils = require "utils"
 
 function M.create_by_prompt()
-  M.create(fn.input "Enter quickfix list: ")
+  local name = utils.try(fn.input, "Enter quickfix list: ")
+  if name then
+    M.create(name)
+  end
 end
 
 function M.create(name)
@@ -54,7 +57,11 @@ end
 
 function M.get_current_item()
   local items = fn.getqflist()
-  return items[fn.getqflist({ idx = 0 }).idx] or {}
+  return items[M.get_current_item_index()] or {}
+end
+
+function M.get_current_item_index()
+  return fn.getqflist({ idx = 0 }).idx
 end
 
 function M.create_current_position_item()

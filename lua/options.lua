@@ -39,6 +39,8 @@ function M.set_default_bindings(options)
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
 
+  local utils = require "utils"
+
   if type(options) == "table" and type(options.leader_key) == "string" then
     g.mapleader = options.leader_key
   else
@@ -109,9 +111,13 @@ function M.set_default_bindings(options)
     { silent = true }
   )
   set("n", [[<leader>qA]], function()
+    local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
     quickfix.remove_item(item)
-    print("Removed quickfix item: " .. vim.trim(item.text))
+    utils.try(cmd, [[cc ]] .. tostring(index))
+    if item.text then
+      print("Removed quickfix item: " .. vim.trim(item.text))
+    end
   end)
   set("n", [[<leader>qX]], function()
     quickfix.reset()
@@ -141,7 +147,7 @@ function M.set_default_bindings(options)
   )
 
   -- telescope
-  local telescope = require("utils").require_safe "telescope.builtin"
+  local telescope = utils.require_safe "telescope.builtin"
   if telescope then
     set("", [[<leader>=]], telescope.spell_suggest)
     set("", [[<leader>fc]], telescope.lsp_references)
@@ -177,7 +183,7 @@ function M.set_default_bindings(options)
   end
 
   -- nvim-tree
-  local nvim_tree = require("utils").require_safe "nvim-tree.api"
+  local nvim_tree = utils.require_safe "nvim-tree.api"
   if nvim_tree then
     local nvim_tree_mode
     set("n", [[<leader>T]], function()
