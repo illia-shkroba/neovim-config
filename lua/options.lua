@@ -93,9 +93,9 @@ function M.set_default_bindings(options)
   set("", [[<leader>qc]], lsp.references)
   set("", [[<leader>qi]], lsp.incoming_calls)
   set("", [[<leader>qo]], lsp.outgoing_calls)
-  set("n", [[<leader>L]], require("lsp").disable_lsp)
+  set("n", [[<leader>L]], require("lsp").disable)
   set("n", [[<leader>gd]], lsp.definition)
-  set("n", [[<leader>l]], require("lsp").enable_lsp)
+  set("n", [[<leader>l]], require("lsp").enable)
 
   -- quickfix
   local quickfix = require "quickfix"
@@ -274,7 +274,7 @@ function M.set_default_autocommands()
   local function enable_lsp(pattern)
     autocmd(
       "BufEnter",
-      { pattern = pattern, callback = require("lsp").lsp_callback }
+      { pattern = pattern, callback = require("lsp").callback }
     )
   end
 
