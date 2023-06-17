@@ -39,6 +39,7 @@ function M.set_default_bindings(options)
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
 
+  local path = require "path"
   local utils = require "utils"
 
   if type(options) == "table" and type(options.leader_key) == "string" then
@@ -50,7 +51,7 @@ function M.set_default_bindings(options)
   -- cwd
   local function step_into_buffer_dir()
     local src_dir, dest_dir = fn.getcwd(), api.nvim_buf_get_name(0)
-    local step = require("path").step_into(src_dir, dest_dir)
+    local step = path.step_into(src_dir, dest_dir)
     if fn.isdirectory(step) == 1 then
       return step
     else
@@ -160,12 +161,19 @@ function M.set_default_bindings(options)
       telescope.grep_string { word_match = "-w" }
     end)
     set("n", [[<leader>fC]], telescope.colorscheme)
-    set(
-      "n",
-      [[<leader>fG]],
-      [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*" } }]]
-        .. string.rep("<Left>", 5)
-    )
+    set("n", [[<leader>fG]], function()
+      local extension = path.extension(api.nvim_buf_get_name(0))
+      if extension then
+        extension = "." .. extension
+      else
+        extension = ""
+      end
+
+      local prefix, suffix =
+        [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*]],
+        [[" } }]]
+      return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
+    end, { expr = true })
     set("n", [[<leader>fb]], telescope.buffers)
     set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
