@@ -252,12 +252,13 @@ function M.set_default_bindings(options)
   )
 
   -- quote
-  local quote = require "quote"
-  set("n", [[<leader>gq]], quote.normal)
+  set("n", [[<leader>gq]], function()
+    utils.map_motion(utils.quote)
+  end)
   set(
     "v",
     [[<leader>gq]],
-    [[:lua require("quote").visual()<CR>]],
+    [[:lua require("utils").map_visual(require("utils").quote)<CR>]],
     { silent = true }
   )
 

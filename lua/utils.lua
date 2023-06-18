@@ -161,4 +161,9 @@ function M.get_visual_selection()
   return result
 end
 
+function M.quote(text)
+  local quote = fn.getcharstr()
+  return quote .. text .. quote
+end
+
 return M
