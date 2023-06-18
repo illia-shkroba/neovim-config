@@ -1,6 +1,10 @@
 local M = {}
 
+local api = vim.api
+local cmd = vim.cmd
 local fn = vim.fn
+
+local read = require "read"
 
 function M.require_safe(module_name)
   return M.try(require, module_name)
@@ -100,62 +104,61 @@ function M.max(x, y)
   end
 end
 
-function M.read_motion(options)
-  local allow_forced
-  if type(options) == "table" and type(options.allow_forced) == "boolean" then
-    allow_forced = options.allow_forced
-  else
-    allow_forced = true
-  end
+function M.map_motion(f)
+  local motion = read.read_motion { allow_forced = false }
 
-  local result = M.read_number()
-  local count, acc = result.number, result.rest
+  local mode = fn.visualmode()
+  local begin_position = fn.getpos "'<"
+  local end_position = fn.getpos "'>"
 
-  local last = acc
-  if allow_forced and vim.tbl_contains({ "v", "V", "" }, last) then
-    last = fn.getcharstr()
-    acc = acc .. last
-  end
+  cmd.normal("v" .. motion.count .. motion.motion .. "")
+  M.map_visual(f)
 
-  if
-    vim.tbl_contains({ "i", "a", "f", "F", "t", "T", "[", "]", "'", "`" }, last)
-  then
-    acc = acc .. fn.getcharstr()
-  elseif vim.tbl_contains({ "g" }, last) then
-    last = fn.getcharstr()
-    acc = acc .. last
-    if vim.tbl_contains({ "'", "`" }, last) then
-      acc = acc .. fn.getcharstr()
-    end
-  end
-
-  local string_count
-  if count == 0 then
-    string_count = ""
-  else
-    string_count = tostring(count)
-  end
-
-  return {
-    count = string_count,
-    motion = acc,
-  }
+  cmd.normal(mode .. "")
+  fn.setpos("'<", begin_position)
+  fn.setpos("'>", end_position)
 end
 
-function M.read_number()
-  local lower, upper = fn.char2nr "0", fn.char2nr "9"
+function M.map_visual(f)
+  local selection = M.get_visual_selection()
+  local register = fn.getreg '"'
 
-  local acc = 0
-  local char = fn.getchar()
-  while lower <= char and char <= upper do
-    acc = acc * 10 + char - lower
-    char = fn.getchar()
+  fn.setreg('"', f(selection.text))
+  cmd.normal "gvp"
+  if selection.mode == "v" and selection.ends_with_newline then
+    cmd.normal [[a]] -- add newline that was removed during selection
+    cmd.normal "gvo" -- go to initial cursor position
+  end
+  fn.setreg('"', register)
+end
+
+function M.get_visual_selection()
+  local begin_position = fn.getpos "'<"
+  local line_begin, column_begin = begin_position[2], begin_position[3]
+
+  local end_position = fn.getpos "'>"
+  local line_end, column_end = end_position[2], end_position[3]
+
+  local lines = fn.getline(line_begin, line_end)
+
+  local result = {
+    text = "",
+    ends_with_newline = false,
+    mode = fn.visualmode(),
+  }
+
+  if #lines == 0 then
+    return result
   end
 
-  return {
-    number = acc,
-    rest = fn.nr2char(char),
-  }
+  result.ends_with_newline = column_end > #lines[#lines]
+    and line_end < api.nvim_buf_line_count(0)
+
+  lines[#lines] = lines[#lines]:sub(1, column_end)
+  lines[1] = lines[1]:sub(column_begin)
+
+  result.text = table.concat(lines, "\n")
+  return result
 end
 
 return M

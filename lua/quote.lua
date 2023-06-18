@@ -3,11 +3,11 @@ local M = {}
 local cmd = vim.cmd
 local fn = vim.fn
 
-local utils = require "utils"
+local read = require "read"
 
 function M.normal()
   local quote = fn.getcharstr()
-  local motion = utils.read_motion { allow_forced = false }
+  local motion = read.read_motion { allow_forced = false }
 
   cmd.normal("v" .. motion.count .. motion.motion .. M.quote(quote))
 end

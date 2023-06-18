@@ -186,7 +186,7 @@ function M.set_default_bindings(options)
     set(
       "v",
       [[<leader>F]],
-      [[:lua require("telescope.builtin").grep_string { search = vim.fn.GetVisualSelection() }<CR>]]
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection() }<CR>]]
     )
   end
 
@@ -229,6 +229,27 @@ function M.set_default_bindings(options)
 
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
+
+  -- case
+  local case = require "case"
+  set("n", [[<leader>cF]], function()
+    utils.map_motion(case.to_camel)
+  end)
+  set("n", [[<leader>cf]], function()
+    utils.map_motion(case.to_snake)
+  end)
+  set(
+    "v",
+    [[<leader>cF]],
+    [[:lua require("utils").map_visual(require("case").to_camel)<CR>]],
+    { silent = true }
+  )
+  set(
+    "v",
+    [[<leader>cf]],
+    [[:lua require("utils").map_visual(require("case").to_snake)<CR>]],
+    { silent = true }
+  )
 
   -- quote
   local quote = require "quote"
