@@ -130,6 +130,17 @@ function M.set_default_bindings(options)
   end)
   set("n", [[<leader>qx]], quickfix.create_by_prompt)
 
+  -- location
+  local location = require "location"
+  set("n", [[<leader>S]], function()
+    location.search(utils.get_motion_selection())
+  end)
+  set(
+    "v",
+    [[<leader>S]],
+    [[:lua require("location").search(require("utils").get_visual_selection())<CR>]]
+  )
+
   -- tmux
   set(
     "",
@@ -263,7 +274,6 @@ function M.set_default_bindings(options)
   )
 
   -- other
-  set("n", [[<leader>S]], [[<Cmd>call SearchNormal()<CR>]])
   set(
     "n",
     [[<leader>X]],
@@ -273,7 +283,6 @@ function M.set_default_bindings(options)
   set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
-  set("v", [[<leader>S]], [[:call SearchVisual()<CR>]])
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
 end
 

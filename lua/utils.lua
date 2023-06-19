@@ -105,6 +105,18 @@ function M.max(x, y)
 end
 
 function M.map_motion(f)
+  M.with_motion(function()
+    M.map_visual(f)
+  end)
+end
+
+function M.get_motion_selection()
+  return M.with_motion(function()
+    return M.get_visual_selection().text
+  end)
+end
+
+function M.with_motion(f)
   local motion = read.read_motion { allow_forced = false }
 
   local mode = fn.visualmode()
@@ -112,11 +124,13 @@ function M.map_motion(f)
   local end_position = fn.getpos "'>"
 
   cmd.normal("v" .. motion.count .. motion.motion .. "")
-  M.map_visual(f)
+  local y = f()
 
   cmd.normal(mode .. "")
   fn.setpos("'<", begin_position)
   fn.setpos("'>", end_position)
+
+  return y
 end
 
 function M.map_visual(f)
