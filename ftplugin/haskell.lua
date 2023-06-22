@@ -10,6 +10,7 @@ local loop = vim.loop
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
+opt_local.equalprg = "hindent"
 opt_local.expandtab = true
 opt_local.makeprg = "stack build --cabal-verbosity 0"
 opt_local.shiftwidth = 2

@@ -11,14 +11,15 @@ function M.set_default_options()
   opt.encoding = "utf-8"
   opt.expandtab = true
   opt.hidden = true
+  opt.hlsearch = true
+  opt.inccommand = "split"
   opt.incsearch = true
   opt.linebreak = true
   opt.modeline = true
-  opt.hlsearch = false
-  opt.wrapscan = false
   opt.number = true
   opt.omnifunc = "syntaxcomplete#Complete"
   opt.path = { "**", "./**" }
+  opt.pumblend = 10
   opt.relativenumber = true
   opt.shiftwidth = 2
   opt.smartindent = true
@@ -28,6 +29,7 @@ function M.set_default_options()
   opt.tabstop = 2
   opt.termguicolors = true
   opt.wildmenu = true
+  opt.wrapscan = false
 end
 
 function M.set_default_bindings(options)
@@ -292,6 +294,7 @@ function M.set_default_bindings(options)
     [[<leader>X]],
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
+  set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
   set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
