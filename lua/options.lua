@@ -241,6 +241,19 @@ function M.set_default_bindings(options)
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
 
+  -- substitute
+  set("n", [[<leader>cn]], function()
+    local text = fn.expand "<cword>"
+
+    local prefix, infix, suffix = [[:%s/\<]], [[\>/]], [[/gc]]
+    return prefix
+      .. text
+      .. infix
+      .. text
+      .. suffix
+      .. string.rep("<Left>", #suffix)
+  end, { expr = true })
+
   -- case
   local case = require "case"
   set("n", [[<leader>cF]], function()
