@@ -324,11 +324,12 @@ function M.set_default_autocommands()
       vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
       set("", [[<leader>.]], lsp.code_action, { buffer = true })
-      set("", [[<leader>o]], lsp.hover, { buffer = true })
+      set("", [[<leader>cN]], lsp.rename, { buffer = true })
       set("", [[<leader>qc]], lsp.references, { buffer = true })
       set("", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
       set("", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
-      set("n", [[<leader>gd]], lsp.definition, { buffer = true })
+      set("", [[K]], lsp.hover, { buffer = true })
+      set("n", [[gd]], lsp.definition, { buffer = true })
     end,
   })
   autocmd("LspDetach", {
@@ -338,11 +339,12 @@ function M.set_default_autocommands()
       vim.bo[args.buf].omnifunc = "syntaxcomplete#Complete"
 
       del("", [[<leader>.]], { buffer = args.buf })
-      del("", [[<leader>o]], { buffer = args.buf })
+      del("", [[<leader>cN]], { buffer = args.buf })
       del("", [[<leader>qc]], { buffer = args.buf })
       del("", [[<leader>qi]], { buffer = args.buf })
       del("", [[<leader>qo]], { buffer = args.buf })
-      del("n", [[<leader>gd]], { buffer = args.buf })
+      del("", [[K]], { buffer = args.buf })
+      del("n", [[gd]], { buffer = args.buf })
     end,
   })
 
