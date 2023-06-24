@@ -90,13 +90,7 @@ function M.set_default_bindings(options)
   end)
 
   -- lsp
-  set("", [[<leader>.]], lsp.code_action)
-  set("", [[<leader>o]], lsp.hover)
-  set("", [[<leader>qc]], lsp.references)
-  set("", [[<leader>qi]], lsp.incoming_calls)
-  set("", [[<leader>qo]], lsp.outgoing_calls)
   set("n", [[<leader>L]], require("lsp").disable)
-  set("n", [[<leader>gd]], lsp.definition)
   set("n", [[<leader>l]], require("lsp").enable)
 
   -- quickfix
@@ -304,6 +298,9 @@ end
 
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
+  local del = vim.keymap.del
+  local lsp = vim.lsp.buf
+  local set = vim.keymap.set
 
   autocmd(
     "BufWritePost",
@@ -317,6 +314,37 @@ function M.set_default_autocommands()
     "BufWritePost",
     { pattern = "plugins.lua", command = "source % | PackerCompile" }
   )
+  autocmd("LspAttach", {
+    callback = function(args)
+      if vim.b[args.buf].is_lsp_configured then
+        return
+      end
+      vim.b[args.buf].is_lsp_configured = true
+
+      vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+      set("", [[<leader>.]], lsp.code_action, { buffer = true })
+      set("", [[<leader>o]], lsp.hover, { buffer = true })
+      set("", [[<leader>qc]], lsp.references, { buffer = true })
+      set("", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
+      set("", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
+      set("n", [[<leader>gd]], lsp.definition, { buffer = true })
+    end,
+  })
+  autocmd("LspDetach", {
+    callback = function(args)
+      vim.b[args.buf].is_lsp_configured = false
+
+      vim.bo[args.buf].omnifunc = "syntaxcomplete#Complete"
+
+      del("", [[<leader>.]], { buffer = args.buf })
+      del("", [[<leader>o]], { buffer = args.buf })
+      del("", [[<leader>qc]], { buffer = args.buf })
+      del("", [[<leader>qi]], { buffer = args.buf })
+      del("", [[<leader>qo]], { buffer = args.buf })
+      del("n", [[<leader>gd]], { buffer = args.buf })
+    end,
+  })
 
   local function enable_lsp(pattern)
     autocmd(
