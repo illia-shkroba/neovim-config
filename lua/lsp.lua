@@ -1,31 +1,42 @@
 local M = {}
 
+local api = vim.api
 local lsp = vim.lsp
 
 M.is_enabled = false
 
-function M.callback()
+function M.start_callback(event)
   if M.is_enabled then
-    M.start()
+    M.start(event.buf)
   end
 end
 
 function M.enable()
   M.is_enabled = true
-  M.start()
+  M.start(api.nvim_buf_get_number(0))
 end
 
-function M.start()
-  local start = vim.b.lsp_start or function() end
+function M.start(buffer_number)
+  if vim.b[buffer_number].is_lsp_configured then
+    return
+  end
+
+  local start = vim.b[buffer_number].lsp_start or function() end
   start()
+
+  vim.b[buffer_number].is_lsp_configured = true
+end
+
+function M.stop_callback(event)
+  vim.b[event.buf].is_lsp_configured = false
 end
 
 function M.disable()
   M.is_enabled = false
-  M.stop()
+  M.stop_all()
 end
 
-function M.stop()
+function M.stop_all()
   lsp.stop_client(lsp.get_active_clients())
 end
 

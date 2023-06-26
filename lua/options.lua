@@ -315,13 +315,8 @@ function M.set_default_autocommands()
     { pattern = "plugins.lua", command = "source % | PackerCompile" }
   )
   autocmd("LspAttach", {
-    callback = function(args)
-      if vim.b[args.buf].is_lsp_configured then
-        return
-      end
-      vim.b[args.buf].is_lsp_configured = true
-
-      vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+    callback = function(event)
+      vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
       set("", [[<leader>.]], lsp.code_action, { buffer = true })
       set("", [[<leader>cN]], lsp.rename, { buffer = true })
@@ -333,25 +328,25 @@ function M.set_default_autocommands()
     end,
   })
   autocmd("LspDetach", {
-    callback = function(args)
-      vim.b[args.buf].is_lsp_configured = false
+    callback = function(event)
+      vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
-      vim.bo[args.buf].omnifunc = "syntaxcomplete#Complete"
+      del("", [[<leader>.]], { buffer = event.buf })
+      del("", [[<leader>cN]], { buffer = event.buf })
+      del("", [[<leader>qc]], { buffer = event.buf })
+      del("", [[<leader>qi]], { buffer = event.buf })
+      del("", [[<leader>qo]], { buffer = event.buf })
+      del("", [[K]], { buffer = event.buf })
+      del("n", [[gd]], { buffer = event.buf })
 
-      del("", [[<leader>.]], { buffer = args.buf })
-      del("", [[<leader>cN]], { buffer = args.buf })
-      del("", [[<leader>qc]], { buffer = args.buf })
-      del("", [[<leader>qi]], { buffer = args.buf })
-      del("", [[<leader>qo]], { buffer = args.buf })
-      del("", [[K]], { buffer = args.buf })
-      del("n", [[gd]], { buffer = args.buf })
+      require("lsp").stop_callback(event)
     end,
   })
 
   local function enable_lsp(pattern)
     autocmd(
       "BufEnter",
-      { pattern = pattern, callback = require("lsp").callback }
+      { pattern = pattern, callback = require("lsp").start_callback }
     )
   end
 
