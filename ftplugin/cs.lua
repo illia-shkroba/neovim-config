@@ -11,4 +11,9 @@ opt_local.shiftwidth = 4
 opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
-set("", [[gh]], [[<Cmd>OmniSharpCodeFormat | OmniSharpFixUsings<CR>]], { buffer = true })
+set(
+  "",
+  [[gh]],
+  [[<Cmd>OmniSharpCodeFormat | OmniSharpFixUsings<CR>]],
+  { buffer = true }
+)

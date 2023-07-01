@@ -14,7 +14,12 @@ opt_local.softtabstop = 2
 opt_local.tabstop = 2
 
 set("", [[<leader><CR>]], [[<Cmd>w !lua<CR>]], { buffer = true })
-set("n", [[<leader><Tab>]], [[<Cmd>up<CR>:new<CR>:terminal lua -i #<CR>]], { buffer = true })
+set(
+  "n",
+  [[<leader><Tab>]],
+  [[<Cmd>up<CR>:new<CR>:terminal lua -i #<CR>]],
+  { buffer = true }
+)
 
 function vim.b.lsp_start()
   vim.lsp.start {

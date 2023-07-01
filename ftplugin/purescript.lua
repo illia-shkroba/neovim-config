@@ -27,7 +27,12 @@ local stylish_config = fn.stdpath "config"
   .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
 opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
-set("n", [[<leader>g]], [[<Cmd>silent !fast-tags -R --qualified .<CR>]], { buffer = true })
+set(
+  "n",
+  [[<leader>g]],
+  [[<Cmd>silent !fast-tags -R --qualified .<CR>]],
+  { buffer = true }
+)
 
 function vim.b.lsp_start()
   vim.lsp.start {

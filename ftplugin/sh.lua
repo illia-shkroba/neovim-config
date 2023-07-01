@@ -17,4 +17,9 @@ opt_local.formatprg = "shfmt -s -i "
   .. " -bn -ci -sr"
 
 set("", [[<leader><CR>]], [[<Cmd>w !bash<CR>]], { buffer = true })
-set("n", [[<leader><Tab>]], [[<Cmd>up<CR>:new<CR>:terminal bash --init-file #<CR>]], { buffer = true })
+set(
+  "n",
+  [[<leader><Tab>]],
+  [[<Cmd>up<CR>:new<CR>:terminal bash --init-file #<CR>]],
+  { buffer = true }
+)

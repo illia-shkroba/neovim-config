@@ -12,7 +12,12 @@ opt_local.shiftwidth = 2
 opt_local.softtabstop = 2
 opt_local.tabstop = 2
 
-set("", [[<leader><CR>]], [[<Cmd>up | !nix-instantiate --eval --strict %<CR>]], { buffer = true })
+set(
+  "",
+  [[<leader><CR>]],
+  [[<Cmd>up | !nix-instantiate --eval --strict %<CR>]],
+  { buffer = true }
+)
 
 function vim.b.lsp_start()
   vim.lsp.start {
