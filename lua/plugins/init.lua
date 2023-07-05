@@ -119,6 +119,51 @@ return require("packer").startup(function(use)
       require "plugins.setup" "nvim-tree"()
     end,
   }
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    run = function()
+      local treesitter = require("utils").require_safe "nvim-treesitter.install"
+      if not treesitter then
+        return
+      end
+
+      local ts_update = treesitter.update { with_sync = true }
+      ts_update()
+    end,
+    config = function()
+      local treesitter = require("utils").require_safe "nvim-treesitter.configs"
+      if not treesitter then
+        return
+      end
+
+      treesitter.setup {
+        ensure_installed = {
+          "bash",
+          "c_sharp",
+          "dockerfile",
+          "haskell",
+          "java",
+          "json",
+          "lua",
+          "markdown",
+          "nix",
+          "python",
+          "sql",
+          "terraform",
+          "vim",
+          "vimdoc",
+          "yaml",
+        },
+        sync_install = false,
+        auto_install = false,
+
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+      }
+    end,
+  }
   use { "pearofducks/ansible-vim", ft = { "yaml" } }
   use {
     "purescript-contrib/purescript-vim",
