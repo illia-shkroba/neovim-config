@@ -4,7 +4,6 @@ return {
   config = function()
     local actions = require "telescope.actions"
     local telescope = require "plugins.telescope.actions"
-    local union = require("utils").union
 
     local global_mappings = {
       n = {
@@ -46,7 +45,11 @@ return {
         buffers = { mappings = global_mappings },
         colorscheme = { mappings = global_mappings },
         find_files = {
-          mappings = union(find_files_mappings, global_mappings),
+          mappings = vim.tbl_deep_extend(
+            "keep",
+            find_files_mappings,
+            global_mappings
+          ),
         },
         grep_string = { mappings = global_mappings },
         live_grep = { mappings = global_mappings },
