@@ -32,7 +32,7 @@ function M.set_default_options()
   opt.wrapscan = false
 end
 
-function M.set_default_bindings(options)
+function M.set_default_bindings()
   local api = vim.api
   local cmd = vim.cmd
   local fn = vim.fn
@@ -43,12 +43,6 @@ function M.set_default_bindings(options)
 
   local path = require "path"
   local utils = require "utils"
-
-  if type(options) == "table" and type(options.leader_key) == "string" then
-    g.mapleader = options.leader_key
-  else
-    g.mapleader = " "
-  end
 
   -- cwd
   local function step_into_buffer_dir()
@@ -309,10 +303,6 @@ function M.set_default_autocommands()
   autocmd(
     "BufWritePost",
     { pattern = "config.h", command = "silent !sudo make install" }
-  )
-  autocmd(
-    "BufWritePost",
-    { pattern = "plugins.lua", command = "source % | PackerCompile" }
   )
   autocmd("LspAttach", {
     callback = function(event)
