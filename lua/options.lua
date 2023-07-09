@@ -37,8 +37,6 @@ function M.set_default_bindings()
   local cmd = vim.cmd
   local fn = vim.fn
   local fs = vim.fs
-  local g = vim.g
-  local lsp = vim.lsp.buf
   local set = vim.keymap.set
 
   local path = require "path"
