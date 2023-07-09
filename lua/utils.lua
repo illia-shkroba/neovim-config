@@ -49,6 +49,8 @@ function M.deepcopy(src)
   for k, v in pairs(src) do
     dest[M.deepcopy(k)] = M.deepcopy(v)
   end
+
+  setmetatable(dest, getmetatable(src))
   return dest
 end
 
