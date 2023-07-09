@@ -18,10 +18,3 @@ set(
   [[<Cmd>up | !nix-instantiate --eval --strict %<CR>]],
   { buffer = true }
 )
-
-function vim.b.lsp_start()
-  vim.lsp.start {
-    name = "nix-lsp",
-    cmd = { "rnix-lsp" },
-  }
-end

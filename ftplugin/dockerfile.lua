@@ -10,10 +10,3 @@ opt_local.makeprg = "hadolint"
 opt_local.shiftwidth = 2
 opt_local.softtabstop = 2
 opt_local.tabstop = 2
-
-function vim.b.lsp_start()
-  vim.lsp.start {
-    name = "docker-lsp",
-    cmd = { "docker-langserver", "--stdio" },
-  }
-end

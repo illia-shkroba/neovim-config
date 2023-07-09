@@ -63,19 +63,3 @@ set("n", [[<leader><Tab>]], function()
   cmd.terminal(variables .. "ipython --no-banner -i '#'")
   cmd.startinsert()
 end, { buffer = true })
-
-function vim.b.lsp_start()
-  vim.lsp.start {
-    name = "python-lsp",
-    cmd = { "pylsp" },
-    cmd_env = {
-      VIRTUAL_ENV = find_virtual_environment(),
-    },
-    root_dir = fs.find({ "setup.py", "pyproject.toml" }, {
-      path = api.nvim_buf_get_name(0),
-      upward = true,
-      stop = loop.os_homedir(),
-      type = "file",
-    })[1],
-  }
-end

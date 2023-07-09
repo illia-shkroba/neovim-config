@@ -81,10 +81,6 @@ function M.set_default_bindings()
     cmd.tcd(step_into_buffer_dir())
   end)
 
-  -- lsp
-  set("n", [[<leader>L]], require("lsp").disable)
-  set("n", [[<leader>l]], require("lsp").enable)
-
   -- quickfix
   local quickfix = require "quickfix"
   set(
@@ -294,6 +290,8 @@ function M.set_default_autocommands()
   local lsp = vim.lsp.buf
   local set = vim.keymap.set
 
+  local utils = require "utils"
+
   autocmd(
     "BufWritePost",
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
@@ -319,34 +317,20 @@ function M.set_default_autocommands()
     callback = function(event)
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
-      del("", [[<leader>.]], { buffer = event.buf })
-      del("", [[<leader>cN]], { buffer = event.buf })
-      del("", [[<leader>qc]], { buffer = event.buf })
-      del("", [[<leader>qi]], { buffer = event.buf })
-      del("", [[<leader>qo]], { buffer = event.buf })
-      del("", [[K]], { buffer = event.buf })
-      del("n", [[gd]], { buffer = event.buf })
+      local function unset_bindings()
+        del("", [[<leader>.]], { buffer = event.buf })
+        del("", [[<leader>cN]], { buffer = event.buf })
+        del("", [[<leader>qc]], { buffer = event.buf })
+        del("", [[<leader>qi]], { buffer = event.buf })
+        del("", [[<leader>qo]], { buffer = event.buf })
+        del("", [[K]], { buffer = event.buf })
+        del("n", [[gd]], { buffer = event.buf })
+      end
 
-      require("lsp").stop_callback(event)
+      -- For some reasone `del` produces errors when triggered by `LspStop`
+      utils.try(unset_bindings)
     end,
   })
-
-  local function enable_lsp(pattern)
-    autocmd(
-      "BufEnter",
-      { pattern = pattern, callback = require("lsp").start_callback }
-    )
-  end
-
-  enable_lsp "*.hs"
-  enable_lsp "*.lua"
-  enable_lsp "*.nix"
-  enable_lsp "*.purs"
-  enable_lsp "*.py"
-  enable_lsp "*.tf"
-  enable_lsp "*.vim"
-  enable_lsp "*Dockerfile"
-  enable_lsp "site.yaml"
 end
 
 function M.enable_templates()
