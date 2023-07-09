@@ -241,6 +241,7 @@ function M.set_default_bindings()
       .. suffix
       .. string.rep("<Left>", #suffix)
   end, { expr = true })
+  set("n", [[<leader>cs]], [[<Cmd>%s/\s\+$//gc<CR>]])
 
   -- case
   local case = require "case"
@@ -282,7 +283,6 @@ function M.set_default_bindings()
   )
   set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
-  set("n", [[<leader>s]], [[<Cmd>%s/\s\+$//gc<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
