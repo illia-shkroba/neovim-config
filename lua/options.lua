@@ -35,6 +35,7 @@ end
 function M.set_default_bindings()
   local api = vim.api
   local cmd = vim.cmd
+  local diagnostic = vim.diagnostic
   local fn = vim.fn
   local fs = vim.fs
   local set = vim.keymap.set
@@ -81,6 +82,11 @@ function M.set_default_bindings()
     cmd.tcd(step_into_buffer_dir())
   end)
 
+  -- diagnostic
+  set("n", "]e", diagnostic.goto_next)
+  set("n", "[e", diagnostic.goto_prev)
+  set("n", [[<leader>e]], diagnostic.open_float)
+
   -- quickfix
   local quickfix = require "quickfix"
   set(
@@ -112,6 +118,7 @@ function M.set_default_bindings()
     quickfix.add_item(quickfix.create_current_position_item())
     cmd.clast()
   end)
+  set("n", [[<leader>qe]], diagnostic.setqflist)
   set("n", [[<leader>qx]], quickfix.create_by_prompt)
 
   -- location
