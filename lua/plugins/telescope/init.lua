@@ -36,14 +36,14 @@ return {
     }
     require("telescope").setup {
       defaults = {
+        scroll_strategy = "limit",
+        mappings = global_mappings,
         history = {
           path = vim.fn.stdpath "data" .. "/telescope_history",
           limit = 1000,
         },
       },
       pickers = {
-        buffers = { mappings = global_mappings },
-        colorscheme = { mappings = global_mappings },
         find_files = {
           mappings = vim.tbl_deep_extend(
             "keep",
@@ -51,12 +51,6 @@ return {
             global_mappings
           ),
         },
-        grep_string = { mappings = global_mappings },
-        live_grep = { mappings = global_mappings },
-        marks = { mappings = global_mappings },
-        oldfiles = { mappings = global_mappings },
-        spell_suggest = { mappings = global_mappings },
-        tags = { mappings = global_mappings },
       },
     }
   end,
