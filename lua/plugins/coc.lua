@@ -226,49 +226,6 @@ return {
       { silent = true, nowait = true }
     )
 
-    set("n", [[<C-f>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return fn["coc#float#scroll"](1)
-      else
-        return [[<C-f>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-    set("n", [[<C-b>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return fn["coc#float#scroll"](0)
-      else
-        return [[<C-b>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-    set("i", [[<C-f>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return [[<C-r>=coc#float#scroll(1)<CR>]]
-      else
-        return [[<Right>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-    set("i", [[<C-b>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return [[<C-r>=coc#float#scroll(0)<CR>]]
-      else
-        return [[<Left>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-    set("v", [[<C-f>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return fn["coc#float#scroll"](1)
-      else
-        return [[<C-f>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-    set("v", [[<C-b>]], function()
-      if fn["coc#float#has_scroll"]() then
-        return fn["coc#float#scroll"](0)
-      else
-        return [[<C-b>]]
-      end
-    end, { silent = true, nowait = true, expr = true })
-
     -- Use CTRL-S for selections ranges
     -- Requires 'textDocument/selectionRange' support of language server
     set("", [[<C-s>]], [[<Plug>(coc-range-select)]], { silent = true })
