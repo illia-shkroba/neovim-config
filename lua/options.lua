@@ -83,11 +83,6 @@ function M.set_default_bindings()
     cmd.tcd(step_into_buffer_dir())
   end)
 
-  -- diagnostic
-  set("n", "]e", diagnostic.goto_next)
-  set("n", "[e", diagnostic.goto_prev)
-  set("n", [[<leader>e]], diagnostic.open_float)
-
   -- quickfix
   local quickfix = require "quickfix"
   set(
@@ -154,9 +149,6 @@ function M.set_default_bindings()
   local telescope = utils.require_safe "telescope.builtin"
   if telescope then
     set("", [[<leader>=]], telescope.spell_suggest)
-    set("", [[<leader>fc]], telescope.lsp_references)
-    set("", [[<leader>fi]], telescope.lsp_incoming_calls)
-    set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
     set("n", [[<leader>+]], function()
       cmd.Telescope "neoclip"
     end)
@@ -178,7 +170,6 @@ function M.set_default_bindings()
       return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
     end, { expr = true })
     set("n", [[<leader>fb]], telescope.buffers)
-    set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
     set("n", [[<leader>fg]], telescope.live_grep)
     set("n", [[<leader>fm]], telescope.marks)
@@ -286,59 +277,27 @@ function M.set_default_bindings()
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
   set("n", [[<leader>h]], cmd.nohlsearch)
-  set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
+  set("n", [[<leader>R]], [[vip:!column -to ' '<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
-  set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
+  set("v", [[<leader>R]], [[:!column -to ' '<CR>]], { silent = true })
 end
 
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
-  local del = vim.keymap.del
-  local lsp = vim.lsp.buf
-  local set = vim.keymap.set
 
-  local utils = require "utils"
-
+  autocmd(
+    "BufWritePost",
+    { pattern = "config.h", command = "silent !sudo make install" }
+  )
   autocmd(
     "BufWritePost",
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
   autocmd(
-    "BufWritePost",
-    { pattern = "config.h", command = "silent !sudo make install" }
+    "FileType",
+    { pattern = { "json" }, command = [[syntax match Comment +\/\/.\+$+]] }
   )
-  autocmd("LspAttach", {
-    callback = function(event)
-      vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
-      set("", [[<leader>.]], lsp.code_action, { buffer = true })
-      set("", [[<leader>cN]], lsp.rename, { buffer = true })
-      set("", [[<leader>qc]], lsp.references, { buffer = true })
-      set("", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
-      set("", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
-      set("", [[K]], lsp.hover, { buffer = true })
-      set("n", [[gd]], lsp.definition, { buffer = true })
-    end,
-  })
-  autocmd("LspDetach", {
-    callback = function(event)
-      vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
-
-      local function unset_bindings()
-        del("", [[<leader>.]], { buffer = event.buf })
-        del("", [[<leader>cN]], { buffer = event.buf })
-        del("", [[<leader>qc]], { buffer = event.buf })
-        del("", [[<leader>qi]], { buffer = event.buf })
-        del("", [[<leader>qo]], { buffer = event.buf })
-        del("", [[K]], { buffer = event.buf })
-        del("n", [[gd]], { buffer = event.buf })
-      end
-
-      -- For some reasone `del` produces errors when triggered by `LspStop`
-      utils.try(unset_bindings)
-    end,
-  })
 end
 
 function M.enable_templates()

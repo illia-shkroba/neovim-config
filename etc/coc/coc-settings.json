@@ -1,0 +1,60 @@
+{
+  "languageserver": {
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": [
+        "--lsp"
+      ],
+      "rootPatterns": [
+        "*.cabal",
+        "cabal.project",
+        "hie.yaml",
+        "package.yaml",
+        "stack.yaml"
+      ],
+      "filetypes": [
+        "haskell",
+        "lhaskell"
+      ]
+    },
+    "purescript": {
+      "command": "purescript-language-server",
+      "args": [
+        "--stdio",
+        "--config {}"
+      ],
+      "filetypes": [
+        "purescript"
+      ],
+      "rootPatterns": [
+        "bower.json",
+        "flake.nix",
+        "package.json",
+        "packages.dhall",
+        "psc-package.json",
+        "shell.nix",
+        "spago.dhall"
+      ]
+    },
+    "nix": {
+      "command": "rnix-lsp",
+      "filetypes": [
+        "nix"
+      ]
+    },
+    "terraform": {
+      "command": "terraform-ls",
+      "args": [
+        "serve"
+      ],
+      "filetypes": [
+        "terraform",
+        "terraform-vars"
+      ],
+      "rootPatterns": [
+        ".git",
+        ".terraform"
+      ]
+    }
+  }
+}
