@@ -52,6 +52,12 @@ return {
           ),
         },
       },
+      extensions = {
+        coc = {
+          theme = "ivy",
+          prefer_locations = true,
+        },
+      },
     }
   end,
 }
