@@ -4,4 +4,8 @@ vim.cmd [[
 
 require("package-manager.bootstrap").bootstrap()
 
-return require("lazy").setup "plugins"
+return require("lazy").setup("plugins", {
+  change_detection = {
+    enabled = false,
+  },
+})
