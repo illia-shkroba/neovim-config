@@ -21,6 +21,7 @@ function M.set_default_options()
   opt.path = { "**", "./**" }
   opt.pumblend = 10
   opt.relativenumber = true
+  opt.scrolloff = 1
   opt.shiftwidth = 2
   opt.smartindent = true
   opt.softtabstop = 2
