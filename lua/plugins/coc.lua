@@ -52,10 +52,10 @@ return {
       "i",
       [[<TAB>]],
       function()
-        if fn["coc#pum#visible"]() then
+        if fn["coc#pum#visible"]() == 1 then
           return fn["coc#pum#next"](1)
         elseif check_back_space() then
-          return [[<TAB>]]
+          return [[	]]
         else
           return fn["coc#refresh"]()
         end
@@ -66,10 +66,10 @@ return {
       "i",
       [[<S-TAB>]],
       function()
-        if fn["coc#pum#visible"]() then
+        if fn["coc#pum#visible"]() == 1 then
           return fn["coc#pum#prev"](1)
         else
-          return [[<C-h>]]
+          return [[	]]
         end
       end,
       { silent = true, noremap = true, expr = true, replace_keycodes = false }
@@ -101,7 +101,7 @@ return {
       local cw = fn.expand "<cword>"
       if vim.tbl_contains({ "vim", "help" }, vim.bo.filetype) then
         cmd("h " .. cw)
-      elseif fn["coc#rpc#ready"]() then
+      elseif fn["coc#rpc#ready"]() == 1 then
         fn.CocActionAsync "doHover"
       else
         cmd("!" .. vim.o.keywordprg .. " " .. cw)
