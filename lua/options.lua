@@ -359,6 +359,7 @@ function M.enable_templates()
   enable_template "hs"
   enable_template "java"
   enable_template "md"
+  enable_template "pl"
   enable_template "scala"
   enable_template "sh"
 end
