@@ -17,6 +17,21 @@
         "lhaskell"
       ]
     },
+    "nix": {
+      "command": "rnix-lsp",
+      "filetypes": [
+        "nix"
+      ]
+    },
+    "perl": {
+      "command": "pls",
+      "filetypes": [
+        "perl"
+      ],
+      "rootPatterns": [
+        ".git"
+      ]
+    },
     "purescript": {
       "command": "purescript-language-server",
       "args": [
@@ -34,12 +49,6 @@
         "psc-package.json",
         "shell.nix",
         "spago.dhall"
-      ]
-    },
-    "nix": {
-      "command": "rnix-lsp",
-      "filetypes": [
-        "nix"
       ]
     },
     "terraform": {
