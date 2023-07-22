@@ -325,7 +325,7 @@ function M.enable_templates()
     local template_path = templates_dir .. "template." .. extension
     autocmd("BufNewFile", {
       pattern = "*." .. extension,
-      command = "0r " .. template_path .. " | normal Gdd",
+      command = "0r " .. template_path .. " | normal Gddgg",
     })
   end
 
@@ -334,6 +334,7 @@ function M.enable_templates()
   enable_template "java"
   enable_template "md"
   enable_template "scala"
+  enable_template "sh"
 end
 
 return M
