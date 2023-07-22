@@ -7,6 +7,7 @@ return {
     lspconfig.dockerls.setup {}
     lspconfig.hls.setup {}
     lspconfig.lua_ls.setup {}
+    lspconfig.perlpls.setup {}
     lspconfig.purescriptls.setup {}
     lspconfig.pylsp.setup {}
     lspconfig.rnix.setup {}
