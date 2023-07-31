@@ -3,7 +3,6 @@ if vim.b.did_purescript_ftplugin then
 end
 vim.b.did_purescript_ftplugin = true
 
-local fn = vim.fn
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
@@ -20,9 +19,9 @@ opt_local.errorformat = "%-G,"
   .. "%E%>%f:%l:%c:,"
   .. "%W%>%f:%l:%c:,"
 
-local stylish_config = fn.stdpath "config"
-  .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
-opt_local.formatprg = "stylish-haskell --config " .. stylish_config
+opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto --indent "
+  .. opt_local.tabstop._value
+  .. " --width 80"
 
 set(
   "n",
