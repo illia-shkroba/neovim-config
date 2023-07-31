@@ -45,7 +45,7 @@ return {
           goto_next_start = {
             ["]]"] = "@class.outer",
             ["]m"] = "@function.outer",
-            ["]s"] = {
+            ["]o"] = {
               query = "@scope",
               query_group = "locals",
             },
@@ -53,7 +53,7 @@ return {
           goto_next_end = {
             ["]["] = "@class.outer",
             ["]M"] = "@function.outer",
-            ["]S"] = {
+            ["]O"] = {
               query = "@scope",
               query_group = "locals",
             },
@@ -61,7 +61,7 @@ return {
           goto_previous_start = {
             ["[["] = "@class.outer",
             ["[m"] = "@function.outer",
-            ["[s"] = {
+            ["[o"] = {
               query = "@scope",
               query_group = "locals",
             },
@@ -69,7 +69,7 @@ return {
           goto_previous_end = {
             ["[]"] = "@class.outer",
             ["[M"] = "@function.outer",
-            ["[S"] = {
+            ["[O"] = {
               query = "@scope",
               query_group = "locals",
             },
