@@ -280,6 +280,12 @@ function M.set_default_bindings()
   )
 
   -- other
+  set("n", [[<leader>#]], function()
+    return "?" .. fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true })
+  set("n", [[<leader>*]], function()
+    return "/" .. fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true })
   set(
     "n",
     [[<leader>X]],
