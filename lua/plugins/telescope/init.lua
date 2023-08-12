@@ -37,9 +37,11 @@ return {
     local find_files_mappings = {
       n = {
         ["<C-h>"] = telescope.toggle_hidden_in_find_files,
+        ["<C-w>"] = telescope.remove_files,
       },
       i = {
         ["<C-h>"] = telescope.toggle_hidden_in_find_files,
+        ["<C-w>"] = telescope.remove_files,
       },
     }
     require("telescope").setup {
