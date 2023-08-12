@@ -159,7 +159,7 @@ function M.set_default_bindings()
       telescope.grep_string { word_match = "-w" }
     end)
     set("n", [[<leader>fC]], telescope.colorscheme)
-    set("n", [[<leader>fE]], function()
+    set("n", [[<leader>fA]], function()
       cmd.Telescope("coc", "workspace_diagnostics")
     end)
     set("n", [[<leader>fG]], function()
