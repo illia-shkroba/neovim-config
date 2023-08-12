@@ -95,9 +95,7 @@ return {
     set("n", [[<leader>gd<C-t>]], [[sTgD]], { silent = true })
     set("n", [[<leader>gd<C-v>]], [[vgD]], { silent = true })
     set("n", [[<leader>gd<C-x>]], [[sgD]], { silent = true })
-    set("n", [[<leader>gi]], [[<Plug>(coc-implementation)]], { silent = true })
     set("n", [[<leader>gr]], [[<Plug>(coc-references)]], { silent = true })
-    set("n", [[<leader>gy]], [[<Plug>(coc-type-definition)]], { silent = true })
 
     -- Use K to show documentation in preview window
     local function show_docs()
@@ -233,25 +231,20 @@ return {
     -- Requires 'textDocument/selectionRange' support of language server
     set("", [[<C-s>]], [[<Plug>(coc-range-select)]], { silent = true })
 
-    -- Add `:Format` command to format current buffer
-    command("Format", function()
-      fn.CocAction "format"
-    end, {})
+    -- " Add `:CocFold` command to fold current buffer
+    command("CocFold", [[call CocAction('fold', <f-args>)]], { nargs = "?" })
 
-    -- " Add `:Fold` command to fold current buffer
-    command("Fold", [[call CocAction('fold', <f-args>)]], { nargs = "?" })
-
-    -- Add `:OR` command for organize imports of the current buffer
-    command("OR", function()
+    -- Add `:CocOrganizeImport` command for organize imports of the current buffer
+    command("CocOrganizeImport", function()
       fn.CocActionAsync("runCommand", "editor.action.organizeImport")
     end, {})
 
     -- Show all diagnostics
-    set("n", [[<leader>A]], function()
+    set("n", [[<leader>E]], function()
       cmd.CocList "diagnostics"
     end, { silent = true, nowait = true })
     -- Search workspace symbols
-    set("n", [[<leader>fw]], function()
+    set("n", [[<leader>W]], function()
       cmd.CocList("-I", "symbols")
     end, { silent = true, nowait = true })
     -- Do default action for next item
