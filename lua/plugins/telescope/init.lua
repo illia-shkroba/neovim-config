@@ -26,6 +26,14 @@ return {
         ["<C-u>"] = actions.results_scrolling_up,
       },
     }
+    local buffers_mappings = {
+      n = {
+        ["<C-w>"] = telescope.wipe_out_buffers,
+      },
+      i = {
+        ["<C-w>"] = telescope.wipe_out_buffers,
+      },
+    }
     local find_files_mappings = {
       n = {
         ["<C-h>"] = telescope.toggle_hidden_in_find_files,
@@ -44,6 +52,13 @@ return {
         },
       },
       pickers = {
+        buffers = {
+          mappings = vim.tbl_deep_extend(
+            "keep",
+            buffers_mappings,
+            global_mappings
+          ),
+        },
         find_files = {
           mappings = vim.tbl_deep_extend(
             "keep",

@@ -30,4 +30,11 @@ function M.with_line(f)
   return g
 end
 
+function M.wipe_out_buffers(buffer_number)
+  local current_picker = action_state.get_current_picker(buffer_number)
+  current_picker:delete_selection(function(selection)
+    return pcall(cmd.bwipeout, selection.bufnr)
+  end)
+end
+
 return M
