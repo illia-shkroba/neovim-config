@@ -91,7 +91,10 @@ return {
     set("n", "[e", [[<Plug>(coc-diagnostic-prev)]], { silent = true })
 
     -- GoTo code navigation
-    set("n", [[<leader>gd]], [[<Plug>(coc-definition)]], { silent = true })
+    set("n", [[<leader>gD]], [[<Plug>(coc-definition)]], { silent = true })
+    set("n", [[<leader>gd<C-t>]], [[sTgD]], { silent = true })
+    set("n", [[<leader>gd<C-v>]], [[vgD]], { silent = true })
+    set("n", [[<leader>gd<C-x>]], [[sgD]], { silent = true })
     set("n", [[<leader>gi]], [[<Plug>(coc-implementation)]], { silent = true })
     set("n", [[<leader>gr]], [[<Plug>(coc-references)]], { silent = true })
     set("n", [[<leader>gy]], [[<Plug>(coc-type-definition)]], { silent = true })
