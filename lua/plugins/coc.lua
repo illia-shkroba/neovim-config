@@ -259,7 +259,12 @@ return {
     -- Do default action for previous item
     set("n", [[<leader>k]], cmd.CocPrev, { silent = true, nowait = true })
     -- Resume latest coc list
-    set("n", [[<leader>p]], cmd.CocListResume, { silent = true, nowait = true })
+    set(
+      "n",
+      [[<leader>qs]],
+      cmd.CocListResume,
+      { silent = true, nowait = true }
+    )
   end,
   branch = "release",
 }

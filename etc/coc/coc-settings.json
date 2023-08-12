@@ -66,5 +66,19 @@
         ".terraform"
       ]
     }
+  },
+  "list.insertMappings": {
+    "<C-e>": "do:previewtoggle",
+    "<C-q>": "action:quickfix",
+    "<C-t>": "action:tabe",
+    "<C-v>": "action:vsplit",
+    "<C-x>": "action:split"
+  },
+  "list.normalMappings": {
+    "<C-e>": "do:previewtoggle",
+    "<C-q>": "action:quickfix",
+    "<C-t>": "action:tabe",
+    "<C-v>": "action:vsplit",
+    "<C-x>": "action:split"
   }
 }
