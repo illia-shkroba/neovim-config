@@ -28,20 +28,20 @@ return {
     }
     local buffers_mappings = {
       n = {
-        ["<C-w>"] = telescope.wipe_out_buffers,
+        ["<C-r>"] = telescope.wipe_out_buffers,
       },
       i = {
-        ["<C-w>"] = telescope.wipe_out_buffers,
+        ["<C-r>"] = telescope.wipe_out_buffers,
       },
     }
     local find_files_mappings = {
       n = {
         ["<C-h>"] = telescope.toggle_hidden_in_find_files,
-        ["<C-w>"] = telescope.remove_files,
+        ["<C-r>"] = telescope.remove_files,
       },
       i = {
         ["<C-h>"] = telescope.toggle_hidden_in_find_files,
-        ["<C-w>"] = telescope.remove_files,
+        ["<C-r>"] = telescope.remove_files,
       },
     }
     require("telescope").setup {
