@@ -175,7 +175,7 @@ function M.set_default_bindings()
         [[" } }]]
       return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
     end, { expr = true })
-    set("n", [[<leader>fT]], function()
+    set("n", [[<leader>fw]], function()
       cmd.Telescope("coc", "workspace_symbols")
     end)
     set("n", [[<leader>fb]], telescope.buffers)
