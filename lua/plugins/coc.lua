@@ -240,7 +240,7 @@ return {
     end, {})
 
     -- Show all diagnostics
-    set("n", [[<leader>E]], function()
+    set("n", [[<leader>e]], function()
       cmd.CocList "diagnostics"
     end, { silent = true, nowait = true })
     -- Search workspace symbols
