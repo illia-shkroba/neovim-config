@@ -92,9 +92,24 @@ return {
 
     -- GoTo code navigation
     set("n", [[<leader>gD]], [[<Plug>(coc-definition)]], { silent = true })
-    set("n", [[<leader>gd<C-t>]], [[sTgD]], { silent = true })
-    set("n", [[<leader>gd<C-v>]], [[vgD]], { silent = true })
-    set("n", [[<leader>gd<C-x>]], [[sgD]], { silent = true })
+    set(
+      "n",
+      [[<leader>gd<C-t>]],
+      [[sT<Plug>(coc-definition)]],
+      { silent = true }
+    )
+    set(
+      "n",
+      [[<leader>gd<C-v>]],
+      [[v<Plug>(coc-definition)]],
+      { silent = true }
+    )
+    set(
+      "n",
+      [[<leader>gd<C-x>]],
+      [[s<Plug>(coc-definition)]],
+      { silent = true }
+    )
     set("n", [[<leader>gr]], [[<Plug>(coc-references)]], { silent = true })
 
     -- Use K to show documentation in preview window
