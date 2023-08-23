@@ -1,10 +1,26 @@
 {
   "suggest.autoTrigger": "none",
   "languageserver": {
+    "dot": {
+      "command": "dot-language-server",
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "dot"
+      ],
+      "rootPatterns": [
+        ".git"
+      ]
+    },
     "haskell": {
       "command": "haskell-language-server-wrapper",
       "args": [
         "--lsp"
+      ],
+      "filetypes": [
+        "haskell",
+        "lhaskell"
       ],
       "rootPatterns": [
         "*.cabal",
@@ -12,16 +28,15 @@
         "hie.yaml",
         "package.yaml",
         "stack.yaml"
-      ],
-      "filetypes": [
-        "haskell",
-        "lhaskell"
       ]
     },
     "nix": {
       "command": "rnix-lsp",
       "filetypes": [
         "nix"
+      ],
+      "rootPatterns": [
+        ".git"
       ]
     },
     "perl": {
