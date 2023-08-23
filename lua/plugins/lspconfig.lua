@@ -5,6 +5,7 @@ return {
 
     lspconfig.ansiblels.setup {}
     lspconfig.dockerls.setup {}
+    lspconfig.dotls.setup {}
     lspconfig.hls.setup {}
     lspconfig.lua_ls.setup {}
     lspconfig.perlpls.setup {}
