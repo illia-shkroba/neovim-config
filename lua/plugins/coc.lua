@@ -259,7 +259,7 @@ return {
       cmd.CocList "diagnostics"
     end, { silent = true, nowait = true })
     -- Search workspace symbols
-    set("n", [[<leader>W]], function()
+    set("n", [[<leader>w]], function()
       cmd.CocList("-I", "symbols")
     end, { silent = true, nowait = true })
     -- Do default action for next item
