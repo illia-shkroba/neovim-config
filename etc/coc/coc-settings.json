@@ -1,6 +1,15 @@
 {
   "suggest.autoTrigger": "none",
   "languageserver": {
+    "dhall": {
+      "command": "dhall-lsp-server",
+      "filetypes": [
+        "dhall"
+      ],
+      "rootPatterns": [
+        ".git"
+      ]
+    },
     "dot": {
       "command": "dot-language-server",
       "args": [
