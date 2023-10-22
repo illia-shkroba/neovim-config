@@ -14,6 +14,7 @@ return {
         ["<C-k>"] = actions.cycle_history_prev,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
+        ["<C-y>"] = telescope.add_arguments,
         ["d"] = actions.preview_scrolling_down,
         ["u"] = actions.preview_scrolling_up,
       },
@@ -24,6 +25,7 @@ return {
         ["<C-k>"] = actions.cycle_history_prev,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
+        ["<C-y>"] = telescope.add_arguments,
       },
     }
     local buffers_mappings = {
