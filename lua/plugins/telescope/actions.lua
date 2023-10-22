@@ -6,19 +6,25 @@ local fn = vim.fn
 local action_state = require "telescope.actions.state"
 local builtin = require "telescope.builtin"
 
-M.is_hidden_in_find_files = false
-function M.toggle_hidden_in_find_files(buffer_number)
-  M.is_hidden_in_find_files = not M.is_hidden_in_find_files
-
-  local is_hidden = M.is_hidden_in_find_files or nil
+function M.hide_in_find_files(buffer_number)
   local find_files = function()
-    return builtin.find_files {
-      hidden = is_hidden,
-      no_ignore = is_hidden,
-      no_ignore_parent = is_hidden,
+    builtin.find_files {
+      hidden = nil,
+      no_ignore = nil,
+      no_ignore_parent = nil,
     }
   end
+  M.with_line(find_files)(buffer_number)
+end
 
+function M.unhide_in_find_files(buffer_number)
+  local find_files = function()
+    builtin.find_files {
+      hidden = true,
+      no_ignore = true,
+      no_ignore_parent = true,
+    }
+  end
   M.with_line(find_files)(buffer_number)
 end
 
