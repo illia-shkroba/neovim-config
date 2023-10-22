@@ -66,4 +66,44 @@ function M.wipe_out_buffers(buffer_number)
   end)
 end
 
+local function selected_entries(buffer_number)
+  local picker = action_state.get_current_picker(buffer_number)
+
+  local es = {}
+  for _, e in ipairs(picker:get_multi_selection()) do
+    table.insert(es, e)
+  end
+
+  return es
+end
+
+local function all_entries(buffer_number)
+  local picker = action_state.get_current_picker(buffer_number)
+  local manager = picker.manager
+
+  local es = {}
+  for e in manager:iter() do
+    table.insert(es, e)
+  end
+
+  return es
+end
+
+local function entries(buffer_number)
+  local picker = action_state.get_current_picker(buffer_number)
+  if #picker:get_multi_selection() > 0 then
+    return selected_entries(buffer_number)
+  else
+    return all_entries(buffer_number)
+  end
+end
+
+function M.add_arguments(buffer_number)
+  local es = entries(buffer_number)
+  for _, e in pairs(es) do
+    cmd.argadd(e.filename)
+  end
+  cmd.argdedupe()
+end
+
 return M
