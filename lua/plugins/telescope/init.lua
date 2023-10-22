@@ -46,6 +46,14 @@ return {
         ["<C-r>"] = telescope.remove_files,
       },
     }
+    local grep_string_mappings = {
+      n = {
+        ["<C-g>"] = telescope.search_globally_in_grep_string,
+      },
+      i = {
+        ["<C-g>"] = telescope.search_globally_in_grep_string,
+      },
+    }
     require("telescope").setup {
       defaults = {
         scroll_strategy = "limit",
@@ -67,6 +75,13 @@ return {
           mappings = vim.tbl_deep_extend(
             "keep",
             find_files_mappings,
+            global_mappings
+          ),
+        },
+        grep_string = {
+          mappings = vim.tbl_deep_extend(
+            "keep",
+            grep_string_mappings,
             global_mappings
           ),
         },

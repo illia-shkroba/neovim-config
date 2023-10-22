@@ -161,7 +161,17 @@ function M.set_default_bindings()
       cmd.Telescope "neoclip"
     end)
     set("n", [[<leader>F]], function()
-      telescope.grep_string { word_match = "-w" }
+      local extension = path.extension(api.nvim_buf_get_name(0))
+      if extension then
+        extension = "." .. extension
+      else
+        extension = ""
+      end
+
+      telescope.grep_string {
+        word_match = "-w",
+        additional_args = { "--glob", "*" .. extension },
+      }
     end)
     set("n", [[<leader>fC]], telescope.colorscheme)
     set("n", [[<leader>fG]], function()
