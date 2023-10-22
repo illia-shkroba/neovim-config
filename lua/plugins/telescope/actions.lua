@@ -28,6 +28,21 @@ function M.unhide_in_find_files(buffer_number)
   M.with_line(find_files)(buffer_number)
 end
 
+local function search_string(picker)
+  return picker.prompt_title:gsub("^.* %(", ""):gsub("%)", "")
+end
+
+function M.search_globally_in_grep_string(buffer_number)
+  local grep_string = function()
+    local current_picker = action_state.get_current_picker(buffer_number)
+    builtin.grep_string {
+      search = search_string(current_picker),
+      word_match = "-w",
+    }
+  end
+  M.with_line(grep_string)(buffer_number)
+end
+
 function M.with_line(f)
   local function g(buffer_number)
     local line = action_state.get_current_line(buffer_number)
