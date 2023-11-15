@@ -249,16 +249,22 @@ function M.set_default_bindings()
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
 
   -- substitute
-  set("n", [[<leader>cn]], function()
-    local text = fn.expand "<cword>"
-
-    local prefix, infix, suffix = [[:%s/\<]], [[\>/]], [[/gc]]
-    return prefix
+  local function substitute_word(scope, text)
+    local suffix = [[/gc]]
+    return [[:]]
+      .. scope
+      .. [[s/\<]]
       .. text
-      .. infix
+      .. [[\>/]]
       .. text
       .. suffix
       .. string.rep("<Left>", #suffix)
+  end
+  set("n", [[<leader>CN]], function()
+    return substitute_word([[*]], fn.expand "<cword>")
+  end, { expr = true })
+  set("n", [[<leader>cn]], function()
+    return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true })
   set("n", [[<leader>cs]], [[<Cmd>%s/\s\+$//gc<CR>]])
 
