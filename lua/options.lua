@@ -289,6 +289,8 @@ function M.set_default_bindings()
   )
 
   -- other
+  set("c", [[<C-j>]], "<Down>")
+  set("c", [[<C-k>]], "<Up>")
   set("n", [[<leader>#]], function()
     return "?" .. fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true })
@@ -300,8 +302,8 @@ function M.set_default_bindings()
     [[<leader>X]],
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
+  set("n", [[<leader>R]], [[vip:!column -to ' '<CR>]])
   set("n", [[<leader>h]], cmd.nohlsearch)
-  set("n", [[<leader>r]], [[vip:!column -to ' '<CR>]])
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
   set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
