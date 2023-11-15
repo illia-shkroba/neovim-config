@@ -15,8 +15,10 @@ return {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
-        ["d"] = actions.preview_scrolling_down,
-        ["u"] = actions.preview_scrolling_up,
+        ["<"] = actions.preview_scrolling_left,
+        [">"] = actions.preview_scrolling_right,
+        ["J"] = actions.preview_scrolling_down,
+        ["K"] = actions.preview_scrolling_up,
       },
       i = {
         ["<C-d>"] = actions.results_scrolling_down,
