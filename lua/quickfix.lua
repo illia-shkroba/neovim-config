@@ -60,8 +60,7 @@ function M.get_current_item_index()
 end
 
 function M.create_current_position_item()
-  local position = fn.getcurpos()
-  local line, column = position[2], position[3]
+  local line, column = utils.get_cursor()
   return {
     filename = api.nvim_buf_get_name(0),
     lnum = line,

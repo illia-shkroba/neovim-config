@@ -7,7 +7,7 @@ local action_state = require "telescope.actions.state"
 local builtin = require "telescope.builtin"
 
 function M.hide_in_find_files(buffer_number)
-  local find_files = function()
+  local function find_files()
     builtin.find_files {
       hidden = nil,
       no_ignore = nil,
@@ -18,7 +18,7 @@ function M.hide_in_find_files(buffer_number)
 end
 
 function M.unhide_in_find_files(buffer_number)
-  local find_files = function()
+  local function find_files()
     builtin.find_files {
       hidden = true,
       no_ignore = true,
@@ -33,7 +33,7 @@ local function search_string(picker)
 end
 
 function M.search_globally_in_grep_string(buffer_number)
-  local grep_string = function()
+  local function grep_string()
     local current_picker = action_state.get_current_picker(buffer_number)
     builtin.grep_string {
       search = search_string(current_picker),
