@@ -116,15 +116,14 @@ end
 
 function M.map_visual(f)
   local selection = M.get_visual_selection()
-  local register = fn.getreg '"'
-
-  fn.setreg('"', f(selection.text))
-  cmd.normal "gvp"
-  if selection.mode == "v" and selection.ends_with_newline then
-    cmd.normal [[a]] -- add newline that was removed during selection
-    cmd.normal "gvo" -- go to initial cursor position
-  end
-  fn.setreg('"', register)
+  M.with_register(function()
+    fn.setreg('"', f(selection.text))
+    cmd.normal "gvp"
+    if selection.mode == "v" and selection.ends_with_newline then
+      cmd.normal [[a]] -- add newline that was removed during selection
+      cmd.normal "gvo" -- go to initial cursor position
+    end
+  end)
 end
 
 function M.get_visual_selection()
@@ -156,9 +155,23 @@ function M.get_visual_selection()
   return result
 end
 
+function M.with_register(f)
+  local old_register = fn.getreg '"'
+  local y = f(old_register)
+  local new_register = fn.getreg '"'
+  fn.setreg('"', old_register)
+  return y, new_register
+end
+
 function M.quote(text)
   local quote = fn.getcharstr()
   return quote .. text .. quote
+end
+
+function M.get_cursor()
+  local position = fn.getcurpos()
+  local line, column = position[2], position[3]
+  return line, column
 end
 
 return M
