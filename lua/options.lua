@@ -15,12 +15,14 @@ function M.set_default_options()
   opt.inccommand = "split"
   opt.incsearch = true
   opt.linebreak = true
+  opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
   opt.modeline = true
   opt.number = true
   opt.omnifunc = "syntaxcomplete#Complete"
   opt.path = { "**", "./**" }
   opt.pumblend = 10
   opt.relativenumber = true
+  opt.shiftround = true
   opt.shiftwidth = 2
   opt.smartindent = true
   opt.softtabstop = 2
