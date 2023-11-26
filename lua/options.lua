@@ -239,6 +239,10 @@ function M.set_default_bindings()
     end)
   end
 
+  -- git
+  set("n", [[<leader>DS]], [[<Cmd>:Gdiffsplit! HEAD<CR>]])
+  set("n", [[<leader>ds]], [[<Cmd>:Gdiffsplit!<CR>]])
+
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
 
