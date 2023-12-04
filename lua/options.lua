@@ -329,6 +329,7 @@ end
 
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
+  local set = vim.keymap.set
 
   autocmd(
     "BufWritePost",
@@ -338,6 +339,12 @@ function M.set_default_autocommands()
     "BufWritePost",
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
+  autocmd("CmdwinEnter", {
+    pattern = { "*" },
+    callback = function()
+      set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
+    end,
+  })
   autocmd(
     "FileType",
     { pattern = { "json" }, command = [[syntax match Comment +\/\/.\+$+]] }
