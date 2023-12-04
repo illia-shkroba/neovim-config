@@ -333,6 +333,12 @@ function M.set_default_autocommands()
     "BufWritePost",
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
+  autocmd("CmdwinEnter", {
+    pattern = { "*" },
+    callback = function()
+      set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
+    end,
+  })
   autocmd(
     "BufWritePost",
     { pattern = "config.h", command = "silent !sudo make install" }
