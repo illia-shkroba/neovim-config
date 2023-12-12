@@ -175,6 +175,11 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
+    set("n", [[<leader>fB]], function()
+      telescope.live_grep {
+        grep_open_files = true,
+      }
+    end)
     set("n", [[<leader>fC]], telescope.colorscheme)
     set("n", [[<leader>fG]], function()
       local extension = path.extension(api.nvim_buf_get_name(0))
@@ -189,6 +194,12 @@ function M.set_default_bindings()
         [[" } }]]
       return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
     end, { expr = true })
+    set("n", [[<leader>fW]], function()
+      telescope.grep_string {
+        word_match = "-w",
+        grep_open_files = true,
+      }
+    end)
     set("n", [[<leader>fb]], telescope.buffers)
     set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
