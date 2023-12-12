@@ -40,6 +40,7 @@ function M.set_default_bindings()
   local diagnostic = vim.diagnostic
   local fn = vim.fn
   local fs = vim.fs
+  local opt = vim.opt
   local set = vim.keymap.set
 
   local path = require "path"
@@ -305,6 +306,14 @@ function M.set_default_bindings()
     [[:lua require("utils").map_visual(require("utils").quote)<CR>]],
     { silent = true }
   )
+
+  -- fold
+  set("n", [[<leader>gf]], function()
+    opt.foldmethod = "indent"
+  end)
+  set("n", [[<leader>gF]], function()
+    opt.foldmethod = "manual"
+  end)
 
   -- other
   set("c", [[<C-j>]], "<Down>")
