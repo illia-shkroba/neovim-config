@@ -32,22 +32,22 @@ return {
     }
     local buffers_mappings = {
       n = {
-        ["<C-r>"] = telescope.wipe_out_buffers,
+        ["<C-z>"] = telescope.wipe_out_buffers,
       },
       i = {
-        ["<C-r>"] = telescope.wipe_out_buffers,
+        ["<C-z>"] = telescope.wipe_out_buffers,
       },
     }
     local find_files_mappings = {
       n = {
         ["<C-h>"] = telescope.hide_in_find_files,
         ["<C-s>"] = telescope.unhide_in_find_files,
-        ["<C-r>"] = telescope.remove_files,
+        ["<C-z>"] = telescope.remove_files,
       },
       i = {
         ["<C-h>"] = telescope.hide_in_find_files,
         ["<C-s>"] = telescope.unhide_in_find_files,
-        ["<C-r>"] = telescope.remove_files,
+        ["<C-z>"] = telescope.remove_files,
       },
     }
     local grep_string_mappings = {
