@@ -262,6 +262,7 @@ function M.set_default_bindings()
   -- git
   set("n", [[<leader>DS]], [[<Cmd>:Gdiffsplit! HEAD<CR>]])
   set("n", [[<leader>ds]], [[<Cmd>:Gdiffsplit!<CR>]])
+  set("n", [[<leader>P]], [[<Cmd>:Git add --patch -- %<CR>]])
 
   -- yield
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
