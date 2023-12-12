@@ -81,8 +81,6 @@ return {
       { silent = true, noremap = true, expr = true, replace_keycodes = false }
     )
 
-    -- Use <C-j> to trigger snippets
-    set("i", [[<C-j>]], [[<Plug>(coc-snippets-expand-jump)]])
     -- Use <C-space> to trigger completion
     set("i", [[<C-space>]], fn["coc#refresh"], { silent = true, expr = true })
 
@@ -191,52 +189,28 @@ return {
 
     -- Map function and class text objects
     set(
-      "x",
-      [[if]],
-      [[<Plug>(coc-funcobj-i)]],
-      { silent = true, nowait = true }
-    )
-    set(
-      "o",
+      {"x", "o"},
       [[if]],
       [[<Plug>(coc-funcobj-i)]],
       { silent = true, nowait = true }
     )
 
     set(
-      "x",
-      [[af]],
-      [[<Plug>(coc-funcobj-a)]],
-      { silent = true, nowait = true }
-    )
-    set(
-      "o",
+      {"x", "o"},
       [[af]],
       [[<Plug>(coc-funcobj-a)]],
       { silent = true, nowait = true }
     )
 
     set(
-      "x",
-      [[ic]],
-      [[<Plug>(coc-classobj-i)]],
-      { silent = true, nowait = true }
-    )
-    set(
-      "o",
+      {"x", "o"},
       [[ic]],
       [[<Plug>(coc-classobj-i)]],
       { silent = true, nowait = true }
     )
 
     set(
-      "x",
-      [[ac]],
-      [[<Plug>(coc-classobj-a)]],
-      { silent = true, nowait = true }
-    )
-    set(
-      "o",
+      {"x", "o"},
       [[ac]],
       [[<Plug>(coc-classobj-a)]],
       { silent = true, nowait = true }
