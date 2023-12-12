@@ -170,6 +170,11 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
+    set("n", [[<leader>fB]], function()
+      telescope.live_grep {
+        grep_open_files = true,
+      }
+    end)
     set("n", [[<leader>fC]], telescope.colorscheme)
     set("n", [[<leader>fe]], function()
       cmd.Telescope("coc", "workspace_diagnostics")
@@ -187,6 +192,12 @@ function M.set_default_bindings()
         [[" } }]]
       return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
     end, { expr = true })
+    set("n", [[<leader>fW]], function()
+      telescope.grep_string {
+        word_match = "-w",
+        grep_open_files = true,
+      }
+    end)
     set("n", [[<leader>fw]], function()
       cmd.Telescope("coc", "workspace_symbols")
     end)
