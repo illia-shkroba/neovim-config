@@ -265,6 +265,7 @@ function M.set_default_bindings()
   set("n", [[<leader>P]], [[<Cmd>:Git add --patch -- %<CR>]])
 
   -- yield
+  set("n", [[<leader>YF]], [[<Cmd>let @+ = @%<CR>]])
   set("n", [[<leader>yf]], [[<Cmd>let @" = @%<CR>]])
 
   -- substitute
