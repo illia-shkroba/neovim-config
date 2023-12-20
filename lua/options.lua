@@ -283,7 +283,7 @@ function M.set_default_bindings()
   set("n", [[<leader>cs]], [[<Cmd>%s/\s\+$//gc<CR>]])
 
   -- case
-  local case = require "case"
+  local case = require "format.case"
   set("n", [[<leader>cF]], function()
     utils.map_motion(case.to_camel)
   end)
@@ -293,13 +293,13 @@ function M.set_default_bindings()
   set(
     "v",
     [[<leader>cF]],
-    [[:lua require("utils").map_visual(require("case").to_camel)<CR>]],
+    [[:lua require("utils").map_visual(require("format.case").to_camel)<CR>]],
     { silent = true }
   )
   set(
     "v",
     [[<leader>cf]],
-    [[:lua require("utils").map_visual(require("case").to_snake)<CR>]],
+    [[:lua require("utils").map_visual(require("format.case").to_snake)<CR>]],
     { silent = true }
   )
 
