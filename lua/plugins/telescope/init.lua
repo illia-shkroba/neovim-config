@@ -60,6 +60,7 @@ return {
     }
     require("telescope").setup {
       defaults = {
+        cache_picker = { num_pickers = 10 },
         scroll_strategy = "limit",
         mappings = global_mappings,
         history = {
