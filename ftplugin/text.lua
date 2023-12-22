@@ -8,14 +8,24 @@ local set = vim.keymap.set
 set(
   "",
   [[gqap]],
-  [[vap:call StripWS()<CR>gqap]],
+  [[:'{,'}substitute/\s\+/ /g<CR>gqap]],
   { buffer = true, remap = false }
 )
 set(
   "",
   [[gqip]],
-  [[vip:call StripWS()<CR>gqip]],
+  [[:'{,'}substitute/\s\+/ /g<CR>gqip]],
   { buffer = true, remap = false }
 )
-set("", [[gqq]], [[:call StripWS()<CR>gqq]], { buffer = true, remap = false })
-set("", [[gww]], [[:call StripWS()<CR>gww]], { buffer = true, remap = false })
+set(
+  "",
+  [[gqq]],
+  [[:substitute/\s\+/ /g<CR>gqq]],
+  { buffer = true, remap = false }
+)
+set(
+  "",
+  [[gww]],
+  [[:substitute/\s\+/ /g<CR>gww]],
+  { buffer = true, remap = false }
+)
