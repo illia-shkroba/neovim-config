@@ -10,7 +10,7 @@ function M.set_default_options()
   opt.completeopt = "menu"
   opt.encoding = "utf-8"
   opt.expandtab = true
-  opt.formatoptions = "tcro/qanl1j"
+  opt.formatoptions = "tcro/qnl1j"
   opt.hidden = true
   opt.hlsearch = true
   opt.inccommand = "split"

@@ -6,6 +6,7 @@ vim.b.did_markdown_ftplugin = true
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
+opt_local.formatoptions = opt_local.formatoptions._value .. "a"
 opt_local.spell = true
 opt_local.textwidth = 100
 
