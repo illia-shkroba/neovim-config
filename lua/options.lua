@@ -91,8 +91,9 @@ function M.set_default_bindings()
   set("n", "[e", diagnostic.goto_prev)
   set("n", [[<leader>e]], diagnostic.open_float)
 
-  -- quickfix
-  local quickfix = require "quickfix"
+  -- quickfix/location
+  local list = require "list"
+  local quickfix = list.quickfix
   set(
     "n",
     [[<leader>N]],
@@ -119,21 +120,23 @@ function M.set_default_bindings()
     print("Removed all quickfix items: " .. quickfix.get_title())
   end)
   set("n", [[<leader>qa]], function()
-    quickfix.add_item(quickfix.create_current_position_item())
+    quickfix.add_item(list.create_current_position_item())
     cmd.clast()
   end)
   set("n", [[<leader>qe]], diagnostic.setqflist)
-  set("n", [[<leader>qx]], quickfix.create_by_prompt)
-
-  -- location
-  local location = require "location"
+  set("n", [[<leader>qx]], function()
+    local name = utils.try(fn.input, "Enter quickfix list: ")
+    if name then
+      quickfix.create(name)
+    end
+  end)
   set("n", [[<leader>S]], function()
-    location.search(utils.get_motion_selection())
+    cmd.lvimgrep(utils.get_motion_selection(), "##")
   end)
   set(
     "v",
     [[<leader>S]],
-    [[:lua require("location").search(require("utils").get_visual_selection())<CR>]]
+    [[:lua vim.cmd.lvimgrep(require("utils").get_visual_selection().text, "##")<CR>]]
   )
 
   -- tmux
@@ -216,7 +219,7 @@ function M.set_default_bindings()
     set(
       "v",
       [[<leader>F]],
-      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection() }<CR>]]
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text }<CR>]]
     )
   end
 
