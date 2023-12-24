@@ -339,7 +339,7 @@ function M.set_default_bindings()
   end, { expr = true })
   set(
     "n",
-    [[<leader>X]],
+    [[<leader>Z]],
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
   set("n", [[<leader>R]], [[vip:!column -to ' '<CR>]])
