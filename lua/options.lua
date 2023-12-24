@@ -218,6 +218,7 @@ function M.set_default_bindings()
     set("n", [[<leader>fS]], telescope.resume)
     set("n", [[<leader>fs]], telescope.pickers)
     set("n", [[<leader>ft]], telescope.tags)
+    set("n", [[<leader>fT]], telescope.filetypes)
     set(
       "v",
       [[<leader>F]],
