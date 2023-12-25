@@ -89,6 +89,8 @@ function M.set_default_bindings()
   -- quickfix/location
   local list = require "list"
   local quickfix = list.quickfix
+  local location = list.location
+
   set(
     "n",
     [[<leader>N]],
@@ -101,6 +103,19 @@ function M.set_default_bindings()
     [[:cnext<CR>:copen<CR>zt:wincmd p<CR>zz]],
     { silent = true }
   )
+  set(
+    "n",
+    [[<leader>LN]],
+    [[:lprevious<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    { silent = true }
+  )
+  set(
+    "n",
+    [[<leader>ln]],
+    [[:lnext<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    { silent = true }
+  )
+
   set("n", [[<leader>qA]], function()
     local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
@@ -110,21 +125,50 @@ function M.set_default_bindings()
       print("Removed quickfix item: " .. vim.trim(item.text))
     end
   end)
+  set("n", [[<leader>lA]], function()
+    local index = location.get_current_item_index()
+    local item = location.get_current_item()
+    location.remove_item(item)
+    utils.try(cmd, [[ll ]] .. index)
+    if item.text then
+      print("Removed location item: " .. vim.trim(item.text))
+    end
+  end)
+
   set("n", [[<leader>qX]], function()
     quickfix.reset()
     print("Removed all quickfix items: " .. quickfix.get_title())
   end)
+  set("n", [[<leader>lX]], function()
+    location.reset()
+    print("Removed all location items: " .. location.get_title())
+  end)
+
   set("n", [[<leader>qa]], function()
     quickfix.add_item(list.create_current_position_item())
     cmd.clast()
   end)
+  set("n", [[<leader>la]], function()
+    location.add_item(list.create_current_position_item())
+    cmd.llast()
+  end)
+
   set("n", [[<leader>qe]], diagnostic.setqflist)
+  set("n", [[<leader>le]], diagnostic.setloclist)
+
   set("n", [[<leader>qx]], function()
     local name = utils.try(fn.input, "Enter quickfix list: ")
     if name then
       quickfix.create(name)
     end
   end)
+  set("n", [[<leader>lx]], function()
+    local name = utils.try(fn.input, "Enter location list: ")
+    if name then
+      location.create(name)
+    end
+  end)
+
   set("n", [[<leader>S]], function()
     cmd.lvimgrep(utils.get_motion_selection(), "##")
   end)
