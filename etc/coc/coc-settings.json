@@ -89,6 +89,27 @@
         ".git",
         ".terraform"
       ]
+    },
+    "yaml": {
+      "command": "yaml-language-server",
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "yaml",
+        "yaml.docker-compose"
+      ],
+      "settings": {
+        "yaml": {
+          "schemas": {
+            "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "/*compose.yaml",
+            "kubernetes": "/*.k8s.yaml"
+          }
+        }
+      },
+      "rootPatterns": [
+        ".git"
+      ]
     }
   },
   "list.insertMappings": {
