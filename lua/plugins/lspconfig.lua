@@ -15,5 +15,15 @@ return {
     lspconfig.rnix.setup {}
     lspconfig.terraformls.setup {}
     lspconfig.vimls.setup {}
+    lspconfig.yamlls.setup {
+      settings = {
+        yaml = {
+          schemas = {
+            ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/*compose.yaml",
+            ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.1-standalone-strict/all.json"] = "/*.k8s.yaml",
+          },
+        },
+      },
+    }
   end,
 }
