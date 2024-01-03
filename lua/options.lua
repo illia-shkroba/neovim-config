@@ -169,6 +169,22 @@ function M.set_default_bindings()
     end
   end)
 
+  local function dump_list(current_list)
+    local dumped = current_list.dump()
+    if #dumped > 0 then
+      local buffer = api.nvim_create_buf(true, false)
+      api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
+      cmd.sbuffer(buffer)
+    end
+  end
+
+  set("n", [[<leader>qd]], function()
+    dump_list(quickfix)
+  end)
+  set("n", [[<leader>ld]], function()
+    dump_list(location)
+  end)
+
   set("n", [[<leader>S]], function()
     cmd.lvimgrep(utils.get_motion_selection(), "##")
   end)

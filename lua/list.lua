@@ -58,6 +58,23 @@ function with_list.get_title(list)
   return list.get({ title = "" }).title
 end
 
+function with_list.dump(list)
+  local items = list.get()
+  local dumped = {}
+
+  for _, item in pairs(items) do
+    local d = {
+      api.nvim_buf_get_name(item["bufnr"]),
+      item["lnum"],
+      vim.trim(item["text"]),
+    }
+
+    table.insert(dumped, table.concat(d, ":"))
+  end
+
+  return dumped
+end
+
 function M.create_current_position_item()
   local line, column = utils.get_cursor()
   return {
