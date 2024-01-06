@@ -273,7 +273,7 @@ function M.set_default_bindings()
     set(
       "v",
       [[<leader>F]],
-      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text }<CR>]]
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]]
     )
     set(
       "v",
