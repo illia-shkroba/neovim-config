@@ -281,6 +281,11 @@ function M.set_default_bindings()
       [[<leader>F]],
       [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text }<CR>]]
     )
+    set(
+      "v",
+      [[<leader>fW]],
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]]
+    )
   end
 
   -- nvim-tree
