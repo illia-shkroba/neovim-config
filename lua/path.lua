@@ -13,7 +13,13 @@ function M.step_into(src_dir, dest_dir)
 end
 
 function M.extension(path)
-  return utils.split(fs.basename(path), ".")[2]
+  local chunks = utils.split(fs.basename(path), ".")
+  table.remove(chunks, 1)
+  local extension = table.concat(chunks, ".")
+  if #extension > 0 then
+    extension = "." .. extension
+  end
+  return extension
 end
 
 return M
