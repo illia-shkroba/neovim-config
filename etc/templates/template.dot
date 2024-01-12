@@ -1,0 +1,12 @@
+digraph "My Digraph" {
+  graph [ordering=in];
+  node [shape=box];
+
+  node [label="A"] a;
+  node [label="B"] b;
+  node [label="C"] c;
+
+  a -> b [label="f"];
+  b -> c [label="g"];
+  a -> c [label="g . f"];
+}
