@@ -451,6 +451,7 @@ function M.enable_templates()
 
   enable_template "cpp"
   enable_template "dhall"
+  enable_template "dot"
   enable_template "hs"
   enable_template "java"
   enable_template "md"
