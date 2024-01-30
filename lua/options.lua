@@ -233,12 +233,13 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
+    set("n", [[<leader>f/]], telescope.search_history)
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
       }
     end)
-    set("n", [[<leader>fC]], telescope.colorscheme)
+    set("n", [[<leader>fC]], telescope.git_bcommits)
     set("n", [[<leader>fG]], function()
       local extension = path.extension(api.nvim_buf_get_name(0))
       local prefix, suffix =
@@ -256,6 +257,7 @@ function M.set_default_bindings()
     set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>ff]], telescope.find_files)
     set("n", [[<leader>fg]], telescope.live_grep)
+    set("n", [[<leader>fh]], telescope.command_history)
     set("n", [[<leader>fj]], telescope.jumplist)
     set("n", [[<leader>fm]], telescope.marks)
     set("n", [[<leader>fq]], telescope.quickfixhistory)
