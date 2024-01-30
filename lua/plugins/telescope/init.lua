@@ -40,13 +40,13 @@ return {
     }
     local find_files_mappings = {
       n = {
-        ["<C-h>"] = telescope.hide_in_find_files,
-        ["<C-s>"] = telescope.unhide_in_find_files,
+        ["<C-s>h"] = telescope.hide_in_find_files,
+        ["<C-s>s"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
       i = {
-        ["<C-h>"] = telescope.hide_in_find_files,
-        ["<C-s>"] = telescope.unhide_in_find_files,
+        ["<C-s>h"] = telescope.hide_in_find_files,
+        ["<C-s>s"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
     }
