@@ -64,17 +64,17 @@ function M.set_default_bindings()
   set(
     "",
     [[<leader>dD]],
-    [[<Cmd>execute "cd " .. system("dirname " .. @%)<CR>]]
+    [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]]
   )
   set(
     "",
     [[<leader>dL]],
-    [[<Cmd>execute "lcd " .. system("dirname " .. @%)<CR>]]
+    [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]]
   )
   set(
     "",
     [[<leader>dT]],
-    [[<Cmd>execute "tcd " .. system("dirname " .. @%)<CR>]]
+    [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]]
   )
   set("", [[<leader>dd]], function()
     cmd.cd(step_into_buffer_dir())
