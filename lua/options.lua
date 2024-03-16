@@ -175,6 +175,7 @@ function M.set_default_bindings()
       local buffer = api.nvim_create_buf(true, false)
       api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
       cmd.sbuffer(buffer)
+      cmd.file(current_list.get_title())
     end
   end
 
