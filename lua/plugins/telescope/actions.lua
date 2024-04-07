@@ -8,7 +8,9 @@ local builtin = require "telescope.builtin"
 
 function M.hide_in_find_files(buffer_number)
   local function find_files()
+    local current_picker = action_state.get_current_picker(buffer_number)
     builtin.find_files {
+      cwd = current_picker.cwd,
       hidden = nil,
       no_ignore = nil,
       no_ignore_parent = nil,
@@ -19,7 +21,9 @@ end
 
 function M.unhide_in_find_files(buffer_number)
   local function find_files()
+    local current_picker = action_state.get_current_picker(buffer_number)
     builtin.find_files {
+      cwd = current_picker.cwd,
       hidden = true,
       no_ignore = true,
       no_ignore_parent = true,
@@ -36,6 +40,7 @@ function M.search_globally_in_grep_string(buffer_number)
   local function grep_string()
     local current_picker = action_state.get_current_picker(buffer_number)
     builtin.grep_string {
+      cwd = current_picker.cwd,
       search = search_string(current_picker),
       word_match = "-w",
     }
