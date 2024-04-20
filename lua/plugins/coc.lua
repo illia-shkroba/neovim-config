@@ -15,6 +15,7 @@ return {
       "coc-json",
       "coc-lua",
       "coc-pyright",
+      "coc-rust-analyzer",
       "coc-vimlsp",
     }
   end,
@@ -189,28 +190,28 @@ return {
 
     -- Map function and class text objects
     set(
-      {"x", "o"},
+      { "x", "o" },
       [[if]],
       [[<Plug>(coc-funcobj-i)]],
       { silent = true, nowait = true }
     )
 
     set(
-      {"x", "o"},
+      { "x", "o" },
       [[af]],
       [[<Plug>(coc-funcobj-a)]],
       { silent = true, nowait = true }
     )
 
     set(
-      {"x", "o"},
+      { "x", "o" },
       [[ic]],
       [[<Plug>(coc-classobj-i)]],
       { silent = true, nowait = true }
     )
 
     set(
-      {"x", "o"},
+      { "x", "o" },
       [[ac]],
       [[<Plug>(coc-classobj-a)]],
       { silent = true, nowait = true }
