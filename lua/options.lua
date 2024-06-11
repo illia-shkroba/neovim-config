@@ -414,6 +414,16 @@ function M.set_default_bindings()
   set("n", [[<leader>h]], cmd.nohlsearch)
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
+  set(
+    "v",
+    [[<leader>#]],
+    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]]
+  )
+  set(
+    "v",
+    [[<leader>*]],
+    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]]
+  )
   set("v", [[<leader>R]], [[:!column -to ' '<CR>]], { silent = true })
 end
 
