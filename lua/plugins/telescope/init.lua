@@ -96,6 +96,14 @@ return {
           theme = "ivy",
           prefer_locations = true,
         },
+        file_browser = {
+          theme = "ivy",
+          hijack_netrw = true,
+          mappings = {
+            n = {},
+            i = {},
+          },
+        },
       },
     }
   end,
