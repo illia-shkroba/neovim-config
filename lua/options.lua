@@ -389,24 +389,13 @@ function M.set_default_bindings()
     cmd.normal "zE"
   end)
 
-  -- other
-  set("c", [[<C-j>]], "<Down>")
-  set("c", [[<C-k>]], "<Up>")
+  -- search
   set("n", [[<leader>#]], function()
     return "?" .. fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true })
   set("n", [[<leader>*]], function()
     return "/" .. fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true })
-  set(
-    "n",
-    [[<leader>Z]],
-    [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
-  )
-  set("n", [[<leader>R]], [[vip:!column -to ' '<CR>]])
-  set("n", [[<leader>h]], cmd.nohlsearch)
-  set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
-  set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
   set(
     "v",
     [[<leader>#]],
@@ -417,7 +406,30 @@ function M.set_default_bindings()
     [[<leader>*]],
     [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]]
   )
-  set("v", [[<leader>r]], [[:!column -to ' '<CR>]], { silent = true })
+
+  -- shift
+  set("c", [[<C-j>]], "<Down>")
+  set("c", [[<C-k>]], "<Up>")
+  set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
+  set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
+
+  -- column
+  set("n", [[<leader>R]], [[vip:!column -to ' '<CR>]])
+  set("v", [[<leader>R]], [[:!column -to ' '<CR>]], { silent = true })
+
+  -- tags
+  set("n", [[<leader>gt]], function()
+    local language = vim.opt_local.filetype._value
+    return [[:!ctags -R --languages=]] .. language .. [[ .]]
+  end, { expr = true })
+
+  -- other
+  set(
+    "n",
+    [[<leader>Z]],
+    [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
+  )
+  set("n", [[<leader>h]], cmd.nohlsearch)
 end
 
 function M.set_default_autocommands()
