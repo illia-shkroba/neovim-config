@@ -215,7 +215,6 @@ function M.set_default_bindings()
   -- telescope
   local telescope = utils.require_safe "telescope.builtin"
   if telescope then
-    set("", [[<leader>=]], telescope.spell_suggest)
     set("", [[<leader>fc]], function()
       cmd.Telescope("coc", "references")
     end)
@@ -229,7 +228,6 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
-    set("n", [[<leader>f/]], telescope.search_history)
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
@@ -239,7 +237,7 @@ function M.set_default_bindings()
     set("n", [[<leader>fe]], function()
       cmd.Telescope("coc", "workspace_diagnostics")
     end)
-    set("n", [[<leader>fG]], function()
+    set("n", [[<leader>fg]], function()
       local extension = path.extension(api.nvim_buf_get_name(0))
       local prefix, suffix =
         [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*]],
@@ -266,14 +264,13 @@ function M.set_default_bindings()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end)
     set("n", [[<leader>ff]], telescope.find_files)
-    set("n", [[<leader>fg]], telescope.live_grep)
-    set("n", [[<leader>fh]], telescope.command_history)
+    set("n", [[<leader>fG]], telescope.live_grep)
     set("n", [[<leader>fj]], telescope.jumplist)
     set("n", [[<leader>fm]], telescope.marks)
     set("n", [[<leader>fq]], telescope.quickfixhistory)
     set("n", [[<leader>fr]], telescope.oldfiles)
-    set("n", [[<leader>fS]], telescope.resume)
-    set("n", [[<leader>fs]], telescope.pickers)
+    set("n", [[<leader>fs]], telescope.resume)
+    set("n", [[<leader>fS]], telescope.pickers)
     set("n", [[<leader>ft]], telescope.tags)
     set("n", [[<leader>fT]], telescope.filetypes)
     set(
