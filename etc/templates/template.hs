@@ -1,3 +1,9 @@
+module Module
+  (
+  ) where
+
+import           Protolude
+
 main :: IO ()
 main = do
-  return ()
+  pure ()
