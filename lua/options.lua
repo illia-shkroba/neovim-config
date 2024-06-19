@@ -386,6 +386,7 @@ function M.set_default_bindings()
   end)
   set("n", [[<leader>gF]], function()
     opt.foldmethod = "manual"
+    cmd.normal "zE"
   end)
 
   -- other
