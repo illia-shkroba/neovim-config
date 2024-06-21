@@ -428,6 +428,23 @@ function M.set_default_bindings()
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
   end, { expr = true })
 
+  -- popupmenu
+  set("i", [[<C-l>]], function()
+    return vim.fn.pumvisible() == 1 and [[<C-l>]] or [[<C-n><C-p>]]
+  end, { expr = true })
+  set("i", [[<C-k>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
+  end, { expr = true })
+  set("i", [[<C-j>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
+  end, { expr = true })
+  set("i", [[<C-b>]], function()
+    return vim.fn.pumvisible() == 1 and [[<PageUp>]] or [[<C-b>]]
+  end, { expr = true })
+  set("i", [[<C-f>]], function()
+    return vim.fn.pumvisible() == 1 and [[<PageDown>]] or [[<C-f>]]
+  end, { expr = true })
+
   -- other
   set(
     "n",
