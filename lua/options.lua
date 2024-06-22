@@ -317,11 +317,11 @@ function M.set_default_bindings()
   end
 
   -- git
-  set("n", [[<leader>DS]], [[<Cmd>:wincmd s | wincmd T | Gdiffsplit! HEAD<CR>]])
-  set("n", [[<leader>Ds]], [[<Cmd>:Gdiffsplit! HEAD<CR>]])
-  set("n", [[<leader>ds]], [[<Cmd>:Gdiffsplit!<CR>]])
-  set("n", [[<leader>dS]], [[<Cmd>:wincmd s | wincmd T | Gdiffsplit!<CR>]])
-  set("n", [[<leader>P]], [[<Cmd>:Git add --patch -- %<CR>]])
+  set("n", [[<leader>DS]], [[<Cmd>wincmd s | wincmd T | Gdiffsplit! HEAD<CR>]])
+  set("n", [[<leader>Ds]], [[<Cmd>Gdiffsplit! HEAD<CR>]])
+  set("n", [[<leader>ds]], [[<Cmd>Gdiffsplit!<CR>]])
+  set("n", [[<leader>dS]], [[<Cmd>wincmd s | wincmd T | Gdiffsplit!<CR>]])
+  set("n", [[<leader>P]], [[<Cmd>Git add --patch -- %<CR>]])
 
   -- yield
   set("n", [[<leader>YF]], [[<Cmd>let @+ = expand("%:p")<CR>]])
