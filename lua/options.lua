@@ -220,7 +220,6 @@ function M.set_default_bindings()
   -- telescope
   local telescope = utils.require_safe "telescope.builtin"
   if telescope then
-    set("", [[<leader>=]], telescope.spell_suggest)
     set("", [[<leader>fc]], telescope.lsp_references)
     set("", [[<leader>fi]], telescope.lsp_incoming_calls)
     set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
@@ -459,6 +458,10 @@ function M.set_default_autocommands()
 
   autocmd(
     "BufWritePost",
+    { pattern = "config.h", command = "silent !sudo make install" }
+  )
+  autocmd(
+    "BufWritePost",
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
   autocmd("CmdwinEnter", {
@@ -467,10 +470,6 @@ function M.set_default_autocommands()
       set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
     end,
   })
-  autocmd(
-    "BufWritePost",
-    { pattern = "config.h", command = "silent !sudo make install" }
-  )
   autocmd("LspAttach", {
     callback = function(event)
       vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
