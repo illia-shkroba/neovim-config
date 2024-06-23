@@ -7,7 +7,7 @@ function M.set_default_options()
   cmd.filetype "on"
 
   opt.autoindent = true
-  opt.completeopt = "menu"
+  opt.completeopt = { "menuone", "preview", "popup" }
   opt.encoding = "utf-8"
   opt.expandtab = true
   opt.formatoptions = "tcro/qnl1j"
