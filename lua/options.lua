@@ -430,19 +430,21 @@ function M.set_default_bindings()
 
   -- popupmenu
   set("i", [[<C-l>]], function()
-    return vim.fn.pumvisible() == 1 and [[<C-l>]] or [[<C-n><C-p>]]
+    return fn.pumvisible() == 1 and [[<C-l>]] or [[<C-n><C-p>]]
   end, { expr = true })
   set("i", [[<C-k>]], function()
-    return vim.fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
+    return fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
   end, { expr = true })
   set("i", [[<C-j>]], function()
-    return vim.fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
-  end, { expr = true })
-  set("i", [[<C-b>]], function()
-    return vim.fn.pumvisible() == 1 and [[<PageUp>]] or [[<C-b>]]
+    return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
   end, { expr = true })
   set("i", [[<C-f>]], function()
-    return vim.fn.pumvisible() == 1 and [[<PageDown>]] or [[<C-f>]]
+    if fn.pumvisible() == 1 then
+      cmd.Telescope "completion"
+      return ""
+    else
+      return [[<C-f>]]
+    end
   end, { expr = true })
 
   -- other
