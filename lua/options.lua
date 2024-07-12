@@ -233,6 +233,7 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
+    set("n", [[<leader>f/]], telescope.search_history)
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
