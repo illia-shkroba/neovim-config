@@ -263,8 +263,11 @@ function M.set_default_bindings()
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end)
+    set("n", [[<leader>fG]], telescope.current_buffer_fuzzy_find)
+    set("n", [[<leader>fR]], function()
+      telescope.oldfiles { cwd_only = true }
+    end)
     set("n", [[<leader>ff]], telescope.find_files)
-    set("n", [[<leader>fG]], telescope.live_grep)
     set("n", [[<leader>fj]], telescope.jumplist)
     set("n", [[<leader>fm]], telescope.marks)
     set("n", [[<leader>fq]], telescope.quickfixhistory)
