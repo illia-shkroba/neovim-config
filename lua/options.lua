@@ -349,7 +349,7 @@ function M.set_default_bindings()
   set("n", [[<leader>cn]], function()
     return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true })
-  set("n", [[<leader>cs]], [[<Cmd>%s/\s\+$//gc<CR>]])
+  set("n", [[<leader>cs]], [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]])
 
   -- case
   local case = require "format.case"
