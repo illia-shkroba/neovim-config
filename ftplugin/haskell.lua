@@ -28,16 +28,10 @@ local stylish_config = fn.stdpath "config"
 opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
 set("", [[<leader><CR>]], [[<Cmd>w !stack ghci<CR>]], { buffer = true })
-set("", [[gh]], [[<Cmd>up | %!hlint --refactor %<CR>]], { buffer = true })
 set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal stack ghci #<CR>]],
   { buffer = true }
 )
-set(
-  "n",
-  [[<leader>g]],
-  [[<Cmd>silent !fast-tags -R --qualified .<CR>]],
-  { buffer = true }
-)
+set("n", [[<leader>gt]], [[:!fast-tags -R --qualified .]], { buffer = true })

@@ -23,9 +23,4 @@ opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto --i
   .. opt_local.tabstop._value
   .. " --width 80"
 
-set(
-  "n",
-  [[<leader>g]],
-  [[<Cmd>silent !fast-tags -R --qualified .<CR>]],
-  { buffer = true }
-)
+set("n", [[<leader>gt]], [[:!fast-tags -R --qualified .]], { buffer = true })
