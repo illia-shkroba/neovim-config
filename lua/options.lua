@@ -27,6 +27,7 @@ function M.set_default_options()
   opt.shiftwidth = 2
   opt.smartindent = true
   opt.softtabstop = 2
+  opt.spell = true
   opt.splitbelow = true
   opt.splitright = true
   opt.tabstop = 2
