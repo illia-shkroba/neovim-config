@@ -474,7 +474,6 @@ function M.set_default_autocommands()
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
   autocmd("CmdwinEnter", {
-    pattern = { "*" },
     callback = function()
       set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
     end,
@@ -483,6 +482,11 @@ function M.set_default_autocommands()
     "FileType",
     { pattern = { "json" }, command = [[syntax match Comment +\/\/.\+$+]] }
   )
+  autocmd("TextYankPost", {
+    callback = function()
+      vim.highlight.on_yank { timeout = 300 }
+    end,
+  })
 end
 
 function M.enable_templates()
