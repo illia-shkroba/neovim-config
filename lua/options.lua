@@ -472,7 +472,6 @@ function M.set_default_autocommands()
     { pattern = { ".Xresources", "xresources" }, command = "silent !xrdb %" }
   )
   autocmd("CmdwinEnter", {
-    pattern = { "*" },
     callback = function()
       set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
     end,
@@ -506,6 +505,11 @@ function M.set_default_autocommands()
 
       -- For some reasone `del` produces errors when triggered by `LspStop`
       utils.try(unset_bindings)
+    end,
+  })
+  autocmd("TextYankPost", {
+    callback = function()
+      vim.highlight.on_yank { timeout = 300 }
     end,
   })
 end
