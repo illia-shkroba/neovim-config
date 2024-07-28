@@ -9,10 +9,10 @@ return {
     lspconfig.dotls.setup {}
     lspconfig.hls.setup {}
     lspconfig.lua_ls.setup {}
+    lspconfig.nil_ls.setup {}
     lspconfig.perlpls.setup {}
     lspconfig.purescriptls.setup {}
     lspconfig.pylsp.setup {}
-    lspconfig.rnix.setup {}
     lspconfig.rust_analyzer.setup {}
     lspconfig.terraformls.setup {}
     lspconfig.vimls.setup {}
