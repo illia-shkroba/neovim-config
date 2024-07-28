@@ -40,13 +40,23 @@
       ]
     },
     "nix": {
-      "command": "rnix-lsp",
+      "command": "nil",
       "filetypes": [
         "nix"
       ],
       "rootPatterns": [
-        ".git"
-      ]
+        ".git",
+        "flake.nix"
+      ],
+      "settings": {
+        "nil": {
+          "formatting": {
+            "command": [
+              "nixfmt"
+            ]
+          }
+        }
+      }
     },
     "perl": {
       "command": "pls",
