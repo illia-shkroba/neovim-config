@@ -455,6 +455,11 @@ function M.set_default_bindings()
   set("n", [[<leader>h]], cmd.nohlsearch)
 end
 
+function M.set_default_commands()
+  local command = vim.api.nvim_create_user_command
+  command("Config", [[split `=stdpath("config") .. "/init.lua"`]], {})
+end
+
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
   local del = vim.keymap.del
