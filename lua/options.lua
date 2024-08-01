@@ -39,6 +39,7 @@ function M.set_default_options()
   opt.hlsearch = true
   opt.inccommand = "split"
   opt.incsearch = true
+  opt.jumpoptions = { "stack" }
   opt.linebreak = true
   opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
   opt.modeline = true
@@ -46,6 +47,7 @@ function M.set_default_options()
   opt.omnifunc = "syntaxcomplete#Complete"
   opt.path = { "**", "./**" }
   opt.pumblend = 10
+  opt.pumheight = 10
   opt.relativenumber = true
   opt.shiftround = true
   opt.shiftwidth = 2
