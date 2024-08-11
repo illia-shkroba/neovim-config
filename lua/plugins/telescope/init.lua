@@ -91,16 +91,6 @@ return {
           ),
         },
       },
-      extensions = {
-        file_browser = {
-          theme = "ivy",
-          hijack_netrw = true,
-          mappings = {
-            n = {},
-            i = {},
-          },
-        },
-      },
     }
   end,
 }
