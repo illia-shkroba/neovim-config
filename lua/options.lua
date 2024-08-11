@@ -437,9 +437,11 @@ function M.set_default_bindings()
     [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]]
   )
 
-  -- shift
+  -- cmdline
   set("c", [[<C-j>]], "<Down>")
   set("c", [[<C-k>]], "<Up>")
+
+  -- shift
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
 
@@ -463,12 +465,12 @@ function M.set_default_bindings()
   set("i", [[<C-j>]], function()
     return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
   end, { expr = true })
-  set("i", [[<C-f>]], function()
+  set("i", [[<C-q>]], function()
     if fn.pumvisible() == 1 then
       cmd.Telescope "completion"
       return ""
     else
-      return [[<C-f>]]
+      return [[<C-q>]]
     end
   end, { expr = true })
 
