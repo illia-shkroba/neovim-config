@@ -364,7 +364,9 @@ function M.set_default_bindings()
 
   -- yield
   set("n", [[<leader>YF]], [[<Cmd>let @+ = expand("%:p")<CR>]])
-  set("n", [[<leader>yf]], [[<Cmd>let @" = expand("%:p")<CR>]])
+  set("n", [[<leader>Yf]], [[<Cmd>let @+ = expand("%:t")<CR>]])
+  set("n", [[<leader>yF]], [[<Cmd>let @" = expand("%:p")<CR>]])
+  set("n", [[<leader>yf]], [[<Cmd>let @" = expand("%:t")<CR>]])
 
   -- substitute
   local function substitute_word(scope, text)
