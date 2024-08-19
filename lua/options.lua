@@ -363,10 +363,11 @@ function M.set_default_bindings()
   set("n", [[<leader>P]], [[<Cmd>update | Git add --patch -- %<CR>]])
 
   -- yield
-  set("n", [[<leader>YF]], [[<Cmd>let @+ = expand("%:p")<CR>]])
-  set("n", [[<leader>Yf]], [[<Cmd>let @+ = expand("%:t")<CR>]])
-  set("n", [[<leader>yF]], [[<Cmd>let @" = expand("%:p")<CR>]])
-  set("n", [[<leader>yf]], [[<Cmd>let @" = expand("%:t")<CR>]])
+  set("n", [[<leader>yP]], [[<Cmd>let @+ = expand("%:p")<CR>]])
+  set("n", [[<leader>yT]], [[<Cmd>let @+ = expand("%:t")<CR>]])
+  set("n", [[<leader>yp]], [[<Cmd>let @" = expand("%:p")<CR>]])
+  set("n", [[<leader>yt]], [[<Cmd>let @" = expand("%:t")<CR>]])
+  set({ "n", "v" }, [[<leader>Y]], [["+y]])
 
   -- substitute
   local function substitute_word(scope, text)
