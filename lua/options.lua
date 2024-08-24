@@ -493,6 +493,7 @@ function M.set_default_bindings()
   )
   set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>u]], [[<Cmd>update<CR>]])
+  set("n", [[<leader><leader>]], [[m']])
 end
 
 function M.set_default_commands()
