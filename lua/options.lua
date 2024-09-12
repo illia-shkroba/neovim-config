@@ -384,6 +384,14 @@ function M.set_default_bindings()
   set("n", [[<leader>CN]], function()
     return substitute_word([[*]], fn.expand "<cword>")
   end, { expr = true })
+  set("n", [[<leader>Cn]], function()
+    local begin = api.nvim_buf_get_mark(0, "[")
+    local end_ = api.nvim_buf_get_mark(0, "]")
+    return substitute_word(
+      tostring(begin[1]) .. "," .. tostring(end_[1]),
+      fn.expand "<cword>"
+    )
+  end, { expr = true })
   set("n", [[<leader>cn]], function()
     return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true })
