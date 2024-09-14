@@ -506,6 +506,7 @@ function M.set_default_bindings()
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
   set("n", [[<leader>h]], cmd.nohlsearch)
+  set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
   set("n", [[<leader>u]], [[<Cmd>update<CR>]])
   set("n", [[<leader><leader>]], [[m']])
 end
