@@ -499,6 +499,15 @@ function M.set_default_bindings()
     [[<leader>Z]],
     [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
   )
+  set("n", [[<leader>gv]], function()
+    local mode = fn.visualmode()
+    if string.len(mode) == 0 then
+      mode = "v"
+    elseif mode == "" then
+      mode = "<C-v>"
+    end
+    return "`[" .. mode .. "`]"
+  end, { expr = true })
   set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
   set("n", [[<leader>u]], [[<Cmd>update<CR>]])
