@@ -320,7 +320,7 @@ function M.set_default_bindings()
   local nvim_tree = utils.require_safe "nvim-tree.api"
   if nvim_tree then
     local nvim_tree_mode
-    set("n", [[<leader>T]], function()
+    set("n", [[<leader>R]], function()
       if not nvim_tree.tree.is_visible() then
         nvim_tree_mode = nil
       end
@@ -336,7 +336,7 @@ function M.set_default_bindings()
       }
       nvim_tree_mode = 1
     end)
-    set("n", [[<leader>t]], function()
+    set("n", [[<leader>r]], function()
       if not nvim_tree.tree.is_visible() then
         nvim_tree_mode = nil
       end
