@@ -166,20 +166,6 @@ return {
       { silent = true, nowait = true }
     )
 
-    -- Remap keys for apply refactor code actions.
-    set(
-      "n",
-      [[<leader>re]],
-      [[<Plug>(coc-codeaction-refactor)]],
-      { silent = true }
-    )
-    set(
-      "",
-      [[<leader>r]],
-      [[<Plug>(coc-codeaction-refactor-selected)]],
-      { silent = true }
-    )
-
     -- Run the Code Lens actions on the current line
     set(
       "n",
