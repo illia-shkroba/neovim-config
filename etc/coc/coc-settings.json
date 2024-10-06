@@ -122,6 +122,21 @@
       ]
     }
   },
+  "python.linting": {
+    "mypyEnabled": true,
+    "pycodestyleEnabled": true,
+    "pylintEnabled": true
+  },
+  "pyright": {
+    "inlayHints": {
+      "functionReturnTypes": false,
+      "variableTypes": false,
+      "parameterTypes": false
+    },
+    "organizeimports": {
+      "provider": "isort"
+    }
+  },
   "list.insertMappings": {
     "<C-e>": "do:previewtoggle",
     "<C-q>": "action:quickfix",
