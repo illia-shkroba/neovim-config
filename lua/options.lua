@@ -367,7 +367,19 @@ function M.set_default_bindings()
   set("n", [[<leader>yT]], [[<Cmd>let @+ = expand("%:t")<CR>]])
   set("n", [[<leader>yp]], [[<Cmd>let @" = expand("%:p")<CR>]])
   set("n", [[<leader>yt]], [[<Cmd>let @" = expand("%:t")<CR>]])
-  set({ "n", "v" }, [[<leader>Y]], [["+y]])
+  set("n", [[<leader>Y]], function()
+    local selection = utils.get_motion_selection()
+    fn.system {
+      "tmux",
+      "set-buffer",
+      selection,
+    }
+  end)
+  set(
+    "v",
+    [[<leader>Y]],
+    [[:lua vim.fn.system { "tmux", "set-buffer", require("utils").get_visual_selection().text, }<CR>]]
+  )
 
   -- substitute
   local function substitute_word(scope, text)
