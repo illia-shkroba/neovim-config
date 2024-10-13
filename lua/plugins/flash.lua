@@ -54,7 +54,7 @@ return {
       -- clear highlight after jump
       nohlsearch = false,
       -- automatically jump when there is only one match
-      autojump = true,
+      autojump = false,
       -- You can force inclusive/exclusive jumps by setting the
       -- `inclusive` option. By default it will be automatically
       -- set based on the mode.
