@@ -149,7 +149,10 @@ function M.set_default_bindings()
     quickfix.remove_item(item)
     utils.try(cmd, [[cc ]] .. index)
     if item.text then
-      print("Removed quickfix item: " .. vim.trim(item.text))
+      vim.notify(
+        "Removed quickfix item: " .. vim.trim(item.text),
+        vim.log.levels.INFO
+      )
     end
   end)
   set("n", [[<leader>lA]], function()
@@ -158,17 +161,26 @@ function M.set_default_bindings()
     location.remove_item(item)
     utils.try(cmd, [[ll ]] .. index)
     if item.text then
-      print("Removed location item: " .. vim.trim(item.text))
+      vim.notify(
+        "Removed location item: " .. vim.trim(item.text),
+        vim.log.levels.INFO
+      )
     end
   end)
 
   set("n", [[<leader>qX]], function()
     quickfix.reset()
-    print("Removed all quickfix items: " .. quickfix.get_title())
+    vim.notify(
+      "Removed all quickfix items: " .. quickfix.get_title(),
+      vim.log.levels.INFO
+    )
   end)
   set("n", [[<leader>lX]], function()
     location.reset()
-    print("Removed all location items: " .. location.get_title())
+    vim.notify(
+      "Removed all location items: " .. location.get_title(),
+      vim.log.levels.INFO
+    )
   end)
 
   set("n", [[<leader>qa]], function()
@@ -512,11 +524,13 @@ function M.set_default_bindings()
   end, { expr = true })
 
   -- other
-  set(
-    "n",
-    [[<leader>Z]],
-    [[<Cmd>echo "Removed file: " .. @% | call delete(@%)<CR>]]
-  )
+  set("n", [[<leader>Z]], function()
+    local buffer = api.nvim_buf_get_name(0)
+    if #buffer > 0 then
+      fn.delete(buffer)
+      vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
+    end
+  end)
   set("n", [[<leader>gv]], function()
     local mode = fn.visualmode()
     if string.len(mode) == 0 then
