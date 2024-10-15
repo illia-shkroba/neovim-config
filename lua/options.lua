@@ -231,7 +231,7 @@ function M.set_default_bindings()
   end)
 
   set("n", [[<leader>S]], function()
-    cmd.lvimgrep(utils.get_motion_selection(), "##")
+    cmd.lvimgrep(utils.get_motion_selection().text, "##")
   end)
   set(
     "v",
@@ -384,7 +384,7 @@ function M.set_default_bindings()
     fn.system {
       "tmux",
       "set-buffer",
-      selection,
+      selection.text,
     }
   end)
   set(

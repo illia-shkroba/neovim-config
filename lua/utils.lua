@@ -93,7 +93,7 @@ end
 
 function M.get_motion_selection()
   return M.with_motion(function()
-    return M.get_visual_selection().text
+    return M.get_visual_selection()
   end)
 end
 
@@ -139,6 +139,8 @@ function M.get_visual_selection()
     text = "",
     ends_with_newline = false,
     mode = fn.visualmode(),
+    begin = { line_begin, column_begin },
+    end_ = { line_end, column_end },
   }
 
   if #lines == 0 then
