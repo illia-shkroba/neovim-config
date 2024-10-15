@@ -378,7 +378,7 @@ function M.set_default_bindings()
     [[<leader>dS]],
     [[<Cmd>wincmd s | wincmd T | vertical Gdiffsplit!<CR>]]
   )
-  set("n", [[<leader>P]], [[<Cmd>update | Git add --patch -- %<CR>]])
+  set("n", [[<leader>P]], [[<Cmd>update ++p | Git add --patch -- %<CR>]])
 
   -- yield
   set("n", [[<leader>yP]], [[<Cmd>let @+ = expand("%:p")<CR>]])
@@ -524,6 +524,7 @@ function M.set_default_bindings()
   end, { expr = true })
 
   -- other
+  set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
     if #buffer > 0 then
@@ -546,7 +547,7 @@ function M.set_default_bindings()
   set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
   set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
   set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
-  set("n", [[<leader>u]], [[<Cmd>update<CR>]])
+  set("n", [[<leader>u]], [[<Cmd>update ++p<CR>]])
   set("n", [[<leader><leader>]], [[m']])
 end
 
