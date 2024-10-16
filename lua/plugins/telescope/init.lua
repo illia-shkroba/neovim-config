@@ -37,6 +37,7 @@ return {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
+        ["<Esc>"] = false,
         ["<"] = actions.preview_scrolling_left,
         [">"] = actions.preview_scrolling_right,
         ["J"] = actions.preview_scrolling_down,
