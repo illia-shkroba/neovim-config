@@ -30,6 +30,7 @@ function M.set_default_options()
     endif
   ]]
 
+  opt.allowrevins = true
   opt.autoindent = true
   opt.completeopt = { "menuone", "preview", "popup" }
   opt.encoding = "utf-8"
