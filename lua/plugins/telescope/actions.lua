@@ -48,6 +48,16 @@ function M.search_globally_in_grep_string(buffer_number)
   M.with_line(grep_string)(buffer_number)
 end
 
+function M.search_globally_in_live_grep(buffer_number)
+  local function live_grep()
+    local current_picker = action_state.get_current_picker(buffer_number)
+    builtin.live_grep {
+      cwd = current_picker.cwd,
+    }
+  end
+  M.with_line(live_grep)(buffer_number)
+end
+
 function M.with_line(f)
   local function g(buffer_number)
     local line = action_state.get_current_line(buffer_number)

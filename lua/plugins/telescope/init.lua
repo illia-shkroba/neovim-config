@@ -82,6 +82,14 @@ return {
         ["<C-g><C-g>"] = telescope.search_globally_in_grep_string,
       },
     }
+    local live_grep_mappings = {
+      n = {
+        ["<C-g><C-g>"] = telescope.search_globally_in_live_grep,
+      },
+      i = {
+        ["<C-g><C-g>"] = telescope.search_globally_in_live_grep,
+      },
+    }
     require("telescope").setup {
       defaults = {
         cache_picker = { num_pickers = 10 },
@@ -111,6 +119,13 @@ return {
           mappings = vim.tbl_deep_extend(
             "keep",
             grep_string_mappings,
+            global_mappings
+          ),
+        },
+        live_grep = {
+          mappings = vim.tbl_deep_extend(
+            "keep",
+            live_grep_mappings,
             global_mappings
           ),
         },
