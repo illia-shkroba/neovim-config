@@ -531,6 +531,12 @@ function M.set_default_bindings()
     end
   end, { expr = true })
 
+  -- tabs
+  set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]])
+  set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
+  set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
+  set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
+
   -- other
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
@@ -551,10 +557,6 @@ function M.set_default_bindings()
   end, { expr = true })
   set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
-  set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]])
-  set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
-  set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
-  set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
   set("n", [[<leader>u]], [[<Cmd>update ++p<CR>]])
   set("n", [[<leader><leader>]], [[m']])
 end
