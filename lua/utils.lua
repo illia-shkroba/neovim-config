@@ -176,4 +176,8 @@ function M.get_cursor()
   return line, column
 end
 
+function M.column(text)
+  return fn.system({ "column", "-to", " " }, text)
+end
+
 return M

@@ -490,8 +490,15 @@ function M.set_default_bindings()
   set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
 
   -- column
-  set("n", [[<leader>gc]], [[:'{+1,'}-1!column -to ' '<CR>]])
-  set("v", [[<leader>gc]], [[:!column -to ' '<CR>]], { silent = true })
+  set("n", [[<leader>gc]], function()
+    utils.map_motion(utils.column)
+  end)
+  set(
+    "v",
+    [[<leader>gc]],
+    [[:lua require("utils").map_visual(require("utils").column)<CR>]],
+    { silent = true }
+  )
 
   -- tags
   set("n", [[<leader>gt]], function()
