@@ -283,7 +283,7 @@ function M.set_default_bindings()
     set("n", [[<leader>fg]], function()
       local extension = path.extension(api.nvim_buf_get_name(0))
       local prefix, suffix =
-        [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*]],
+        [[:lua require("telescope.builtin").live_grep { additional_args = { "--pre-glob", "*]],
         [[" } }]]
       return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
     end, { expr = true })
