@@ -260,6 +260,8 @@ function M.set_default_bindings()
   -- telescope
   local telescope = utils.require_safe "telescope.builtin"
   if telescope then
+    local pickers = require "plugins.telescope.pickers"
+
     set("", [[<leader>fc]], telescope.lsp_references)
     set("", [[<leader>fi]], telescope.lsp_incoming_calls)
     set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
@@ -280,13 +282,7 @@ function M.set_default_bindings()
       }
     end)
     set("n", [[<leader>fC]], telescope.git_bcommits)
-    set("n", [[<leader>fg]], function()
-      local extension = path.extension(api.nvim_buf_get_name(0))
-      local prefix, suffix =
-        [[:lua require("telescope.builtin").live_grep { glob_pattern = { "*]],
-        [[" } }]]
-      return prefix .. extension .. suffix .. string.rep("<Left>", #suffix)
-    end, { expr = true })
+    set("n", [[<leader>fg]], pickers.live_grep_filetype)
     set("n", [[<leader>fW]], function()
       telescope.grep_string {
         word_match = "-w",
