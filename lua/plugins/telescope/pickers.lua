@@ -13,7 +13,11 @@ function M.live_grep_filetype(opts)
   local current_filetype = opt_local.filetype._value
   local filetypes = fn.getcompletion("", "filetype")
 
-  -- Put current_filetype first in the results list
+  -- "" file type resembles "no file type". After "" file type is selected,
+  -- `live_grep_filetype` works as a plain `live_grep`.
+  table.insert(filetypes, 1, "")
+
+  -- Put current_filetype first in the results list.
   if current_filetype ~= "" then
     filetypes = vim.tbl_filter(function(x)
       return x ~= current_filetype
@@ -34,10 +38,14 @@ function M.live_grep_filetype(opts)
           return
         end
         actions.close(prompt_buffer)
-        builtin.live_grep {
-          prompt_title = "Live Grep (" .. selection[1] .. ")",
-          type_filter = selection[1],
-        }
+        if selection[1] ~= "" then
+          builtin.live_grep {
+            prompt_title = "Live Grep (" .. selection[1] .. ")",
+            type_filter = selection[1],
+          }
+        else
+          builtin.live_grep()
+        end
       end)
       return true
     end,
