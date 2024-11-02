@@ -558,8 +558,18 @@ function M.set_default_bindings()
 end
 
 function M.set_default_commands()
+  local cmd = vim.cmd
   local command = vim.api.nvim_create_user_command
+  local fn = vim.fn
   command("Config", [[split `=stdpath("config") .. "/init.lua"`]], {})
+  command("Mv", function(opts)
+    cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. opts.fargs[1])
+    local previous = fn.expand "#"
+    if #previous > 0 then
+      fn.delete(previous)
+      cmd.bwipeout(previous)
+    end
+  end, { nargs = 1, bang = true, complete = "file" })
 end
 
 function M.set_default_autocommands()
