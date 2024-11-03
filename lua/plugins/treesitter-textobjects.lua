@@ -32,11 +32,11 @@ return {
           enable = true,
           swap_next = {
             ["<leader>sf"] = "@function.outer",
-            ["<leader>sp"] = "@parameter.inner",
+            ["<leader>a"] = "@parameter.inner",
           },
           swap_previous = {
             ["<leader>sF"] = "@function.outer",
-            ["<leader>sP"] = "@parameter.inner",
+            ["<leader>A"] = "@parameter.inner",
           },
         },
         move = {
