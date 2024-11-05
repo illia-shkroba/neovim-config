@@ -135,27 +135,11 @@ return {
     -- Symbol renaming
     set("n", [[<leader>cN]], [[<Plug>(coc-rename)]], { silent = true })
 
-    -- Apply codeAction to the selected region
-    -- Example: `<leader>aap` for current paragraph
-    set(
-      "",
-      [[<leader>a]],
-      [[<Plug>(coc-codeaction-selected)]],
-      { silent = true, nowait = true }
-    )
-
     -- Remap keys for apply code actions at the cursor position.
     set(
       "n",
       [[<leader>.]],
       [[<Plug>(coc-codeaction-cursor)]],
-      { silent = true, nowait = true }
-    )
-    -- Remap keys for apply source code actions for current file.
-    set(
-      "n",
-      [[<leader>as]],
-      [[<Plug>(coc-codeaction-source)]],
       { silent = true, nowait = true }
     )
     -- Apply the most preferred quickfix action on the current line.
