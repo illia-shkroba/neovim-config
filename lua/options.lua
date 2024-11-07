@@ -374,8 +374,10 @@ function M.set_default_bindings()
   -- yield
   set("n", [[<leader>yP]], [[<Cmd>let @+ = expand("%:p")<CR>]])
   set("n", [[<leader>yT]], [[<Cmd>let @+ = expand("%:t")<CR>]])
+  set("n", [[<leader>yY]], [[<Cmd>let @+ = expand("%")<CR>]])
   set("n", [[<leader>yp]], [[<Cmd>let @" = expand("%:p")<CR>]])
   set("n", [[<leader>yt]], [[<Cmd>let @" = expand("%:t")<CR>]])
+  set("n", [[<leader>yy]], [[<Cmd>let @" = expand("%")<CR>]])
   set("n", [[<leader>Y]], function()
     local selection = utils.get_motion_selection()
     fn.system {
