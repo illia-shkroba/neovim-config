@@ -545,7 +545,6 @@ function M.set_default_bindings()
     end
     return "`[" .. mode .. "`]"
   end, { expr = true })
-  set("n", [[<leader>h]], cmd.nohlsearch)
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
   set("n", [[<leader>u]], [[<Cmd>update ++p<CR>]])
   set("n", [[<leader><leader>]], [[m']])
