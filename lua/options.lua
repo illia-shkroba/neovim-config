@@ -122,25 +122,25 @@ function M.set_default_bindings()
   set(
     "n",
     [[<leader>N]],
-    [[:cprevious<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    [[<Cmd>execute v:count1 .. 'cprevious'<CR>:copen<CR>zt:wincmd p<CR>zz]],
     { silent = true }
   )
   set(
     "n",
     [[<leader>n]],
-    [[:cnext<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    [[<Cmd>execute v:count1 .. 'cnext'<CR>:copen<CR>zt:wincmd p<CR>zz]],
     { silent = true }
   )
   set(
     "n",
     [[<leader>LN]],
-    [[:lprevious<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    [[<Cmd>execute v:count1 .. 'lprevious'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
     { silent = true }
   )
   set(
     "n",
     [[<leader>ln]],
-    [[:lnext<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    [[<Cmd>execute v:count1 .. 'lnext'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
     { silent = true }
   )
 
@@ -536,7 +536,7 @@ function M.set_default_bindings()
   set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
 
   -- other
-  set("n", [[<leader>E]], [[<Cmd>earlier 1f<CR>]])
+  set("n", [[<leader>E]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
