@@ -530,6 +530,7 @@ function M.set_default_bindings()
   set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
 
   -- other
+  set("n", [[<leader>E]], [[<Cmd>earlier 1f<CR>]])
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
