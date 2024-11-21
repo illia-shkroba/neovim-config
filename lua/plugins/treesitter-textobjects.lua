@@ -43,36 +43,44 @@ return {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]]"] = "@class.outer",
+            ["]a"] = "@call.inner",
+            ["]l"] = "@call.outer",
             ["]m"] = "@function.outer",
             ["]o"] = {
               query = "@scope",
               query_group = "locals",
             },
+            ["]]"] = "@class.outer",
           },
           goto_next_end = {
-            ["]["] = "@class.outer",
+            ["]A"] = "@call.inner",
+            ["]L"] = "@call.outer",
             ["]M"] = "@function.outer",
             ["]O"] = {
               query = "@scope",
               query_group = "locals",
             },
+            ["]["] = "@class.outer",
           },
           goto_previous_start = {
-            ["[["] = "@class.outer",
+            ["[a"] = "@call.inner",
+            ["[l"] = "@call.outer",
             ["[m"] = "@function.outer",
             ["[o"] = {
               query = "@scope",
               query_group = "locals",
             },
+            ["[["] = "@class.outer",
           },
           goto_previous_end = {
-            ["[]"] = "@class.outer",
+            ["[A"] = "@call.inner",
+            ["[L"] = "@call.outer",
             ["[M"] = "@function.outer",
             ["[O"] = {
               query = "@scope",
               query_group = "locals",
             },
+            ["[]"] = "@class.outer",
           },
           -- Below will go to either the start or the end, whichever is closer.
           -- Use if you want more granular movements
