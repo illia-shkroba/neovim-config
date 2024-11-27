@@ -493,6 +493,8 @@ function M.set_default_bindings()
   set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
   set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
   set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
+  set("n", [[<leader>tf]], [[<Cmd>wincmd s | wincmd T<CR>]])
+  set("n", [[<leader>tF]], [[<Cmd>wincmd n | wincmd T<CR>]])
 
   -- other
   set("n", [[<leader>E]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
