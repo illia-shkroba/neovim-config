@@ -90,7 +90,7 @@ return {
     set("n", "[e", [[<Plug>(coc-diagnostic-prev)]], { silent = true })
 
     -- GoTo code navigation
-    set("n", [[<leader>gD]], [[<Plug>(coc-definition)]], { silent = true })
+    set("n", [[<leader>gdd]], [[<Plug>(coc-definition)]], { silent = true })
     set(
       "n",
       [[<leader>gd<C-t>]],
