@@ -35,7 +35,7 @@ function M.set_default_options()
 
   opt.allowrevins = true
   opt.autoindent = true
-  opt.completeopt = { "menuone", "preview", "popup" }
+  opt.completeopt = { "menuone", "longest", "popup" }
   opt.encoding = "utf-8"
   opt.expandtab = true
   opt.formatoptions = "tcro/qnl1j"
@@ -60,7 +60,8 @@ function M.set_default_options()
   opt.spell = true
   opt.splitbelow = true
   opt.splitright = true
-  opt.statusline = "%<%f %h%m%r<%{v:searchforward ? 'f' : 'b'}>%=%-14.(%l,%c%V%) %P"
+  opt.statusline =
+    "%<%f %h%m%r<%{v:searchforward ? 'f' : 'b'}>%=%-14.(%l,%c%V%) %P"
   opt.tabstop = 2
   opt.termguicolors = true
   opt.wildmenu = true
@@ -478,9 +479,6 @@ function M.set_default_bindings()
   end, { expr = true })
 
   -- popupmenu
-  set("i", [[<C-l>]], function()
-    return fn.pumvisible() == 1 and [[<C-l>]] or [[<C-n><C-p>]]
-  end, { expr = true })
   set("i", [[<C-k>]], function()
     return fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
   end, { expr = true })
