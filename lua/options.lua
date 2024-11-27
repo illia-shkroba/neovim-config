@@ -3,6 +3,7 @@ local M = {}
 function M.set_default_options()
   local cmd = vim.cmd
   local opt = vim.opt
+  local g = vim.g
 
   cmd.filetype "on"
 
@@ -29,6 +30,8 @@ function M.set_default_options()
       set thesaurusfunc=Thesaur
     endif
   ]]
+
+  g.netrw_banner = 0
 
   opt.allowrevins = true
   opt.autoindent = true
@@ -317,43 +320,6 @@ function M.set_default_bindings()
       [[<leader>fW]],
       [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]]
     )
-  end
-
-  -- nvim-tree
-  local nvim_tree = utils.require_safe "nvim-tree.api"
-  if nvim_tree then
-    local nvim_tree_mode
-    set("n", [[<leader>R]], function()
-      if not nvim_tree.tree.is_visible() then
-        nvim_tree_mode = nil
-      end
-
-      if nvim_tree_mode == 2 then
-        nvim_tree.tree.close()
-      end
-
-      nvim_tree.tree.toggle {
-        path = fs.dirname(api.nvim_buf_get_name(0)),
-        find_file = true,
-        focus = true,
-      }
-      nvim_tree_mode = 1
-    end)
-    set("n", [[<leader>r]], function()
-      if not nvim_tree.tree.is_visible() then
-        nvim_tree_mode = nil
-      end
-
-      if nvim_tree_mode == 1 then
-        nvim_tree.tree.close()
-      end
-
-      nvim_tree.tree.toggle {
-        path = fn.getcwd(),
-        focus = true,
-      }
-      nvim_tree_mode = 2
-    end)
   end
 
   -- git
