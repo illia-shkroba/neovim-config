@@ -448,8 +448,9 @@ function M.set_default_bindings()
   )
 
   -- cmdline
-  set("c", [[<C-j>]], "<Down>")
-  set("c", [[<C-k>]], "<Up>")
+  set("c", [[<C-j>]], [[<Down>]])
+  set("c", [[<C-k>]], [[<Up>]])
+  set("c", [[<C-s>]], [[s//]])
 
   -- shift
   set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
@@ -554,6 +555,11 @@ function M.set_default_autocommands()
   autocmd("CmdwinEnter", {
     callback = function()
       set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
+    end,
+  })
+  autocmd("CmdwinEnter", {
+    callback = function()
+      set({ "i" }, [[<C-s>]], [[s//]], { buffer = true })
     end,
   })
   autocmd("LspAttach", {
