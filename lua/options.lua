@@ -480,12 +480,12 @@ function M.set_default_bindings()
   set("i", [[<C-j>]], function()
     return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
   end, { expr = true })
-  set("i", [[<C-q>]], function()
+  set("i", [[<C-z>]], function()
     if fn.pumvisible() == 1 then
       cmd.Telescope "completion"
       return ""
     else
-      return [[<C-q>]]
+      return [[<C-z>]]
     end
   end, { expr = true })
 
