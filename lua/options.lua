@@ -35,7 +35,7 @@ function M.set_default_options()
 
   opt.allowrevins = true
   opt.autoindent = true
-  opt.completeopt = { "menuone", "longest", "popup" }
+  opt.completeopt = { "menuone", "popup" }
   opt.encoding = "utf-8"
   opt.expandtab = true
   opt.formatoptions = "tcro/qnl1j"
