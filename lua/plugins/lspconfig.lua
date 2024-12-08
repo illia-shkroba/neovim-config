@@ -12,7 +12,7 @@ return {
     lspconfig.nil_ls.setup {}
     lspconfig.perlpls.setup {}
     lspconfig.purescriptls.setup {}
-    lspconfig.pylsp.setup {}
+    lspconfig.pyright.setup {}
     lspconfig.rust_analyzer.setup {}
     lspconfig.terraformls.setup {}
     lspconfig.vimls.setup {}
