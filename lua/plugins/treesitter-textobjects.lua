@@ -85,10 +85,10 @@ return {
           -- Below will go to either the start or the end, whichever is closer.
           -- Use if you want more granular movements
           goto_next = {
-            ["]d"] = "@block.outer",
+            ["]b"] = "@block.outer",
           },
           goto_previous = {
-            ["[d"] = "@block.outer",
+            ["[b"] = "@block.outer",
           },
         },
       },

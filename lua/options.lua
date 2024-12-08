@@ -119,11 +119,6 @@ function M.set_default_bindings()
     cmd.tcd(step_into_buffer_dir())
   end)
 
-  -- diagnostic
-  set("n", "]e", diagnostic.goto_next)
-  set("n", "[e", diagnostic.goto_prev)
-  set("n", [[<leader>e]], diagnostic.open_float)
-
   -- quickfix/location
   local list = require "list"
   local quickfix = list.quickfix
