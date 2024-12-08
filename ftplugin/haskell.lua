@@ -7,7 +7,19 @@ local fn = vim.fn
 local opt_local = vim.opt_local
 local set = vim.keymap.set
 
-opt_local.equalprg = "hindent"
+opt_local.equalprg = "fourmolu"
+  .. " --indentation 2"
+  .. " --column-limit 80"
+  .. " --function-arrows leading"
+  .. " --comma-style leading"
+  .. " --import-export-style leading"
+  .. " --record-brace-space true"
+  .. " --haddock-style single-line"
+  .. " --let-style auto"
+  .. " --in-style right-align"
+  .. " --single-constraint-parens never"
+  .. " --unicode never"
+  .. " --no-cabal"
 opt_local.expandtab = true
 opt_local.makeprg = "stack build --cabal-verbosity 0"
 opt_local.shiftwidth = 2
