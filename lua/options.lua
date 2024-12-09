@@ -492,8 +492,11 @@ function M.set_default_bindings()
   set("n", [[<leader>tf]], [[<Cmd>wincmd s | wincmd T<CR>]])
   set("n", [[<leader>tF]], [[<Cmd>wincmd n | wincmd T<CR>]])
 
+  -- undo
+  set("n", [[<leader>r]], [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]])
+  set("n", [[<leader>u]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
+
   -- other
-  set("n", [[<leader>E]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
@@ -512,7 +515,7 @@ function M.set_default_bindings()
     return "`[" .. mode .. "`]"
   end, { expr = true })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
-  set("n", [[<leader>u]], [[<Cmd>update ++p<CR>]])
+  set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]])
   set("n", [[<leader><leader>]], [[m']])
 end
 
