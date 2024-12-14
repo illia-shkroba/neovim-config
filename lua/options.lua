@@ -272,7 +272,6 @@ function M.set_default_bindings()
         additional_args = { "--glob", "*" .. extension },
       }
     end)
-    set("n", [[<leader>f/]], telescope.search_history)
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
@@ -316,18 +315,8 @@ function M.set_default_bindings()
   end
 
   -- git
-  set(
-    "n",
-    [[<leader>DS]],
-    [[<Cmd>wincmd s | wincmd T | vertical Gdiffsplit! HEAD<CR>]]
-  )
   set("n", [[<leader>Ds]], [[<Cmd>vertical Gdiffsplit! HEAD<CR>]])
   set("n", [[<leader>ds]], [[<Cmd>vertical Gdiffsplit!<CR>]])
-  set(
-    "n",
-    [[<leader>dS]],
-    [[<Cmd>wincmd s | wincmd T | vertical Gdiffsplit!<CR>]]
-  )
   set("n", [[<leader>P]], [[<Cmd>update ++p | Git add --patch -- %<CR>]])
 
   -- yield
@@ -485,8 +474,6 @@ function M.set_default_bindings()
   set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
   set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
   set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
-  set("n", [[<leader>tf]], [[<Cmd>wincmd s | wincmd T<CR>]])
-  set("n", [[<leader>tF]], [[<Cmd>wincmd n | wincmd T<CR>]])
 
   -- undo
   set("n", [[<leader>r]], [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]])
