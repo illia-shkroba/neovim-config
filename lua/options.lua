@@ -432,9 +432,17 @@ function M.set_default_bindings()
   set("c", [[<C-k>]], [[<Up>]])
   set("c", [[<C-s>]], [[s//]])
 
-  -- shift
-  set("v", [[<C-j>]], [[:move '>+1<CR>gv]])
-  set("v", [[<C-k>]], [[:move '<-2<CR>gv]])
+  -- move
+  set(
+    "v",
+    [[<C-j>]],
+    [[:lua require("text.move").down(require("utils").get_visual_selection())<CR>gv]]
+  )
+  set(
+    "v",
+    [[<C-k>]],
+    [[:lua require("text.move").up(require("utils").get_visual_selection())<CR>gv]]
+  )
 
   -- column
   set("n", [[<leader>gc]], function()
