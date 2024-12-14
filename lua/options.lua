@@ -487,6 +487,9 @@ function M.set_default_bindings()
   set("n", [[<leader>r]], [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]])
   set("n", [[<leader>u]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
 
+  -- text objects
+  set({ "o", "x" }, "iv", ":<C-U>normal '[V']<CR>")
+
   -- other
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
   set("n", [[<leader>Z]], function()
