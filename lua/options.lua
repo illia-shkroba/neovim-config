@@ -262,9 +262,6 @@ function M.set_default_bindings()
   if telescope then
     local pickers = require "plugins.telescope.pickers"
 
-    set("", [[<leader>fc]], telescope.lsp_references)
-    set("", [[<leader>fi]], telescope.lsp_incoming_calls)
-    set("", [[<leader>fo]], telescope.lsp_outgoing_calls)
     set("n", [[<leader>+]], function()
       cmd.Telescope "neoclip"
     end)
@@ -290,7 +287,6 @@ function M.set_default_bindings()
       }
     end)
     set("n", [[<leader>fb]], telescope.buffers)
-    set("n", [[<leader>fd]], telescope.lsp_definitions)
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end)
@@ -562,15 +558,63 @@ function M.set_default_autocommands()
   })
   autocmd("LspAttach", {
     callback = function(event)
-      vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+      local telescope = utils.require_safe "telescope.builtin"
 
-      set("", [[<leader>.]], lsp.code_action, { buffer = true })
-      set("", [[<leader>cN]], lsp.rename, { buffer = true })
-      set("", [[<leader>qc]], lsp.references, { buffer = true })
-      set("", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
-      set("", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
-      set("", [[K]], lsp.hover, { buffer = true })
-      set("n", [[gd]], lsp.definition, { buffer = true })
+      local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+      if client.supports_method "textDocument/completion" then
+        vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+      end
+
+      if client.supports_method "textDocument/codeAction" then
+        set("n", [[<leader>.]], lsp.code_action, { buffer = true })
+      end
+
+      if client.supports_method "textDocument/rename" then
+        set("n", [[<leader>cN]], lsp.rename, { buffer = true })
+      end
+
+      if client.supports_method "textDocument/references" then
+        set("n", [[<leader>qc]], lsp.references, { buffer = true })
+        if telescope then
+          set("n", [[<leader>fc]], telescope.lsp_references, { buffer = true })
+        end
+      end
+
+      if client.supports_method "callHierarchy/incomingCalls" then
+        set("n", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
+        if telescope then
+          set(
+            "n",
+            [[<leader>fi]],
+            telescope.lsp_incoming_calls,
+            { buffer = true }
+          )
+        end
+      end
+
+      if client.supports_method "callHierarchy/outgoingCalls" then
+        set("n", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
+        if telescope then
+          set(
+            "n",
+            [[<leader>fo]],
+            telescope.lsp_outgoing_calls,
+            { buffer = true }
+          )
+        end
+      end
+
+      if client.supports_method "textDocument/hover" then
+        set("n", [[K]], lsp.hover, { buffer = true })
+      end
+
+      if client.supports_method "textDocument/definition" then
+        set("n", [[gd]], lsp.definition, { buffer = true })
+        if telescope then
+          set("n", [[<leader>fd]], telescope.lsp_definitions, { buffer = true })
+        end
+      end
     end,
   })
   autocmd("LspDetach", {
@@ -578,16 +622,19 @@ function M.set_default_autocommands()
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
       local function unset_bindings()
-        del("", [[<leader>.]], { buffer = event.buf })
-        del("", [[<leader>cN]], { buffer = event.buf })
-        del("", [[<leader>qc]], { buffer = event.buf })
-        del("", [[<leader>qi]], { buffer = event.buf })
-        del("", [[<leader>qo]], { buffer = event.buf })
-        del("", [[K]], { buffer = event.buf })
+        del("n", [[<leader>.]], { buffer = event.buf })
+        del("n", [[<leader>cN]], { buffer = event.buf })
+        del("n", [[<leader>qc]], { buffer = event.buf })
+        del("n", [[<leader>fc]], { buffer = event.buf })
+        del("n", [[<leader>qi]], { buffer = event.buf })
+        del("n", [[<leader>fi]], { buffer = event.buf })
+        del("n", [[<leader>qo]], { buffer = event.buf })
+        del("n", [[<leader>fo]], { buffer = event.buf })
+        del("n", [[K]], { buffer = event.buf })
         del("n", [[gd]], { buffer = event.buf })
+        del("n", [[<leader>fd]], { buffer = event.buf })
       end
 
-      -- For some reasone `del` produces errors when triggered by `LspStop`
       utils.try(unset_bindings)
     end,
   })
