@@ -15,6 +15,7 @@ return {
             default_workspace = "notes",
           },
         },
+        ["core.summary"] = {},
       },
     }
   end,
