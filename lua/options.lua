@@ -293,15 +293,18 @@ function M.set_default_bindings()
     set("n", [[<leader>fR]], function()
       telescope.oldfiles { cwd_only = true }
     end)
+    set("n", [[<leader>fQ]], telescope.quickfix)
+    set("n", [[<leader>fS]], telescope.pickers)
+    set("n", [[<leader>fT]], telescope.current_buffer_tags)
+    set("n", [[<leader>fe]], telescope.treesitter)
     set("n", [[<leader>ff]], telescope.find_files)
     set("n", [[<leader>fj]], telescope.jumplist)
     set("n", [[<leader>fm]], telescope.marks)
+    set("n", [[<leader>fp]], telescope.filetypes)
     set("n", [[<leader>fq]], telescope.quickfixhistory)
     set("n", [[<leader>fr]], telescope.oldfiles)
     set("n", [[<leader>fs]], telescope.resume)
-    set("n", [[<leader>fS]], telescope.pickers)
     set("n", [[<leader>ft]], telescope.tags)
-    set("n", [[<leader>fT]], telescope.filetypes)
     set(
       "v",
       [[<leader>F]],
