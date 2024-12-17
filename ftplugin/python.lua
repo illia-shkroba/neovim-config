@@ -27,6 +27,7 @@ local function find_virtual_environment()
 end
 
 set("", [[gh]], [[<Cmd>up | !black % && isort %<CR>]], { buffer = true })
+set("ia", [[def]], [[def _() -> None:pass]], { buffer = true })
 set("n", [[<leader><CR>]], function()
   local virtual_environment = find_virtual_environment()
 
