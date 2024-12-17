@@ -43,6 +43,7 @@ return {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
+            ["]#"] = "@comment.outer",
             ["]a"] = "@call.inner",
             ["]l"] = "@call.outer",
             ["]m"] = "@function.outer",
@@ -63,6 +64,7 @@ return {
             ["]["] = "@class.outer",
           },
           goto_previous_start = {
+            ["[#"] = "@comment.outer",
             ["[a"] = "@call.inner",
             ["[l"] = "@call.outer",
             ["[m"] = "@function.outer",
