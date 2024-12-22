@@ -4,6 +4,7 @@ return {
     local lspconfig = require "lspconfig"
 
     lspconfig.ansiblels.setup {}
+    lspconfig.bashls.setup {}
     lspconfig.dhall_lsp_server.setup {}
     lspconfig.dockerls.setup {}
     lspconfig.dotls.setup {}
