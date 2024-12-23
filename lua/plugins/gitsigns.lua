@@ -98,10 +98,6 @@ return {
         set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
         end)
-        set("n", "<leader>hd", gitsigns.diffthis)
-        set("n", "<leader>hD", function()
-          gitsigns.diffthis "~"
-        end)
 
         -- Text object
         set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
