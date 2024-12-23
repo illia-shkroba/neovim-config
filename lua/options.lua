@@ -616,6 +616,17 @@ function M.set_default_autocommands()
           set("n", [[<leader>fd]], telescope.lsp_definitions, { buffer = true })
         end
       end
+
+      if client.supports_method "workspace/symbol" then
+        if telescope then
+          set(
+            "n",
+            [[<leader>fw]],
+            telescope.lsp_dynamic_workspace_symbols,
+            { buffer = true }
+          )
+        end
+      end
     end,
   })
   autocmd("LspDetach", {
@@ -634,6 +645,7 @@ function M.set_default_autocommands()
         del("n", [[K]], { buffer = event.buf })
         del("n", [[gd]], { buffer = event.buf })
         del("n", [[<leader>fd]], { buffer = event.buf })
+        del("n", [[<leader>fw]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
