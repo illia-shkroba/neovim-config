@@ -72,7 +72,7 @@ return {
           else
             gitsigns.nav_hunk "next"
           end
-        end)
+        end, { desc = "Go to next hunk" })
 
         set("n", "[c", function()
           if vim.wo.diff then
@@ -80,27 +80,37 @@ return {
           else
             gitsigns.nav_hunk "prev"
           end
-        end)
+        end, { desc = "Go to previous hunk" })
 
         -- Actions
-        set("n", "<leader>hs", gitsigns.stage_hunk)
-        set("n", "<leader>hr", gitsigns.reset_hunk)
+        set("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+        set("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
         set("v", "<leader>hs", function()
           gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end)
+        end, { desc = "Stage hunk" })
         set("v", "<leader>hr", function()
           gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end)
-        set("n", "<leader>hS", gitsigns.stage_buffer)
-        set("n", "<leader>hu", gitsigns.undo_stage_hunk)
-        set("n", "<leader>hR", gitsigns.reset_buffer)
-        set("n", "<leader>hp", gitsigns.preview_hunk)
+        end, { desc = "Reset hunk" })
+        set("n", "<leader>hS", gitsigns.stage_buffer, { desc = "Stage buffer" })
+        set(
+          "n",
+          "<leader>hu",
+          gitsigns.undo_stage_hunk,
+          { desc = "Undo stage hunk" }
+        )
+        set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+        set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
         end)
 
         -- Text object
-        set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        set(
+          { "o", "x" },
+          "ih",
+          ":<C-U>Gitsigns select_hunk<CR>",
+          { desc = "Hunk" }
+        )
       end,
     }
   end,

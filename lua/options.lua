@@ -91,33 +91,36 @@ function M.set_default_bindings()
     end
   end
 
-  set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]])
-  set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]])
-  set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]])
+  set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]], { desc = "cd .." })
+  set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]], { desc = "lcd .." })
+  set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]], { desc = "tcd .." })
   set(
     "",
     [[<leader>dD]],
-    [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]]
+    [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]],
+    { desc = "cd into current buffer's directory" }
   )
   set(
     "",
     [[<leader>dL]],
-    [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]]
+    [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]],
+    { desc = "lcd into current buffer's directory" }
   )
   set(
     "",
     [[<leader>dT]],
-    [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]]
+    [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]],
+    { desc = "tcd into current buffer's directory" }
   )
   set("", [[<leader>dd]], function()
     cmd.cd(step_into_buffer_dir())
-  end)
+  end, { desc = "cd by one level into current buffer's directory" })
   set("", [[<leader>dl]], function()
     cmd.lcd(step_into_buffer_dir())
-  end)
+  end, { desc = "lcd by one level into current buffer's directory" })
   set("", [[<leader>dt]], function()
     cmd.tcd(step_into_buffer_dir())
-  end)
+  end, { desc = "tcd by one level into current buffer's directory" })
 
   -- quickfix/location
   local list = require "list"
@@ -128,25 +131,25 @@ function M.set_default_bindings()
     "n",
     [[<leader>N]],
     [[<Cmd>execute v:count1 .. 'cprevious'<CR>:copen<CR>zt:wincmd p<CR>zz]],
-    { silent = true }
+    { silent = true, desc = "cprevious" }
   )
   set(
     "n",
     [[<leader>n]],
     [[<Cmd>execute v:count1 .. 'cnext'<CR>:copen<CR>zt:wincmd p<CR>zz]],
-    { silent = true }
+    { silent = true, desc = "cnext" }
   )
   set(
     "n",
     [[<leader>LN]],
     [[<Cmd>execute v:count1 .. 'lprevious'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
-    { silent = true }
+    { silent = true, desc = "lprevious" }
   )
   set(
     "n",
     [[<leader>ln]],
     [[<Cmd>execute v:count1 .. 'lnext'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
-    { silent = true }
+    { silent = true, desc = "lnext" }
   )
 
   set("n", [[<leader>qA]], function()
@@ -160,7 +163,7 @@ function M.set_default_bindings()
         vim.log.levels.INFO
       )
     end
-  end)
+  end, { desc = "Remove current quickfix item" })
   set("n", [[<leader>lA]], function()
     local index = location.get_current_item_index()
     local item = location.get_current_item()
@@ -172,7 +175,7 @@ function M.set_default_bindings()
         vim.log.levels.INFO
       )
     end
-  end)
+  end, { desc = "Remove current location item" })
 
   set("n", [[<leader>qX]], function()
     quickfix.reset()
@@ -180,39 +183,49 @@ function M.set_default_bindings()
       "Removed all quickfix items: " .. quickfix.get_title(),
       vim.log.levels.INFO
     )
-  end)
+  end, { desc = "Remove all quickfix items" })
   set("n", [[<leader>lX]], function()
     location.reset()
     vim.notify(
       "Removed all location items: " .. location.get_title(),
       vim.log.levels.INFO
     )
-  end)
+  end, { desc = "Remove all location items" })
 
   set("n", [[<leader>qa]], function()
     quickfix.add_item(list.create_current_position_item())
     cmd.clast()
-  end)
+  end, { desc = "Add current line as quickfix item" })
   set("n", [[<leader>la]], function()
     location.add_item(list.create_current_position_item())
     cmd.llast()
-  end)
+  end, { desc = "Add current line as location item" })
 
-  set("n", [[<leader>qe]], diagnostic.setqflist)
-  set("n", [[<leader>le]], diagnostic.setloclist)
+  set(
+    "n",
+    [[<leader>qe]],
+    diagnostic.setqflist,
+    { desc = "Load diagnostic to quickfix list" }
+  )
+  set(
+    "n",
+    [[<leader>le]],
+    diagnostic.setloclist,
+    { desc = "Load diagnostic to location list" }
+  )
 
   set("n", [[<leader>qx]], function()
     local name = utils.try(fn.input, "Enter quickfix list: ")
     if name then
       quickfix.create(name)
     end
-  end)
+  end, { desc = "Create new quickfix list" })
   set("n", [[<leader>lx]], function()
     local name = utils.try(fn.input, "Enter location list: ")
     if name then
       location.create(name)
     end
-  end)
+  end, { desc = "Create new location list" })
 
   local function dump_list(current_list)
     local dumped = current_list.dump()
@@ -226,35 +239,39 @@ function M.set_default_bindings()
 
   set("n", [[<leader>qd]], function()
     dump_list(quickfix)
-  end)
+  end, { desc = "Dump quickfix list to a buffer" })
   set("n", [[<leader>ld]], function()
     dump_list(location)
-  end)
+  end, { desc = "Dump location list to a buffer" })
 
   set("n", [[<leader>S]], function()
     cmd.lvimgrep(utils.get_motion_selection().text, "##")
-  end)
+  end, { desc = "Add matches of selection by motion to location list" })
   set(
     "v",
     [[<leader>S]],
-    [[:lua vim.cmd.lvimgrep(require("utils").get_visual_selection().text, "##")<CR>]]
+    [[:lua vim.cmd.lvimgrep(require("utils").get_visual_selection().text, "##")<CR>]],
+    { desc = "Add matches of selection by visual to location list" }
   )
 
   -- tmux
   set(
     "",
     [[<leader>"]],
-    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]]
+    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
+    { desc = "Spawn new tmux pane vertically" }
   )
   set(
     "",
     [[<leader>%]],
-    [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]]
+    [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]],
+    { desc = "Spawn new tmux pane horizontally" }
   )
   set(
     "",
     [[<leader>v]],
-    [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]]
+    [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]],
+    { desc = "Spawn new tmux window" }
   )
 
   -- telescope
@@ -264,71 +281,167 @@ function M.set_default_bindings()
 
     set("n", [[<leader>+]], function()
       cmd.Telescope "neoclip"
-    end)
-    set("n", [[<leader>F]], function()
-      local extension = path.extension(api.nvim_buf_get_name(0))
-      telescope.grep_string {
-        word_match = "-w",
-        additional_args = { "--glob", "*" .. extension },
+    end, { desc = "Open neoclip" })
+    set(
+      "n",
+      [[<leader>F]],
+      function()
+        local extension = path.extension(api.nvim_buf_get_name(0))
+        telescope.grep_string {
+          word_match = "-w",
+          additional_args = { "--glob", "*" .. extension },
+        }
+      end,
+      {
+        desc = "Search for word under the cursor in files with current buffer's extension",
       }
-    end)
+    )
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
       }
-    end)
-    set("n", [[<leader>fC]], telescope.git_bcommits)
-    set("n", [[<leader>fg]], pickers.live_grep_filetype)
+    end, { desc = "Grep buffers" })
+    set(
+      "n",
+      [[<leader>fC]],
+      telescope.git_bcommits,
+      { desc = "List commits affecting current buffer" }
+    )
+    set(
+      "n",
+      [[<leader>fg]],
+      pickers.live_grep_filetype,
+      { desc = "Grep files with extension" }
+    )
     set("n", [[<leader>fW]], function()
       telescope.grep_string {
         word_match = "-w",
         grep_open_files = true,
       }
-    end)
-    set("n", [[<leader>fb]], telescope.buffers)
+    end, { desc = "Search for word under the cursor in buffers" })
+    set("n", [[<leader>fb]], telescope.buffers, { desc = "List buffers" })
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
-    end)
-    set("n", [[<leader>fG]], telescope.current_buffer_fuzzy_find)
+    end, { desc = "List files relative to current buffer" })
+    set(
+      "n",
+      [[<leader>fG]],
+      telescope.current_buffer_fuzzy_find,
+      { desc = "Grep current buffer" }
+    )
     set("n", [[<leader>fR]], function()
       telescope.oldfiles { cwd_only = true }
-    end)
-    set("n", [[<leader>fQ]], telescope.quickfix)
-    set("n", [[<leader>fS]], telescope.pickers)
-    set("n", [[<leader>fT]], telescope.current_buffer_tags)
-    set("n", [[<leader>fe]], telescope.treesitter)
-    set("n", [[<leader>ff]], telescope.find_files)
-    set("n", [[<leader>fj]], telescope.jumplist)
-    set("n", [[<leader>fm]], telescope.marks)
-    set("n", [[<leader>fp]], telescope.filetypes)
-    set("n", [[<leader>fq]], telescope.quickfixhistory)
-    set("n", [[<leader>fr]], telescope.oldfiles)
-    set("n", [[<leader>fs]], telescope.resume)
-    set("n", [[<leader>ft]], telescope.tags)
+    end, { desc = "List old files relative to current buffer" })
+    set("n", [[<leader>fQ]], telescope.quickfix, { desc = "List quickfix" })
+    set(
+      "n",
+      [[<leader>fS]],
+      telescope.pickers,
+      { desc = "List previous pickers" }
+    )
+    set(
+      "n",
+      [[<leader>fT]],
+      telescope.current_buffer_tags,
+      { desc = "List current buffer's tags" }
+    )
+    set(
+      "n",
+      [[<leader>fe]],
+      telescope.treesitter,
+      { desc = "List treesitter symbols for current buffer" }
+    )
+    set("n", [[<leader>ff]], telescope.find_files, { desc = "List files" })
+    set("n", [[<leader>fj]], telescope.jumplist, { desc = "List jumplist" })
+    set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
+    set("n", [[<leader>fp]], telescope.filetypes, { desc = "List filetypes" })
+    set(
+      "n",
+      [[<leader>fq]],
+      telescope.quickfixhistory,
+      { desc = "List quickfix lists" }
+    )
+    set("n", [[<leader>fr]], telescope.oldfiles, { desc = "List old files" })
+    set(
+      "n",
+      [[<leader>fs]],
+      telescope.resume,
+      { desc = "Resume most recent picker" }
+    )
+    set("n", [[<leader>ft]], telescope.tags, { desc = "List tags" })
     set(
       "v",
       [[<leader>F]],
-      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]]
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]],
+      {
+        desc = "Search for visually selected word in files with current buffer's extension",
+      }
     )
     set(
       "v",
       [[<leader>fW]],
-      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]]
+      [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]],
+      { desc = "Search for visually selected word in buffers" }
     )
   end
 
   -- git
-  set("n", [[<leader>Ds]], [[<Cmd>vertical Gdiffsplit! HEAD<CR>]])
-  set("n", [[<leader>ds]], [[<Cmd>vertical Gdiffsplit!<CR>]])
-  set("n", [[<leader>P]], [[<Cmd>update ++p | Git add --patch -- %<CR>]])
+  set(
+    "n",
+    [[<leader>Ds]],
+    [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
+    { desc = "Show git diff with HEAD" }
+  )
+  set(
+    "n",
+    [[<leader>ds]],
+    [[<Cmd>vertical Gdiffsplit!<CR>]],
+    { desc = "Show git diff" }
+  )
+  set(
+    "n",
+    [[<leader>P]],
+    [[<Cmd>update ++p | Git add --patch -- %<CR>]],
+    { desc = "git add --patch" }
+  )
 
   -- yield
-  set("n", [[<leader>yP]], [[<Cmd>let @+ = expand("%:p")<CR>]])
-  set("n", [[<leader>yT]], [[<Cmd>let @+ = expand("%:t")<CR>]])
-  set("n", [[<leader>yY]], [[<Cmd>let @+ = expand("%")<CR>]])
-  set("n", [[<leader>yp]], [[<Cmd>let @" = expand("%:p")<CR>]])
-  set("n", [[<leader>yt]], [[<Cmd>let @" = expand("%:t")<CR>]])
-  set("n", [[<leader>yy]], [[<Cmd>let @" = expand("%")<CR>]])
+  set(
+    "n",
+    [[<leader>yP]],
+    [[<Cmd>let @+ = expand("%:p")<CR>]],
+    { desc = "Yank current buffer's absolute path to clipboard" }
+  )
+  set(
+    "n",
+    [[<leader>yT]],
+    [[<Cmd>let @+ = expand("%:t")<CR>]],
+    { desc = "Yank current buffer's filename to clipboard" }
+  )
+  set(
+    "n",
+    [[<leader>yY]],
+    [[<Cmd>let @+ = expand("%")<CR>]],
+    { desc = "Yank current buffer's name to clipboard" }
+  )
+  set(
+    "n",
+    [[<leader>yp]],
+    [[<Cmd>let @" = expand("%:p")<CR>]],
+    { desc = "Yank current buffer's absolute path" }
+  )
+  set(
+    "n",
+    [[<leader>yt]],
+    [[<Cmd>let @" = expand("%:t")<CR>]],
+    { desc = "Yank current buffer's filename" }
+  )
+  set(
+    "n",
+    [[<leader>yy]],
+    [[<Cmd>let @" = expand("%")<CR>]],
+    { desc = "Yank current buffer's name" }
+  )
   set("n", [[<leader>Y]], function()
     local selection = utils.get_motion_selection()
     fn.system {
@@ -336,11 +449,12 @@ function M.set_default_bindings()
       "set-buffer",
       selection.text,
     }
-  end)
+  end, { desc = "Yank selection by motion to tmux" })
   set(
     "v",
     [[<leader>Y]],
-    [[:lua vim.fn.system { "tmux", "set-buffer", require("utils").get_visual_selection().text, }<CR>]]
+    [[:lua vim.fn.system { "tmux", "set-buffer", require("utils").get_visual_selection().text, }<CR>]],
+    { desc = "Yank selection by visual to tmux" }
   )
 
   -- substitute
@@ -355,122 +469,165 @@ function M.set_default_bindings()
       .. suffix
       .. string.rep("<Left>", #suffix)
   end
-  set("n", [[<leader>CN]], function()
-    return substitute_word([[*]], fn.expand "<cword>")
-  end, { expr = true })
-  set("n", [[<leader>Cn]], function()
-    local begin = api.nvim_buf_get_mark(0, "[")
-    local end_ = api.nvim_buf_get_mark(0, "]")
-    return substitute_word(
-      tostring(begin[1]) .. "," .. tostring(end_[1]),
-      fn.expand "<cword>"
-    )
-  end, { expr = true })
+  set(
+    "n",
+    [[<leader>CN]],
+    function()
+      return substitute_word([[*]], fn.expand "<cword>")
+    end,
+    { expr = true, desc = "Substitute word under the cursor in visual area" }
+  )
+  set(
+    "n",
+    [[<leader>Cn]],
+    function()
+      local begin = api.nvim_buf_get_mark(0, "[")
+      local end_ = api.nvim_buf_get_mark(0, "]")
+      return substitute_word(
+        tostring(begin[1]) .. "," .. tostring(end_[1]),
+        fn.expand "<cword>"
+      )
+    end,
+    {
+      expr = true,
+      desc = "Substitute word under the cursor in previously changed or yanked text area",
+    }
+  )
   set("n", [[<leader>cn]], function()
     return substitute_word([[%]], fn.expand "<cword>")
-  end, { expr = true })
-  set("n", [[<leader>cs]], [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]])
+  end, { expr = true, desc = "Substitute word under the cursor" })
+  set(
+    "n",
+    [[<leader>cs]],
+    [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
+    { desc = "Remove trailing whitespaces" }
+  )
 
   -- case
   local case = require "text.case"
   set("n", [[<leader>cF]], function()
     utils.map_motion(case.to_camel)
-  end)
+  end, { desc = "Format selection by motion to camel case" })
   set("n", [[<leader>cf]], function()
     utils.map_motion(case.to_snake)
-  end)
+  end, { desc = "Format selection by motion to snake case" })
   set(
     "v",
     [[<leader>cF]],
     [[:lua require("utils").map_visual(require("text.case").to_camel)<CR>]],
-    { silent = true }
+    { silent = true, desc = "Format selection by visual to camel case" }
   )
   set(
     "v",
     [[<leader>cf]],
     [[:lua require("utils").map_visual(require("text.case").to_snake)<CR>]],
-    { silent = true }
+    { silent = true, desc = "Format selection by visual to snake case" }
   )
 
   -- quote
-  set("n", [[<leader>gq]], function()
-    utils.map_motion(utils.quote)
-  end)
+  set(
+    "n",
+    [[<leader>gq]],
+    function()
+      utils.map_motion(utils.quote)
+    end,
+    {
+      desc = "Quote selection by motion. Quote character is provided after the motion",
+    }
+  )
   set(
     "v",
     [[<leader>gq]],
     [[:lua require("utils").map_visual(require("utils").quote)<CR>]],
-    { silent = true }
+    { silent = true, desc = "Quote selection by visual" }
   )
 
   -- fold
   set("n", [[<leader>gf]], function()
     opt.foldmethod = "indent"
-  end)
+  end, { desc = "Fold by indentation" })
   set("n", [[<leader>gF]], function()
     opt.foldmethod = "manual"
     cmd.normal "zE"
-  end)
+  end, { desc = "Turn off folds" })
 
   -- search
   set("n", [[<leader>#]], function()
     return "?" .. fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true })
+  end, { expr = true, desc = "Same as #, but without \\< and \\>" })
   set("n", [[<leader>*]], function()
     return "/" .. fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true })
+  end, { expr = true, desc = "Same as *, but without \\< and \\>" })
   set(
     "v",
     [[<leader>#]],
-    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]]
+    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]],
+    { desc = "Same as #, but without \\< and \\>" }
   )
   set(
     "v",
     [[<leader>*]],
-    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]]
+    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]],
+    { desc = "Same as *, but without \\< and \\>" }
   )
 
   -- cmdline
-  set("c", [[<C-j>]], [[<Down>]])
-  set("c", [[<C-k>]], [[<Up>]])
-  set("c", [[<C-s>]], [[s//]])
+  set(
+    "c",
+    [[<C-j>]],
+    [[<Down>]],
+    {
+      desc = "Go to next item matching command that was typed so far in cmdline",
+    }
+  )
+  set(
+    "c",
+    [[<C-k>]],
+    [[<Up>]],
+    {
+      desc = "Go to previous item matching command that was typed so far in cmdline",
+    }
+  )
+  set("c", [[<C-s>]], [[s//]], { desc = "Populate cmdline with s//" })
 
   -- move
   set(
     "v",
     [[<C-j>]],
-    [[:lua require("text.move").down(require("utils").get_visual_selection())<CR>gv]]
+    [[:lua require("text.move").down(require("utils").get_visual_selection())<CR>gv]],
+    { desc = "Shift visual area down" }
   )
   set(
     "v",
     [[<C-k>]],
-    [[:lua require("text.move").up(require("utils").get_visual_selection())<CR>gv]]
+    [[:lua require("text.move").up(require("utils").get_visual_selection())<CR>gv]],
+    { desc = "Shift visual area up" }
   )
 
   -- column
   set("n", [[<leader>gc]], function()
     utils.map_motion(utils.column)
-  end)
+  end, { desc = "Use `column` on selection by motion" })
   set(
     "v",
     [[<leader>gc]],
     [[:lua require("utils").map_visual(require("utils").column)<CR>]],
-    { silent = true }
+    { silent = true, desc = "Use `column` on selection by visual" }
   )
 
   -- tags
   set("n", [[<leader>gt]], function()
     local language = vim.opt_local.filetype._value
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
-  end, { expr = true })
+  end, { expr = true, desc = "Generate tags" })
 
   -- popupmenu
   set("i", [[<C-k>]], function()
     return fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
-  end, { expr = true })
+  end, { expr = true, desc = "Go up in popupmenu" })
   set("i", [[<C-j>]], function()
     return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
-  end, { expr = true })
+  end, { expr = true, desc = "Go down in popupmenu" })
   set("i", [[<C-z>]], function()
     if fn.pumvisible() == 1 then
       cmd.Telescope "completion"
@@ -478,42 +635,70 @@ function M.set_default_bindings()
     else
       return [[<C-z>]]
     end
-  end, { expr = true })
+  end, { expr = true, desc = "List popupmenu completion in Telescope" })
 
   -- tabs
-  set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]])
-  set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]])
-  set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]])
-  set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]])
+  set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]], { desc = "Close tab" })
+  set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]], { desc = "Focus tab" })
+  set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]], { desc = "Move tab left" })
+  set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]], { desc = "Move tab right" })
 
   -- undo
-  set("n", [[<leader>r]], [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]])
-  set("n", [[<leader>u]], [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]])
+  set(
+    "n",
+    [[<leader>r]],
+    [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]],
+    { desc = "later [count]f" }
+  )
+  set(
+    "n",
+    [[<leader>u]],
+    [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]],
+    { desc = "earlier [count]f" }
+  )
 
   -- text objects
-  set({ "o", "x" }, "iv", ":<C-U>normal '[V']<CR>")
+  set(
+    { "o", "x" },
+    "iv",
+    ":<C-U>normal '[V']<CR>",
+    { desc = "Previously changed or yanked text area" }
+  )
 
   -- other
-  set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]])
+  set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
     if #buffer > 0 then
       fn.delete(buffer)
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
-  end)
-  set("n", [[<leader>gv]], function()
-    local mode = fn.visualmode()
-    if string.len(mode) == 0 then
-      mode = "v"
-    elseif mode == "" then
-      mode = "<C-v>"
-    end
-    return "`[" .. mode .. "`]"
-  end, { expr = true })
-  set("n", [[<leader>qq]], [[<Cmd>qall<CR>]])
-  set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]])
-  set("n", [[<leader><leader>]], [[m']])
+  end, { desc = "Remove current buffer's file" })
+  set(
+    "n",
+    [[<leader>gv]],
+    function()
+      local mode = fn.visualmode()
+      if string.len(mode) == 0 then
+        mode = "v"
+      elseif mode == "" then
+        mode = "<C-v>"
+      end
+      return "`[" .. mode .. "`]"
+    end,
+    {
+      expr = true,
+      desc = "Visually select previously changed or yanked text area",
+    }
+  )
+  set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
+  set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
+  set(
+    "n",
+    [[<leader><leader>]],
+    [[m']],
+    { desc = "Add current cursor's position to jumplist" }
+  )
 end
 
 function M.set_default_commands()
@@ -549,12 +734,25 @@ function M.set_default_autocommands()
   )
   autocmd("CmdwinEnter", {
     callback = function()
-      set({ "", "i" }, [[<C-]>]], [[<CR>q:]], { buffer = true })
+      set(
+        { "", "i" },
+        [[<C-]>]],
+        [[<CR>q:]],
+        {
+          buffer = true,
+          desc = "Run current command and open back command window",
+        }
+      )
     end,
   })
   autocmd("CmdwinEnter", {
     callback = function()
-      set({ "i" }, [[<C-s>]], [[s//]], { buffer = true })
+      set(
+        { "i" },
+        [[<C-s>]],
+        [[s//]],
+        { buffer = true, desc = "Populate cmdline with s//" }
+      )
     end,
   })
   autocmd("LspAttach", {
@@ -568,52 +766,87 @@ function M.set_default_autocommands()
       end
 
       if client.supports_method "textDocument/codeAction" then
-        set("n", [[<leader>.]], lsp.code_action, { buffer = true })
+        set(
+          "n",
+          [[<leader>.]],
+          lsp.code_action,
+          { buffer = true, desc = "Code action" }
+        )
       end
 
       if client.supports_method "textDocument/rename" then
-        set("n", [[<leader>cN]], lsp.rename, { buffer = true })
+        set(
+          "n",
+          [[<leader>cN]],
+          lsp.rename,
+          { buffer = true, desc = "Rename with LSP" }
+        )
       end
 
       if client.supports_method "textDocument/references" then
-        set("n", [[<leader>qc]], lsp.references, { buffer = true })
+        set(
+          "n",
+          [[<leader>qc]],
+          lsp.references,
+          { buffer = true, desc = "References" }
+        )
         if telescope then
-          set("n", [[<leader>fc]], telescope.lsp_references, { buffer = true })
+          set(
+            "n",
+            [[<leader>fc]],
+            telescope.lsp_references,
+            { buffer = true, desc = "References" }
+          )
         end
       end
 
       if client.supports_method "callHierarchy/incomingCalls" then
-        set("n", [[<leader>qi]], lsp.incoming_calls, { buffer = true })
+        set(
+          "n",
+          [[<leader>qi]],
+          lsp.incoming_calls,
+          { buffer = true, desc = "Incoming calls" }
+        )
         if telescope then
           set(
             "n",
             [[<leader>fi]],
             telescope.lsp_incoming_calls,
-            { buffer = true }
+            { buffer = true, desc = "Incoming calls" }
           )
         end
       end
 
       if client.supports_method "callHierarchy/outgoingCalls" then
-        set("n", [[<leader>qo]], lsp.outgoing_calls, { buffer = true })
+        set(
+          "n",
+          [[<leader>qo]],
+          lsp.outgoing_calls,
+          { buffer = true, desc = "Outgoing calls" }
+        )
         if telescope then
           set(
             "n",
             [[<leader>fo]],
             telescope.lsp_outgoing_calls,
-            { buffer = true }
+            { buffer = true, desc = "Outgoing calls" }
           )
         end
       end
 
       if client.supports_method "textDocument/hover" then
-        set("n", [[K]], lsp.hover, { buffer = true })
+        set("n", [[K]], lsp.hover, { buffer = true, desc = "Hover" })
       end
 
       if client.supports_method "textDocument/definition" then
-        set("n", [[gd]], lsp.definition, { buffer = true })
+        set("n", [[gd]], lsp.definition, { buffer = true, desc = "Definition" })
         if telescope then
-          set("n", [[<leader>fd]], telescope.lsp_definitions, { buffer = true })
+          set(
+            "n",
+            [[<leader>fd]],
+            telescope.lsp_definitions,
+            { buffer = true, desc = "Definition" }
+          )
         end
       end
 
@@ -623,7 +856,7 @@ function M.set_default_autocommands()
             "n",
             [[<leader>fw]],
             telescope.lsp_dynamic_workspace_symbols,
-            { buffer = true }
+            { buffer = true, desc = "Dynamic workspace symbols" }
           )
         end
       end

@@ -13,10 +13,15 @@ opt_local.shiftwidth = 4
 opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
-set("", [[<leader><CR>]], [[<Cmd>w !dhall-to-json<CR>]], { buffer = true })
+set(
+  "",
+  [[<leader><CR>]],
+  [[<Cmd>w !dhall-to-json<CR>]],
+  { buffer = true, desc = "Run current buffer" }
+)
 set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal dhall-to-json --file #<CR>]],
-  { buffer = true }
+  { buffer = true, desc = "Load current buffer to dhall-to-json" }
 )

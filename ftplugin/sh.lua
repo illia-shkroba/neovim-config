@@ -16,10 +16,15 @@ opt_local.formatprg = "shfmt -s -i "
   .. opt_local.tabstop._value
   .. " -bn -ci -sr"
 
-set("", [[<leader><CR>]], [[<Cmd>w !bash<CR>]], { buffer = true })
+set(
+  "",
+  [[<leader><CR>]],
+  [[<Cmd>w !bash<CR>]],
+  { buffer = true, desc = "Run current buffer" }
+)
 set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal bash --init-file #<CR>]],
-  { buffer = true }
+  { buffer = true, desc = "Load current buffer to bash" }
 )

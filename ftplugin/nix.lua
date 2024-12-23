@@ -16,5 +16,5 @@ set(
   "",
   [[<leader><CR>]],
   [[<Cmd>up | !nix-instantiate --eval --strict %<CR>]],
-  { buffer = true }
+  { buffer = true, desc = "Run current buffer" }
 )

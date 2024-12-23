@@ -21,4 +21,4 @@ set("n", [[<leader><CR>]], function()
 
   cmd.terminal "cargo run --quiet"
   cmd.startinsert()
-end, { buffer = true })
+end, { buffer = true, desc = "Run current buffer" })

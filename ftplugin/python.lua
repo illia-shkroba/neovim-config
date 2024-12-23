@@ -26,8 +26,18 @@ local function find_virtual_environment()
   })[1]
 end
 
-set("", [[gh]], [[<Cmd>up | !black % && isort %<CR>]], { buffer = true })
-set("ia", [[def]], [[def _() -> None:pass]], { buffer = true })
+set(
+  "",
+  [[gh]],
+  [[<Cmd>up | !black % && isort %<CR>]],
+  { buffer = true, desc = "Call black and isort on current buffer" }
+)
+set(
+  "ia",
+  [[def]],
+  [[def _() -> None:pass]],
+  { buffer = true, desc = "Populate buffer with function definition" }
+)
 set("n", [[<leader><CR>]], function()
   local virtual_environment = find_virtual_environment()
 
@@ -47,7 +57,7 @@ set("n", [[<leader><CR>]], function()
 
   cmd.terminal(variables .. "sh -c 'python #'")
   cmd.startinsert()
-end, { buffer = true })
+end, { buffer = true, desc = "Run current buffer" })
 set("n", [[<leader><Tab>]], function()
   local virtual_environment = find_virtual_environment()
 
@@ -63,4 +73,4 @@ set("n", [[<leader><Tab>]], function()
 
   cmd.terminal(variables .. "ipython --no-banner -i '#'")
   cmd.startinsert()
-end, { buffer = true })
+end, { buffer = true, desc = "Load current buffer to ipython" })

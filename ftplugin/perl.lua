@@ -12,4 +12,9 @@ opt_local.shiftwidth = 4
 opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
-set("", [[<leader><CR>]], [[<Cmd>w !perl<CR>]], { buffer = true })
+set(
+  "",
+  [[<leader><CR>]],
+  [[<Cmd>w !perl<CR>]],
+  { buffer = true, desc = "Run current buffer" }
+)
