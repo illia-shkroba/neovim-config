@@ -58,7 +58,7 @@ function M.split(xs, sep)
 end
 
 function M.prefix_length(xs, ys)
-  local n = M.min(#xs, #ys)
+  local n = math.min(#xs, #ys)
   for i = 1, n do
     local x, y = xs[i], ys[i]
 
@@ -67,22 +67,6 @@ function M.prefix_length(xs, ys)
     end
   end
   return n
-end
-
-function M.min(x, y)
-  if x <= y then
-    return x
-  else
-    return y
-  end
-end
-
-function M.max(x, y)
-  if x >= y then
-    return x
-  else
-    return y
-  end
 end
 
 function M.map_motion(f)
