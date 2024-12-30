@@ -282,20 +282,15 @@ function M.set_default_bindings()
     set("n", [[<leader>+]], function()
       cmd.Telescope "neoclip"
     end, { desc = "Open neoclip" })
-    set(
-      "n",
-      [[<leader>F]],
-      function()
-        local extension = path.extension(api.nvim_buf_get_name(0))
-        telescope.grep_string {
-          word_match = "-w",
-          additional_args = { "--glob", "*" .. extension },
-        }
-      end,
-      {
-        desc = "Search for word under the cursor in files with current buffer's extension",
+    set("n", [[<leader>F]], function()
+      local extension = path.extension(api.nvim_buf_get_name(0))
+      telescope.grep_string {
+        word_match = "-w",
+        additional_args = { "--glob", "*" .. extension },
       }
-    )
+    end, {
+      desc = "Search for word under the cursor in files with current buffer's extension",
+    })
     set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
@@ -320,6 +315,12 @@ function M.set_default_bindings()
       }
     end, { desc = "Search for word under the cursor in buffers" })
     set("n", [[<leader>fb]], telescope.buffers, { desc = "List buffers" })
+    set(
+      "n",
+      [[<leader>fd]],
+      telescope.diagnostics,
+      { desc = "List diagnostics for current buffer" }
+    )
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end, { desc = "List files relative to current buffer" })
@@ -477,22 +478,17 @@ function M.set_default_bindings()
     end,
     { expr = true, desc = "Substitute word under the cursor in visual area" }
   )
-  set(
-    "n",
-    [[<leader>Cn]],
-    function()
-      local begin = api.nvim_buf_get_mark(0, "[")
-      local end_ = api.nvim_buf_get_mark(0, "]")
-      return substitute_word(
-        tostring(begin[1]) .. "," .. tostring(end_[1]),
-        fn.expand "<cword>"
-      )
-    end,
-    {
-      expr = true,
-      desc = "Substitute word under the cursor in previously changed or yanked text area",
-    }
-  )
+  set("n", [[<leader>Cn]], function()
+    local begin = api.nvim_buf_get_mark(0, "[")
+    local end_ = api.nvim_buf_get_mark(0, "]")
+    return substitute_word(
+      tostring(begin[1]) .. "," .. tostring(end_[1]),
+      fn.expand "<cword>"
+    )
+  end, {
+    expr = true,
+    desc = "Substitute word under the cursor in previously changed or yanked text area",
+  })
   set("n", [[<leader>cn]], function()
     return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true, desc = "Substitute word under the cursor" })
@@ -525,16 +521,11 @@ function M.set_default_bindings()
   )
 
   -- quote
-  set(
-    "n",
-    [[<leader>gq]],
-    function()
-      utils.map_motion(utils.quote)
-    end,
-    {
-      desc = "Quote selection by motion. Quote character is provided after the motion",
-    }
-  )
+  set("n", [[<leader>gq]], function()
+    utils.map_motion(utils.quote)
+  end, {
+    desc = "Quote selection by motion. Quote character is provided after the motion",
+  })
   set(
     "v",
     [[<leader>gq]],
@@ -572,22 +563,12 @@ function M.set_default_bindings()
   )
 
   -- cmdline
-  set(
-    "c",
-    [[<C-j>]],
-    [[<Down>]],
-    {
-      desc = "Go to next item matching command that was typed so far in cmdline",
-    }
-  )
-  set(
-    "c",
-    [[<C-k>]],
-    [[<Up>]],
-    {
-      desc = "Go to previous item matching command that was typed so far in cmdline",
-    }
-  )
+  set("c", [[<C-j>]], [[<Down>]], {
+    desc = "Go to next item matching command that was typed so far in cmdline",
+  })
+  set("c", [[<C-k>]], [[<Up>]], {
+    desc = "Go to previous item matching command that was typed so far in cmdline",
+  })
   set("c", [[<C-s>]], [[s//]], { desc = "Populate cmdline with s//" })
 
   -- move
@@ -674,23 +655,18 @@ function M.set_default_bindings()
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
-  set(
-    "n",
-    [[<leader>gv]],
-    function()
-      local mode = fn.visualmode()
-      if string.len(mode) == 0 then
-        mode = "v"
-      elseif mode == "" then
-        mode = "<C-v>"
-      end
-      return "`[" .. mode .. "`]"
-    end,
-    {
-      expr = true,
-      desc = "Visually select previously changed or yanked text area",
-    }
-  )
+  set("n", [[<leader>gv]], function()
+    local mode = fn.visualmode()
+    if string.len(mode) == 0 then
+      mode = "v"
+    elseif mode == "" then
+      mode = "<C-v>"
+    end
+    return "`[" .. mode .. "`]"
+  end, {
+    expr = true,
+    desc = "Visually select previously changed or yanked text area",
+  })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
   set(
@@ -734,15 +710,10 @@ function M.set_default_autocommands()
   )
   autocmd("CmdwinEnter", {
     callback = function()
-      set(
-        { "", "i" },
-        [[<C-]>]],
-        [[<CR>q:]],
-        {
-          buffer = true,
-          desc = "Run current command and open back command window",
-        }
-      )
+      set({ "", "i" }, [[<C-]>]], [[<CR>q:]], {
+        buffer = true,
+        desc = "Run current command and open back command window",
+      })
     end,
   })
   autocmd("CmdwinEnter", {
@@ -840,14 +811,6 @@ function M.set_default_autocommands()
 
       if client.supports_method "textDocument/definition" then
         set("n", [[gd]], lsp.definition, { buffer = true, desc = "Definition" })
-        if telescope then
-          set(
-            "n",
-            [[<leader>fd]],
-            telescope.lsp_definitions,
-            { buffer = true, desc = "Definition" }
-          )
-        end
       end
 
       if client.supports_method "workspace/symbol" then
