@@ -12,5 +12,6 @@ return {
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
     )
+    set({ "i" }, [[<C-s>]], "<Plug>(leap)", { silent = true, desc = "Leap" })
   end,
 }
