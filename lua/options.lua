@@ -667,6 +667,12 @@ function M.set_default_bindings()
     expr = true,
     desc = "Visually select previously changed or yanked text area",
   })
+  set(
+    "n",
+    [[<leader>p]],
+    [[<Cmd>wincmd n | wincmd T | 0put +<CR>]],
+    { desc = "Paste clipboard into a new buffer" }
+  )
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
   set(
