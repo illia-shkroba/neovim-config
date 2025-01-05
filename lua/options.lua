@@ -282,6 +282,12 @@ function M.set_default_bindings()
     set("n", [[<leader>+]], function()
       cmd.Telescope "neoclip"
     end, { desc = "Open neoclip" })
+    set(
+      "n",
+      [[<leader>/]],
+      telescope.current_buffer_fuzzy_find,
+      { desc = "Grep current buffer" }
+    )
     set("n", [[<leader>F]], function()
       local extension = path.extension(api.nvim_buf_get_name(0))
       telescope.grep_string {
@@ -324,12 +330,6 @@ function M.set_default_bindings()
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end, { desc = "List files relative to current buffer" })
-    set(
-      "n",
-      [[<leader>fG]],
-      telescope.current_buffer_fuzzy_find,
-      { desc = "Grep current buffer" }
-    )
     set("n", [[<leader>fR]], function()
       telescope.oldfiles { cwd_only = true }
     end, { desc = "List old files relative to current buffer" })
