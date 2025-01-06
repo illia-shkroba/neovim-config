@@ -670,7 +670,7 @@ function M.set_default_bindings()
   set(
     "n",
     [[<leader>p]],
-    [[<Cmd>wincmd n | wincmd T | 0put +<CR>]],
+    [[<Cmd>tab new | 0put + | file clipboard<CR>]],
     { desc = "Paste clipboard into a new buffer" }
   )
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
