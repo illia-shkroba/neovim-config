@@ -569,7 +569,12 @@ function M.set_default_bindings()
   set("c", [[<C-k>]], [[<Up>]], {
     desc = "Go to previous item matching command that was typed so far in cmdline",
   })
-  set("c", [[<C-s>]], [[s//]], { desc = "Populate cmdline with s//" })
+  set(
+    "c",
+    [[<C-s>]],
+    [[s///gc<Left><Left><Left>]],
+    { desc = "Populate cmdline with s///gc" }
+  )
 
   -- move
   set(
@@ -673,6 +678,7 @@ function M.set_default_bindings()
     [[<Cmd>tab new | 0put + | file clipboard<CR>]],
     { desc = "Paste clipboard into a new buffer" }
   )
+  set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
   set(
@@ -728,8 +734,8 @@ function M.set_default_autocommands()
       set(
         { "i" },
         [[<C-s>]],
-        [[s//]],
-        { buffer = true, desc = "Populate cmdline with s//" }
+        [[s///gc<Left><Left><Left>]],
+        { buffer = true, desc = "Populate cmdline with s///gc" }
       )
     end,
   })
