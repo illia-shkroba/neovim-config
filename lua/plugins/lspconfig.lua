@@ -4,6 +4,7 @@ return {
     local lspconfig = require "lspconfig"
 
     lspconfig.ansiblels.setup {}
+    lspconfig.basedpyright.setup {}
     lspconfig.bashls.setup {}
     lspconfig.dhall_lsp_server.setup {}
     lspconfig.dockerls.setup {}
@@ -13,7 +14,6 @@ return {
     lspconfig.nil_ls.setup {}
     lspconfig.perlpls.setup {}
     lspconfig.purescriptls.setup {}
-    lspconfig.pyright.setup {}
     lspconfig.rust_analyzer.setup {}
     lspconfig.terraformls.setup {}
     lspconfig.vimls.setup {}
