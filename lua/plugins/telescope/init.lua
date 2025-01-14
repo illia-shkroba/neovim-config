@@ -63,7 +63,7 @@ return {
         [">"] = actions.preview_scrolling_right,
         ["J"] = actions.preview_scrolling_down,
         ["K"] = actions.preview_scrolling_up,
-        ["<C-g><C-s>"] = pick_with_leap,
+        ["<C-s>"] = pick_with_leap,
         ["gs"] = pick_with_leap,
       },
       i = {
@@ -75,7 +75,7 @@ return {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
-        ["<C-g><C-s>"] = pick_with_leap,
+        ["<C-s>"] = pick_with_leap,
       },
     }
     local buffers_mappings = {
@@ -88,13 +88,13 @@ return {
     }
     local find_files_mappings = {
       n = {
-        ["<C-s>h"] = telescope.hide_in_find_files,
-        ["<C-s>s"] = telescope.unhide_in_find_files,
+        ["<C-g>h"] = telescope.hide_in_find_files,
+        ["<C-g>s"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
       i = {
-        ["<C-s>h"] = telescope.hide_in_find_files,
-        ["<C-s>s"] = telescope.unhide_in_find_files,
+        ["<C-g>h"] = telescope.hide_in_find_files,
+        ["<C-g>s"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
     }

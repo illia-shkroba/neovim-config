@@ -8,6 +8,12 @@ return {
 
     set(
       { "n", "x", "o" },
+      [[<C-s>]],
+      "<Plug>(leap)",
+      { silent = true, desc = "Leap" }
+    )
+    set(
+      { "n", "x", "o" },
       "gs",
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
