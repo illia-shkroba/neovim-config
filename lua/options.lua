@@ -659,6 +659,7 @@ function M.set_default_bindings()
 
   -- other
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
+  set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>Z]], function()
     local buffer = api.nvim_buf_get_name(0)
     if #buffer > 0 then
