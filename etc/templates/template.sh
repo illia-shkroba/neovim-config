@@ -2,6 +2,8 @@
 
 set -eu
 
+SCRIPT_DIR="$(dirname "$(readlink -e "$0")")"
+
 main() {
   if [ "$#" -eq 0 ]; then
     help
