@@ -645,6 +645,12 @@ function M.set_default_bindings()
 
   -- text objects
   set(
+    { "o" },
+    "a%",
+    ":<C-U>normal va%<CR>",
+    { desc = "Missing text object for a% from matchit" }
+  )
+  set(
     { "o", "x" },
     "av",
     ":<C-U>normal '[V']<CR>",
