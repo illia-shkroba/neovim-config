@@ -664,6 +664,7 @@ function M.set_default_bindings()
   )
 
   -- other
+  set({ "n", "x" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>Z]], function()
