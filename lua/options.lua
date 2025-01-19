@@ -652,6 +652,12 @@ function M.set_default_bindings()
   )
   set(
     { "o", "x" },
+    "il",
+    ":<C-U>normal _vg_<CR>",
+    { desc = "Current line without blanks selected charwise" }
+  )
+  set(
+    { "o", "x" },
     "iv",
     ":<C-U>normal '[v']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
