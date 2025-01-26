@@ -325,8 +325,11 @@ function M.set_default_bindings()
       "n",
       [[<leader>fd]],
       telescope.diagnostics,
-      { desc = "List diagnostics for current buffer" }
+      { desc = "List diagnostics" }
     )
+    set("n", [[<leader>fD]], function()
+      telescope.diagnostics { bufnr = 0 }
+    end, { desc = "List diagnostics for current buffer" })
     set("n", [[<leader>fF]], function()
       telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
     end, { desc = "List files relative to current buffer" })
