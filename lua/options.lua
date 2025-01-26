@@ -710,6 +710,9 @@ function M.set_default_bindings()
     [[m']],
     { desc = "Add current cursor's position to jumplist" }
   )
+  set({ "n", "x" }, "]", [[g]], { desc = "Remap ] to g" })
+  set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
+  set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "x" }, [[']], [[`]], { desc = "Remap ' to `" })
 end
 
