@@ -683,6 +683,7 @@ function M.set_default_bindings()
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
+  set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
   set("n", [[<leader>gv]], function()
     local mode = fn.visualmode()
     if string.len(mode) == 0 then
