@@ -494,11 +494,30 @@ function M.set_default_bindings()
   )
   set(
     "n",
+    [[<leader>S]],
+    function()
+      utils.map_motion(function(xs)
+        return substitute.substitute_char(xs, " ", "_")
+      end)
+    end,
+    {
+      silent = true,
+      desc = "Substitute space with _ in area selected by motion",
+    }
+  )
+  set(
+    "n",
     [[<leader>s]],
     function()
       utils.map_motion(substitute.substitute_char_prompt)
     end,
     { silent = true, desc = "Substitute character in area selected by motion" }
+  )
+  set(
+    "v",
+    [[<leader>S]],
+    [[:lua require("utils").map_visual(function(xs) return require("text.substitute").substitute_char(xs, " ", "_") end)<CR>]],
+    { silent = true, desc = "Substitute space with _ in visual area" }
   )
   set(
     "v",
