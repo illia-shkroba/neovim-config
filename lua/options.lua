@@ -244,16 +244,6 @@ function M.set_default_bindings()
     dump_list(location)
   end, { desc = "Dump location list to a buffer" })
 
-  set("n", [[<leader>SS]], function()
-    cmd.lvimgrep(utils.get_motion_selection().text, "##")
-  end, { desc = "Add matches of selection by motion to location list" })
-  set(
-    "v",
-    [[<leader>SS]],
-    [[:lua vim.cmd.lvimgrep(require("utils").get_visual_selection().text, "##")<CR>]],
-    { desc = "Add matches of selection by visual to location list" }
-  )
-
   -- tmux
   set(
     "",
