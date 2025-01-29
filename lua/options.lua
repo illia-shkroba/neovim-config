@@ -244,12 +244,12 @@ function M.set_default_bindings()
     dump_list(location)
   end, { desc = "Dump location list to a buffer" })
 
-  set("n", [[<leader>S]], function()
+  set("n", [[<leader>SS]], function()
     cmd.lvimgrep(utils.get_motion_selection().text, "##")
   end, { desc = "Add matches of selection by motion to location list" })
   set(
     "v",
-    [[<leader>S]],
+    [[<leader>SS]],
     [[:lua vim.cmd.lvimgrep(require("utils").get_visual_selection().text, "##")<CR>]],
     { desc = "Add matches of selection by visual to location list" }
   )
@@ -462,6 +462,7 @@ function M.set_default_bindings()
   )
 
   -- substitute
+  local substitute = require "text.substitute"
   local function substitute_word(scope, text)
     local suffix = [[/gc]]
     return [[:]]
@@ -500,6 +501,20 @@ function M.set_default_bindings()
     [[<leader>cs]],
     [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
     { desc = "Remove trailing whitespaces" }
+  )
+  set(
+    "n",
+    [[<leader>s]],
+    function()
+      utils.map_motion(substitute.substitute_char_prompt)
+    end,
+    { silent = true, desc = "Substitute character in area selected by motion" }
+  )
+  set(
+    "v",
+    [[<leader>s]],
+    [[:lua require("utils").map_visual(require("text.substitute").substitute_char_prompt)<CR>]],
+    { silent = true, desc = "Substitute character in visual area" }
   )
 
   -- case

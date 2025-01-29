@@ -101,7 +101,11 @@ end
 function M.map_visual(f)
   local selection = M.get_visual_selection()
   M.with_register(function()
-    fn.setreg('"', f(selection.text))
+    local new_text = f(selection.text)
+    if not new_text then
+      return
+    end
+    fn.setreg('"', new_text)
     cmd.normal "gvp"
     if selection.mode == "v" and selection.ends_with_newline then
       cmd.normal [[a]] -- add newline that was removed during selection
