@@ -790,12 +790,6 @@ function M.set_default_bindings()
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
-  set(
-    "n",
-    [[<leader><leader>]],
-    [[m']],
-    { desc = "Add current cursor's position to jumplist" }
-  )
   set({ "n", "x" }, "]", [[g]], { desc = "Remap ] to g" })
   set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
