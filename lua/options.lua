@@ -633,6 +633,12 @@ function M.set_default_bindings()
     [[s///gc<Left><Left><Left>]],
     { desc = "Populate cmdline with s///gc" }
   )
+  set(
+    "c",
+    [[<C-g>]],
+    [[<Home>cfdo ]],
+    { desc = "Populate cmdline with cfdo at the beginning" }
+  )
 
   -- move
   set(
@@ -818,6 +824,16 @@ function M.set_default_autocommands()
         [[<C-s>]],
         [[s///gc<Left><Left><Left>]],
         { buffer = true, desc = "Populate cmdline with s///gc" }
+      )
+    end,
+  })
+  autocmd("CmdwinEnter", {
+    callback = function()
+      set(
+        { "i" },
+        [[<C-g>]],
+        [[<Home>cfdo ]],
+        { buffer = true, desc = "Populate cmdline with cfdo at the beginning" }
       )
     end,
   })
