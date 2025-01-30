@@ -147,6 +147,30 @@ function M.set_default_bindings()
 
   set(
     "n",
+    [[<leader><leader>N]],
+    [[<Cmd>execute v:count1 .. 'cpfile'<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    { silent = true, desc = "cpfile" }
+  )
+  set(
+    "n",
+    [[<leader><leader>n]],
+    [[<Cmd>execute v:count1 .. 'cnfile'<CR>:copen<CR>zt:wincmd p<CR>zz]],
+    { silent = true, desc = "cnfile" }
+  )
+  set(
+    "n",
+    [[<leader><leader>LN]],
+    [[<Cmd>execute v:count1 .. 'lpfile'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    { silent = true, desc = "lpfile" }
+  )
+  set(
+    "n",
+    [[<leader><leader>ln]],
+    [[<Cmd>execute v:count1 .. 'lnfile'<CR>:lopen<CR>zt:wincmd p<CR>zz]],
+    { silent = true, desc = "lnfile" }
+  )
+  set(
+    "n",
     [[<leader>N]],
     [[<Cmd>execute v:count1 .. 'cprevious'<CR>:copen<CR>zt:wincmd p<CR>zz]],
     { silent = true, desc = "cprevious" }
