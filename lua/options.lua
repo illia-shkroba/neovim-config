@@ -91,9 +91,21 @@ function M.set_default_bindings()
     end
   end
 
-  set("", [[<leader>DD]], [[<Cmd>execute "cd .."<CR>]], { desc = "cd .." })
-  set("", [[<leader>DL]], [[<Cmd>execute "lcd .."<CR>]], { desc = "lcd .." })
-  set("", [[<leader>DT]], [[<Cmd>execute "tcd .."<CR>]], { desc = "tcd .." })
+  set("", [[<leader>DD]], function()
+    for _ = 1, vim.v.count1 do
+      cmd.cd ".."
+    end
+  end, { desc = "cd .." })
+  set("", [[<leader>DL]], function()
+    for _ = 1, vim.v.count1 do
+      cmd.lcd ".."
+    end
+  end, { desc = "lcd .." })
+  set("", [[<leader>DT]], function()
+    for _ = 1, vim.v.count1 do
+      cmd.tcd ".."
+    end
+  end, { desc = "tcd .." })
   set(
     "",
     [[<leader>dD]],
@@ -113,13 +125,19 @@ function M.set_default_bindings()
     { desc = "tcd into current buffer's directory" }
   )
   set("", [[<leader>dd]], function()
-    cmd.cd(step_into_buffer_dir())
+    for _ = 1, vim.v.count1 do
+      cmd.cd(step_into_buffer_dir())
+    end
   end, { desc = "cd by one level into current buffer's directory" })
   set("", [[<leader>dl]], function()
-    cmd.lcd(step_into_buffer_dir())
+    for _ = 1, vim.v.count1 do
+      cmd.lcd(step_into_buffer_dir())
+    end
   end, { desc = "lcd by one level into current buffer's directory" })
   set("", [[<leader>dt]], function()
-    cmd.tcd(step_into_buffer_dir())
+    for _ = 1, vim.v.count1 do
+      cmd.tcd(step_into_buffer_dir())
+    end
   end, { desc = "tcd by one level into current buffer's directory" })
 
   -- quickfix/location
