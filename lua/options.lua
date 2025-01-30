@@ -464,6 +464,24 @@ function M.set_default_bindings()
       .. suffix
       .. string.rep("<Left>", #suffix)
   end
+  local function substitute_word_globally(extension, text)
+    return [[:]]
+      .. [[lvimgrepadd/\<]]
+      .. text
+      .. [[\>/]]
+      .. [[gj **/*]]
+      .. extension
+      .. [[ | ]]
+      .. [[lfdo! ]]
+      .. substitute_word([[%]], text)
+  end
+  set("n", [[<leader><leader>cn]], function()
+    local extension = path.extension(api.nvim_buf_get_name(0))
+    return substitute_word_globally(extension, fn.expand "<cword>")
+  end, {
+    expr = true,
+    desc = "Add files with current file's extension to location list and substitute word under the cursor in location list files",
+  })
   set(
     "n",
     [[<leader>CN]],
@@ -492,19 +510,14 @@ function M.set_default_bindings()
     [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
     { desc = "Remove trailing whitespaces" }
   )
-  set(
-    "n",
-    [[<leader>S]],
-    function()
-      utils.map_motion(function(xs)
-        return substitute.substitute_char(xs, " ", "_")
-      end)
-    end,
-    {
-      silent = true,
-      desc = "Substitute space with _ in area selected by motion",
-    }
-  )
+  set("n", [[<leader>S]], function()
+    utils.map_motion(function(xs)
+      return substitute.substitute_char(xs, " ", "_")
+    end)
+  end, {
+    silent = true,
+    desc = "Substitute space with _ in area selected by motion",
+  })
   set(
     "n",
     [[<leader>s]],
