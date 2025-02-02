@@ -20,6 +20,12 @@ function M.substitute_char_prompt(xs)
     return nil
   end
 
+  local read_newline = fn.nr2char(13) -- ^M
+  local insertable_newline = fn.nr2char(10) -- \r
+  if substitution == read_newline then
+    substitution = insertable_newline
+  end
+
   return M.substitute_char(xs, target, substitution)
 end
 
