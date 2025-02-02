@@ -425,6 +425,12 @@ function M.set_default_bindings()
   -- git
   set(
     "n",
+    [[<leader>DS]],
+    [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
+    { desc = "Show git diff with HEAD" }
+  )
+  set(
+    "n",
     [[<leader>Ds]],
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
@@ -753,6 +759,12 @@ function M.set_default_bindings()
   )
 
   -- other
+  set(
+    "n",
+    [[<C-l>]],
+    [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
+    { desc = "<C-l> with :fclose!" }
+  )
   set({ "n", "x" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
