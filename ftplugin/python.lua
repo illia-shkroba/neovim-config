@@ -38,18 +38,6 @@ set(
   [[def() -> None:pass<Left><Left><Left><Left><Left><Up>]],
   { buffer = true, desc = "Populate buffer with function definition" }
 )
-set(
-  "ia",
-  [[for]],
-  [[for v in:pass<Up>]],
-  { buffer = true, desc = "Populate buffer with for-loop" }
-)
-set(
-  "ia",
-  [[if]],
-  [[if:pass<Up><Left>]],
-  { buffer = true, desc = "Populate buffer with if statement" }
-)
 set("n", [[<leader><CR>]], function()
   local virtual_environment = find_virtual_environment()
 
