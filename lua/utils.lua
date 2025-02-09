@@ -153,11 +153,6 @@ function M.with_register(f)
   return y, new_register
 end
 
-function M.quote(text)
-  local quote = fn.getcharstr()
-  return quote .. text .. quote
-end
-
 function M.get_cursor()
   local position = fn.getcurpos()
   local line, column = position[2], position[3]

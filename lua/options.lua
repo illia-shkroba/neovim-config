@@ -609,19 +609,6 @@ function M.set_default_bindings()
     { silent = true, desc = "Format selection by visual to snake case" }
   )
 
-  -- quote
-  set("n", [[<leader>gq]], function()
-    utils.map_motion(utils.quote)
-  end, {
-    desc = "Quote selection by motion. Quote character is provided after the motion",
-  })
-  set(
-    "v",
-    [[<leader>gq]],
-    [[:lua require("utils").map_visual(require("utils").quote)<CR>]],
-    { silent = true, desc = "Quote selection by visual" }
-  )
-
   -- fold
   set("n", [[<leader>gf]], function()
     opt.foldmethod = "indent"

@@ -64,6 +64,7 @@ return {
             background = true,
           },
         },
+        nvim_surround = true,
         telescope = {
           enabled = true,
           -- style = "nvchad"
