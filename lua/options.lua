@@ -485,20 +485,7 @@ function M.set_default_bindings()
     [[<Cmd>let @" = expand("%")<CR>]],
     { desc = "Yank current buffer's name" }
   )
-  set("n", [[<leader>Y]], function()
-    local selection = utils.get_motion_selection()
-    fn.system {
-      "tmux",
-      "set-buffer",
-      selection.text,
-    }
-  end, { desc = "Yank selection by motion to tmux" })
-  set(
-    "v",
-    [[<leader>Y]],
-    [[:lua vim.fn.system { "tmux", "set-buffer", require("utils").get_visual_selection().text, }<CR>]],
-    { desc = "Yank selection by visual to tmux" }
-  )
+  set({ "n", "v" }, [[<leader>Y]], [["+y]], { desc = [[Alias for: "+y]] })
 
   -- substitute
   local substitute = require "text.substitute"
