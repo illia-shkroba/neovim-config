@@ -448,7 +448,7 @@ function M.set_default_bindings()
     { desc = "git add --patch" }
   )
 
-  -- yield
+  -- yank
   set(
     "n",
     [[<leader>yP]],
@@ -727,19 +727,19 @@ function M.set_default_bindings()
     { desc = "Missing text object for a% from matchit" }
   )
   set(
-    { "o", "x" },
+    { "o", "v" },
     "av",
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text area selected charwise" }
   )
   set(
-    { "o", "x" },
+    { "o", "v" },
     "il",
     ":<C-U>normal _vg_<CR>",
     { desc = "Current line without blanks selected charwise" }
   )
   set(
-    { "o", "x" },
+    { "o", "v" },
     "iv",
     ":<C-U>normal '[v']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
@@ -752,7 +752,7 @@ function M.set_default_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
-  set({ "n", "x" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
+  set({ "n", "v" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>Z]], function()
@@ -784,10 +784,10 @@ function M.set_default_bindings()
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
-  set({ "n", "x" }, "]", [[g]], { desc = "Remap ] to g" })
-  set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "x" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "x" }, [[']], [[`]], { desc = "Remap ' to `" })
+  set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
+  set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
+  set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
+  set({ "n", "v" }, [[']], [[`]], { desc = "Remap ' to `" })
 end
 
 function M.set_default_commands()

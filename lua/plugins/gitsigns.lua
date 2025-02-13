@@ -106,7 +106,7 @@ return {
 
         -- Text object
         set(
-          { "o", "x" },
+          { "o", "v" },
           "ih",
           ":<C-U>Gitsigns select_hunk<CR>",
           { desc = "Hunk" }

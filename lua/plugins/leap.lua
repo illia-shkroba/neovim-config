@@ -7,13 +7,13 @@ return {
     leap.opts.case_sensitive = true
 
     set(
-      { "n", "x", "o" },
+      { "n", "v", "o" },
       [[<C-s>]],
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
     )
     set(
-      { "n", "x", "o" },
+      { "n", "v", "o" },
       "gs",
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
