@@ -41,9 +41,9 @@ local stylish_config = fn.stdpath "config"
 opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
 set(
-  "",
+  { "n", "v" },
   [[<leader><CR>]],
-  [[<Cmd>w !stack ghci<CR>]],
+  [[:w !stack ghci<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
 set(

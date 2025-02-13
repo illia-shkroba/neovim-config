@@ -14,9 +14,9 @@ opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
 set(
-  "",
+  { "n", "v" },
   [[<leader><CR>]],
-  [[<Cmd>w !dhall-to-json<CR>]],
+  [[:w !dhall-to-json<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
 set(

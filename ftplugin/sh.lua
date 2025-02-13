@@ -17,9 +17,9 @@ opt_local.formatprg = "shfmt -s -i "
   .. " -bn -ci -sr"
 
 set(
-  "",
+  { "n", "v" },
   [[<leader><CR>]],
-  [[<Cmd>w !bash<CR>]],
+  [[:w !bash<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
 set(

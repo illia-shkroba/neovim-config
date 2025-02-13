@@ -13,8 +13,8 @@ opt_local.softtabstop = 4
 opt_local.tabstop = 4
 
 set(
-  "",
+  { "n", "v" },
   [[<leader><CR>]],
-  [[<Cmd>w !perl<CR>]],
+  [[:w !perl<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )

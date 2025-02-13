@@ -92,50 +92,50 @@ function M.set_default_bindings()
     end
   end
 
-  set("", [[<leader>DD]], function()
+  set("n", [[<leader>DD]], function()
     for _ = 1, vim.v.count1 do
       cmd.cd ".."
     end
   end, { desc = "cd .." })
-  set("", [[<leader>DL]], function()
+  set("n", [[<leader>DL]], function()
     for _ = 1, vim.v.count1 do
       cmd.lcd ".."
     end
   end, { desc = "lcd .." })
-  set("", [[<leader>DT]], function()
+  set("n", [[<leader>DT]], function()
     for _ = 1, vim.v.count1 do
       cmd.tcd ".."
     end
   end, { desc = "tcd .." })
   set(
-    "",
+    "n",
     [[<leader>dD]],
     [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "cd into current buffer's directory" }
   )
   set(
-    "",
+    "n",
     [[<leader>dL]],
     [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "lcd into current buffer's directory" }
   )
   set(
-    "",
+    "n",
     [[<leader>dT]],
     [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "tcd into current buffer's directory" }
   )
-  set("", [[<leader>dd]], function()
+  set("n", [[<leader>dd]], function()
     for _ = 1, vim.v.count1 do
       cmd.cd(step_into_buffer_dir())
     end
   end, { desc = "cd by one level into current buffer's directory" })
-  set("", [[<leader>dl]], function()
+  set("n", [[<leader>dl]], function()
     for _ = 1, vim.v.count1 do
       cmd.lcd(step_into_buffer_dir())
     end
   end, { desc = "lcd by one level into current buffer's directory" })
-  set("", [[<leader>dt]], function()
+  set("n", [[<leader>dt]], function()
     for _ = 1, vim.v.count1 do
       cmd.tcd(step_into_buffer_dir())
     end
@@ -289,19 +289,19 @@ function M.set_default_bindings()
 
   -- tmux
   set(
-    "",
+    "n",
     [[<leader>"]],
     [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux pane vertically" }
   )
   set(
-    "",
+    "n",
     [[<leader>%]],
     [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux pane horizontally" }
   )
   set(
-    "",
+    "n",
     [[<leader>v]],
     [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux window" }
@@ -823,7 +823,7 @@ function M.set_default_autocommands()
   )
   autocmd("CmdwinEnter", {
     callback = function()
-      set({ "", "i" }, [[<C-]>]], [[<CR>q:]], {
+      set({ "n", "i" }, [[<C-]>]], [[<CR>q:]], {
         buffer = true,
         desc = "Run current command and open back command window",
       })

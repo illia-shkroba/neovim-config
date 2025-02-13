@@ -14,9 +14,9 @@ opt_local.softtabstop = 2
 opt_local.tabstop = 2
 
 set(
-  "",
+  { "n", "v" },
   [[<leader><CR>]],
-  [[<Cmd>w !lua<CR>]],
+  [[:w !lua<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
 set(

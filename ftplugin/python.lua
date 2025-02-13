@@ -27,7 +27,7 @@ local function find_virtual_environment()
 end
 
 set(
-  "",
+  "n",
   [[gh]],
   [[<Cmd>up | !black % && isort %<CR>]],
   { buffer = true, desc = "Call black and isort on current buffer" }
