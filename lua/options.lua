@@ -742,13 +742,6 @@ function M.set_default_bindings()
   set({ "n", "v" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
-  set("n", [[<leader>Z]], function()
-    local buffer = api.nvim_buf_get_name(0)
-    if #buffer > 0 then
-      fn.delete(buffer)
-      vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
-    end
-  end, { desc = "Remove current buffer's file" })
   set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
   set("n", [[<leader>gv]], function()
     local mode = fn.visualmode()
@@ -771,6 +764,13 @@ function M.set_default_bindings()
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
+  set("n", [[<leader>z]], function()
+    local buffer = api.nvim_buf_get_name(0)
+    if #buffer > 0 then
+      fn.delete(buffer)
+      vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
+    end
+  end, { desc = "Remove current buffer's file" })
   set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
