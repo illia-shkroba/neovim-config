@@ -358,7 +358,7 @@ function M.set_default_bindings()
       pickers.live_grep_filetype,
       { desc = "Grep files with extension" }
     )
-    set("n", [[<leader>fW]], function()
+    set("n", [[<leader>fw]], function()
       telescope.grep_string {
         word_match = "-w",
         grep_open_files = true,
@@ -427,7 +427,7 @@ function M.set_default_bindings()
     )
     set(
       "v",
-      [[<leader>fW]],
+      [[<leader>fw]],
       [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]],
       { desc = "Search for visually selected word in buffers" }
     )
@@ -928,7 +928,7 @@ function M.set_default_autocommands()
         if telescope then
           set(
             "n",
-            [[<leader>fw]],
+            [[<leader>fW]],
             telescope.lsp_dynamic_workspace_symbols,
             { buffer = true, desc = "Dynamic workspace symbols" }
           )
@@ -952,7 +952,7 @@ function M.set_default_autocommands()
         del("n", [[K]], { buffer = event.buf })
         del("n", [[gd]], { buffer = event.buf })
         del("n", [[<leader>fd]], { buffer = event.buf })
-        del("n", [[<leader>fw]], { buffer = event.buf })
+        del("n", [[<leader>fW]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
