@@ -341,6 +341,17 @@ function M.set_default_bindings()
       telescope.git_bcommits,
       { desc = "List commits affecting current buffer" }
     )
+    set("n", [[<leader>fG]], function()
+      local extension = path.extension(api.nvim_buf_get_name(0))
+      return [[:lua require("telescope.builtin").grep_string ]]
+        .. [[{ word_match = "-w"]]
+        .. [[, additional_args = { "--glob", "*]]
+        .. extension
+        .. [[" }, search = "" }<Left><Left><Left>]]
+    end, {
+      expr = true,
+      desc = "Populate cmdline with search for word in files with current buffer's extension",
+    })
     set(
       "n",
       [[<leader>fg]],
