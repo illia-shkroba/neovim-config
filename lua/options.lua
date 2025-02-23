@@ -643,6 +643,15 @@ function M.set_default_bindings()
   set("c", [[<C-k>]], [[<Up>]], {
     desc = "Go to previous item matching command that was typed so far in cmdline",
   })
+  set("c", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+    desc = [[Wrap current line with \< and \>]],
+  })
+  set(
+    "c",
+    [[<C-q>]],
+    [[<Home>cfdo ]],
+    { desc = "Populate cmdline with cfdo at the beginning" }
+  )
   set(
     "c",
     [[<C-s>]],
@@ -822,20 +831,24 @@ function M.set_default_autocommands()
   )
   autocmd("CmdwinEnter", {
     callback = function()
-      set({ "n", "i" }, [[<C-]>]], [[<CR>q:]], {
-        buffer = true,
-        desc = "Run current command and open back command window",
+      set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+        desc = [[Wrap current line with \< and \>]],
       })
-    end,
-  })
-  autocmd("CmdwinEnter", {
-    callback = function()
+      set(
+        { "i" },
+        [[<C-q>]],
+        [[<Home>cfdo ]],
+        { buffer = true, desc = "Populate cmdline with cfdo at the beginning" }
+      )
       set(
         { "i" },
         [[<C-s>]],
         [[s///gc<Left><Left><Left>]],
         { buffer = true, desc = "Populate cmdline with s///gc" }
       )
+      set({ "n" }, [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
+        desc = [[Wrap current line with \< and \>]],
+      })
     end,
   })
   autocmd("LspAttach", {
