@@ -507,7 +507,6 @@ function M.set_default_bindings()
       .. [[s/\<]]
       .. text
       .. [[\>/]]
-      .. text
       .. suffix
       .. string.rep("<Left>", #suffix)
   end
@@ -879,15 +878,6 @@ function M.set_default_autocommands()
         )
       end
 
-      if client.supports_method "textDocument/rename" then
-        set(
-          "n",
-          [[<leader>cN]],
-          lsp.buf.rename,
-          { buffer = true, desc = "Rename with LSP" }
-        )
-      end
-
       if client.supports_method "textDocument/references" then
         set(
           "n",
@@ -970,7 +960,6 @@ function M.set_default_autocommands()
 
       local function unset_bindings()
         del("n", [[<leader>.]], { buffer = event.buf })
-        del("n", [[<leader>cN]], { buffer = event.buf })
         del("n", [[<leader>qc]], { buffer = event.buf })
         del("n", [[<leader>fc]], { buffer = event.buf })
         del("n", [[<leader>qi]], { buffer = event.buf })
