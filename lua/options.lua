@@ -816,7 +816,7 @@ end
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
   local del = vim.keymap.del
-  local lsp = vim.lsp.buf
+  local lsp = vim.lsp
   local set = vim.keymap.set
 
   local utils = require "utils"
@@ -855,7 +855,16 @@ function M.set_default_autocommands()
     callback = function(event)
       local telescope = utils.require_safe "telescope.builtin"
 
-      local client = vim.lsp.get_client_by_id(event.data.client_id)
+      local client = lsp.get_client_by_id(event.data.client_id)
+
+      if client.supports_method "textDocument/publishDiagnostics" then
+        lsp.handlers["textDocument/publishDiagnostics"] =
+          lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+            underline = true,
+            virtual_text = false,
+            update_in_insert = false,
+          })
+      end
 
       if client.supports_method "textDocument/completion" then
         vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -865,7 +874,7 @@ function M.set_default_autocommands()
         set(
           "n",
           [[<leader>.]],
-          lsp.code_action,
+          lsp.buf.code_action,
           { buffer = true, desc = "Code action" }
         )
       end
@@ -874,7 +883,7 @@ function M.set_default_autocommands()
         set(
           "n",
           [[<leader>cN]],
-          lsp.rename,
+          lsp.buf.rename,
           { buffer = true, desc = "Rename with LSP" }
         )
       end
@@ -883,7 +892,7 @@ function M.set_default_autocommands()
         set(
           "n",
           [[<leader>qc]],
-          lsp.references,
+          lsp.buf.references,
           { buffer = true, desc = "References" }
         )
         if telescope then
@@ -900,7 +909,7 @@ function M.set_default_autocommands()
         set(
           "n",
           [[<leader>qi]],
-          lsp.incoming_calls,
+          lsp.buf.incoming_calls,
           { buffer = true, desc = "Incoming calls" }
         )
         if telescope then
@@ -917,7 +926,7 @@ function M.set_default_autocommands()
         set(
           "n",
           [[<leader>qo]],
-          lsp.outgoing_calls,
+          lsp.buf.outgoing_calls,
           { buffer = true, desc = "Outgoing calls" }
         )
         if telescope then
@@ -931,11 +940,16 @@ function M.set_default_autocommands()
       end
 
       if client.supports_method "textDocument/hover" then
-        set("n", [[K]], lsp.hover, { buffer = true, desc = "Hover" })
+        set("n", [[K]], lsp.buf.hover, { buffer = true, desc = "Hover" })
       end
 
       if client.supports_method "textDocument/definition" then
-        set("n", [[gd]], lsp.definition, { buffer = true, desc = "Definition" })
+        set(
+          "n",
+          [[gd]],
+          lsp.buf.definition,
+          { buffer = true, desc = "Definition" }
+        )
       end
 
       if client.supports_method "workspace/symbol" then
