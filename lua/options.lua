@@ -777,7 +777,7 @@ function M.set_default_bindings()
   set(
     "n",
     [[<leader>p]],
-    [[<Cmd>tab new | 0put + | file clipboard<CR>]],
+    [[<Cmd>tab new | 0put +<CR>]],
     { desc = "Paste clipboard into a new buffer" }
   )
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
@@ -794,7 +794,6 @@ function M.set_default_bindings()
   set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "v" }, [[']], [[`]], { desc = "Remap ' to `" })
 end
 
 function M.set_default_commands()
