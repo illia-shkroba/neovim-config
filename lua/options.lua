@@ -736,7 +736,7 @@ function M.set_default_bindings()
     { "o", "v" },
     "av",
     ":<C-U>normal '[V']<CR>",
-    { desc = "Previously changed or yanked text area selected charwise" }
+    { desc = "Previously changed or yanked text area selected linewise" }
   )
   set(
     { "o", "v" },
@@ -747,8 +747,8 @@ function M.set_default_bindings()
   set(
     { "o", "v" },
     "iv",
-    ":<C-U>normal '[v']<CR>",
-    { desc = "Previously changed or yanked text area selected linewise" }
+    ":<C-U>normal `[v`]<CR>",
+    { desc = "Previously changed or yanked text area selected charwise" }
   )
 
   -- other
