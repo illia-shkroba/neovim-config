@@ -28,67 +28,30 @@ return {
           -- `ap`.
           include_surrounding_whitespace = true,
         },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>a"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["<leader>A"] = "@parameter.inner",
-          },
-        },
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]#"] = "@comment.outer",
-            ["]a"] = "@call.inner",
-            ["]l"] = "@call.outer",
-            ["]m"] = "@function.outer",
-            ["]o"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["]e"] = "@call.outer",
             ["]]"] = "@class.outer",
+            ["]#"] = "@comment.outer",
+            ["]m"] = "@function.outer",
           },
           goto_next_end = {
-            ["]A"] = "@call.inner",
-            ["]L"] = "@call.outer",
-            ["]M"] = "@function.outer",
-            ["]O"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["]E"] = "@call.outer",
             ["]["] = "@class.outer",
+            ["]M"] = "@function.outer",
           },
           goto_previous_start = {
-            ["[#"] = "@comment.outer",
-            ["[a"] = "@call.inner",
-            ["[l"] = "@call.outer",
-            ["[m"] = "@function.outer",
-            ["[o"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["[e"] = "@call.outer",
             ["[["] = "@class.outer",
+            ["[#"] = "@comment.outer",
+            ["[m"] = "@function.outer",
           },
           goto_previous_end = {
-            ["[A"] = "@call.inner",
-            ["[L"] = "@call.outer",
-            ["[M"] = "@function.outer",
-            ["[O"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["[E"] = "@call.outer",
             ["[]"] = "@class.outer",
-          },
-          -- Below will go to either the start or the end, whichever is closer.
-          -- Use if you want more granular movements
-          goto_next = {
-            ["]b"] = "@block.outer",
-          },
-          goto_previous = {
-            ["[b"] = "@block.outer",
+            ["[M"] = "@function.outer",
           },
         },
       },
