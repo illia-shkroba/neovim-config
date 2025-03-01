@@ -623,17 +623,6 @@ function M.set_default_bindings()
     { desc = "Shift visual area up" }
   )
 
-  -- column
-  set("n", [[<leader>gc]], function()
-    utils.map_motion(utils.column)
-  end, { desc = "Use `column` on selection by motion" })
-  set(
-    "v",
-    [[<leader>gc]],
-    [[:lua require("utils").map_visual(require("utils").column)<CR>]],
-    { silent = true, desc = "Use `column` on selection by visual" }
-  )
-
   -- tags
   set("n", [[<leader>gt]], function()
     local language = vim.opt_local.filetype._value
