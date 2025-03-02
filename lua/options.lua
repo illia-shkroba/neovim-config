@@ -636,14 +636,6 @@ function M.set_default_bindings()
   set("i", [[<C-j>]], function()
     return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
   end, { expr = true, desc = "Go down in popupmenu" })
-  set("i", [[<C-z>]], function()
-    if fn.pumvisible() == 1 then
-      cmd.Telescope "completion"
-      return ""
-    else
-      return [[<C-z>]]
-    end
-  end, { expr = true, desc = "List popupmenu completion in Telescope" })
 
   -- tabs
   set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]], { desc = "Close tab" })
