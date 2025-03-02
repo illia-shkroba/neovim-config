@@ -481,13 +481,16 @@ function M.set_default_bindings()
   })
   set(
     "n",
-    [[<leader>CN]],
+    [[<leader>c*]],
     function()
       return substitute_word([[*]], fn.expand "<cword>")
     end,
     { expr = true, desc = "Substitute word under the cursor in visual area" }
   )
-  set("n", [[<leader>Cn]], function()
+  set("n", [[<leader>cn]], function()
+    return substitute_word([[%]], fn.expand "<cword>")
+  end, { expr = true, desc = "Substitute word under the cursor" })
+  set("n", [[<leader>cv]], function()
     local begin = api.nvim_buf_get_mark(0, "[")
     local end_ = api.nvim_buf_get_mark(0, "]")
     return substitute_word(
@@ -498,9 +501,6 @@ function M.set_default_bindings()
     expr = true,
     desc = "Substitute word under the cursor in previously changed or yanked text area",
   })
-  set("n", [[<leader>cn]], function()
-    return substitute_word([[%]], fn.expand "<cword>")
-  end, { expr = true, desc = "Substitute word under the cursor" })
   set(
     "n",
     [[<leader>cs]],
@@ -629,13 +629,13 @@ function M.set_default_bindings()
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
   end, { expr = true, desc = "Generate tags" })
 
-  -- popupmenu
+  -- popup-menu
   set("i", [[<C-k>]], function()
     return fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
-  end, { expr = true, desc = "Go up in popupmenu" })
+  end, { expr = true, desc = "Go up in popup-menu" })
   set("i", [[<C-j>]], function()
     return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
-  end, { expr = true, desc = "Go down in popupmenu" })
+  end, { expr = true, desc = "Go down in popup-menu" })
 
   -- tabs
   set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]], { desc = "Close tab" })
@@ -669,6 +669,12 @@ function M.set_default_bindings()
     "av",
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
+  )
+  set(
+    { "o", "v" },
+    "i*",
+    ":<C-U>normal `<v`><CR>",
+    { desc = "Previously selected text area selected charwise" }
   )
   set(
     { "o", "v" },
