@@ -740,9 +740,19 @@ function M.set_default_commands()
   local cmd = vim.cmd
   local command = vim.api.nvim_create_user_command
   local fn = vim.fn
+  local fs = vim.fs
+
   command("Config", [[split `=stdpath("config") .. "/init.lua"`]], {})
   command("Mv", function(opts)
-    cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. opts.fargs[1])
+    local dest
+    if fn.isdirectory(opts.fargs[1]) == 1 then
+      dest = fs.joinpath(opts.fargs[1], fn.expand "%:t")
+    else
+      dest = opts.fargs[1]
+    end
+
+    cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. dest)
+
     local previous = fn.expand "#"
     if #previous > 0 then
       fn.delete(previous)
