@@ -20,6 +20,14 @@ function M.substitute_char_prompt(xs)
     return nil
   end
 
+  -- For some reason `substitution` has "kb" when hitting backspace and
+  -- converted to `128` with `fn.char2nr`, but fn.nr2char(128) is "". Thus,
+  -- `substitution == fn.nr2char(128)` is `false`.
+  local backspace_number = 128 -- kb
+  if substitution == "" or fn.char2nr(substitution) == backspace_number then
+    substitution = ""
+  end
+
   local read_newline = fn.nr2char(13) -- ^M
   local insertable_newline = fn.nr2char(10) -- \r
   if substitution == read_newline then
