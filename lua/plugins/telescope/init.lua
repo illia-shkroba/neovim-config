@@ -39,14 +39,6 @@ return {
       }
     end
 
-    require("telescope").setup {
-      defaults = {
-        mappings = {
-          i = { ["<a-p>"] = pick_with_leap },
-        },
-      },
-    }
-
     local global_mappings = {
       n = {
         ["<C-c>"] = actions.close,
