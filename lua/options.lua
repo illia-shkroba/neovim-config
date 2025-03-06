@@ -694,7 +694,7 @@ function M.set_default_bindings()
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
-  set("n", [[<leader>gv]], function()
+  set("n", [[<leader>v]], function()
     local mode = fn.visualmode()
     if string.len(mode) == 0 then
       mode = "v"
