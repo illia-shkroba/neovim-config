@@ -660,6 +660,12 @@ function M.set_default_bindings()
   )
   set(
     { "o", "v" },
+    "a*",
+    ":<C-U>normal '<V'><CR>",
+    { desc = "Previously selected text area selected linewise" }
+  )
+  set(
+    { "o", "v" },
     "av",
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
