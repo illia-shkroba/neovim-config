@@ -251,12 +251,6 @@ function M.set_default_bindings()
     [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux pane horizontally" }
   )
-  set(
-    "n",
-    [[<leader>v]],
-    [[<Cmd>execute "silent !tmux new-window -c '" .. getcwd() .. "'"<CR>]],
-    { desc = "Spawn new tmux window" }
-  )
 
   -- telescope
   local telescope = utils.require_safe "telescope.builtin"
