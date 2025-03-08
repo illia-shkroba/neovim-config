@@ -722,6 +722,7 @@ end
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
   local del = vim.keymap.del
+  local diagnostic = vim.diagnostic
   local lsp = vim.lsp
   local set = vim.keymap.set
 
@@ -760,6 +761,7 @@ function M.set_default_autocommands()
       local client = lsp.get_client_by_id(event.data.client_id)
 
       if client.supports_method "textDocument/publishDiagnostics" then
+        diagnostic.config { virtual_text = false }
         lsp.handlers["textDocument/publishDiagnostics"] =
           lsp.with(lsp.diagnostic.on_publish_diagnostics, {
             underline = true,
