@@ -7,32 +7,6 @@ function M.set_default_options()
 
   cmd.filetype "on"
 
-  vim.cmd [[
-    func Thesaur(findstart, base)
-      if a:findstart
-        return searchpos('\<', 'bnW', line('.'))[1] - 1
-      endif
-      let res = []
-      let h = ''
-      for l in systemlist('aiksaurus ' .. shellescape(a:base))
-        if l[:3] == '=== '
-          let h = '(' .. substitute(l[4:], ' =*$', ')', '')
-        elseif l ==# 'Alphabetically similar known words are: '
-          let h = "\U0001f52e"
-        elseif l[0] =~ '\a' || (h ==# "\U0001f52e" && l[0] ==# "\t")
-          call extend(res, map(split(substitute(l, '^\t', '', ''), ', '), {_, val -> {'word': val, 'menu': h}}))
-        endif
-      endfor
-      return res
-    endfunc
-
-    if exists('+thesaurusfunc')
-      set thesaurusfunc=Thesaur
-    endif
-  ]]
-
-  g.netrw_banner = 0
-
   opt.allowrevins = true
   opt.autoindent = true
   opt.completeopt = { "menuone", "popup" }
@@ -67,6 +41,8 @@ function M.set_default_options()
   opt.termguicolors = true
   opt.wildmenu = true
   opt.wrapscan = false
+
+  g.netrw_banner = 0
 end
 
 function M.set_default_bindings()
@@ -245,12 +221,6 @@ function M.set_default_bindings()
     [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux pane vertically" }
   )
-  set(
-    "n",
-    [[<leader>%]],
-    [[<Cmd>execute "silent !tmux split-window -h -c '" .. getcwd() .. "'"<CR>]],
-    { desc = "Spawn new tmux pane horizontally" }
-  )
 
   -- telescope
   local telescope = utils.require_safe "telescope.builtin"
@@ -344,7 +314,6 @@ function M.set_default_bindings()
       telescope.treesitter,
       { desc = "List treesitter symbols for current buffer" }
     )
-    set("n", [[<leader>fa]], telescope.registers, { desc = "List registers" })
     set("n", [[<leader>ff]], telescope.find_files, { desc = "List files" })
     set("n", [[<leader>fj]], telescope.jumplist, { desc = "List jumplist" })
     set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
@@ -551,15 +520,6 @@ function M.set_default_bindings()
     [[:lua require("utils").map_visual(require("text.case").to_snake)<CR>]],
     { silent = true, desc = "Format selection by visual to snake case" }
   )
-
-  -- fold
-  set("n", [[<leader>gf]], function()
-    opt.foldmethod = "indent"
-  end, { desc = "Fold by indentation" })
-  set("n", [[<leader>gF]], function()
-    opt.foldmethod = "manual"
-    cmd.normal "zE"
-  end, { desc = "Turn off folds" })
 
   -- search
   set("n", [[<leader>#]], function()
