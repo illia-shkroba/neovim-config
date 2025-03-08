@@ -407,41 +407,41 @@ function M.set_default_bindings()
   -- yank
   set(
     "n",
-    [[<leader>yP]],
+    [[<leader>YP]],
     [[<Cmd>let @+ = expand("%:p")<CR>]],
     { desc = "Yank current buffer's absolute path to clipboard" }
   )
   set(
     "n",
-    [[<leader>yT]],
+    [[<leader>YT]],
     [[<Cmd>let @+ = expand("%:t")<CR>]],
     { desc = "Yank current buffer's filename to clipboard" }
   )
   set(
     "n",
-    [[<leader>yY]],
+    [[<leader>YY]],
     [[<Cmd>let @+ = expand("%")<CR>]],
     { desc = "Yank current buffer's name to clipboard" }
   )
   set(
     "n",
-    [[<leader>yp]],
+    [[<leader>Yp]],
     [[<Cmd>let @" = expand("%:p")<CR>]],
     { desc = "Yank current buffer's absolute path" }
   )
   set(
     "n",
-    [[<leader>yt]],
+    [[<leader>Yt]],
     [[<Cmd>let @" = expand("%:t")<CR>]],
     { desc = "Yank current buffer's filename" }
   )
   set(
     "n",
-    [[<leader>yy]],
+    [[<leader>Yy]],
     [[<Cmd>let @" = expand("%")<CR>]],
     { desc = "Yank current buffer's name" }
   )
-  set({ "n", "v" }, [[<leader>Y]], [["+y]], { desc = [[Alias for: "+y]] })
+  set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
 
   -- substitute
   local substitute = require "text.substitute"
