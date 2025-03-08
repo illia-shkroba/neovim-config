@@ -344,6 +344,7 @@ function M.set_default_bindings()
       telescope.treesitter,
       { desc = "List treesitter symbols for current buffer" }
     )
+    set("n", [[<leader>fa]], telescope.registers, { desc = "List registers" })
     set("n", [[<leader>ff]], telescope.find_files, { desc = "List files" })
     set("n", [[<leader>fj]], telescope.jumplist, { desc = "List jumplist" })
     set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
@@ -696,7 +697,6 @@ function M.set_default_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
-  set({ "n", "v" }, [[<leader>D]], [["_d]], { desc = [[Alias for: "_d]] })
   set("n", [[<leader>QQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
