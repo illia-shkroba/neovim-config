@@ -890,26 +890,26 @@ end
 function M.enable_templates()
   local autocmd = vim.api.nvim_create_autocmd
   local fn = vim.fn
+  local fs = vim.fs
 
-  local templates_dir = fn.stdpath "config" .. "/etc/templates/"
-
-  local function enable_template(extension)
-    local template_path = templates_dir .. "template." .. extension
+  local function enable_template(pattern, template)
+    local template_path =
+      fs.joinpath(fn.stdpath "config", "etc", "templates", template)
     autocmd("BufNewFile", {
-      pattern = "*." .. extension,
+      pattern = pattern,
       command = "0r " .. template_path .. " | normal Gddgg",
     })
   end
 
-  enable_template "cpp"
-  enable_template "dhall"
-  enable_template "dot"
-  enable_template "hs"
-  enable_template "java"
-  enable_template "md"
-  enable_template "pl"
-  enable_template "scala"
-  enable_template "sh"
+  enable_template("*.cpp", "template.cpp")
+  enable_template("*.dhall", "template.dhall")
+  enable_template("*.dot", "template.dot")
+  enable_template("*.hs", "template.hs")
+  enable_template("*.java", "template.java")
+  enable_template("*.md", "template.md")
+  enable_template("*.pl", "template.pl")
+  enable_template("*.scala", "template.scala")
+  enable_template("*.sh", "template.sh")
 end
 
 return M
