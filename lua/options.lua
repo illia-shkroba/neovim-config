@@ -466,7 +466,7 @@ function M.set_default_bindings()
       .. [[lfdo! ]]
       .. substitute_word([[%]], text)
   end
-  set("n", [[<leader><leader>cn]], function()
+  set("n", [[<leader><leader>c%]], function()
     local extension = path.extension(api.nvim_buf_get_name(0))
     return substitute_word_globally(extension, fn.expand "<cword>")
   end, {
@@ -481,7 +481,7 @@ function M.set_default_bindings()
     end,
     { expr = true, desc = "Substitute word under the cursor in visual area" }
   )
-  set("n", [[<leader>cn]], function()
+  set("n", [[<leader>c%]], function()
     return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true, desc = "Substitute word under the cursor" })
   set("n", [[<leader>cv]], function()
