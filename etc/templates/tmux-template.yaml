@@ -1,0 +1,17 @@
+session_name: my-session-name-here
+start_directory: ./
+windows:
+- window_name: my-window-name-here
+  start_directory: ./
+  focus: true
+  layout: main-vertical
+  options:
+    main-pane-width: 50%
+  suppress_history: true
+  panes:
+  - focus: true
+    shell_command:
+    - cmd: nvim -S
+  - shell_command:
+    - cmd: sl
+  - pane

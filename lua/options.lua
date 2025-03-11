@@ -910,6 +910,7 @@ function M.enable_templates()
   enable_template("*.pl", "template.pl")
   enable_template("*.scala", "template.scala")
   enable_template("*.sh", "template.sh")
+  enable_template("tmux.yaml", "tmux-template.yaml")
 end
 
 return M
