@@ -26,26 +26,25 @@ return {
 
             default = {
               action = function(selection)
-                vim.cmd.cd(selection.path)
+                vim.fn.setreg("0", selection.path)
               end,
               after_action = function(selection)
-                vim.notify("Directory changed to " .. selection.path)
-              end,
-            },
-            ["<C-l>"] = {
-              action = function(selection)
-                vim.cmd.lcd(selection.path)
-              end,
-              after_action = function(selection)
-                vim.notify("Directory changed for window to " .. selection.path)
+                vim.notify(
+                  "Yanked directory: " .. selection.path,
+                  vim.log.levels.INFO
+                )
               end,
             },
             ["<C-t>"] = {
               action = function(selection)
+                vim.cmd.tabedit()
                 vim.cmd.tcd(selection.path)
               end,
               after_action = function(selection)
-                vim.notify("Directory changed for tab to " .. selection.path)
+                vim.notify(
+                  "Directory changed for tab to: " .. selection.path,
+                  vim.log.levels.INFO
+                )
               end,
             },
           },
