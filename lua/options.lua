@@ -693,6 +693,7 @@ function M.set_default_bindings()
   set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
+  set({ "n", "v" }, [[<leader>']], [["0]], { desc = [["0]] })
 end
 
 function M.set_default_commands()
