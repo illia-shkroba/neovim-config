@@ -22,6 +22,7 @@ function M.set_default_options()
   opt.linebreak = true
   opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
   opt.modeline = true
+  opt.mouse = ""
   opt.number = true
   opt.omnifunc = "syntaxcomplete#Complete"
   opt.path = { "**", "./**" }
