@@ -52,7 +52,6 @@ function M.set_default_bindings()
   local diagnostic = vim.diagnostic
   local fn = vim.fn
   local fs = vim.fs
-  local opt = vim.opt
   local set = vim.keymap.set
 
   local path = require "path"
@@ -455,6 +454,14 @@ function M.set_default_bindings()
   set("n", [[<leader>c%]], function()
     return substitute_word([[%]], fn.expand "<cword>")
   end, { expr = true, desc = "Substitute word under the cursor" })
+  set(
+    "n",
+    [[<leader>cc]],
+    function()
+      return substitute_word("", fn.expand "<cword>")
+    end,
+    { expr = true, desc = "Substitute word under the cursor in a current line" }
+  )
   set("n", [[<leader>cv]], function()
     local begin = api.nvim_buf_get_mark(0, "[")
     local end_ = api.nvim_buf_get_mark(0, "]")
