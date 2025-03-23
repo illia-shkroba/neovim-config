@@ -378,37 +378,37 @@ function M.set_default_bindings()
   -- yank
   set(
     "n",
-    [[<leader>YP]],
+    [[<leader><leader>yP]],
     [[<Cmd>let @+ = expand("%:p")<CR>]],
     { desc = "Yank current buffer's absolute path to clipboard" }
   )
   set(
     "n",
-    [[<leader>YT]],
+    [[<leader><leader>yT]],
     [[<Cmd>let @+ = expand("%:t")<CR>]],
     { desc = "Yank current buffer's filename to clipboard" }
   )
   set(
     "n",
-    [[<leader>YY]],
+    [[<leader><leader>yY]],
     [[<Cmd>let @+ = expand("%")<CR>]],
     { desc = "Yank current buffer's name to clipboard" }
   )
   set(
     "n",
-    [[<leader>Yp]],
+    [[<leader><leader>yp]],
     [[<Cmd>let @" = expand("%:p")<CR>]],
     { desc = "Yank current buffer's absolute path" }
   )
   set(
     "n",
-    [[<leader>Yt]],
+    [[<leader><leader>yt]],
     [[<Cmd>let @" = expand("%:t")<CR>]],
     { desc = "Yank current buffer's filename" }
   )
   set(
     "n",
-    [[<leader>Yy]],
+    [[<leader><leader>yy]],
     [[<Cmd>let @" = expand("%")<CR>]],
     { desc = "Yank current buffer's name" }
   )
