@@ -561,12 +561,6 @@ function M.set_default_bindings()
   })
   set(
     "c",
-    [[<C-q>]],
-    [[<Home>cfdo ]],
-    { desc = "Populate cmdline with cfdo at the beginning" }
-  )
-  set(
-    "c",
     [[<C-s>]],
     [[s///gc<Left><Left><Left>]],
     { desc = "Populate cmdline with s///gc" }
@@ -737,21 +731,11 @@ function M.set_default_autocommands()
 
   local utils = require "utils"
 
-  autocmd(
-    "BufWritePost",
-    { pattern = "config.h", command = "silent !sudo make install" }
-  )
   autocmd("CmdwinEnter", {
     callback = function()
       set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
-      set(
-        { "i" },
-        [[<C-q>]],
-        [[<Home>cfdo ]],
-        { buffer = true, desc = "Populate cmdline with cfdo at the beginning" }
-      )
       set(
         { "i" },
         [[<C-s>]],
