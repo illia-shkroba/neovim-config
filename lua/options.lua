@@ -676,7 +676,7 @@ function M.set_default_bindings()
   set(
     "n",
     [[<leader>p]],
-    [[<Cmd>tab new | 0put +<CR>]],
+    [[<Cmd>new | put + | normal gg"_dd0<CR>]],
     { desc = "Paste clipboard into a new buffer" }
   )
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
