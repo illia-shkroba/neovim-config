@@ -374,43 +374,27 @@ function M.set_default_bindings()
     { desc = "git add --patch" }
   )
 
+  -- expression
+  set(
+    "n",
+    [[<leader>mp]],
+    [["=expand("%:p")<CR>p]],
+    { desc = "Paste current buffer's absolute path" }
+  )
+  set(
+    "n",
+    [[<leader>mt]],
+    [["=expand("%:t")<CR>p]],
+    { desc = "Paste current buffer's filename" }
+  )
+  set(
+    "n",
+    [[<leader>my]],
+    [["=expand("%")<CR>p]],
+    { desc = "Paste current buffer's name" }
+  )
+
   -- yank
-  set(
-    "n",
-    [[<leader><leader>yP]],
-    [[<Cmd>let @+ = expand("%:p")<CR>]],
-    { desc = "Yank current buffer's absolute path to clipboard" }
-  )
-  set(
-    "n",
-    [[<leader><leader>yT]],
-    [[<Cmd>let @+ = expand("%:t")<CR>]],
-    { desc = "Yank current buffer's filename to clipboard" }
-  )
-  set(
-    "n",
-    [[<leader><leader>yY]],
-    [[<Cmd>let @+ = expand("%")<CR>]],
-    { desc = "Yank current buffer's name to clipboard" }
-  )
-  set(
-    "n",
-    [[<leader><leader>yp]],
-    [[<Cmd>let @" = expand("%:p")<CR>]],
-    { desc = "Yank current buffer's absolute path" }
-  )
-  set(
-    "n",
-    [[<leader><leader>yt]],
-    [[<Cmd>let @" = expand("%:t")<CR>]],
-    { desc = "Yank current buffer's filename" }
-  )
-  set(
-    "n",
-    [[<leader><leader>yy]],
-    [[<Cmd>let @" = expand("%")<CR>]],
-    { desc = "Yank current buffer's name" }
-  )
   set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
 
   -- substitute
