@@ -751,15 +751,6 @@ function M.set_default_autocommands()
         vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
       end
 
-      if client.supports_method "textDocument/codeAction" then
-        set(
-          "n",
-          [[<leader>.]],
-          lsp.buf.code_action,
-          { buffer = true, desc = "Code action" }
-        )
-      end
-
       if client.supports_method "textDocument/references" then
         set(
           "n",
@@ -841,7 +832,6 @@ function M.set_default_autocommands()
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
       local function unset_bindings()
-        del("n", [[<leader>.]], { buffer = event.buf })
         del("n", [[<leader>qc]], { buffer = event.buf })
         del("n", [[<leader>fc]], { buffer = event.buf })
         del("n", [[<leader>qi]], { buffer = event.buf })
