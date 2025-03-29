@@ -375,24 +375,21 @@ function M.set_default_bindings()
   )
 
   -- expression
-  set(
-    "n",
-    [[<leader>mp]],
-    [["=expand("%:p")<CR>p]],
-    { desc = "Paste current buffer's absolute path" }
-  )
-  set(
-    "n",
-    [[<leader>mt]],
-    [["=expand("%:t")<CR>p]],
-    { desc = "Paste current buffer's filename" }
-  )
-  set(
-    "n",
-    [[<leader>my]],
-    [["=expand("%")<CR>p]],
-    { desc = "Paste current buffer's name" }
-  )
+  set("n", [[<leader>mp]], function()
+    local buffer = api.nvim_create_buf(true, false)
+    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%:p" })
+    cmd.sbuffer(buffer)
+  end, { desc = "Paste current buffer's absolute path in a new window" })
+  set("n", [[<leader>mt]], function()
+    local buffer = api.nvim_create_buf(true, false)
+    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%:t" })
+    cmd.sbuffer(buffer)
+  end, { desc = "Paste current buffer's filename in a new window" })
+  set("n", [[<leader>my]], function()
+    local buffer = api.nvim_create_buf(true, false)
+    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%" })
+    cmd.sbuffer(buffer)
+  end, { desc = "Paste current buffer's name in a new window" })
 
   -- yank
   set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
