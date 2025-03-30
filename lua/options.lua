@@ -37,7 +37,7 @@ function M.set_default_options()
   opt.splitbelow = true
   opt.splitright = true
   opt.statusline = "%<%f %h%m%r<%{v:searchforward ? 'f' : 'b'}> "
-    .. "[%{substitute(getcwd(0, 0), '^' .. expand('~'), '~', '')}]"
+    .. "(%{substitute(getcwd(0, 0), '^' .. expand('~'), '~', '')})"
     .. "%=%-14.(%l,%c%V%) %P"
   opt.tabstop = 2
   opt.termguicolors = true
