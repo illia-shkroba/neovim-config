@@ -715,6 +715,8 @@ function M.set_default_autocommands()
 
   autocmd("CmdwinEnter", {
     callback = function()
+      vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
+
       set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
