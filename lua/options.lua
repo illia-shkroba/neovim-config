@@ -9,7 +9,7 @@ function M.set_default_options()
 
   opt.allowrevins = true
   opt.autoindent = true
-  opt.completeopt = { "menuone", "popup" }
+  opt.completeopt = { "fuzzy", "menuone", "popup" }
   opt.cpoptions = "aABceFMs%>"
   opt.encoding = "utf-8"
   opt.expandtab = true
@@ -715,8 +715,6 @@ function M.set_default_autocommands()
 
   autocmd("CmdwinEnter", {
     callback = function()
-      vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
-
       set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
