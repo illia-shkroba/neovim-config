@@ -26,11 +26,11 @@ return {
 
             default = {
               action = function(selection)
-                vim.fn.setreg("0", selection.path)
+                vim.cmd.tcd(selection.path)
               end,
               after_action = function(selection)
                 vim.notify(
-                  "Yanked directory: " .. selection.path,
+                  "Directory changed for current tab to: " .. selection.path,
                   vim.log.levels.INFO
                 )
               end,
