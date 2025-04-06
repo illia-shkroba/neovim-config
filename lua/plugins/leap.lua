@@ -21,5 +21,11 @@ return {
       { silent = true, desc = "Leap to other windows" }
     )
     set({ "i" }, [[<C-s>]], "<Plug>(leap)", { silent = true, desc = "Leap" })
+    set(
+      { "i" },
+      [[<C-g><C-s>]],
+      "<Plug>(leap-from-window)",
+      { silent = true, desc = "Leap to other windows" }
+    )
   end,
 }

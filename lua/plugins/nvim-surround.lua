@@ -4,14 +4,14 @@ return {
   config = function()
     require("nvim-surround").setup {
       keymaps = {
-        insert = "<C-g><C-s>",
-        insert_line = "<C-g>S",
+        insert = "<C-l>",
+        insert_line = false,
         normal = "ys",
         normal_cur = "yss",
         normal_line = "yS",
         normal_cur_line = "ySS",
-        visual = "<C-g><C-s>",
-        visual_line = "<C-g>S",
+        visual = "<C-l>",
+        visual_line = false,
         delete = "ds",
         change = "cs",
         change_line = "cS",
