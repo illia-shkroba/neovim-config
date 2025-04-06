@@ -69,6 +69,15 @@ function M.set_default_bindings()
     end
   end
 
+  set("n", [[<leader>-d]], function()
+    cmd.cd "-"
+  end, { desc = "cd -" })
+  set("n", [[<leader>-l]], function()
+    cmd.lcd "-"
+  end, { desc = "lcd -" })
+  set("n", [[<leader>-t]], function()
+    cmd.tcd "-"
+  end, { desc = "tcd -" })
   set("n", [[<leader>DD]], function()
     for _ = 1, vim.v.count1 do
       cmd.cd ".."
