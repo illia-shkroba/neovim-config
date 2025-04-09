@@ -5,6 +5,8 @@ function M.set_default_options()
   local opt = vim.opt
   local g = vim.g
 
+  local status = require "status"
+
   cmd.filetype "on"
 
   opt.allowrevins = true
@@ -36,9 +38,7 @@ function M.set_default_options()
   opt.spell = true
   opt.splitbelow = true
   opt.splitright = true
-  opt.statusline = "%<%f %h%m%r<%{v:searchforward ? 'f' : 'b'}> "
-    .. "(%{substitute(getcwd(0, 0), '^' .. expand('~'), '~', '')})"
-    .. "%=%-14.(%l,%c%V%) %P"
+  opt.statusline = status.statusline
   opt.tabstop = 2
   opt.termguicolors = true
   opt.wildmenu = true
