@@ -666,12 +666,7 @@ function M.set_default_bindings()
     expr = true,
     desc = "Visually select previously changed or yanked text area",
   })
-  set(
-    "n",
-    [[<leader>p]],
-    [[<Cmd>new | put + | normal gg"_dd0<CR>]],
-    { desc = "Paste clipboard into a new buffer" }
-  )
+  set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
