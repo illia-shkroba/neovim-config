@@ -851,6 +851,11 @@ function M.set_default_autocommands()
       utils.try(unset_bindings)
     end,
   })
+  autocmd("TermOpen", {
+    callback = function()
+      vim.opt_local.spell = false
+    end,
+  })
   autocmd("TextYankPost", {
     callback = function()
       vim.highlight.on_yank { timeout = 300 }
