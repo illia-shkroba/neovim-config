@@ -40,6 +40,7 @@ function M.set_default_options()
   opt.splitright = true
   opt.statusline = status.statusline
   opt.tabstop = 2
+  opt.tagcase = "smart"
   opt.termguicolors = true
   opt.wildmenu = true
   opt.wrapscan = false
