@@ -1,19 +1,20 @@
 return {
-  ansiblels = {},
-  bashls = {},
+  ansiblels = { install = true },
+  bashls = { install = true },
   dhall_lsp_server = {},
-  dockerls = {},
+  dockerls = { install = true },
   dotls = {},
   hls = {},
-  lua_ls = {},
+  lua_ls = { install = true },
   nil_ls = {},
   perlpls = {},
-  purescriptls = {},
-  pyright = {},
+  purescriptls = { install = true },
+  pyright = { install = true },
   rust_analyzer = {},
   terraformls = {},
-  vimls = {},
+  vimls = { install = true },
   yamlls = {
+    install = true,
     setup = {
       settings = {
         yaml = {
