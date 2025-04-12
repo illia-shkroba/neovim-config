@@ -86,8 +86,8 @@ return {
     set("i", [[<C-space>]], fn["coc#refresh"], { silent = true, expr = true })
 
     -- Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-    set("n", "]e", [[<Plug>(coc-diagnostic-next)]], { silent = true })
-    set("n", "[e", [[<Plug>(coc-diagnostic-prev)]], { silent = true })
+    set("n", "]d", [[<Plug>(coc-diagnostic-next)]], { silent = true })
+    set("n", "[d", [[<Plug>(coc-diagnostic-prev)]], { silent = true })
 
     -- GoTo code navigation
     set("n", [[<leader>gdd]], [[<Plug>(coc-definition)]], { silent = true })
@@ -187,10 +187,6 @@ return {
       { silent = true, nowait = true }
     )
 
-    -- Use CTRL-S for selections ranges
-    -- Requires 'textDocument/selectionRange' support of language server
-    set("", [[<C-s>]], [[<Plug>(coc-range-select)]], { silent = true })
-
     -- " Add `:CocFold` command to fold current buffer
     command("CocFold", [[call CocAction('fold', <f-args>)]], { nargs = "?" })
 
@@ -199,14 +195,6 @@ return {
       fn.CocActionAsync("runCommand", "editor.action.organizeImport")
     end, {})
 
-    -- Show all diagnostics
-    set("n", [[<leader>e]], function()
-      cmd.CocList "diagnostics"
-    end, { silent = true, nowait = true })
-    -- Search workspace symbols
-    set("n", [[<leader>w]], function()
-      cmd.CocList("-I", "symbols")
-    end, { silent = true, nowait = true })
     -- Do default action for next item
     set("n", [[<leader>j]], cmd.CocNext, { silent = true, nowait = true })
     -- Do default action for previous item
