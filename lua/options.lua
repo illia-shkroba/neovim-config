@@ -741,7 +741,7 @@ function M.set_default_autocommands()
 
       local client = lsp.get_client_by_id(event.data.client_id)
 
-      if client.supports_method "textDocument/publishDiagnostics" then
+      if client:supports_method "textDocument/publishDiagnostics" then
         diagnostic.config { virtual_text = false }
         lsp.handlers["textDocument/publishDiagnostics"] =
           lsp.with(lsp.diagnostic.on_publish_diagnostics, {
@@ -751,11 +751,11 @@ function M.set_default_autocommands()
           })
       end
 
-      if client.supports_method "textDocument/completion" then
+      if client:supports_method "textDocument/completion" then
         vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
       end
 
-      if client.supports_method "textDocument/references" then
+      if client:supports_method "textDocument/references" then
         set(
           "n",
           [[<leader>qc]],
@@ -772,7 +772,7 @@ function M.set_default_autocommands()
         end
       end
 
-      if client.supports_method "callHierarchy/incomingCalls" then
+      if client:supports_method "callHierarchy/incomingCalls" then
         set(
           "n",
           [[<leader>qi]],
@@ -789,7 +789,7 @@ function M.set_default_autocommands()
         end
       end
 
-      if client.supports_method "callHierarchy/outgoingCalls" then
+      if client:supports_method "callHierarchy/outgoingCalls" then
         set(
           "n",
           [[<leader>qo]],
@@ -806,11 +806,11 @@ function M.set_default_autocommands()
         end
       end
 
-      if client.supports_method "textDocument/hover" then
+      if client:supports_method "textDocument/hover" then
         set("n", [[K]], lsp.buf.hover, { buffer = true, desc = "Hover" })
       end
 
-      if client.supports_method "textDocument/definition" then
+      if client:supports_method "textDocument/definition" then
         set(
           "n",
           [[gd]],
@@ -819,7 +819,7 @@ function M.set_default_autocommands()
         )
       end
 
-      if client.supports_method "workspace/symbol" then
+      if client:supports_method "workspace/symbol" then
         if telescope then
           set(
             "n",
