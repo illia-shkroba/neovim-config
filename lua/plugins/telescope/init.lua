@@ -39,22 +39,14 @@ return {
       }
     end
 
-    require("telescope").setup {
-      defaults = {
-        mappings = {
-          i = { ["<a-p>"] = pick_with_leap },
-        },
-      },
-    }
-
     local global_mappings = {
       n = {
         ["<C-c>"] = actions.close,
         ["<C-d>"] = actions.results_scrolling_down,
         ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+        ["<C-g><C-t>"] = actions.toggle_all,
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
-        ["<C-l>"] = actions.toggle_all,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
@@ -63,18 +55,19 @@ return {
         [">"] = actions.preview_scrolling_right,
         ["J"] = actions.preview_scrolling_down,
         ["K"] = actions.preview_scrolling_up,
+        ["<C-s>"] = pick_with_leap,
         ["gs"] = pick_with_leap,
       },
       i = {
         ["<C-d>"] = actions.results_scrolling_down,
         ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+        ["<C-g><C-t>"] = actions.toggle_all,
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
-        ["<C-l>"] = actions.toggle_all,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
-        ["<C-g><C-s>"] = pick_with_leap,
+        ["<C-s>"] = pick_with_leap,
       },
     }
     local buffers_mappings = {
@@ -87,13 +80,13 @@ return {
     }
     local find_files_mappings = {
       n = {
-        ["<C-s>h"] = telescope.hide_in_find_files,
-        ["<C-s>s"] = telescope.unhide_in_find_files,
+        ["<C-g><C-h>"] = telescope.hide_in_find_files,
+        ["<C-g><C-g>"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
       i = {
-        ["<C-s>h"] = telescope.hide_in_find_files,
-        ["<C-s>s"] = telescope.unhide_in_find_files,
+        ["<C-g><C-h>"] = telescope.hide_in_find_files,
+        ["<C-g><C-g>"] = telescope.unhide_in_find_files,
         ["<C-z>"] = telescope.remove_files,
       },
     }
@@ -151,12 +144,6 @@ return {
             live_grep_mappings,
             global_mappings
           ),
-        },
-      },
-      extensions = {
-        coc = {
-          theme = "ivy",
-          prefer_locations = true,
         },
       },
     }

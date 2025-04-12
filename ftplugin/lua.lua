@@ -13,10 +13,15 @@ opt_local.shiftwidth = 2
 opt_local.softtabstop = 2
 opt_local.tabstop = 2
 
-set("", [[<leader><CR>]], [[<Cmd>w !lua<CR>]], { buffer = true })
+set(
+  { "n", "v" },
+  [[<leader><CR>]],
+  [[:w !lua<CR>]],
+  { buffer = true, desc = "Run current buffer" }
+)
 set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal lua -i #<CR>]],
-  { buffer = true }
+  { buffer = true, desc = "Load current buffer to lua" }
 )

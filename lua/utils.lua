@@ -58,7 +58,7 @@ function M.split(xs, sep)
 end
 
 function M.prefix_length(xs, ys)
-  local n = M.min(#xs, #ys)
+  local n = math.min(#xs, #ys)
   for i = 1, n do
     local x, y = xs[i], ys[i]
 
@@ -67,22 +67,6 @@ function M.prefix_length(xs, ys)
     end
   end
   return n
-end
-
-function M.min(x, y)
-  if x <= y then
-    return x
-  else
-    return y
-  end
-end
-
-function M.max(x, y)
-  if x >= y then
-    return x
-  else
-    return y
-  end
 end
 
 function M.map_motion(f)
@@ -117,7 +101,11 @@ end
 function M.map_visual(f)
   local selection = M.get_visual_selection()
   M.with_register(function()
-    fn.setreg('"', f(selection.text))
+    local new_text = f(selection.text)
+    if not new_text then
+      return
+    end
+    fn.setreg('"', new_text)
     cmd.normal "gvp"
     if selection.mode == "v" and selection.ends_with_newline then
       cmd.normal [[a]] -- add newline that was removed during selection
@@ -165,19 +153,10 @@ function M.with_register(f)
   return y, new_register
 end
 
-function M.quote(text)
-  local quote = fn.getcharstr()
-  return quote .. text .. quote
-end
-
 function M.get_cursor()
   local position = fn.getcurpos()
   local line, column = position[2], position[3]
   return line, column
-end
-
-function M.column(text)
-  return fn.system({ "column", "-to", " " }, text)
 end
 
 return M

@@ -13,6 +13,7 @@ opt_local.equalprg = "fourmolu"
   .. " --function-arrows leading"
   .. " --comma-style leading"
   .. " --import-export-style leading"
+  .. " --indent-wheres true"
   .. " --record-brace-space true"
   .. " --haddock-style single-line"
   .. " --let-style auto"
@@ -39,11 +40,21 @@ local stylish_config = fn.stdpath "config"
   .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
 opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
-set("", [[<leader><CR>]], [[<Cmd>w !stack ghci<CR>]], { buffer = true })
+set(
+  { "n", "v" },
+  [[<leader><CR>]],
+  [[:w !stack ghci<CR>]],
+  { buffer = true, desc = "Run current buffer" }
+)
 set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal stack ghci #<CR>]],
-  { buffer = true }
+  { buffer = true, desc = "Load current buffer to ghci" }
 )
-set("n", [[<leader>gt]], [[:!fast-tags -R --qualified .]], { buffer = true })
+set(
+  "n",
+  [[<leader>gt]],
+  [[:!fast-tags -R --qualified .]],
+  { buffer = true, desc = "Generate tags" }
+)

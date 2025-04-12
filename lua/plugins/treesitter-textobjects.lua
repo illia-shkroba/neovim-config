@@ -28,67 +28,30 @@ return {
           -- `ap`.
           include_surrounding_whitespace = true,
         },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>sf"] = "@function.outer",
-            ["<leader>a"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["<leader>sF"] = "@function.outer",
-            ["<leader>A"] = "@parameter.inner",
-          },
-        },
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]a"] = "@call.inner",
-            ["]l"] = "@call.outer",
-            ["]m"] = "@function.outer",
-            ["]o"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["]e"] = "@call.outer",
             ["]]"] = "@class.outer",
+            ["]#"] = "@comment.outer",
+            ["]m"] = "@function.outer",
           },
           goto_next_end = {
-            ["]A"] = "@call.inner",
-            ["]L"] = "@call.outer",
-            ["]M"] = "@function.outer",
-            ["]O"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["]E"] = "@call.outer",
             ["]["] = "@class.outer",
+            ["]M"] = "@function.outer",
           },
           goto_previous_start = {
-            ["[a"] = "@call.inner",
-            ["[l"] = "@call.outer",
-            ["[m"] = "@function.outer",
-            ["[o"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["[e"] = "@call.outer",
             ["[["] = "@class.outer",
+            ["[#"] = "@comment.outer",
+            ["[m"] = "@function.outer",
           },
           goto_previous_end = {
-            ["[A"] = "@call.inner",
-            ["[L"] = "@call.outer",
-            ["[M"] = "@function.outer",
-            ["[O"] = {
-              query = "@scope",
-              query_group = "locals",
-            },
+            ["[E"] = "@call.outer",
             ["[]"] = "@class.outer",
-          },
-          -- Below will go to either the start or the end, whichever is closer.
-          -- Use if you want more granular movements
-          goto_next = {
-            ["]d"] = "@block.outer",
-          },
-          goto_previous = {
-            ["[d"] = "@block.outer",
+            ["[M"] = "@function.outer",
           },
         },
       },
@@ -96,12 +59,12 @@ return {
 
     local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
 
-    set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
-    set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+    set({ "n", "v", "o" }, ";", ts_repeat_move.repeat_last_move)
+    set({ "n", "v", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
 
-    set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-    set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-    set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-    set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
+    set({ "n", "v", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
+    set({ "n", "v", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
+    set({ "n", "v", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
+    set({ "n", "v", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
   end,
 }
