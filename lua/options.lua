@@ -51,7 +51,6 @@ end
 function M.set_default_bindings()
   local api = vim.api
   local cmd = vim.cmd
-  local diagnostic = vim.diagnostic
   local fn = vim.fn
   local fs = vim.fs
   local set = vim.keymap.set
@@ -181,19 +180,6 @@ function M.set_default_bindings()
     location.add_item(list.create_current_position_item())
     cmd.llast()
   end, { desc = "Add current line as location item" })
-
-  set(
-    "n",
-    [[<leader>qe]],
-    diagnostic.setqflist,
-    { desc = "Load diagnostic to quickfix list" }
-  )
-  set(
-    "n",
-    [[<leader>le]],
-    diagnostic.setloclist,
-    { desc = "Load diagnostic to location list" }
-  )
 
   set("n", [[<leader>qx]], function()
     local name = utils.try(fn.input, "Enter quickfix list: ")
@@ -711,12 +697,7 @@ end
 
 function M.set_default_autocommands()
   local autocmd = vim.api.nvim_create_autocmd
-  local del = vim.keymap.del
-  local diagnostic = vim.diagnostic
-  local lsp = vim.lsp
   local set = vim.keymap.set
-
-  local utils = require "utils"
 
   autocmd("CmdwinEnter", {
     callback = function()
@@ -733,122 +714,6 @@ function M.set_default_autocommands()
       set({ "n" }, [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
         desc = [[Wrap current line with \< and \>]],
       })
-    end,
-  })
-  autocmd("LspAttach", {
-    callback = function(event)
-      local telescope = utils.require_safe "telescope.builtin"
-
-      local client = lsp.get_client_by_id(event.data.client_id)
-
-      if client.supports_method "textDocument/publishDiagnostics" then
-        diagnostic.config { virtual_text = false }
-        lsp.handlers["textDocument/publishDiagnostics"] =
-          lsp.with(lsp.diagnostic.on_publish_diagnostics, {
-            underline = true,
-            virtual_text = false,
-            update_in_insert = false,
-          })
-      end
-
-      if client.supports_method "textDocument/completion" then
-        vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-      end
-
-      if client.supports_method "textDocument/references" then
-        set(
-          "n",
-          [[<leader>qc]],
-          lsp.buf.references,
-          { buffer = true, desc = "References" }
-        )
-        if telescope then
-          set(
-            "n",
-            [[<leader>fc]],
-            telescope.lsp_references,
-            { buffer = true, desc = "References" }
-          )
-        end
-      end
-
-      if client.supports_method "callHierarchy/incomingCalls" then
-        set(
-          "n",
-          [[<leader>qi]],
-          lsp.buf.incoming_calls,
-          { buffer = true, desc = "Incoming calls" }
-        )
-        if telescope then
-          set(
-            "n",
-            [[<leader>fi]],
-            telescope.lsp_incoming_calls,
-            { buffer = true, desc = "Incoming calls" }
-          )
-        end
-      end
-
-      if client.supports_method "callHierarchy/outgoingCalls" then
-        set(
-          "n",
-          [[<leader>qo]],
-          lsp.buf.outgoing_calls,
-          { buffer = true, desc = "Outgoing calls" }
-        )
-        if telescope then
-          set(
-            "n",
-            [[<leader>fo]],
-            telescope.lsp_outgoing_calls,
-            { buffer = true, desc = "Outgoing calls" }
-          )
-        end
-      end
-
-      if client.supports_method "textDocument/hover" then
-        set("n", [[K]], lsp.buf.hover, { buffer = true, desc = "Hover" })
-      end
-
-      if client.supports_method "textDocument/definition" then
-        set(
-          "n",
-          [[gd]],
-          lsp.buf.definition,
-          { buffer = true, desc = "Definition" }
-        )
-      end
-
-      if client.supports_method "workspace/symbol" then
-        if telescope then
-          set(
-            "n",
-            [[<leader>fW]],
-            telescope.lsp_dynamic_workspace_symbols,
-            { buffer = true, desc = "Dynamic workspace symbols" }
-          )
-        end
-      end
-    end,
-  })
-  autocmd("LspDetach", {
-    callback = function(event)
-      vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
-
-      local function unset_bindings()
-        del("n", [[<leader>qc]], { buffer = event.buf })
-        del("n", [[<leader>fc]], { buffer = event.buf })
-        del("n", [[<leader>qi]], { buffer = event.buf })
-        del("n", [[<leader>fi]], { buffer = event.buf })
-        del("n", [[<leader>qo]], { buffer = event.buf })
-        del("n", [[<leader>fo]], { buffer = event.buf })
-        del("n", [[K]], { buffer = event.buf })
-        del("n", [[gd]], { buffer = event.buf })
-        del("n", [[<leader>fd]], { buffer = event.buf })
-        del("n", [[<leader>fW]], { buffer = event.buf })
-      end
-
-      utils.try(unset_bindings)
     end,
   })
   autocmd("TermOpen", {
