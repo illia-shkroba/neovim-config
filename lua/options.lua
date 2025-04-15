@@ -718,6 +718,11 @@ function M.set_default_autocommands()
 
   local utils = require "utils"
 
+  -- Show most recent commit when entering "COMMIT_EDITMSG".
+  autocmd("BufWinEnter", {
+    pattern = "COMMIT_EDITMSG",
+    command = "G log -1 | wincmd k",
+  })
   autocmd("CmdwinEnter", {
     callback = function()
       vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
