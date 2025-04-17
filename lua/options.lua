@@ -33,7 +33,11 @@ function M.set_default_options()
   opt.relativenumber = true
   opt.shiftround = true
   opt.shiftwidth = 2
+
+  -- Enable insertion of an indent on a next line after {, before } (with "O",
+  -- and after 'cinwords'. Also, disables ">>" on lines starting with #.
   opt.smartindent = true
+
   opt.softtabstop = 2
   opt.spell = true
   opt.splitbelow = true
@@ -682,6 +686,12 @@ function M.set_default_bindings()
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[<leader>']], [["_d]], { desc = [["_d]] })
+  set(
+    "i",
+    [[#]],
+    [[<C-v>#]],
+    { desc = "Prevent indent removal when 'smartindent' is on" }
+  )
 end
 
 function M.set_default_commands()
