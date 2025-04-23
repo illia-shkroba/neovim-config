@@ -29,8 +29,8 @@ end
 set(
   "n",
   [[gh]],
-  [[<Cmd>up | !black % && isort %<CR>]],
-  { buffer = true, desc = "Call black and isort on current buffer" }
+  [[<Cmd>up | !ruff format %<CR>]],
+  { buffer = true, desc = "Call `ruff format` on current buffer" }
 )
 set(
   "ia",
