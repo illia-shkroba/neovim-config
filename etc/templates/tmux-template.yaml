@@ -1,10 +1,10 @@
 session_name: my-session-name-here
 start_directory: ./
 windows:
-- window_name: my-window-name-here
+- window_name: source
   start_directory: ./
   focus: true
-  layout: main-vertical
+  layout: main-horizontal
   options:
     main-pane-width: 50%
   suppress_history: true
@@ -14,4 +14,4 @@ windows:
     - cmd: nvim -S
   - shell_command:
     - cmd: sl
-  - pane
+      enter: false
