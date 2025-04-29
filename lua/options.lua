@@ -407,6 +407,7 @@ function M.set_default_bindings()
   end, { desc = "Paste current buffer's name in a new window" })
 
   -- yank
+  set({ "n", "v" }, [[<leader>Y]], [["+yg_]], { desc = [[Alias for: "+yg_]] })
   set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
 
   -- substitute
