@@ -577,6 +577,12 @@ function M.set_default_bindings()
     { desc = "Shift visual area up" }
   )
 
+  -- register
+  local register = require "text.register"
+  set("n", [[<leader>Q]], function()
+    register.edit_register_prompt()
+  end, { desc = "Edit register in a buffer" })
+
   -- tags
   set("n", [[<leader>gt]], function()
     local language = vim.opt_local.filetype._value
