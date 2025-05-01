@@ -1,5 +1,5 @@
 return {
-  "jvgrootveld/telescope-zoxide",
+  "illia-shkroba/telescope-zoxide",
   dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     local telescope = require "telescope"
