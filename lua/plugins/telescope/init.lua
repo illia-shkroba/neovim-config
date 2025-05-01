@@ -4,40 +4,7 @@ return {
   config = function()
     local actions = require "telescope.actions"
     local telescope = require "plugins.telescope.actions"
-
-    local function get_targets(buf)
-      local pick = require("telescope.actions.state").get_current_picker(buf)
-      local scroller = require "telescope.pickers.scroller"
-      local wininfo = vim.fn.getwininfo(pick.results_win)[1]
-      local top = math.max(
-        scroller.top(
-          pick.sorting_strategy,
-          pick.max_results,
-          pick.manager:num_results()
-        ),
-        wininfo.topline - 1
-      )
-      local bottom = wininfo.botline - 2 -- skip the current row
-      local targets = {}
-      for lnum = bottom, top, -1 do -- start labeling from the closest (bottom) row
-        table.insert(
-          targets,
-          { wininfo = wininfo, pos = { lnum + 1, 1 }, pick = pick }
-        )
-      end
-      return targets
-    end
-
-    local function pick_with_leap(buf)
-      require("leap").leap {
-        targets = function()
-          return get_targets(buf)
-        end,
-        action = function(target)
-          target.pick:set_selection(target.pos[1] - 1)
-        end,
-      }
-    end
+    local leap = require "plugins.telescope.leap"
 
     local global_mappings = {
       n = {
@@ -55,8 +22,8 @@ return {
         [">"] = actions.preview_scrolling_right,
         ["J"] = actions.preview_scrolling_down,
         ["K"] = actions.preview_scrolling_up,
-        ["<C-s>"] = pick_with_leap,
-        ["gs"] = pick_with_leap,
+        ["<C-s>"] = leap.pick_with_leap,
+        ["gs"] = leap.pick_with_leap,
       },
       i = {
         ["<C-d>"] = actions.results_scrolling_down,
@@ -67,7 +34,7 @@ return {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
-        ["<C-s>"] = pick_with_leap,
+        ["<C-s>"] = leap.pick_with_leap,
       },
     }
     local buffers_mappings = {
