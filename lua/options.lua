@@ -11,6 +11,7 @@ function M.set_default_options()
 
   opt.allowrevins = true
   opt.autoindent = true
+  opt.complete = { ".", "w", "b", "u" }
   opt.completeopt = { "menuone", "popup" }
   opt.cpoptions = "aABceFMs%>"
   opt.cursorline = true
