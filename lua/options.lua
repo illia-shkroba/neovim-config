@@ -13,6 +13,7 @@ function M.set_default_options()
   opt.autoindent = true
   opt.completeopt = { "menuone", "popup" }
   opt.cpoptions = "aABceFMs%>"
+  opt.cursorline = true
   opt.encoding = "utf-8"
   opt.expandtab = true
   opt.formatoptions = "tcro/qnl1j"
@@ -754,6 +755,18 @@ function M.set_default_autocommands()
       set({ "n" }, [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
         desc = [[Wrap current line with \< and \>]],
       })
+    end,
+  })
+  autocmd({ "InsertLeave", "WinEnter" }, {
+    pattern = "*",
+    callback = function()
+      vim.opt_local.cursorline = true
+    end,
+  })
+  autocmd({ "InsertEnter", "WinLeave" }, {
+    pattern = "*",
+    callback = function()
+      vim.opt_local.cursorline = false
     end,
   })
   autocmd("LspAttach", {
