@@ -408,6 +408,10 @@ function M.set_default_bindings()
     cmd.sbuffer(buffer)
   end, { desc = "Paste current buffer's name in a new window" })
 
+  -- paste
+  set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
+  set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
+
   -- yank
   set({ "n", "v" }, [[<leader>Y]], [["+yg_]], { desc = [[Alias for: "+yg_]] })
   set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
@@ -678,7 +682,6 @@ function M.set_default_bindings()
     expr = true,
     desc = "Visually select previously changed or yanked text area",
   })
-  set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
   set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
