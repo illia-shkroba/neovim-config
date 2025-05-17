@@ -85,50 +85,50 @@ function M.set_default_bindings()
   set("n", [[<leader>-t]], function()
     cmd.tcd "-"
   end, { desc = "tcd -" })
-  set("n", [[<leader>DD]], function()
+  set("n", [[<leader>CD]], function()
     for _ = 1, vim.v.count1 do
       cmd.cd ".."
     end
   end, { desc = "cd .." })
-  set("n", [[<leader>DL]], function()
+  set("n", [[<leader>CL]], function()
     for _ = 1, vim.v.count1 do
       cmd.lcd ".."
     end
   end, { desc = "lcd .." })
-  set("n", [[<leader>DT]], function()
+  set("n", [[<leader>CT]], function()
     for _ = 1, vim.v.count1 do
       cmd.tcd ".."
     end
   end, { desc = "tcd .." })
   set(
     "n",
-    [[<leader>dD]],
+    [[<leader>cD]],
     [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "cd into current buffer's directory" }
   )
   set(
     "n",
-    [[<leader>dL]],
+    [[<leader>cL]],
     [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "lcd into current buffer's directory" }
   )
   set(
     "n",
-    [[<leader>dT]],
+    [[<leader>cT]],
     [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "tcd into current buffer's directory" }
   )
-  set("n", [[<leader>dd]], function()
+  set("n", [[<leader>cd]], function()
     for _ = 1, vim.v.count1 do
       cmd.cd(step_into_buffer_dir())
     end
   end, { desc = "cd by one level into current buffer's directory" })
-  set("n", [[<leader>dl]], function()
+  set("n", [[<leader>cl]], function()
     for _ = 1, vim.v.count1 do
       cmd.lcd(step_into_buffer_dir())
     end
   end, { desc = "lcd by one level into current buffer's directory" })
-  set("n", [[<leader>dt]], function()
+  set("n", [[<leader>ct]], function()
     for _ = 1, vim.v.count1 do
       cmd.tcd(step_into_buffer_dir())
     end
