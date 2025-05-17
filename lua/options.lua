@@ -739,6 +739,11 @@ function M.set_default_autocommands()
 
   local utils = require "utils"
 
+  autocmd("BufReadPost", {
+    callback = function()
+      vim.opt_local.include = ""
+    end,
+  })
   -- Show most recent commit when entering "COMMIT_EDITMSG".
   autocmd("BufWinEnter", {
     pattern = "COMMIT_EDITMSG",
@@ -762,13 +767,11 @@ function M.set_default_autocommands()
     end,
   })
   autocmd({ "InsertLeave", "WinEnter" }, {
-    pattern = "*",
     callback = function()
       vim.opt_local.cursorline = true
     end,
   })
   autocmd({ "InsertEnter", "WinLeave" }, {
-    pattern = "*",
     callback = function()
       vim.opt_local.cursorline = false
     end,
