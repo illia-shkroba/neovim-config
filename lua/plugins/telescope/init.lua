@@ -12,8 +12,7 @@ return {
         ["<C-d>"] = actions.results_scrolling_down,
         ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
         ["<C-g><C-t>"] = actions.toggle_all,
-        ["<C-j>"] = actions.cycle_history_next,
-        ["<C-k>"] = actions.cycle_history_prev,
+        ["<C-k>"] = actions.select_default,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
@@ -29,8 +28,7 @@ return {
         ["<C-d>"] = actions.results_scrolling_down,
         ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
         ["<C-g><C-t>"] = actions.toggle_all,
-        ["<C-j>"] = actions.cycle_history_next,
-        ["<C-k>"] = actions.cycle_history_prev,
+        ["<C-k>"] = actions.select_default,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
         ["<C-y>"] = telescope.add_arguments,
@@ -78,10 +76,6 @@ return {
         cache_picker = { num_pickers = 10 },
         scroll_strategy = "limit",
         mappings = global_mappings,
-        history = {
-          path = vim.fn.stdpath "data" .. "/telescope_history",
-          limit = 1000,
-        },
       },
       pickers = {
         buffers = {
