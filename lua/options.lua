@@ -368,27 +368,21 @@ function M.set_default_bindings()
   -- git
   set(
     "n",
-    [[<leader>DS]],
+    [[<leader>hD]],
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
   )
   set(
     "n",
-    [[<leader>Ds]],
-    [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
-    { desc = "Show git diff with HEAD" }
-  )
-  set(
-    "n",
-    [[<leader>ds]],
-    [[<Cmd>vertical Gdiffsplit!<CR>]],
-    { desc = "Show git diff" }
-  )
-  set(
-    "n",
-    [[<leader>P]],
+    [[<leader>hP]],
     [[<Cmd>update ++p | Git add --patch -- %<CR>]],
     { desc = "git add --patch" }
+  )
+  set(
+    "n",
+    [[<leader>hd]],
+    [[<Cmd>vertical Gdiffsplit!<CR>]],
+    { desc = "Show git diff" }
   )
 
   -- expression
@@ -408,8 +402,14 @@ function M.set_default_bindings()
     cmd.sbuffer(buffer)
   end, { desc = "Paste current buffer's name in a new window" })
 
+  -- delete
+  set({ "n", "v" }, [[<leader>D]], [["_D]], { desc = [[Alias for: "_D]] })
+  set({ "n", "v" }, [[<leader>d]], [["_d]], { desc = [[Alias for: "_d]] })
+
   -- paste
+  set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
   set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
+  set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
   set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
 
   -- yank
@@ -696,7 +696,7 @@ function M.set_default_bindings()
   set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
   set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "v" }, [[<leader>']], [["_d]], { desc = [["_d]] })
+  set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   set(
     "i",
     [[#]],
