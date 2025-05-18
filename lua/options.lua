@@ -636,6 +636,7 @@ function M.set_default_bindings()
     ":<C-U>normal '<V'><CR>",
     { desc = "Previously selected text area selected linewise" }
   )
+  set({ "o", "v" }, "ar", "a[", { desc = "a[" })
   set(
     { "o", "v" },
     "av",
@@ -654,6 +655,7 @@ function M.set_default_bindings()
     ":<C-U>normal _vg_<CR>",
     { desc = "Current line without blanks selected charwise" }
   )
+  set({ "o", "v" }, "ir", "i[", { desc = "i[" })
   set(
     { "o", "v" },
     "iv",
