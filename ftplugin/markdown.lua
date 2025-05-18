@@ -5,5 +5,6 @@ vim.b.did_markdown_ftplugin = true
 
 local opt_local = vim.opt_local
 
+opt_local.formatprg = "mdformat -"
 opt_local.spell = true
 opt_local.textwidth = 100

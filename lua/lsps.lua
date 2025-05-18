@@ -4,6 +4,7 @@ return {
   dhall_lsp_server = {},
   dockerls = { install = true },
   dotls = {},
+  harper_ls = { install = true },
   hls = {},
   lua_ls = { install = true },
   nil_ls = {},
