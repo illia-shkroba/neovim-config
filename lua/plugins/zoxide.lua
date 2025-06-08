@@ -55,7 +55,7 @@ return {
 
     vim.keymap.set(
       "n",
-      [[<leader>fz]],
+      [[<leader>x]],
       require("telescope").extensions.zoxide.list
     )
   end,
