@@ -672,6 +672,14 @@ function M.set_default_bindings()
   )
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
   set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
+  set("n", [[<leader>o]], function()
+    local buffer = api.nvim_get_current_buf()
+    local cursor = api.nvim_win_get_cursor(api.nvim_get_current_win())
+    local row = cursor[1] - 1
+
+    api.nvim_buf_set_lines(buffer, row + 1, -1, false, {})
+    api.nvim_buf_set_lines(buffer, 0, row, false, {})
+  end, { desc = "Keep only the current line" })
   set("n", [[<leader>v]], function()
     local mode = fn.visualmode()
     if string.len(mode) == 0 then
