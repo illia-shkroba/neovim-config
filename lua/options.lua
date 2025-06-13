@@ -386,20 +386,20 @@ function M.set_default_bindings()
   )
 
   -- expression
-  set("n", [[<leader>mp]], function()
+  local function paste_into_split_buffer(lines)
     local buffer = api.nvim_create_buf(true, false)
-    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%:p" })
+    api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
     cmd.sbuffer(buffer)
+  end
+
+  set("n", [[<leader>mp]], function()
+    paste_into_split_buffer({ fn.expand "%:p" })
   end, { desc = "Paste current buffer's absolute path in a new window" })
   set("n", [[<leader>mt]], function()
-    local buffer = api.nvim_create_buf(true, false)
-    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%:t" })
-    cmd.sbuffer(buffer)
+    paste_into_split_buffer({ fn.expand "%:t" })
   end, { desc = "Paste current buffer's filename in a new window" })
   set("n", [[<leader>my]], function()
-    local buffer = api.nvim_create_buf(true, false)
-    api.nvim_buf_set_lines(buffer, 0, 1, false, { fn.expand "%" })
-    cmd.sbuffer(buffer)
+    paste_into_split_buffer({ fn.expand "%" })
   end, { desc = "Paste current buffer's name in a new window" })
 
   -- delete
