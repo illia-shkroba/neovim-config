@@ -393,13 +393,13 @@ function M.set_default_bindings()
   end
 
   set("n", [[<leader>mp]], function()
-    paste_into_split_buffer({ fn.expand "%:p" })
+    paste_into_split_buffer { fn.expand "%:p" }
   end, { desc = "Paste current buffer's absolute path in a new window" })
   set("n", [[<leader>mt]], function()
-    paste_into_split_buffer({ fn.expand "%:t" })
+    paste_into_split_buffer { fn.expand "%:t" }
   end, { desc = "Paste current buffer's filename in a new window" })
   set("n", [[<leader>my]], function()
-    paste_into_split_buffer({ fn.expand "%" })
+    paste_into_split_buffer { fn.expand "%" }
   end, { desc = "Paste current buffer's name in a new window" })
 
   -- delete
@@ -625,7 +625,7 @@ function M.set_default_bindings()
 
   -- text objects
   set(
-    { "o" },
+    { "o", "v" },
     "a%",
     ":<C-U>normal va%<CR>",
     { desc = "Missing text object for a% from matchit" }
@@ -636,6 +636,7 @@ function M.set_default_bindings()
     ":<C-U>normal '<V'><CR>",
     { desc = "Previously selected text area selected linewise" }
   )
+  set({ "o", "v" }, "aa", "a<", { desc = "a<" })
   set({ "o", "v" }, "ar", "a[", { desc = "a[" })
   set(
     { "o", "v" },
@@ -655,6 +656,7 @@ function M.set_default_bindings()
     ":<C-U>normal _vg_<CR>",
     { desc = "Current line without blanks selected charwise" }
   )
+  set({ "o", "v" }, "ia", "i<", { desc = "i<" })
   set({ "o", "v" }, "ir", "i[", { desc = "i[" })
   set(
     { "o", "v" },
