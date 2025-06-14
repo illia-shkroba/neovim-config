@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.1.0
+    hooks:
+      - id: stylua-system
+        args:
+          - --call-parentheses=none
+          - --column-width=80
+          - --indent-type=spaces
+          - --indent-width=2
