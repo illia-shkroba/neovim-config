@@ -332,7 +332,6 @@ function M.set_default_bindings()
       { desc = "List treesitter symbols for current buffer" }
     )
     set("n", [[<leader>ff]], telescope.find_files, { desc = "List files" })
-    set("n", [[<leader>fj]], telescope.jumplist, { desc = "List jumplist" })
     set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
     set("n", [[<leader>fp]], telescope.filetypes, { desc = "List filetypes" })
     set(
@@ -349,6 +348,7 @@ function M.set_default_bindings()
       { desc = "Resume most recent picker" }
     )
     set("n", [[<leader>ft]], telescope.tags, { desc = "List tags" })
+    set("n", [[<leader>j]], telescope.jumplist, { desc = "List jumplist" })
     set(
       "v",
       [[<leader>F]],
