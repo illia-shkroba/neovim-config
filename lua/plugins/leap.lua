@@ -18,6 +18,9 @@ return {
       modes = { "n", "x", "o" },
     })
 
+    set({ "n", "v", "o" }, [[<C-k>]], function()
+      require("leap.remote").action()
+    end, { silent = true, desc = "Remote action" })
     set(
       { "n", "v", "o" },
       [[<C-s>]],
