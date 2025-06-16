@@ -18,7 +18,7 @@ return {
       modes = { "n", "x", "o" },
     })
 
-    set({ "n", "o" }, [[<C-k>]], function()
+    set({ "n", "o" }, [[<C-q>]], function()
       require("leap.remote").action()
     end, { silent = true, desc = "Perform remote action with Leap" })
     set(
@@ -39,6 +39,12 @@ return {
       [[<C-g><C-s>]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
+    )
+    set(
+      { "i" },
+      [[<C-q>]],
+      [[:lua require("leap.remote").action()<CR>]],
+      { silent = true, desc = "Perform remote action with Leap" }
     )
   end,
 }
