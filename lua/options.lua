@@ -759,7 +759,7 @@ function M.set_default_autocommands()
   -- Show most recent commit when entering "COMMIT_EDITMSG".
   autocmd("BufWinEnter", {
     pattern = "COMMIT_EDITMSG",
-    command = "G log -1 | wincmd k",
+    command = "G log --max-count=100 | wincmd k",
   })
   autocmd("CmdwinEnter", {
     callback = function()
