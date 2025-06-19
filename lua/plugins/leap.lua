@@ -18,7 +18,7 @@ return {
       modes = { "n", "x", "o" },
     })
 
-    set({ "n", "o" }, [[<C-q>]], function()
+    set({ "n", "o" }, [[<C-v>]], function()
       require("leap.remote").action()
     end, { silent = true, desc = "Perform remote action with Leap" })
     set(
@@ -42,7 +42,7 @@ return {
     )
     set(
       { "i" },
-      [[<C-q>]],
+      [[<C-v>]],
       [[:lua require("leap.remote").action()<CR>]],
       { silent = true, desc = "Perform remote action with Leap" }
     )
