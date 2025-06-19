@@ -52,6 +52,24 @@ function M.set_default_options()
   opt.wrapscan = false
 
   g.netrw_banner = 0
+
+  vim.cmd [[
+    func Thesaurus(findstart, base)
+      if a:findstart
+        return searchpos('\<', 'bnW', line('.'))[1] - 1
+      endif
+      let xdg_data_home = getenv("XDG_DATA_HOME")
+      let data_home = expand(empty(xdg_data_home) ? "~/.local/share" : xdg_data_home)
+      let dict_file = data_home .. "/dict.txt"
+      let lines = readfile(dict_file)
+      call filter(lines, {_, line -> stridx(line, a:base) == 0}) " Keep lines starting from `a:base`.
+      return lines
+    endfunc
+
+    if exists('+thesaurusfunc')
+      set thesaurusfunc=Thesaurus
+    endif
+  ]]
 end
 
 function M.set_default_bindings()
