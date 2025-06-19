@@ -386,21 +386,33 @@ function M.set_default_bindings()
   )
 
   -- expression
-  local function paste_into_split_buffer(lines)
-    local buffer = api.nvim_create_buf(true, false)
+  local function paste_into_scratch_buffer(lines)
+    local listed = false
+    local scratch = true
+    local buffer = api.nvim_create_buf(listed, scratch)
     api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
     cmd.sbuffer(buffer)
+
+    api.nvim_create_autocmd({ "BufLeave" }, {
+      buffer = buffer,
+      callback = function()
+        vim.schedule(function()
+          cmd([[bwipeout! ]] .. buffer)
+        end)
+      end,
+      once = true,
+    })
   end
 
   set("n", [[<leader>mp]], function()
-    paste_into_split_buffer { fn.expand "%:p" }
-  end, { desc = "Paste current buffer's absolute path in a new window" })
+    paste_into_scratch_buffer { fn.expand "%:p" }
+  end, { desc = "Paste current buffer's absolute path in a scratch window" })
   set("n", [[<leader>mt]], function()
-    paste_into_split_buffer { fn.expand "%:t" }
-  end, { desc = "Paste current buffer's filename in a new window" })
+    paste_into_scratch_buffer { fn.expand "%:t" }
+  end, { desc = "Paste current buffer's filename in a scratch window" })
   set("n", [[<leader>my]], function()
-    paste_into_split_buffer { fn.expand "%" }
-  end, { desc = "Paste current buffer's name in a new window" })
+    paste_into_scratch_buffer { fn.expand "%" }
+  end, { desc = "Paste current buffer's name in a scratch window" })
 
   -- delete
   set({ "n", "v" }, [[<leader>D]], [["_D]], { desc = [[Alias for: "_D]] })
