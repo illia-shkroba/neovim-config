@@ -6,7 +6,9 @@ local opt_local = vim.opt_local
 local action_state = require "telescope.actions.state"
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
+local conf = require("telescope.config").values
 local finders = require "telescope.finders"
+local pickers = require "telescope.pickers"
 local utils = require "telescope.utils"
 
 function M.live_grep_filetype(opts)
@@ -51,6 +53,48 @@ function M.live_grep_filetype(opts)
     end,
   }, opts or {})
   builtin.filetypes(new_opts)
+end
+
+function M.yank_from_dictionary(opts)
+  local data_home = vim.fn.expand(os.getenv "XDG_DATA_HOME" or "~/.local/share")
+  local dict_file = vim.fs.joinpath(data_home, "dict.txt")
+
+  local maybe_lines = require("utils").try(vim.fn.readfile, dict_file)
+
+  if maybe_lines == nil then
+    vim.notify(
+      "Dictionary file is not readable: " .. dict_file,
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
+  local lines = vim.tbl_filter(function(line)
+    return #line > 0
+  end, maybe_lines)
+
+  pickers
+    .new(opts, {
+      prompt_title = "Dictionary",
+      finder = finders.new_table {
+        results = lines,
+      },
+      sorter = conf.generic_sorter(opts),
+      attach_mappings = function()
+        actions.select_default:replace(function(prompt_buffer)
+          local selection = action_state.get_selected_entry()
+          if selection == nil then
+            utils.__warn_no_selection "actions.paste_register"
+            return
+          end
+          actions.close(prompt_buffer)
+          vim.fn.setreg("0", selection[1])
+          vim.fn.setreg('"', selection[1])
+        end)
+        return true
+      end,
+    })
+    :find()
 end
 
 return M
