@@ -404,6 +404,9 @@ function M.set_default_bindings()
     })
   end
 
+  set("n", [[<leader>md]], function()
+    paste_into_scratch_buffer { os.date "%F" }
+  end, { desc = "Paste current buffer's absolute path in a scratch window" })
   set("n", [[<leader>mp]], function()
     paste_into_scratch_buffer { fn.expand "%:p" }
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
