@@ -709,6 +709,22 @@ function M.set_default_bindings()
     { desc = "<C-l> with :fclose!" }
   )
   set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
+  set("n", [[<leader>a]], function()
+    local listed = false
+    local scratch = true
+    local buffer = api.nvim_create_buf(listed, scratch)
+    cmd.sbuffer(buffer)
+
+    api.nvim_create_autocmd({ "BufWinLeave" }, {
+      buffer = buffer,
+      callback = function()
+        vim.schedule(function()
+          cmd([[bwipeout! ]] .. buffer)
+        end)
+      end,
+      once = true,
+    })
+  end, { desc = "Open a scratch window" })
   set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
   set("n", [[<leader>o]], function()
     local buffer = api.nvim_get_current_buf()
