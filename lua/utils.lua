@@ -1,9 +1,5 @@
 local M = {}
 
-local api = vim.api
-local cmd = vim.cmd
-local fn = vim.fn
-
 local read = require "read"
 
 function M.require_safe(module_name)
@@ -84,16 +80,16 @@ end
 function M.with_motion(f)
   local motion = read.read_motion { allow_forced = false }
 
-  local mode = fn.visualmode()
-  local begin_position = fn.getpos "'<"
-  local end_position = fn.getpos "'>"
+  local mode = vim.fn.visualmode()
+  local begin_position = vim.fn.getpos "'<"
+  local end_position = vim.fn.getpos "'>"
 
-  cmd.normal("v" .. motion.count .. motion.motion .. "")
+  vim.cmd.normal("v" .. motion.count .. motion.motion .. "")
   local y = f()
 
-  cmd.normal(mode .. "")
-  fn.setpos("'<", begin_position)
-  fn.setpos("'>", end_position)
+  vim.cmd.normal(mode .. "")
+  vim.fn.setpos("'<", begin_position)
+  vim.fn.setpos("'>", end_position)
 
   return y
 end
@@ -105,28 +101,28 @@ function M.map_visual(f)
     if not new_text then
       return
     end
-    fn.setreg('"', new_text)
-    cmd.normal "gvp"
+    vim.fn.setreg('"', new_text)
+    vim.cmd.normal "gvp"
     if selection.mode == "v" and selection.ends_with_newline then
-      cmd.normal [[a]] -- add newline that was removed during selection
-      cmd.normal "gvo" -- go to initial cursor position
+      vim.cmd.normal [[a]] -- add newline that was removed during selection
+      vim.cmd.normal "gvo" -- go to initial cursor position
     end
   end)
 end
 
 function M.get_visual_selection()
-  local begin_position = fn.getpos "'<"
+  local begin_position = vim.fn.getpos "'<"
   local line_begin, column_begin = begin_position[2], begin_position[3]
 
-  local end_position = fn.getpos "'>"
+  local end_position = vim.fn.getpos "'>"
   local line_end, column_end = end_position[2], end_position[3]
 
-  local lines = fn.getline(line_begin, line_end)
+  local lines = vim.fn.getline(line_begin, line_end)
 
   local result = {
     text = "",
     ends_with_newline = false,
-    mode = fn.visualmode(),
+    mode = vim.fn.visualmode(),
     begin = { line_begin, column_begin },
     end_ = { line_end, column_end },
   }
@@ -136,7 +132,7 @@ function M.get_visual_selection()
   end
 
   result.ends_with_newline = column_end > #lines[#lines]
-    and line_end < api.nvim_buf_line_count(0)
+    and line_end < vim.api.nvim_buf_line_count(0)
 
   lines[#lines] = lines[#lines]:sub(1, column_end)
   lines[1] = lines[1]:sub(column_begin)
@@ -146,15 +142,15 @@ function M.get_visual_selection()
 end
 
 function M.with_register(f)
-  local old_register = fn.getreg '"'
+  local old_register = vim.fn.getreg '"'
   local y = f(old_register)
-  local new_register = fn.getreg '"'
-  fn.setreg('"', old_register)
+  local new_register = vim.fn.getreg '"'
+  vim.fn.setreg('"', old_register)
   return y, new_register
 end
 
 function M.get_cursor()
-  local position = fn.getcurpos()
+  local position = vim.fn.getcurpos()
   local line, column = position[2], position[3]
   return line, column
 end

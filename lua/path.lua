@@ -1,7 +1,5 @@
 local M = {}
 
-local fs = vim.fs
-
 local utils = require "utils"
 
 function M.step_into(src_dir, dest_dir)
@@ -13,7 +11,7 @@ function M.step_into(src_dir, dest_dir)
 end
 
 function M.extension(path)
-  local chunks = utils.split(fs.basename(path), ".")
+  local chunks = utils.split(vim.fs.basename(path), ".")
   table.remove(chunks, 1)
   local extension = table.concat(chunks, ".")
   if #extension > 0 then

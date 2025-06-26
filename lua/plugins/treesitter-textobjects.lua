@@ -2,8 +2,6 @@ return {
   "nvim-treesitter/nvim-treesitter-textobjects",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   config = function()
-    local set = vim.keymap.set
-
     require("nvim-treesitter.configs").setup {
       textobjects = {
         select = {
@@ -59,12 +57,36 @@ return {
 
     local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
 
-    set({ "n", "v", "o" }, ";", ts_repeat_move.repeat_last_move)
-    set({ "n", "v", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+    vim.keymap.set({ "n", "v", "o" }, ";", ts_repeat_move.repeat_last_move)
+    vim.keymap.set(
+      { "n", "v", "o" },
+      ",",
+      ts_repeat_move.repeat_last_move_opposite
+    )
 
-    set({ "n", "v", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-    set({ "n", "v", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-    set({ "n", "v", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-    set({ "n", "v", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
+    vim.keymap.set(
+      { "n", "v", "o" },
+      "f",
+      ts_repeat_move.builtin_f_expr,
+      { expr = true }
+    )
+    vim.keymap.set(
+      { "n", "v", "o" },
+      "F",
+      ts_repeat_move.builtin_F_expr,
+      { expr = true }
+    )
+    vim.keymap.set(
+      { "n", "v", "o" },
+      "t",
+      ts_repeat_move.builtin_t_expr,
+      { expr = true }
+    )
+    vim.keymap.set(
+      { "n", "v", "o" },
+      "T",
+      ts_repeat_move.builtin_T_expr,
+      { expr = true }
+    )
   end,
 }

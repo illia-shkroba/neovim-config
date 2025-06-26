@@ -3,23 +3,20 @@ if vim.b.did_dhall_ftplugin then
 end
 vim.b.did_dhall_ftplugin = true
 
-local opt_local = vim.opt_local
-local set = vim.keymap.set
+vim.opt_local.equalprg = "dhall lint"
+vim.opt_local.expandtab = true
+vim.opt_local.formatprg = "dhall format"
+vim.opt_local.shiftwidth = 4
+vim.opt_local.softtabstop = 4
+vim.opt_local.tabstop = 4
 
-opt_local.equalprg = "dhall lint"
-opt_local.expandtab = true
-opt_local.formatprg = "dhall format"
-opt_local.shiftwidth = 4
-opt_local.softtabstop = 4
-opt_local.tabstop = 4
-
-set(
+vim.keymap.set(
   { "n", "v" },
   [[<leader><CR>]],
   [[:w !dhall-to-json<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
-set(
+vim.keymap.set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal dhall-to-json --file #<CR>]],

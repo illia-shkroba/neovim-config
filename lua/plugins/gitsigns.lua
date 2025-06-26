@@ -51,11 +51,9 @@ return {
         col = 1,
       },
       on_attach = function(buffer_number)
-        local opt_local = vim.opt_local
-
         -- Always show the signcolumn, otherwise it would shift the text each time
         -- diagnostics appeared/became resolved
-        opt_local.signcolumn = "yes"
+        vim.opt_local.signcolumn = "yes"
 
         local gitsigns = require "gitsigns"
 

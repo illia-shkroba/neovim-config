@@ -1,8 +1,5 @@
 local M = {}
 
-local fn = vim.fn
-local opt_local = vim.opt_local
-
 local action_state = require "telescope.actions.state"
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
@@ -12,8 +9,8 @@ local pickers = require "telescope.pickers"
 local utils = require "telescope.utils"
 
 function M.live_grep_filetype(opts)
-  local current_filetype = opt_local.filetype._value
-  local filetypes = fn.getcompletion("", "filetype")
+  local current_filetype = vim.opt_local.filetype._value
+  local filetypes = vim.fn.getcompletion("", "filetype")
 
   -- "" file type resembles "no file type". After "" file type is selected,
   -- `live_grep_filetype` works as a plain `live_grep`.

@@ -1,7 +1,5 @@
 local M = {}
 
-local fn = vim.fn
-
 function M.read_motion(options)
   local allow_forced
   if type(options) == "table" and type(options.allow_forced) == "boolean" then
@@ -15,19 +13,19 @@ function M.read_motion(options)
 
   local last = acc
   if allow_forced and vim.tbl_contains({ "v", "V", "" }, last) then
-    last = fn.getcharstr()
+    last = vim.fn.getcharstr()
     acc = acc .. last
   end
 
   if
     vim.tbl_contains({ "i", "a", "f", "F", "t", "T", "[", "]", "'", "`" }, last)
   then
-    acc = acc .. fn.getcharstr()
+    acc = acc .. vim.fn.getcharstr()
   elseif vim.tbl_contains({ "g" }, last) then
-    last = fn.getcharstr()
+    last = vim.fn.getcharstr()
     acc = acc .. last
     if vim.tbl_contains({ "'", "`" }, last) then
-      acc = acc .. fn.getcharstr()
+      acc = acc .. vim.fn.getcharstr()
     end
   end
 
@@ -45,18 +43,18 @@ function M.read_motion(options)
 end
 
 function M.read_number()
-  local lower, upper = fn.char2nr "0", fn.char2nr "9"
+  local lower, upper = vim.fn.char2nr "0", vim.fn.char2nr "9"
 
   local acc = 0
-  local char = fn.getchar()
+  local char = vim.fn.getchar()
   while lower <= char and char <= upper do
     acc = acc * 10 + char - lower
-    char = fn.getchar()
+    char = vim.fn.getchar()
   end
 
   return {
     number = acc,
-    rest = fn.nr2char(char),
+    rest = vim.fn.nr2char(char),
   }
 end
 

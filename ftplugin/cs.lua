@@ -3,9 +3,7 @@ if vim.b.did_cs_ftplugin then
 end
 vim.b.did_cs_ftplugin = true
 
-local opt_local = vim.opt_local
-
-opt_local.expandtab = true
-opt_local.shiftwidth = 4
-opt_local.softtabstop = 4
-opt_local.tabstop = 4
+vim.opt_local.expandtab = true
+vim.opt_local.shiftwidth = 4
+vim.opt_local.softtabstop = 4
+vim.opt_local.tabstop = 4

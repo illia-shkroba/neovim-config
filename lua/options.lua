@@ -1,57 +1,53 @@
 local M = {}
 
 function M.set_default_options()
-  local cmd = vim.cmd
-  local opt = vim.opt
-  local g = vim.g
-
   local status = require "status"
 
-  cmd.filetype "on"
+  vim.cmd.filetype "on"
 
-  opt.allowrevins = true
-  opt.autoindent = true
-  opt.complete = { ".", "w", "b", "u" }
-  opt.completeopt = { "menuone", "popup" }
-  opt.cpoptions = "aABceFMs%>"
-  opt.cursorline = true
-  opt.encoding = "utf-8"
-  opt.expandtab = true
-  opt.formatoptions = "tcro/qnl1j"
-  opt.hidden = true
-  opt.hlsearch = true
-  opt.inccommand = "split"
-  opt.incsearch = true
-  opt.jumpoptions = { "stack" }
-  opt.linebreak = true
-  opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
-  opt.modeline = true
-  opt.mouse = ""
-  opt.number = true
-  opt.omnifunc = "syntaxcomplete#Complete"
-  opt.path = { "**", "./**" }
-  opt.pumblend = 10
-  opt.pumheight = 10
-  opt.relativenumber = true
-  opt.shiftround = true
-  opt.shiftwidth = 2
+  vim.opt.allowrevins = true
+  vim.opt.autoindent = true
+  vim.opt.complete = { ".", "w", "b", "u" }
+  vim.opt.completeopt = { "menuone", "popup" }
+  vim.opt.cpoptions = "aABceFMs%>"
+  vim.opt.cursorline = true
+  vim.opt.encoding = "utf-8"
+  vim.opt.expandtab = true
+  vim.opt.formatoptions = "tcro/qnl1j"
+  vim.opt.hidden = true
+  vim.opt.hlsearch = true
+  vim.opt.inccommand = "split"
+  vim.opt.incsearch = true
+  vim.opt.jumpoptions = { "stack" }
+  vim.opt.linebreak = true
+  vim.opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
+  vim.opt.modeline = true
+  vim.opt.mouse = ""
+  vim.opt.number = true
+  vim.opt.omnifunc = "syntaxcomplete#Complete"
+  vim.opt.path = { "**", "./**" }
+  vim.opt.pumblend = 10
+  vim.opt.pumheight = 10
+  vim.opt.relativenumber = true
+  vim.opt.shiftround = true
+  vim.opt.shiftwidth = 2
 
   -- Enable insertion of an indent on a next line after {, before } (with "O",
   -- and after 'cinwords'. Also, disables ">>" on lines starting with #.
-  opt.smartindent = true
+  vim.opt.smartindent = true
 
-  opt.softtabstop = 2
-  opt.spell = true
-  opt.splitbelow = true
-  opt.splitright = true
-  opt.statusline = status.statusline
-  opt.tabstop = 2
-  opt.tagcase = "smart"
-  opt.termguicolors = true
-  opt.wildmenu = true
-  opt.wrapscan = false
+  vim.opt.softtabstop = 2
+  vim.opt.spell = true
+  vim.opt.splitbelow = true
+  vim.opt.splitright = true
+  vim.opt.statusline = status.statusline
+  vim.opt.tabstop = 2
+  vim.opt.tagcase = "smart"
+  vim.opt.termguicolors = true
+  vim.opt.wildmenu = true
+  vim.opt.wrapscan = false
 
-  g.netrw_banner = 0
+  vim.g.netrw_banner = 0
 
   vim.cmd [[
     func Thesaurus(findstart, base)
@@ -73,82 +69,75 @@ function M.set_default_options()
 end
 
 function M.set_default_bindings()
-  local api = vim.api
-  local cmd = vim.cmd
-  local diagnostic = vim.diagnostic
-  local fn = vim.fn
-  local fs = vim.fs
-  local set = vim.keymap.set
-
   local path = require "path"
   local utils = require "utils"
 
   -- cwd
   local function step_into_buffer_dir()
-    local src_dir, dest_dir = fn.getcwd(), api.nvim_buf_get_name(0)
+    local src_dir, dest_dir = vim.fn.getcwd(), vim.api.nvim_buf_get_name(0)
     local step = path.step_into(src_dir, dest_dir)
-    if fn.isdirectory(step) == 1 then
+    if vim.fn.isdirectory(step) == 1 then
       return step
     else
-      return fs.dirname(step)
+      return vim.fs.dirname(step)
     end
   end
 
-  set("n", [[<leader>-d]], function()
-    cmd.cd "-"
+  vim.keymap.set("n", [[<leader>-d]], function()
+    vim.cmd.cd "-"
   end, { desc = "cd -" })
-  set("n", [[<leader>-l]], function()
-    cmd.lcd "-"
+  vim.keymap.set("n", [[<leader>-l]], function()
+    vim.cmd.lcd "-"
   end, { desc = "lcd -" })
-  set("n", [[<leader>-t]], function()
-    cmd.tcd "-"
+  vim.keymap.set("n", [[<leader>-t]], function()
+    vim.cmd.tcd "-"
   end, { desc = "tcd -" })
-  set("n", [[<leader>CD]], function()
+  vim.keymap.set("n", [[<leader>CD]], function()
     for _ = 1, vim.v.count1 do
-      cmd.cd ".."
+      vim.cmd.cd ".."
     end
   end, { desc = "cd .." })
-  set("n", [[<leader>CL]], function()
+  vim.keymap.set("n", [[<leader>CL]], function()
     for _ = 1, vim.v.count1 do
-      cmd.lcd ".."
+      vim.cmd.lcd ".."
     end
   end, { desc = "lcd .." })
-  set("n", [[<leader>CT]], function()
+  vim.keymap.set("n", [[<leader>CT]], function()
     for _ = 1, vim.v.count1 do
-      cmd.tcd ".."
+      vim.cmd.tcd ".."
     end
   end, { desc = "tcd .." })
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>cD]],
     [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "cd into current buffer's directory" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>cL]],
     [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "lcd into current buffer's directory" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>cT]],
     [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]],
     { desc = "tcd into current buffer's directory" }
   )
-  set("n", [[<leader>cd]], function()
+  vim.keymap.set("n", [[<leader>cd]], function()
     for _ = 1, vim.v.count1 do
-      cmd.cd(step_into_buffer_dir())
+      vim.cmd.cd(step_into_buffer_dir())
     end
   end, { desc = "cd by one level into current buffer's directory" })
-  set("n", [[<leader>cl]], function()
+  vim.keymap.set("n", [[<leader>cl]], function()
     for _ = 1, vim.v.count1 do
-      cmd.lcd(step_into_buffer_dir())
+      vim.cmd.lcd(step_into_buffer_dir())
     end
   end, { desc = "lcd by one level into current buffer's directory" })
-  set("n", [[<leader>ct]], function()
+  vim.keymap.set("n", [[<leader>ct]], function()
     for _ = 1, vim.v.count1 do
-      cmd.tcd(step_into_buffer_dir())
+      vim.cmd.tcd(step_into_buffer_dir())
     end
   end, { desc = "tcd by one level into current buffer's directory" })
 
@@ -157,11 +146,11 @@ function M.set_default_bindings()
   local quickfix = list.quickfix
   local location = list.location
 
-  set("n", [[<leader>qA]], function()
+  vim.keymap.set("n", [[<leader>qA]], function()
     local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
     quickfix.remove_item(item)
-    utils.try(cmd, [[cc ]] .. index)
+    utils.try(vim.cmd, [[cc ]] .. index)
     if item.text then
       vim.notify(
         "Removed quickfix item: " .. vim.trim(item.text),
@@ -169,11 +158,11 @@ function M.set_default_bindings()
       )
     end
   end, { desc = "Remove current quickfix item" })
-  set("n", [[<leader>lA]], function()
+  vim.keymap.set("n", [[<leader>lA]], function()
     local index = location.get_current_item_index()
     local item = location.get_current_item()
     location.remove_item(item)
-    utils.try(cmd, [[ll ]] .. index)
+    utils.try(vim.cmd, [[ll ]] .. index)
     if item.text then
       vim.notify(
         "Removed location item: " .. vim.trim(item.text),
@@ -182,14 +171,14 @@ function M.set_default_bindings()
     end
   end, { desc = "Remove current location item" })
 
-  set("n", [[<leader>qX]], function()
+  vim.keymap.set("n", [[<leader>qX]], function()
     quickfix.reset()
     vim.notify(
       "Removed all quickfix items: " .. quickfix.get_title(),
       vim.log.levels.INFO
     )
   end, { desc = "Remove all quickfix items" })
-  set("n", [[<leader>lX]], function()
+  vim.keymap.set("n", [[<leader>lX]], function()
     location.reset()
     vim.notify(
       "Removed all location items: " .. location.get_title(),
@@ -197,36 +186,36 @@ function M.set_default_bindings()
     )
   end, { desc = "Remove all location items" })
 
-  set("n", [[<leader>qa]], function()
+  vim.keymap.set("n", [[<leader>qa]], function()
     quickfix.add_item(list.create_current_position_item())
-    cmd.clast()
+    vim.cmd.clast()
   end, { desc = "Add current line as quickfix item" })
-  set("n", [[<leader>la]], function()
+  vim.keymap.set("n", [[<leader>la]], function()
     location.add_item(list.create_current_position_item())
-    cmd.llast()
+    vim.cmd.llast()
   end, { desc = "Add current line as location item" })
 
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>qe]],
-    diagnostic.setqflist,
+    vim.diagnostic.setqflist,
     { desc = "Load diagnostic to quickfix list" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>le]],
-    diagnostic.setloclist,
+    vim.diagnostic.setloclist,
     { desc = "Load diagnostic to location list" }
   )
 
-  set("n", [[<leader>qx]], function()
-    local name = utils.try(fn.input, "Enter quickfix list: ")
+  vim.keymap.set("n", [[<leader>qx]], function()
+    local name = utils.try(vim.fn.input, "Enter quickfix list: ")
     if name then
       quickfix.create(name)
     end
   end, { desc = "Create new quickfix list" })
-  set("n", [[<leader>lx]], function()
-    local name = utils.try(fn.input, "Enter location list: ")
+  vim.keymap.set("n", [[<leader>lx]], function()
+    local name = utils.try(vim.fn.input, "Enter location list: ")
     if name then
       location.create(name)
     end
@@ -235,22 +224,22 @@ function M.set_default_bindings()
   local function dump_list(current_list)
     local dumped = current_list.dump()
     if #dumped > 0 then
-      local buffer = api.nvim_create_buf(true, false)
-      api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
-      cmd.sbuffer(buffer)
-      cmd.file(current_list.get_title())
+      local buffer = vim.api.nvim_create_buf(true, false)
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
+      vim.cmd.sbuffer(buffer)
+      vim.cmd.file(current_list.get_title())
     end
   end
 
-  set("n", [[<leader>qd]], function()
+  vim.keymap.set("n", [[<leader>qd]], function()
     dump_list(quickfix)
   end, { desc = "Dump quickfix list to a buffer" })
-  set("n", [[<leader>ld]], function()
+  vim.keymap.set("n", [[<leader>ld]], function()
     dump_list(location)
   end, { desc = "Dump location list to a buffer" })
 
   -- tmux
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>"]],
     [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
@@ -262,17 +251,17 @@ function M.set_default_bindings()
   if telescope then
     local pickers = require "plugins.telescope.pickers"
 
-    set("n", [[<leader>+]], function()
-      cmd.Telescope "neoclip"
+    vim.keymap.set("n", [[<leader>+]], function()
+      vim.cmd.Telescope "neoclip"
     end, { desc = "Open neoclip" })
-    set(
+    vim.keymap.set(
       "n",
       [[<leader>/]],
       telescope.current_buffer_fuzzy_find,
       { desc = "Grep current buffer" }
     )
-    set("n", [[<leader>F]], function()
-      local extension = path.extension(api.nvim_buf_get_name(0))
+    vim.keymap.set("n", [[<leader>F]], function()
+      local extension = path.extension(vim.api.nvim_buf_get_name(0))
       telescope.grep_string {
         word_match = "-w",
         additional_args = { "--glob", "*" .. extension },
@@ -280,19 +269,19 @@ function M.set_default_bindings()
     end, {
       desc = "Search for word under the cursor in files with current buffer's extension",
     })
-    set("n", [[<leader>fB]], function()
+    vim.keymap.set("n", [[<leader>fB]], function()
       telescope.live_grep {
         grep_open_files = true,
       }
     end, { desc = "Grep buffers" })
-    set(
+    vim.keymap.set(
       "n",
       [[<leader>fC]],
       telescope.git_bcommits,
       { desc = "List commits affecting current buffer" }
     )
-    set("n", [[<leader>fG]], function()
-      local extension = path.extension(api.nvim_buf_get_name(0))
+    vim.keymap.set("n", [[<leader>fG]], function()
+      local extension = path.extension(vim.api.nvim_buf_get_name(0))
       return [[:lua require("telescope.builtin").grep_string ]]
         .. [[{ word_match = "-w"]]
         .. [[, additional_args = { "--glob", "*]]
@@ -302,75 +291,110 @@ function M.set_default_bindings()
       expr = true,
       desc = "Populate cmdline with search for word in files with current buffer's extension",
     })
-    set(
+    vim.keymap.set(
       "n",
       [[<leader>fg]],
       pickers.live_grep_filetype,
       { desc = "Grep files with extension" }
     )
-    set("n", [[<leader>fk]], pickers.yank_from_dictionary, {
+    vim.keymap.set("n", [[<leader>fk]], pickers.yank_from_dictionary, {
       desc = "Yank from dictionary in ~/.local/share/dict.txt (or $XDG_DATA_HOME)",
     })
-    set("n", [[<leader>fw]], function()
+    vim.keymap.set("n", [[<leader>fw]], function()
       telescope.grep_string {
         word_match = "-w",
         grep_open_files = true,
       }
     end, { desc = "Search for word under the cursor in buffers" })
-    set("n", [[<leader>fb]], telescope.buffers, { desc = "List buffers" })
-    set(
+    vim.keymap.set(
+      "n",
+      [[<leader>fb]],
+      telescope.buffers,
+      { desc = "List buffers" }
+    )
+    vim.keymap.set(
       "n",
       [[<leader>fd]],
       telescope.diagnostics,
       { desc = "List diagnostics" }
     )
-    set("n", [[<leader>fD]], function()
+    vim.keymap.set("n", [[<leader>fD]], function()
       telescope.diagnostics { bufnr = 0 }
     end, { desc = "List diagnostics for current buffer" })
-    set("n", [[<leader>fF]], function()
-      telescope.find_files { cwd = fs.dirname(api.nvim_buf_get_name(0)) }
+    vim.keymap.set("n", [[<leader>fF]], function()
+      telescope.find_files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
     end, { desc = "List files relative to current buffer" })
-    set("n", [[<leader>fR]], function()
+    vim.keymap.set("n", [[<leader>fR]], function()
       telescope.oldfiles { cwd_only = true }
     end, { desc = "List old files relative to current buffer" })
-    set("n", [[<leader>fQ]], telescope.quickfix, { desc = "List quickfix" })
-    set(
+    vim.keymap.set(
+      "n",
+      [[<leader>fQ]],
+      telescope.quickfix,
+      { desc = "List quickfix" }
+    )
+    vim.keymap.set(
       "n",
       [[<leader>fS]],
       telescope.pickers,
       { desc = "List previous pickers" }
     )
-    set(
+    vim.keymap.set(
       "n",
       [[<leader>fT]],
       telescope.current_buffer_tags,
       { desc = "List current buffer's tags" }
     )
-    set(
+    vim.keymap.set(
       "n",
       [[<leader>fe]],
       telescope.treesitter,
       { desc = "List treesitter symbols for current buffer" }
     )
-    set("n", [[<leader>ff]], telescope.find_files, { desc = "List files" })
-    set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
-    set("n", [[<leader>fp]], telescope.filetypes, { desc = "List filetypes" })
-    set(
+    vim.keymap.set(
+      "n",
+      [[<leader>ff]],
+      telescope.find_files,
+      { desc = "List files" }
+    )
+    vim.keymap.set(
+      "n",
+      [[<leader>fm]],
+      telescope.marks,
+      { desc = "List marks" }
+    )
+    vim.keymap.set(
+      "n",
+      [[<leader>fp]],
+      telescope.filetypes,
+      { desc = "List filetypes" }
+    )
+    vim.keymap.set(
       "n",
       [[<leader>fq]],
       telescope.quickfixhistory,
       { desc = "List quickfix lists" }
     )
-    set("n", [[<leader>fr]], telescope.oldfiles, { desc = "List old files" })
-    set(
+    vim.keymap.set(
+      "n",
+      [[<leader>fr]],
+      telescope.oldfiles,
+      { desc = "List old files" }
+    )
+    vim.keymap.set(
       "n",
       [[<leader>fs]],
       telescope.resume,
       { desc = "Resume most recent picker" }
     )
-    set("n", [[<leader>ft]], telescope.tags, { desc = "List tags" })
-    set("n", [[<leader>j]], telescope.jumplist, { desc = "List jumplist" })
-    set(
+    vim.keymap.set("n", [[<leader>ft]], telescope.tags, { desc = "List tags" })
+    vim.keymap.set(
+      "n",
+      [[<leader>j]],
+      telescope.jumplist,
+      { desc = "List jumplist" }
+    )
+    vim.keymap.set(
       "v",
       [[<leader>F]],
       [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]],
@@ -378,7 +402,7 @@ function M.set_default_bindings()
         desc = "Search for visually selected word in files with current buffer's extension",
       }
     )
-    set(
+    vim.keymap.set(
       "v",
       [[<leader>fw]],
       [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]],
@@ -387,19 +411,19 @@ function M.set_default_bindings()
   end
 
   -- git
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>hD]],
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>hP]],
     [[<Cmd>update ++p | Git add --patch -- %<CR>]],
     { desc = "git add --patch" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>hd]],
     [[<Cmd>vertical Gdiffsplit!<CR>]],
@@ -410,47 +434,67 @@ function M.set_default_bindings()
   local function paste_into_scratch_buffer(lines)
     local listed = false
     local scratch = true
-    local buffer = api.nvim_create_buf(listed, scratch)
-    api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
-    cmd.sbuffer(buffer)
+    local buffer = vim.api.nvim_create_buf(listed, scratch)
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+    vim.cmd.sbuffer(buffer)
 
-    api.nvim_create_autocmd({ "BufLeave" }, {
+    vim.api.nvim_create_autocmd({ "BufLeave" }, {
       buffer = buffer,
       callback = function()
         vim.schedule(function()
-          cmd([[bwipeout! ]] .. buffer)
+          vim.cmd([[bwipeout! ]] .. buffer)
         end)
       end,
       once = true,
     })
   end
 
-  set("n", [[<leader>md]], function()
+  vim.keymap.set("n", [[<leader>md]], function()
     paste_into_scratch_buffer { os.date "%F" }
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
-  set("n", [[<leader>mp]], function()
-    paste_into_scratch_buffer { fn.expand "%:p" }
+  vim.keymap.set("n", [[<leader>mp]], function()
+    paste_into_scratch_buffer { vim.fn.expand "%:p" }
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
-  set("n", [[<leader>mt]], function()
-    paste_into_scratch_buffer { fn.expand "%:t" }
+  vim.keymap.set("n", [[<leader>mt]], function()
+    paste_into_scratch_buffer { vim.fn.expand "%:t" }
   end, { desc = "Paste current buffer's filename in a scratch window" })
-  set("n", [[<leader>my]], function()
-    paste_into_scratch_buffer { fn.expand "%" }
+  vim.keymap.set("n", [[<leader>my]], function()
+    paste_into_scratch_buffer { vim.fn.expand "%" }
   end, { desc = "Paste current buffer's name in a scratch window" })
 
   -- delete
-  set({ "n", "v" }, [[<leader>D]], [["_D]], { desc = [[Alias for: "_D]] })
-  set({ "n", "v" }, [[<leader>d]], [["_d]], { desc = [[Alias for: "_d]] })
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>D]],
+    [["_D]],
+    { desc = [[Alias for: "_D]] }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>d]],
+    [["_d]],
+    { desc = [[Alias for: "_d]] }
+  )
 
   -- paste
-  set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
-  set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
-  set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
-  set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
+  vim.keymap.set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
+  vim.keymap.set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
+  vim.keymap.set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
+  vim.keymap.set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
 
   -- yank
-  set({ "n", "v" }, [[<leader>Y]], [["+yg_]], { desc = [[Alias for: "+yg_]] })
-  set({ "n", "v" }, [[<leader>y]], [["+y]], { desc = [[Alias for: "+y]] })
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>Y]],
+    [["+yg_]],
+    { desc = [[Alias for: "+yg_]] }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>y]],
+    [["+y]],
+    { desc = [[Alias for: "+y]] }
+  )
 
   -- substitute
   local substitute = require "text.substitute"
@@ -475,50 +519,50 @@ function M.set_default_bindings()
       .. [[lfdo! ]]
       .. substitute_word([[%]], text)
   end
-  set("n", [[<leader><leader>c%]], function()
-    local extension = path.extension(api.nvim_buf_get_name(0))
-    return substitute_word_globally(extension, fn.expand "<cword>")
+  vim.keymap.set("n", [[<leader><leader>c%]], function()
+    local extension = path.extension(vim.api.nvim_buf_get_name(0))
+    return substitute_word_globally(extension, vim.fn.expand "<cword>")
   end, {
     expr = true,
     desc = "Add files with current file's extension to location list and substitute word under the cursor in location list files",
   })
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>c*]],
     function()
-      return substitute_word([[*]], fn.expand "<cword>")
+      return substitute_word([[*]], vim.fn.expand "<cword>")
     end,
     { expr = true, desc = "Substitute word under the cursor in visual area" }
   )
-  set("n", [[<leader>c%]], function()
-    return substitute_word([[%]], fn.expand "<cword>")
+  vim.keymap.set("n", [[<leader>c%]], function()
+    return substitute_word([[%]], vim.fn.expand "<cword>")
   end, { expr = true, desc = "Substitute word under the cursor" })
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>cc]],
     function()
-      return substitute_word("", fn.expand "<cword>")
+      return substitute_word("", vim.fn.expand "<cword>")
     end,
     { expr = true, desc = "Substitute word under the cursor in a current line" }
   )
-  set("n", [[<leader>cv]], function()
-    local begin = api.nvim_buf_get_mark(0, "[")
-    local end_ = api.nvim_buf_get_mark(0, "]")
+  vim.keymap.set("n", [[<leader>cv]], function()
+    local begin = vim.api.nvim_buf_get_mark(0, "[")
+    local end_ = vim.api.nvim_buf_get_mark(0, "]")
     return substitute_word(
       tostring(begin[1]) .. "," .. tostring(end_[1]),
-      fn.expand "<cword>"
+      vim.fn.expand "<cword>"
     )
   end, {
     expr = true,
     desc = "Substitute word under the cursor in previously changed or yanked text area",
   })
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>cs]],
     [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
     { desc = "Remove trailing whitespaces" }
   )
-  set("n", [[<leader>S]], function()
+  vim.keymap.set("n", [[<leader>S]], function()
     utils.map_motion(function(xs)
       return substitute.substitute_char(xs, " ", "_")
     end)
@@ -526,7 +570,7 @@ function M.set_default_bindings()
     silent = true,
     desc = "Substitute space with _ in area selected by motion",
   })
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>s]],
     function()
@@ -534,13 +578,13 @@ function M.set_default_bindings()
     end,
     { silent = true, desc = "Substitute character in area selected by motion" }
   )
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>S]],
     [[:lua require("utils").map_visual(function(xs) return require("text.substitute").substitute_char(xs, " ", "_") end)<CR>]],
     { silent = true, desc = "Substitute space with _ in visual area" }
   )
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>s]],
     [[:lua require("utils").map_visual(require("text.substitute").substitute_char_prompt)<CR>]],
@@ -549,19 +593,19 @@ function M.set_default_bindings()
 
   -- case
   local case = require "text.case"
-  set("n", [[<leader>cF]], function()
+  vim.keymap.set("n", [[<leader>cF]], function()
     utils.map_motion(case.to_camel)
   end, { desc = "Format selection by motion to camel case" })
-  set("n", [[<leader>cf]], function()
+  vim.keymap.set("n", [[<leader>cf]], function()
     utils.map_motion(case.to_snake)
   end, { desc = "Format selection by motion to snake case" })
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>cF]],
     [[:lua require("utils").map_visual(require("text.case").to_camel)<CR>]],
     { silent = true, desc = "Format selection by visual to camel case" }
   )
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>cf]],
     [[:lua require("utils").map_visual(require("text.case").to_snake)<CR>]],
@@ -569,19 +613,19 @@ function M.set_default_bindings()
   )
 
   -- search
-  set("n", [[<leader>#]], function()
-    return "?" .. fn.expand "<cword>" .. "\\c<CR>"
+  vim.keymap.set("n", [[<leader>#]], function()
+    return "?" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as #, but without \\< and \\>" })
-  set("n", [[<leader>*]], function()
-    return "/" .. fn.expand "<cword>" .. "\\c<CR>"
+  vim.keymap.set("n", [[<leader>*]], function()
+    return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>#]],
     [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]],
     { desc = "Same as #, but without \\< and \\>" }
   )
-  set(
+  vim.keymap.set(
     "v",
     [[<leader>*]],
     [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]],
@@ -589,16 +633,16 @@ function M.set_default_bindings()
   )
 
   -- cmdline
-  set("c", [[<C-j>]], [[<Down>]], {
+  vim.keymap.set("c", [[<C-j>]], [[<Down>]], {
     desc = "Go to next item matching command that was typed so far in cmdline",
   })
-  set("c", [[<C-k>]], [[<Up>]], {
+  vim.keymap.set("c", [[<C-k>]], [[<Up>]], {
     desc = "Go to previous item matching command that was typed so far in cmdline",
   })
-  set("c", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+  vim.keymap.set("c", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
     desc = [[Wrap current line with \< and \>]],
   })
-  set(
+  vim.keymap.set(
     "c",
     [[<C-s>]],
     [[s///gc<Left><Left><Left>]],
@@ -606,13 +650,13 @@ function M.set_default_bindings()
   )
 
   -- move
-  set(
+  vim.keymap.set(
     "v",
     [[<C-j>]],
     [[:lua require("text.move").down(require("utils").get_visual_selection())<CR>gv]],
     { desc = "Shift visual area down" }
   )
-  set(
+  vim.keymap.set(
     "v",
     [[<C-k>]],
     [[:lua require("text.move").up(require("utils").get_visual_selection())<CR>gv]],
@@ -621,38 +665,58 @@ function M.set_default_bindings()
 
   -- register
   local register = require "text.register"
-  set("n", [[<leader>Q]], function()
+  vim.keymap.set("n", [[<leader>Q]], function()
     register.edit_register_prompt()
   end, { desc = "Edit register in a buffer" })
 
   -- tags
-  set("n", [[<leader>gt]], function()
+  vim.keymap.set("n", [[<leader>gt]], function()
     local language = vim.opt_local.filetype._value
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
   end, { expr = true, desc = "Generate tags" })
 
   -- popup-menu
-  set("i", [[<C-k>]], function()
-    return fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
+  vim.keymap.set("i", [[<C-k>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
   end, { expr = true, desc = "Go up in popup-menu" })
-  set("i", [[<C-j>]], function()
-    return fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
+  vim.keymap.set("i", [[<C-j>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
   end, { expr = true, desc = "Go down in popup-menu" })
 
   -- tabs
-  set("n", [[<leader>tc]], [[<Cmd>tabclose<CR>]], { desc = "Close tab" })
-  set("n", [[<leader>to]], [[<Cmd>tabonly<CR>]], { desc = "Focus tab" })
-  set("n", [[<leader>tT]], [[<Cmd>-tabmove<CR>]], { desc = "Move tab left" })
-  set("n", [[<leader>tt]], [[<Cmd>+tabmove<CR>]], { desc = "Move tab right" })
+  vim.keymap.set(
+    "n",
+    [[<leader>tc]],
+    [[<Cmd>tabclose<CR>]],
+    { desc = "Close tab" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>to]],
+    [[<Cmd>tabonly<CR>]],
+    { desc = "Focus tab" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>tT]],
+    [[<Cmd>-tabmove<CR>]],
+    { desc = "Move tab left" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>tt]],
+    [[<Cmd>+tabmove<CR>]],
+    { desc = "Move tab right" }
+  )
 
   -- undo
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>r]],
     [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]],
     { desc = "later [count]f" }
   )
-  set(
+  vim.keymap.set(
     "n",
     [[<leader>u]],
     [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]],
@@ -660,41 +724,41 @@ function M.set_default_bindings()
   )
 
   -- text objects
-  set(
+  vim.keymap.set(
     { "o", "v" },
     "a%",
     ":<C-U>normal va%<CR>",
     { desc = "Missing text object for a% from matchit" }
   )
-  set(
+  vim.keymap.set(
     { "o", "v" },
     "a*",
     ":<C-U>normal '<V'><CR>",
     { desc = "Previously selected text area selected linewise" }
   )
-  set({ "o", "v" }, "aa", "a<", { desc = "a<" })
-  set({ "o", "v" }, "ar", "a[", { desc = "a[" })
-  set(
+  vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
+  vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
+  vim.keymap.set(
     { "o", "v" },
     "av",
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
   )
-  set(
+  vim.keymap.set(
     { "o", "v" },
     "i*",
     ":<C-U>normal `<v`><CR>",
     { desc = "Previously selected text area selected charwise" }
   )
-  set(
+  vim.keymap.set(
     { "o", "v" },
     "il",
     ":<C-U>normal _vg_<CR>",
     { desc = "Current line without blanks selected charwise" }
   )
-  set({ "o", "v" }, "ia", "i<", { desc = "i<" })
-  set({ "o", "v" }, "ir", "i[", { desc = "i[" })
-  set(
+  vim.keymap.set({ "o", "v" }, "ia", "i<", { desc = "i<" })
+  vim.keymap.set({ "o", "v" }, "ir", "i[", { desc = "i[" })
+  vim.keymap.set(
     { "o", "v" },
     "iv",
     ":<C-U>normal `[v`]<CR>",
@@ -702,40 +766,50 @@ function M.set_default_bindings()
   )
 
   -- other
-  set(
+  vim.keymap.set(
     "n",
     [[<C-l>]],
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
-  set("n", [[<leader>W]], [[<Cmd>write ++p<CR>]], { desc = "write ++p" })
-  set("n", [[<leader>a]], function()
+  vim.keymap.set(
+    "n",
+    [[<leader>W]],
+    [[<Cmd>write ++p<CR>]],
+    { desc = "write ++p" }
+  )
+  vim.keymap.set("n", [[<leader>a]], function()
     local listed = false
     local scratch = true
-    local buffer = api.nvim_create_buf(listed, scratch)
-    cmd.sbuffer(buffer)
+    local buffer = vim.api.nvim_create_buf(listed, scratch)
+    vim.cmd.sbuffer(buffer)
 
-    api.nvim_create_autocmd({ "BufWinLeave" }, {
+    vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
       buffer = buffer,
       callback = function()
         vim.schedule(function()
-          cmd([[bwipeout! ]] .. buffer)
+          vim.cmd([[bwipeout! ]] .. buffer)
         end)
       end,
       once = true,
     })
   end, { desc = "Open a scratch window" })
-  set("n", [[<leader>b]], [[<Cmd>bwipeout!<CR>]], { desc = "bwipeout!" })
-  set("n", [[<leader>o]], function()
-    local buffer = api.nvim_get_current_buf()
-    local cursor = api.nvim_win_get_cursor(api.nvim_get_current_win())
+  vim.keymap.set(
+    "n",
+    [[<leader>b]],
+    [[<Cmd>bwipeout!<CR>]],
+    { desc = "bwipeout!" }
+  )
+  vim.keymap.set("n", [[<leader>o]], function()
+    local buffer = vim.api.nvim_get_current_buf()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local row = cursor[1] - 1
 
-    api.nvim_buf_set_lines(buffer, row + 1, -1, false, {})
-    api.nvim_buf_set_lines(buffer, 0, row, false, {})
+    vim.api.nvim_buf_set_lines(buffer, row + 1, -1, false, {})
+    vim.api.nvim_buf_set_lines(buffer, 0, row, false, {})
   end, { desc = "Keep only the current line" })
-  set("n", [[<leader>v]], function()
-    local mode = fn.visualmode()
+  vim.keymap.set("n", [[<leader>v]], function()
+    local mode = vim.fn.visualmode()
     if string.len(mode) == 0 then
       mode = "v"
     elseif mode == "" then
@@ -746,22 +820,27 @@ function M.set_default_bindings()
     expr = true,
     desc = "Visually select previously changed or yanked text area",
   })
-  set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
-  set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
-  set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
-  set("n", [[<leader>w]], [[<Cmd>update ++p<CR>]], { desc = "update ++p" })
-  set("n", [[<leader>z]], function()
-    local buffer = api.nvim_buf_get_name(0)
+  vim.keymap.set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
+  vim.keymap.set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
+  vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
+  vim.keymap.set(
+    "n",
+    [[<leader>w]],
+    [[<Cmd>update ++p<CR>]],
+    { desc = "update ++p" }
+  )
+  vim.keymap.set("n", [[<leader>z]], function()
+    local buffer = vim.api.nvim_buf_get_name(0)
     if #buffer > 0 then
-      fn.delete(buffer)
+      vim.fn.delete(buffer)
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
-  set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
-  set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
-  set(
+  vim.keymap.set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
+  vim.keymap.set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
+  vim.keymap.set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
+  vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
+  vim.keymap.set(
     "i",
     [[#]],
     [[<C-v>#]],
@@ -770,86 +849,84 @@ function M.set_default_bindings()
 end
 
 function M.set_default_commands()
-  local cmd = vim.cmd
-  local command = vim.api.nvim_create_user_command
-  local fn = vim.fn
-  local fs = vim.fs
-
-  command("Config", [[split `=stdpath("config") .. "/init.lua"`]], {})
-  command("Mv", function(opts)
+  vim.api.nvim_create_user_command(
+    "Config",
+    [[split `=stdpath("config") .. "/init.lua"`]],
+    {}
+  )
+  vim.api.nvim_create_user_command("Mv", function(opts)
     local dest
-    if fn.isdirectory(opts.fargs[1]) == 1 then
-      dest = fs.joinpath(opts.fargs[1], fn.expand "%:t")
+    if vim.fn.isdirectory(opts.fargs[1]) == 1 then
+      dest = vim.fs.joinpath(opts.fargs[1], vim.fn.expand "%:t")
     else
       dest = opts.fargs[1]
     end
 
-    cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. dest)
+    vim.cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. dest)
 
-    local previous = fn.expand "#"
+    local previous = vim.fn.expand "#"
     if #previous > 0 then
-      fn.delete(previous)
-      cmd.bwipeout(previous)
+      vim.fn.delete(previous)
+      vim.cmd.bwipeout(previous)
     end
   end, { nargs = 1, bang = true, complete = "file" })
 end
 
 function M.set_default_autocommands()
-  local autocmd = vim.api.nvim_create_autocmd
-  local del = vim.keymap.del
-  local diagnostic = vim.diagnostic
-  local lsp = vim.lsp
-  local set = vim.keymap.set
-
   local utils = require "utils"
 
-  autocmd("BufReadPost", {
+  vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
       vim.opt_local.include = ""
     end,
   })
   -- Show most recent commit when entering "COMMIT_EDITMSG".
-  autocmd("BufWinEnter", {
+  vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "COMMIT_EDITMSG",
     command = "G log --max-count=100 | wincmd k",
   })
-  autocmd("CmdwinEnter", {
+  vim.api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
       vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
-      set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+      vim.keymap.set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
-      set(
+      vim.keymap.set(
         { "i" },
         [[<C-s>]],
         [[s///gc<Left><Left><Left>]],
         { buffer = true, desc = "Populate cmdline with s///gc" }
       )
-      set({ "n" }, [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
-        desc = [[Wrap current line with \< and \>]],
-      })
+      vim.keymap.set(
+        { "n" },
+        [[<C-_>]],
+        [[i<Home>\<<End>\><Left><Left><Esc>]],
+        {
+          desc = [[Wrap current line with \< and \>]],
+        }
+      )
     end,
   })
-  autocmd({ "InsertLeave", "WinEnter" }, {
+  vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
     callback = function()
       vim.opt_local.cursorline = true
     end,
   })
-  autocmd({ "InsertEnter", "WinLeave" }, {
+  vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
     callback = function()
       vim.opt_local.cursorline = false
     end,
   })
-  autocmd("LspAttach", {
+  vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(event)
       local telescope = utils.require_safe "telescope.builtin"
 
-      local client = lsp.get_client_by_id(event.data.client_id)
+      local client = vim.lsp.get_client_by_id(event.data.client_id)
 
       if client:supports_method "textDocument/publishDiagnostics" then
-        diagnostic.config { virtual_text = false }
-        lsp.handlers["textDocument/publishDiagnostics"] =
-          lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+        vim.diagnostic.config { virtual_text = false }
+        vim.lsp.handlers["textDocument/publishDiagnostics"] =
+          vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
             underline = true,
             virtual_text = false,
             update_in_insert = false,
@@ -861,14 +938,14 @@ function M.set_default_autocommands()
       end
 
       if client:supports_method "textDocument/references" then
-        set(
+        vim.keymap.set(
           "n",
           [[<leader>qc]],
-          lsp.buf.references,
+          vim.lsp.buf.references,
           { buffer = true, desc = "References" }
         )
         if telescope then
-          set(
+          vim.keymap.set(
             "n",
             [[<leader>fc]],
             telescope.lsp_references,
@@ -878,14 +955,14 @@ function M.set_default_autocommands()
       end
 
       if client:supports_method "callHierarchy/incomingCalls" then
-        set(
+        vim.keymap.set(
           "n",
           [[<leader>qi]],
-          lsp.buf.incoming_calls,
+          vim.lsp.buf.incoming_calls,
           { buffer = true, desc = "Incoming calls" }
         )
         if telescope then
-          set(
+          vim.keymap.set(
             "n",
             [[<leader>fi]],
             telescope.lsp_incoming_calls,
@@ -895,14 +972,14 @@ function M.set_default_autocommands()
       end
 
       if client:supports_method "callHierarchy/outgoingCalls" then
-        set(
+        vim.keymap.set(
           "n",
           [[<leader>qo]],
-          lsp.buf.outgoing_calls,
+          vim.lsp.buf.outgoing_calls,
           { buffer = true, desc = "Outgoing calls" }
         )
         if telescope then
-          set(
+          vim.keymap.set(
             "n",
             [[<leader>fo]],
             telescope.lsp_outgoing_calls,
@@ -912,21 +989,26 @@ function M.set_default_autocommands()
       end
 
       if client:supports_method "textDocument/hover" then
-        set("n", [[K]], lsp.buf.hover, { buffer = true, desc = "Hover" })
+        vim.keymap.set(
+          "n",
+          [[K]],
+          vim.lsp.buf.hover,
+          { buffer = true, desc = "Hover" }
+        )
       end
 
       if client:supports_method "textDocument/definition" then
-        set(
+        vim.keymap.set(
           "n",
           [[gd]],
-          lsp.buf.definition,
+          vim.lsp.buf.definition,
           { buffer = true, desc = "Definition" }
         )
       end
 
       if client:supports_method "workspace/symbol" then
         if telescope then
-          set(
+          vim.keymap.set(
             "n",
             [[<leader>fW]],
             telescope.lsp_dynamic_workspace_symbols,
@@ -936,32 +1018,32 @@ function M.set_default_autocommands()
       end
     end,
   })
-  autocmd("LspDetach", {
+  vim.api.nvim_create_autocmd("LspDetach", {
     callback = function(event)
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
       local function unset_bindings()
-        del("n", [[<leader>qc]], { buffer = event.buf })
-        del("n", [[<leader>fc]], { buffer = event.buf })
-        del("n", [[<leader>qi]], { buffer = event.buf })
-        del("n", [[<leader>fi]], { buffer = event.buf })
-        del("n", [[<leader>qo]], { buffer = event.buf })
-        del("n", [[<leader>fo]], { buffer = event.buf })
-        del("n", [[K]], { buffer = event.buf })
-        del("n", [[gd]], { buffer = event.buf })
-        del("n", [[<leader>fd]], { buffer = event.buf })
-        del("n", [[<leader>fW]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>qc]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fc]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>qi]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fi]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>qo]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fo]], { buffer = event.buf })
+        vim.keymap.del("n", [[K]], { buffer = event.buf })
+        vim.keymap.del("n", [[gd]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fd]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fW]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
     end,
   })
-  autocmd("TermOpen", {
+  vim.api.nvim_create_autocmd("TermOpen", {
     callback = function()
       vim.opt_local.spell = false
     end,
   })
-  autocmd("TextYankPost", {
+  vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
       vim.hl.on_yank { timeout = 300 }
     end,
@@ -969,14 +1051,10 @@ function M.set_default_autocommands()
 end
 
 function M.enable_templates()
-  local autocmd = vim.api.nvim_create_autocmd
-  local fn = vim.fn
-  local fs = vim.fs
-
   local function enable_template(pattern, template)
     local template_path =
-      fs.joinpath(fn.stdpath "config", "etc", "templates", template)
-    autocmd("BufNewFile", {
+      vim.fs.joinpath(vim.fn.stdpath "config", "etc", "templates", template)
+    vim.api.nvim_create_autocmd("BufNewFile", {
       pattern = pattern,
       command = "0r " .. template_path .. " | normal Gddgg",
     })

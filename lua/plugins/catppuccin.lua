@@ -3,8 +3,6 @@ return {
   name = "catppuccin",
   priority = 1000,
   config = function()
-    local cmd = vim.cmd
-
     require("catppuccin").setup {
       flavour = "auto", -- latte, frappe, macchiato, mocha
       background = { -- :h background
@@ -75,6 +73,6 @@ return {
       },
     }
 
-    cmd.colorscheme "catppuccin-mocha"
+    vim.cmd.colorscheme "catppuccin-mocha"
   end,
 }

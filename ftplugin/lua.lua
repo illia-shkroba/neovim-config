@@ -3,23 +3,20 @@ if vim.b.did_lua_ftplugin then
 end
 vim.b.did_lua_ftplugin = true
 
-local opt_local = vim.opt_local
-local set = vim.keymap.set
-
-opt_local.expandtab = true
-opt_local.formatprg =
+vim.opt_local.expandtab = true
+vim.opt_local.formatprg =
   "stylua --call-parentheses=none --column-width=80 --indent-type=spaces --indent-width=2 -- -"
-opt_local.shiftwidth = 2
-opt_local.softtabstop = 2
-opt_local.tabstop = 2
+vim.opt_local.shiftwidth = 2
+vim.opt_local.softtabstop = 2
+vim.opt_local.tabstop = 2
 
-set(
+vim.keymap.set(
   { "n", "v" },
   [[<leader><CR>]],
   [[:w !lua<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
-set(
+vim.keymap.set(
   "n",
   [[<leader><Tab>]],
   [[<Cmd>up<CR>:new<CR>:terminal lua -i #<CR>]],

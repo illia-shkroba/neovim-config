@@ -3,42 +3,34 @@ if vim.b.did_python_ftplugin then
 end
 vim.b.did_python_ftplugin = true
 
-local api = vim.api
-local cmd = vim.cmd
-local fn = vim.fn
-local fs = vim.fs
-local loop = vim.loop
-local opt_local = vim.opt_local
-local set = vim.keymap.set
-
-opt_local.expandtab = true
-opt_local.makeprg = "pylint"
-opt_local.shiftwidth = 4
-opt_local.softtabstop = 4
-opt_local.tabstop = 4
+vim.opt_local.expandtab = true
+vim.opt_local.makeprg = "pylint"
+vim.opt_local.shiftwidth = 4
+vim.opt_local.softtabstop = 4
+vim.opt_local.tabstop = 4
 
 local function find_virtual_environment()
-  return fs.find({ "env", "venv", ".env", ".venv" }, {
-    path = api.nvim_buf_get_name(0),
+  return vim.fs.find({ "env", "venv", ".env", ".venv" }, {
+    path = vim.api.nvim_buf_get_name(0),
     upward = true,
-    stop = loop.os_homedir(),
+    stop = vim.loop.os_homedir(),
     type = "directory",
   })[1]
 end
 
-set(
+vim.keymap.set(
   "n",
   [[gh]],
   [[<Cmd>up | !ruff format %<CR>]],
   { buffer = true, desc = "Call `ruff format` on current buffer" }
 )
-set(
+vim.keymap.set(
   "ia",
   [[def]],
   [[def() -> None:pass<Left><Left><Left><Left><Left><Up>]],
   { buffer = true, desc = "Populate buffer with function definition" }
 )
-set("n", [[<leader><CR>]], function()
+vim.keymap.set("n", [[<leader><CR>]], function()
   local virtual_environment = find_virtual_environment()
 
   local variables
@@ -46,19 +38,19 @@ set("n", [[<leader><CR>]], function()
     variables = "PATH='"
       .. virtual_environment
       .. "/bin:"
-      .. fn.getenv "PATH"
+      .. vim.fn.getenv "PATH"
       .. "' "
   else
     variables = ""
   end
 
-  cmd.update()
-  cmd.new()
+  vim.cmd.update()
+  vim.cmd.new()
 
-  cmd.terminal(variables .. "sh -c 'python #'")
-  cmd.startinsert()
+  vim.cmd.terminal(variables .. "sh -c 'python #'")
+  vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
-set("n", [[<leader><Tab>]], function()
+vim.keymap.set("n", [[<leader><Tab>]], function()
   local virtual_environment = find_virtual_environment()
 
   local variables
@@ -68,9 +60,9 @@ set("n", [[<leader><Tab>]], function()
     variables = ""
   end
 
-  cmd.update()
-  cmd.new()
+  vim.cmd.update()
+  vim.cmd.new()
 
-  cmd.terminal(variables .. "ipython --no-banner -i '#'")
-  cmd.startinsert()
+  vim.cmd.terminal(variables .. "ipython --no-banner -i '#'")
+  vim.cmd.startinsert()
 end, { buffer = true, desc = "Load current buffer to ipython" })

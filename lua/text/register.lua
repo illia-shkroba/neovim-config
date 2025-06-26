@@ -1,13 +1,10 @@
 local M = {}
 
-local cmd = vim.cmd
-local fn = vim.fn
-
 local utils = require "utils"
 
 function M.edit_register_prompt()
   vim.print "Enter register name: "
-  local raw_register = utils.try(fn.getcharstr)
+  local raw_register = utils.try(vim.fn.getcharstr)
   if not raw_register then
     return nil
   end
@@ -25,15 +22,15 @@ function M.edit_register_prompt()
   local listed = false
   local scratch = true
   local buffer = vim.api.nvim_create_buf(listed, scratch)
-  cmd([[sbuffer ]] .. buffer .. [[ | normal "]] .. register .. [[p]])
+  vim.cmd([[sbuffer ]] .. buffer .. [[ | normal "]] .. register .. [[p]])
 
   vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer,
     callback = function()
-      cmd.normal([[go"]] .. register .. [[y$]])
+      vim.cmd.normal([[go"]] .. register .. [[y$]])
       vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
       vim.schedule(function()
-        cmd([[bwipeout! ]] .. buffer)
+        vim.cmd([[bwipeout! ]] .. buffer)
       end)
     end,
     once = true,

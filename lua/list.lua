@@ -1,8 +1,5 @@
 local M = {}
 
-local api = vim.api
-local fn = vim.fn
-
 local utils = require "utils"
 
 local with_list = {}
@@ -64,7 +61,7 @@ function with_list.dump(list)
 
   for _, item in pairs(items) do
     local d = {
-      api.nvim_buf_get_name(item["bufnr"]),
+      vim.api.nvim_buf_get_name(item["bufnr"]),
       item["lnum"],
       vim.trim(item["text"]),
     }
@@ -78,10 +75,10 @@ end
 function M.create_current_position_item()
   local line, column = utils.get_cursor()
   return {
-    filename = api.nvim_buf_get_name(0),
+    filename = vim.api.nvim_buf_get_name(0),
     lnum = line,
     col = column,
-    text = fn.getline(line),
+    text = vim.fn.getline(line),
   }
 end
 
@@ -97,15 +94,15 @@ end
 
 local sub_M = {
   quickfix = apply_list {
-    get = fn.getqflist,
-    set = fn.setqflist,
+    get = vim.fn.getqflist,
+    set = vim.fn.setqflist,
   },
   location = apply_list {
     get = function(...)
-      return fn.getloclist(0, ...)
+      return vim.fn.getloclist(0, ...)
     end,
     set = function(...)
-      return fn.setloclist(0, ...)
+      return vim.fn.setloclist(0, ...)
     end,
   },
 }

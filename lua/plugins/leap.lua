@@ -1,8 +1,6 @@
 return {
   "ggandor/leap.nvim",
   config = function()
-    local set = vim.keymap.set
-
     local leap = require "leap"
     local leap_user = require "leap.user"
 
@@ -18,29 +16,34 @@ return {
       modes = { "n", "x", "o" },
     })
 
-    set({ "n", "o" }, [[<C-q>]], function()
+    vim.keymap.set({ "n", "o" }, [[<C-q>]], function()
       require("leap.remote").action()
     end, { silent = true, desc = "Perform remote action with Leap" })
-    set(
+    vim.keymap.set(
       { "n", "v", "o" },
       [[<C-s>]],
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
     )
-    set(
+    vim.keymap.set(
       { "n", "v", "o" },
       [[gs]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
     )
-    set({ "i" }, [[<C-s>]], "<Plug>(leap)", { silent = true, desc = "Leap" })
-    set(
+    vim.keymap.set(
+      { "i" },
+      [[<C-s>]],
+      "<Plug>(leap)",
+      { silent = true, desc = "Leap" }
+    )
+    vim.keymap.set(
       { "i" },
       [[<C-g><C-s>]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
     )
-    set(
+    vim.keymap.set(
       { "i" },
       [[<C-q>]],
       [[:lua require("leap.remote").action()<CR>]],

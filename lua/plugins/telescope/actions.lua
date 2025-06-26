@@ -1,8 +1,5 @@
 local M = {}
 
-local cmd = vim.cmd
-local fn = vim.fn
-
 local action_state = require "telescope.actions.state"
 local builtin = require "telescope.builtin"
 
@@ -62,7 +59,7 @@ function M.with_line(f)
   local function g(buffer_number)
     local line = action_state.get_current_line(buffer_number)
     f()
-    cmd.normal("i" .. line)
+    vim.cmd.normal("i" .. line)
   end
   return g
 end
@@ -70,14 +67,14 @@ end
 function M.remove_files(buffer_number)
   local current_picker = action_state.get_current_picker(buffer_number)
   current_picker:delete_selection(function(selection)
-    return pcall(fn.delete, selection.filename)
+    return pcall(vim.fn.delete, selection.filename)
   end)
 end
 
 function M.wipe_out_buffers(buffer_number)
   local current_picker = action_state.get_current_picker(buffer_number)
   current_picker:delete_selection(function(selection)
-    return pcall(cmd.bwipeout, selection.bufnr)
+    return pcall(vim.cmd.bwipeout, selection.bufnr)
   end)
 end
 
@@ -116,9 +113,9 @@ end
 function M.add_arguments(buffer_number)
   local es = entries(buffer_number)
   for _, e in pairs(es) do
-    cmd.argadd(e.filename)
+    vim.cmd.argadd(e.filename)
   end
-  cmd.argdedupe()
+  vim.cmd.argdedupe()
 end
 
 return M
