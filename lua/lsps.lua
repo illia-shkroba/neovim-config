@@ -13,6 +13,7 @@ return {
   pyright = { install = true },
   rust_analyzer = {},
   terraformls = {},
+  typos_lsp = { install = true },
   vimls = { install = true },
   yamlls = {
     install = true,
