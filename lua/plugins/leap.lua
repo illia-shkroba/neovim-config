@@ -27,7 +27,7 @@ return {
     )
     vim.keymap.set(
       { "n", "v", "o" },
-      [[gs]],
+      [[<C-g><C-s>]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
     )
