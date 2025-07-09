@@ -778,7 +778,7 @@ function M.set_default_bindings()
     [[<Cmd>write ++p<CR>]],
     { desc = "write ++p" }
   )
-  vim.keymap.set("n", [[<leader>a]], function()
+  vim.keymap.set("n", [[<C-w>a]], function()
     local listed = false
     local scratch = true
     local buffer = vim.api.nvim_create_buf(listed, scratch)
