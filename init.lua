@@ -1,3 +1,6 @@
+-- `mapleader` must be set before loading `package-manager` because bindings can be set within plugins configs.
+vim.g.mapleader = " "
+
 require "package-manager"
 
 local case = require "text.case"
@@ -58,7 +61,6 @@ function set_options()
   vim.opt.wildmenu = true
   vim.opt.wrapscan = false
 
-  vim.g.mapleader = " "
   vim.g.netrw_banner = 0
 
   vim.cmd [[
