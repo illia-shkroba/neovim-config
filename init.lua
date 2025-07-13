@@ -765,6 +765,27 @@ function set_bindings()
     local buffer = vim.api.nvim_create_buf(listed, scratch)
     vim.cmd.sbuffer(buffer)
 
+    vim.opt_local.commentstring = "# %s"
+
+    vim.keymap.set(
+      { "n" },
+      [[<CR>]],
+      [[<Cmd>.w !bash<CR>]],
+      { buffer = true, desc = "Run current line" }
+    )
+    vim.keymap.set(
+      { "n" },
+      [[<leader><CR>]],
+      [[:r!]],
+      { buffer = true, desc = "Paste current line's output below" }
+    )
+    vim.keymap.set(
+      { "v" },
+      [[<CR>]],
+      [[<Cmd>w !bash<CR>]],
+      { buffer = true, desc = "Run selected lines" }
+    )
+
     vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
       buffer = buffer,
       callback = function()
