@@ -4,19 +4,15 @@ require "package-manager"
 local case = require "text.case"
 local list = require "list"
 local path = require "path"
+local pickers = require "plugins.telescope.pickers"
 local register = require "text.register"
 local status = require "status"
 local substitute = require "text.substitute"
+local telescope = require "telescope.builtin"
 local utils = require "utils"
 
 local location = list.location
 local quickfix = list.quickfix
-
-local telescope = utils.require_safe "telescope.builtin"
-assert(
-  telescope ~= nil,
-  "Unable to import `telescope.builtin` module. Most likely Nvim wasn't restarted yet after bootstrap. Restart Nvim."
-)
 
 -- Options
 vim.cmd.filetype "on"
@@ -256,8 +252,6 @@ vim.keymap.set(
 )
 
 -- telescope
-local pickers = require "plugins.telescope.pickers"
-
 vim.keymap.set("n", [[<leader>+]], function()
   vim.cmd.Telescope "neoclip"
 end, { desc = "Open neoclip" })

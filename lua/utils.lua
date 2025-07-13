@@ -2,10 +2,6 @@ local M = {}
 
 local read = require "read"
 
-function M.require_safe(module_name)
-  return M.try(require, module_name)
-end
-
 function M.try(f, ...)
   local status, result = pcall(f, ...)
   if status then
