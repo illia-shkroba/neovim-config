@@ -723,12 +723,6 @@ function set_bindings()
     ":<C-U>normal va%<CR>",
     { desc = "Missing text object for a% from matchit" }
   )
-  vim.keymap.set(
-    { "o", "v" },
-    "a*",
-    ":<C-U>normal '<V'><CR>",
-    { desc = "Previously selected text area selected linewise" }
-  )
   vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
   vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
   vim.keymap.set(
@@ -736,12 +730,6 @@ function set_bindings()
     "av",
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text area selected linewise" }
-  )
-  vim.keymap.set(
-    { "o", "v" },
-    "i*",
-    ":<C-U>normal `<v`><CR>",
-    { desc = "Previously selected text area selected charwise" }
   )
   vim.keymap.set(
     { "o", "v" },
