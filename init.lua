@@ -768,6 +768,7 @@ function set_bindings()
     vim.cmd.sbuffer(buffer)
 
     vim.opt_local.commentstring = "# %s"
+    vim.opt_local.filetype = "sh"
 
     vim.keymap.set(
       { "n" },
