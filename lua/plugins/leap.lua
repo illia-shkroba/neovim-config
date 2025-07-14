@@ -16,7 +16,7 @@ return {
       modes = { "n", "x", "o" },
     })
 
-    vim.keymap.set({ "n", "o" }, [[<C-q>]], function()
+    vim.keymap.set({ "n", "o" }, [[<C-z>]], function()
       require("leap.remote").action()
     end, { silent = true, desc = "Perform remote action with Leap" })
     vim.keymap.set(
@@ -27,7 +27,7 @@ return {
     )
     vim.keymap.set(
       { "n", "v", "o" },
-      [[<C-g><C-s>]],
+      [[<C-q>]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
     )
@@ -39,15 +39,9 @@ return {
     )
     vim.keymap.set(
       { "i" },
-      [[<C-g><C-s>]],
+      [[<C-q>]],
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
-    )
-    vim.keymap.set(
-      { "i" },
-      [[<C-q>]],
-      [[:lua require("leap.remote").action()<CR>]],
-      { silent = true, desc = "Perform remote action with Leap" }
     )
   end,
 }
