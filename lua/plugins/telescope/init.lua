@@ -10,7 +10,7 @@ return {
       n = {
         ["<C-c>"] = actions.close,
         ["<C-d>"] = actions.results_scrolling_down,
-        ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+        ["<C-e>"] = actions.smart_send_to_loclist + actions.open_loclist,
         ["<C-g><C-t>"] = actions.toggle_all,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
@@ -24,7 +24,7 @@ return {
       },
       i = {
         ["<C-d>"] = actions.results_scrolling_down,
-        ["<C-e>"] = actions.smart_add_to_qflist + actions.open_qflist,
+        ["<C-e>"] = actions.smart_send_to_loclist + actions.open_loclist,
         ["<C-g><C-t>"] = actions.toggle_all,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<C-u>"] = actions.results_scrolling_up,
