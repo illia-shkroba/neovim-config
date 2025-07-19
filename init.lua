@@ -232,10 +232,20 @@ function set_bindings()
   local function dump_list(current_list)
     local dumped = current_list.dump()
     if #dumped > 0 then
-      local buffer = vim.api.nvim_create_buf(true, false)
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
-      vim.cmd.sbuffer(buffer)
-      vim.cmd.file(current_list.get_title())
+      local title = current_list.get_title()
+
+      if utils.try(vim.cmd.drop, title) == nil then
+        -- Buffer named `title` __is not__ available.
+        local buffer = vim.api.nvim_create_buf(true, false)
+        vim.cmd.drop(buffer)
+        vim.cmd.file(current_list.get_title())
+      else
+        -- Buffer named `title` __is__ available.
+        -- No need to open it since it was opened with `drop` already.
+      end
+
+      local buffer = vim.api.nvim_get_current_buf()
+      vim.api.nvim_buf_set_lines(buffer, 0, -1, false, dumped)
       vim.opt_local.filetype = "qf"
     end
   end
