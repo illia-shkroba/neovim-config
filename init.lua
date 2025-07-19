@@ -240,12 +240,32 @@ function set_bindings()
     end
   end
 
+  local function load_list(current_list, buffer)
+    local title = current_list.get_title()
+    if #title == 0 then
+      title = vim.api.nvim_buf_get_name(buffer)
+      current_list.set_title(title)
+    end
+    current_list.reset()
+    current_list.add_from_buffer(buffer)
+    vim.notify(
+      "Load list from the current buffer: " .. title,
+      vim.log.levels.INFO
+    )
+  end
+
   vim.keymap.set("n", [[<leader>qd]], function()
     dump_list(quickfix)
   end, { desc = "Dump quickfix list to a buffer" })
+  vim.keymap.set("n", [[<leader>ql]], function()
+    load_list(quickfix, vim.api.nvim_get_current_buf())
+  end, { desc = "Load quickfix list from the current buffer" })
   vim.keymap.set("n", [[<leader>ld]], function()
     dump_list(location)
   end, { desc = "Dump location list to a buffer" })
+  vim.keymap.set("n", [[<leader>ll]], function()
+    load_list(location, vim.api.nvim_get_current_buf())
+  end, { desc = "Load location list from the current buffer" })
 
   -- tmux
   vim.keymap.set(

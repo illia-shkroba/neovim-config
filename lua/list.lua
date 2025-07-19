@@ -55,6 +55,10 @@ function with_list.get_title(list)
   return list.get({ title = "" }).title
 end
 
+function with_list.set_title(list, title)
+  list.set(list.get(), "r", { title = title })
+end
+
 function with_list.dump(list)
   local items = list.get()
   local dumped = {}
@@ -70,6 +74,10 @@ function with_list.dump(list)
   end
 
   return dumped
+end
+
+function with_list.add_from_buffer(list, buffer)
+  return list.add_from_buffer(buffer)
 end
 
 function M.create_current_position_item()
@@ -96,6 +104,7 @@ local sub_M = {
   quickfix = apply_list {
     get = vim.fn.getqflist,
     set = vim.fn.setqflist,
+    add_from_buffer = vim.cmd.caddbuffer,
   },
   location = apply_list {
     get = function(...)
@@ -104,6 +113,7 @@ local sub_M = {
     set = function(...)
       return vim.fn.setloclist(0, ...)
     end,
+    add_from_buffer = vim.cmd.laddbuffer,
   },
 }
 
