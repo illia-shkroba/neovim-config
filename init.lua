@@ -236,6 +236,7 @@ function set_bindings()
       vim.api.nvim_buf_set_lines(buffer, 0, 1, false, dumped)
       vim.cmd.sbuffer(buffer)
       vim.cmd.file(current_list.get_title())
+      vim.opt_local.filetype = "qf"
     end
   end
 
