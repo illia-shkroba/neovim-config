@@ -858,6 +858,7 @@ function set_bindings()
   })
   vim.keymap.set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   vim.keymap.set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
+  vim.keymap.set("n", [[<leader>qw]], [[<Cmd>xall<CR>]], { desc = "xall" })
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
   vim.keymap.set(
     "n",
