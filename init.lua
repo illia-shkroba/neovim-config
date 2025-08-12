@@ -722,6 +722,10 @@ function set_bindings()
     [[<Cmd>tabonly<CR>]],
     { desc = "Focus tab" }
   )
+  vim.keymap.set("n", [[<leader>tw]], function()
+    vim.cmd.windo "update"
+    vim.cmd.tabclose()
+  end, { desc = "Update tab's buffers and close" })
   vim.keymap.set(
     "n",
     [[<leader>tT]],
