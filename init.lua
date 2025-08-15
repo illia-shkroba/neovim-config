@@ -554,6 +554,15 @@ function set_bindings()
     expr = true,
     desc = "Add files with current file's extension to location list and substitute word under the cursor in location list files",
   })
+  vim.keymap.set("n", [[<leader>A]], function()
+    utils.map_motion(substitute.append_char_prompt)
+  end, { silent = true, desc = "Append character in area selected by motion" })
+  vim.keymap.set("n", [[<leader>a]], function()
+    utils.map_motion(substitute.prepend_char_prompt)
+  end, {
+    silent = true,
+    desc = "Prepend character in area selected by motion",
+  })
   vim.keymap.set(
     "n",
     [[<leader>c*]],
@@ -605,6 +614,18 @@ function set_bindings()
       utils.map_motion(substitute.substitute_char_prompt)
     end,
     { silent = true, desc = "Substitute character in area selected by motion" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>A]],
+    [[:lua require("utils").map_visual(require("text.substitute").append_char_prompt)<CR>]],
+    { silent = true, desc = "Append character in visual area" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>a]],
+    [[:lua require("utils").map_visual(require("text.substitute").prepend_char_prompt)<CR>]],
+    { silent = true, desc = "Prepend character in visual area" }
   )
   vim.keymap.set(
     "v",
