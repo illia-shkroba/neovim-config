@@ -29,6 +29,9 @@ function M.substitute_char_prompt(xs)
 
   local read_newline = vim.fn.nr2char(13) -- ^M
   local insertable_newline = vim.fn.nr2char(10) -- \r
+  if target == read_newline then
+    target = insertable_newline
+  end
   if substitution == read_newline then
     substitution = insertable_newline
   end
