@@ -8,6 +8,7 @@ local list = require "list"
 local path = require "path"
 local pickers = require "plugins.telescope.pickers"
 local register = require "text.register"
+local scratch = require "scratch"
 local status = require "status"
 local substitute = require "text.substitute"
 local telescope = require "telescope.builtin"
@@ -460,35 +461,17 @@ function set_bindings()
   )
 
   -- expression
-  local function paste_into_scratch_buffer(lines)
-    local listed = false
-    local scratch = true
-    local buffer = vim.api.nvim_create_buf(listed, scratch)
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
-    vim.cmd.sbuffer(buffer)
-
-    vim.api.nvim_create_autocmd({ "BufLeave" }, {
-      buffer = buffer,
-      callback = function()
-        vim.schedule(function()
-          vim.cmd([[bwipeout! ]] .. buffer)
-        end)
-      end,
-      once = true,
-    })
-  end
-
   vim.keymap.set("n", [[<leader>md]], function()
-    paste_into_scratch_buffer { os.date "%F" }
+    scratch.onetime { os.date "%F" }
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mp]], function()
-    paste_into_scratch_buffer { vim.fn.expand "%:p" }
+    scratch.onetime { vim.fn.expand "%:p" }
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
-    paste_into_scratch_buffer { vim.fn.expand "%:t" }
+    scratch.onetime { vim.fn.expand "%:t" }
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>my]], function()
-    paste_into_scratch_buffer { vim.fn.expand "%" }
+    scratch.onetime { vim.fn.expand "%" }
   end, { desc = "Paste current buffer's name in a scratch window" })
 
   -- delete
@@ -817,44 +800,12 @@ function set_bindings()
     [[<Cmd>write ++p<CR>]],
     { desc = "write ++p" }
   )
-  vim.keymap.set("n", [[<C-w>a]], function()
-    local listed = false
-    local scratch = true
-    local buffer = vim.api.nvim_create_buf(listed, scratch)
-    vim.cmd.sbuffer(buffer)
-
-    vim.opt_local.commentstring = "# %s"
-    vim.opt_local.filetype = "sh"
-
-    vim.keymap.set(
-      { "n" },
-      [[<CR>]],
-      [[<Cmd>.w !bash<CR>]],
-      { buffer = true, desc = "Run current line" }
-    )
-    vim.keymap.set(
-      { "n" },
-      [[<leader><CR>]],
-      [[:r!]],
-      { buffer = true, desc = "Paste current line's output below" }
-    )
-    vim.keymap.set(
-      { "v" },
-      [[<CR>]],
-      [[<Cmd>w !bash<CR>]],
-      { buffer = true, desc = "Run selected lines" }
-    )
-
-    vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
-      buffer = buffer,
-      callback = function()
-        vim.schedule(function()
-          vim.cmd([[bwipeout! ]] .. buffer)
-        end)
-      end,
-      once = true,
-    })
-  end, { desc = "Open a scratch window" })
+  vim.keymap.set(
+    "n",
+    [[<C-w>a]],
+    scratch.shell,
+    { desc = "Open a scratch window" }
+  )
   vim.keymap.set(
     "n",
     [[<leader>b]],
