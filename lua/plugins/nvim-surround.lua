@@ -16,6 +16,13 @@ return {
         change = "cs",
         change_line = "cS",
       },
+      surrounds = {
+        ["j"] = {
+          add = function()
+            return { { [["{{ ]] }, { [[ }}"]] } }
+          end,
+        },
+      },
     }
   end,
 }
