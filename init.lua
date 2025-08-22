@@ -508,35 +508,7 @@ function set_bindings()
     { desc = [[Alias for: "+y]] }
   )
 
-  -- substitute
-  local function substitute_word(scope, text)
-    local suffix = [[/gc]]
-    return [[:]]
-      .. scope
-      .. [[s/\<]]
-      .. text
-      .. [[\>/]]
-      .. suffix
-      .. string.rep("<Left>", #suffix)
-  end
-  local function substitute_word_globally(extension, text)
-    return [[:]]
-      .. [[lvimgrepadd/\<]]
-      .. text
-      .. [[\>/]]
-      .. [[gj **/*]]
-      .. extension
-      .. [[ | ]]
-      .. [[lfdo! ]]
-      .. substitute_word([[%]], text)
-  end
-  vim.keymap.set("n", [[<leader><leader>c%]], function()
-    local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    return substitute_word_globally(extension, vim.fn.expand "<cword>")
-  end, {
-    expr = true,
-    desc = "Add files with current file's extension to location list and substitute word under the cursor in location list files",
-  })
+  -- text manipulation
   vim.keymap.set("n", [[<leader>A]], function()
     utils.map_motion(substitute.append_char_prompt)
   end, { silent = true, desc = "Append character in area selected by motion" })
@@ -545,36 +517,6 @@ function set_bindings()
   end, {
     silent = true,
     desc = "Prepend character in area selected by motion",
-  })
-  vim.keymap.set(
-    "n",
-    [[<leader>c*]],
-    function()
-      return substitute_word([[*]], vim.fn.expand "<cword>")
-    end,
-    { expr = true, desc = "Substitute word under the cursor in visual area" }
-  )
-  vim.keymap.set("n", [[<leader>c%]], function()
-    return substitute_word([[%]], vim.fn.expand "<cword>")
-  end, { expr = true, desc = "Substitute word under the cursor" })
-  vim.keymap.set(
-    "n",
-    [[<leader>cc]],
-    function()
-      return substitute_word("", vim.fn.expand "<cword>")
-    end,
-    { expr = true, desc = "Substitute word under the cursor in a current line" }
-  )
-  vim.keymap.set("n", [[<leader>cv]], function()
-    local begin = vim.api.nvim_buf_get_mark(0, "[")
-    local end_ = vim.api.nvim_buf_get_mark(0, "]")
-    return substitute_word(
-      tostring(begin[1]) .. "," .. tostring(end_[1]),
-      vim.fn.expand "<cword>"
-    )
-  end, {
-    expr = true,
-    desc = "Substitute word under the cursor in previously changed or yanked text area",
   })
   vim.keymap.set(
     "n",
@@ -679,6 +621,14 @@ function set_bindings()
     [[s///gc<Left><Left><Left>]],
     { desc = "Populate cmdline with s///gc" }
   )
+  vim.keymap.set("n", [[<leader>cv]], function()
+    local begin = vim.api.nvim_buf_get_mark(0, "[")
+    local end_ = vim.api.nvim_buf_get_mark(0, "]")
+    return [[:]] .. tostring(begin[1]) .. "," .. tostring(end_[1])
+  end, {
+    expr = true,
+    desc = "Substitute word under the cursor in previously changed or yanked text area",
+  })
 
   -- move
   vim.keymap.set(
