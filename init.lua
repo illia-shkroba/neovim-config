@@ -217,6 +217,31 @@ function set_bindings()
     { desc = "Load diagnostic to location list" }
   )
 
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>qj]],
+    [[<Cmd>cbelow<CR>]],
+    { desc = "cbelow" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>lj]],
+    [[<Cmd>lbelow<CR>]],
+    { desc = "lbelow" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>qk]],
+    [[<Cmd>cabove<CR>]],
+    { desc = "cabove" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>lk]],
+    [[<Cmd>labove<CR>]],
+    { desc = "labove" }
+  )
+
   vim.keymap.set("n", [[<leader>qx]], function()
     local name = utils.try(vim.fn.input, "Enter quickfix list: ")
     if name then
