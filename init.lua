@@ -832,12 +832,6 @@ function set_bindings()
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   vim.keymap.set(
     "i",
-    [[<C-k><C-x>]],
-    [[]],
-    { desc = "Skip <C-k><C-x> - it's often mistyped instead of <C-x><C-k>" }
-  )
-  vim.keymap.set(
-    "i",
     [[#]],
     [[<C-v>#]],
     { desc = "Prevent indent removal when 'smartindent' is on" }
