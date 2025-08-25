@@ -6,31 +6,7 @@ function M.shell()
   local buffer = vim.api.nvim_create_buf(listed, scratch)
   vim.cmd.sbuffer(buffer)
 
-  vim.opt_local.commentstring = "# %s"
   vim.opt_local.filetype = "sh"
-
-  vim.keymap.set(
-    { "n" },
-    [[<CR>]],
-    [[<Cmd>.w !bash<CR>]],
-    { buffer = true, desc = "Run current line" }
-  )
-  vim.keymap.set({ "n" }, [[<leader><CR>]], function()
-    vim.api.nvim_put({ vim.api.nvim_get_current_line() }, "l", true, false)
-    vim.cmd ".!bash"
-  end, { buffer = true, desc = "Paste current line's output below" })
-  vim.keymap.set(
-    { "v" },
-    [[<CR>]],
-    [[<Cmd>w !bash<CR>]],
-    { buffer = true, desc = "Run selected lines" }
-  )
-  vim.keymap.set(
-    { "v" },
-    [[<leader><CR>]],
-    [[:lua vim.cmd("'>"); vim.api.nvim_put(require("utils").get_linewise_selection().lines, "l", true, false); vim.cmd("'[,']!bash")<CR>]],
-    { buffer = true, desc = "Paste selected lines' output below" }
-  )
 
   vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer,
