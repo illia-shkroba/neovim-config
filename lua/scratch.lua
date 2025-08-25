@@ -25,6 +25,12 @@ function M.shell()
     [[<Cmd>w !bash<CR>]],
     { buffer = true, desc = "Run selected lines" }
   )
+  vim.keymap.set(
+    { "v" },
+    [[<leader><CR>]],
+    [[:lua vim.cmd("'>"); vim.api.nvim_put(require("utils").get_linewise_selection().lines, "l", true, false); vim.cmd("'[,']!bash")<CR>]],
+    { buffer = true, desc = "Paste selected lines' output below" }
+  )
 
   vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer,

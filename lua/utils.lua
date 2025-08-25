@@ -142,6 +142,28 @@ function M.get_charwise_selection()
   return result
 end
 
+function M.get_linewise_selection()
+  local begin_position = vim.fn.getpos "'<"
+  local line_begin = begin_position[2]
+
+  local end_position = vim.fn.getpos "'>"
+  local line_end = end_position[2]
+
+  local lines = vim.api.nvim_buf_get_lines(
+    vim.api.nvim_get_current_buf(),
+    line_begin - 1,
+    line_end,
+    true
+  )
+
+  return {
+    lines = lines,
+    mode = vim.fn.visualmode(),
+    begin = line_begin,
+    end_ = line_end,
+  }
+end
+
 function M.with_register(f)
   local old_register = vim.fn.getreg '"'
   local y = f(old_register)
