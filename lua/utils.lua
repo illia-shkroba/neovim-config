@@ -69,7 +69,7 @@ end
 
 function M.get_motion_selection()
   return M.with_motion(function()
-    return M.get_visual_selection()
+    return M.get_charwise_selection()
   end)
 end
 
@@ -91,9 +91,9 @@ function M.with_motion(f)
 end
 
 function M.map_visual(f)
-  local selection = M.get_visual_selection()
+  local selection = M.get_charwise_selection()
   M.with_register(function()
-    local new_text = f(selection.text)
+    local new_text = f(selection.chars)
     if not new_text then
       return
     end
@@ -106,17 +106,22 @@ function M.map_visual(f)
   end)
 end
 
-function M.get_visual_selection()
+function M.get_charwise_selection()
   local begin_position = vim.fn.getpos "'<"
   local line_begin, column_begin = begin_position[2], begin_position[3]
 
   local end_position = vim.fn.getpos "'>"
   local line_end, column_end = end_position[2], end_position[3]
 
-  local lines = vim.fn.getline(line_begin, line_end)
+  local lines = vim.api.nvim_buf_get_lines(
+    vim.api.nvim_get_current_buf(),
+    line_begin - 1,
+    line_end,
+    true
+  )
 
   local result = {
-    text = "",
+    chars = "",
     ends_with_newline = false,
     mode = vim.fn.visualmode(),
     begin = { line_begin, column_begin },
@@ -133,7 +138,7 @@ function M.get_visual_selection()
   lines[#lines] = lines[#lines]:sub(1, column_end)
   lines[1] = lines[1]:sub(column_begin)
 
-  result.text = table.concat(lines, "\n")
+  result.chars = table.concat(lines, "\n")
   return result
 end
 

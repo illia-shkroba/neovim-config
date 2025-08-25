@@ -16,7 +16,7 @@ function M.shell()
     { buffer = true, desc = "Run current line" }
   )
   vim.keymap.set({ "n" }, [[<leader><CR>]], function()
-    vim.api.nvim_put({ vim.api.nvim_get_current_line() }, "l", true, true)
+    vim.api.nvim_put({ vim.api.nvim_get_current_line() }, "l", true, false)
     vim.cmd ".!bash"
   end, { buffer = true, desc = "Paste current line's output below" })
   vim.keymap.set(

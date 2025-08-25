@@ -453,7 +453,7 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>F]],
-    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]],
+    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_charwise_selection().chars, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]],
     {
       desc = "Search for visually selected word in files with current buffer's extension",
     }
@@ -461,7 +461,7 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>fw]],
-    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_visual_selection().text, grep_open_files = true }<CR>]],
+    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_charwise_selection().chars, grep_open_files = true }<CR>]],
     { desc = "Search for visually selected word in buffers" }
   )
 
@@ -620,13 +620,13 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>#]],
-    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]],
+    [[:lua vim.fn.setreg("/", require("utils").get_charwise_selection().chars .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]],
     { desc = "Same as #, but without \\< and \\>" }
   )
   vim.keymap.set(
     "v",
     [[<leader>*]],
-    [[:lua vim.fn.setreg("/", require("utils").get_visual_selection().text .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]],
+    [[:lua vim.fn.setreg("/", require("utils").get_charwise_selection().chars .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]],
     { desc = "Same as *, but without \\< and \\>" }
   )
 
@@ -659,13 +659,13 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<C-j>]],
-    [[:lua require("text.move").down(require("utils").get_visual_selection())<CR>gv]],
+    [[:lua require("text.move").down(require("utils").get_charwise_selection())<CR>gv]],
     { desc = "Shift visual area down" }
   )
   vim.keymap.set(
     "v",
     [[<C-k>]],
-    [[:lua require("text.move").up(require("utils").get_visual_selection())<CR>gv]],
+    [[:lua require("text.move").up(require("utils").get_charwise_selection())<CR>gv]],
     { desc = "Shift visual area up" }
   )
 
