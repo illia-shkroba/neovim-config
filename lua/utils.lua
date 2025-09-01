@@ -178,4 +178,9 @@ function M.get_cursor()
   return line, column
 end
 
+function M.get_cursor_char()
+  local column = vim.fn.col "."
+  return vim.fn.getline("."):sub(column, column)
+end
+
 return M

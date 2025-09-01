@@ -836,6 +836,24 @@ function set_bindings()
     [[<C-v>#]],
     { desc = "Prevent indent removal when 'smartindent' is on" }
   )
+  vim.keymap.set({ "n", "o", "v" }, [[<leader>,]], function()
+    local char_search = vim.fn.getcharsearch()
+    char_search.char = utils.get_cursor_char()
+    vim.fn.setcharsearch(char_search)
+    return ","
+  end, {
+    expr = true,
+    desc = "Repeat most recent , but with a char under the cursor",
+  })
+  vim.keymap.set({ "n", "o", "v" }, [[<leader>;]], function()
+    local char_search = vim.fn.getcharsearch()
+    char_search.char = utils.get_cursor_char()
+    vim.fn.setcharsearch(char_search)
+    return ";"
+  end, {
+    expr = true,
+    desc = "Repeat most recent ; but with a char under the cursor",
+  })
 end
 set_bindings()
 
