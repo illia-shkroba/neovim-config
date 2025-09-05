@@ -863,6 +863,15 @@ function set_commands()
     [[split `=stdpath("config") .. "/init.lua"`]],
     {}
   )
+  vim.api.nvim_create_user_command(
+    "History",
+    function()
+      require("scratch").shell()
+      vim.cmd [[0r !atuin search --format "{command}"]]
+      vim.cmd.normal [[G]]
+    end,
+    { desc = "Open a scratch window with a Shell history fetched from atuin" }
+  )
   vim.api.nvim_create_user_command("Mv", function(opts)
     local dest
     if vim.fn.isdirectory(opts.fargs[1]) == 1 then
