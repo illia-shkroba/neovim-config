@@ -779,12 +779,10 @@ function set_bindings()
     [[<Cmd>write ++p<CR>]],
     { desc = "write ++p" }
   )
-  vim.keymap.set(
-    "n",
-    [[<C-w>a]],
-    scratch.shell,
-    { desc = "Open a scratch window" }
-  )
+  vim.keymap.set("n", [[<C-w>a]], function()
+    scratch.retained()
+    vim.opt_local.filetype = "sh"
+  end, { desc = "Open a scratch window with the Shell filetype" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
@@ -870,7 +868,9 @@ function set_commands()
   vim.api.nvim_create_user_command(
     "History",
     function()
-      require("scratch").shell()
+      require("scratch").retained()
+      vim.opt_local.filetype = "sh"
+
       vim.cmd [[0r !atuin search --format "{command}"]]
       vim.cmd.normal [[G]]
     end,

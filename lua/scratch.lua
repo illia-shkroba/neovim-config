@@ -2,13 +2,11 @@ local M = {}
 
 local utils = require "utils"
 
-function M.shell()
+function M.retained()
   local listed = false
   local scratch = true
   local buffer = vim.api.nvim_create_buf(listed, scratch)
   vim.cmd.sbuffer(buffer)
-
-  vim.opt_local.filetype = "sh"
 
   vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer,
