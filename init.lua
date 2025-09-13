@@ -487,16 +487,20 @@ function set_bindings()
 
   -- expression
   vim.keymap.set("n", [[<leader>md]], function()
-    scratch.onetime { os.date "%F" }
+    local buffer = scratch.onetime()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mp]], function()
-    scratch.onetime { vim.fn.expand "%:p" }
+    local buffer = scratch.onetime()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:p" })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
-    scratch.onetime { vim.fn.expand "%:t" }
+    local buffer = scratch.onetime()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:t" })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>my]], function()
-    scratch.onetime { vim.fn.expand "%" }
+    local buffer = scratch.onetime()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
   end, { desc = "Paste current buffer's name in a scratch window" })
 
   -- delete
