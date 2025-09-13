@@ -220,25 +220,25 @@ function set_bindings()
   vim.keymap.set(
     { "n", "o" },
     [[<leader>qj]],
-    [[<Cmd>cbelow<CR>]],
+    [[<Cmd>execute v:count1 .. 'cbelow'<CR>]],
     { desc = "cbelow" }
   )
   vim.keymap.set(
     { "n", "o" },
     [[<leader>lj]],
-    [[<Cmd>lbelow<CR>]],
+    [[<Cmd>execute v:count1 .. 'lbelow'<CR>]],
     { desc = "lbelow" }
   )
   vim.keymap.set(
     { "n", "o" },
     [[<leader>qk]],
-    [[<Cmd>cabove<CR>]],
+    [[<Cmd>execute v:count1 .. 'cabove'<CR>]],
     { desc = "cabove" }
   )
   vim.keymap.set(
     { "n", "o" },
     [[<leader>lk]],
-    [[<Cmd>labove<CR>]],
+    [[<Cmd>execute v:count1 .. 'labove'<CR>]],
     { desc = "labove" }
   )
 
