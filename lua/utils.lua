@@ -183,4 +183,11 @@ function M.get_cursor_char()
   return vim.fn.getline("."):sub(column, column)
 end
 
+function M.with_visual(f)
+  return function()
+    vim.schedule(f)
+    return [[:]]
+  end
+end
+
 return M

@@ -783,6 +783,14 @@ function set_bindings()
     scratch.retained()
     vim.opt_local.filetype = "sh"
   end, { desc = "Open a scratch window with the Shell filetype" })
+  vim.keymap.set("n", [[<C-w>y]], function()
+    local line = vim.fn.getline "."
+    local filetype = vim.opt_local.filetype._value
+
+    local buffer = scratch.retained()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { line })
+    vim.opt_local.filetype = filetype
+  end, { desc = "Open a scratch window with cursor's current line" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
@@ -856,6 +864,19 @@ function set_bindings()
     expr = true,
     desc = "Repeat most recent ; but with a char under the cursor",
   })
+  vim.keymap.set(
+    "v",
+    [[<C-w>y]],
+    utils.with_visual(function()
+      local lines = vim.fn.getline("'<", "'>")
+      local filetype = vim.opt_local.filetype._value
+
+      local buffer = scratch.retained()
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+      vim.opt_local.filetype = filetype
+    end),
+    { expr = true, desc = "Open a scratch window with visually selected lines" }
+  )
 end
 set_bindings()
 
