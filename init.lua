@@ -453,16 +453,27 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>F]],
-    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_charwise_selection().chars, additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" } }<CR>]],
+    utils.with_visual(function()
+      telescope.grep_string {
+        search = utils.get_charwise_selection().chars,
+        additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" },
+      }
+    end),
     {
+      expr = true,
       desc = "Search for visually selected word in files with current buffer's extension",
     }
   )
   vim.keymap.set(
     "v",
     [[<leader>fw]],
-    [[:lua require("telescope.builtin").grep_string { search = require("utils").get_charwise_selection().chars, grep_open_files = true }<CR>]],
-    { desc = "Search for visually selected word in buffers" }
+    utils.with_visual(function()
+      telescope.grep_string {
+        search = utils.get_charwise_selection().chars,
+        grep_open_files = true,
+      }
+    end),
+    { expr = true, desc = "Search for visually selected word in buffers" }
   )
 
   -- git
@@ -572,26 +583,40 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>A]],
-    [[:lua require("utils").map_visual(require("text.substitute").append_char_prompt)<CR>]],
-    { silent = true, desc = "Append character in visual area" }
+    utils.with_visual(function()
+      utils.map_visual(substitute.append_char_prompt)
+    end),
+    { expr = true, silent = true, desc = "Append character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>a]],
-    [[:lua require("utils").map_visual(require("text.substitute").prepend_char_prompt)<CR>]],
-    { silent = true, desc = "Prepend character in visual area" }
+    utils.with_visual(function()
+      utils.map_visual(substitute.prepend_char_prompt)
+    end),
+    { expr = true, silent = true, desc = "Prepend character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>S]],
-    [[:lua require("utils").map_visual(function(xs) return require("text.substitute").substitute_char(xs, " ", "_") end)<CR>]],
-    { silent = true, desc = "Substitute space with _ in visual area" }
+    utils.with_visual(function()
+      utils.map_visual(function(xs)
+        return substitute.substitute_char(xs, " ", "_")
+      end)
+    end),
+    {
+      expr = true,
+      silent = true,
+      desc = "Substitute space with _ in visual area",
+    }
   )
   vim.keymap.set(
     "v",
     [[<leader>s]],
-    [[:lua require("utils").map_visual(require("text.substitute").substitute_char_prompt)<CR>]],
-    { silent = true, desc = "Substitute character in visual area" }
+    utils.with_visual(function()
+      utils.map_visual(substitute.substitute_char_prompt)
+    end),
+    { expr = true, silent = true, desc = "Substitute character in visual area" }
   )
 
   -- case
@@ -604,14 +629,26 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>cF]],
-    [[:lua require("utils").map_visual(require("text.case").to_camel)<CR>]],
-    { silent = true, desc = "Format selection by visual to camel case" }
+    utils.with_visual(function()
+      utils.map_visual(case.to_camel)
+    end),
+    {
+      expr = true,
+      silent = true,
+      desc = "Format selection by visual to camel case",
+    }
   )
   vim.keymap.set(
     "v",
     [[<leader>cf]],
-    [[:lua require("utils").map_visual(require("text.case").to_snake)<CR>]],
-    { silent = true, desc = "Format selection by visual to snake case" }
+    utils.with_visual(function()
+      utils.map_visual(case.to_snake)
+    end),
+    {
+      expr = true,
+      silent = true,
+      desc = "Format selection by visual to snake case",
+    }
   )
 
   -- search
@@ -624,14 +661,22 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>#]],
-    [[:lua vim.fn.setreg("/", require("utils").get_charwise_selection().chars .. "\\c"); vim.v.searchforward = false; vim.cmd.norm "n"<CR>]],
-    { desc = "Same as #, but without \\< and \\>" }
+    utils.with_visual(function()
+      vim.fn.setreg("/", utils.get_charwise_selection().chars .. "\\c")
+      vim.v.searchforward = false
+      vim.cmd.norm "n"
+    end),
+    { expr = true, desc = "Same as #, but without \\< and \\>" }
   )
   vim.keymap.set(
     "v",
     [[<leader>*]],
-    [[:lua vim.fn.setreg("/", require("utils").get_charwise_selection().chars .. "\\c"); vim.v.searchforward = true; vim.cmd.norm "n"<CR>]],
-    { desc = "Same as *, but without \\< and \\>" }
+    utils.with_visual(function()
+      vim.fn.setreg("/", utils.get_charwise_selection().chars .. "\\c")
+      vim.v.searchforward = true
+      vim.cmd.norm "n"
+    end),
+    { expr = true, desc = "Same as *, but without \\< and \\>" }
   )
 
   -- cmdline
