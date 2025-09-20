@@ -22,13 +22,20 @@ function M.edit_register_prompt()
   local listed = false
   local scratch = true
   local buffer = vim.api.nvim_create_buf(listed, scratch)
-  vim.cmd([[sbuffer ]] .. buffer .. [[ | normal "]] .. register .. [[p]])
+  vim.cmd.sbuffer(buffer)
+
+  vim.api.nvim_paste(vim.fn.getreg(register), false, -1)
 
   vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer,
     callback = function()
-      vim.cmd.normal([[go"]] .. register .. [[y$]])
+      local contents = table.concat(
+        vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, true),
+        "\n"
+      )
+      vim.fn.setreg(register, contents)
       vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+
       vim.schedule(function()
         vim.cmd([[bwipeout! ]] .. buffer)
       end)
