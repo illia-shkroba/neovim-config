@@ -1,11 +1,8 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
-    local lspconfig = require "lspconfig"
-    local lsps = require "lsps"
-
-    for name, config in pairs(lsps) do
-      lspconfig[name].setup(config.setup or {})
+    for name, config in pairs(require "lsps") do
+      vim.lsp.config(name, config.setup or {})
     end
   end,
 }
