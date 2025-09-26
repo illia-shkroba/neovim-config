@@ -23,7 +23,7 @@ function set_options()
   vim.opt.allowrevins = true
   vim.opt.autoindent = true
   vim.opt.complete = { ".", "w", "b", "u" }
-  vim.opt.completeopt = { "menuone", "popup" }
+  vim.opt.completeopt = { "fuzzy", "menuone", "popup" }
   vim.opt.cpoptions = "aABceFMs%>"
   vim.opt.cursorline = true
   vim.opt.encoding = "utf-8"
@@ -974,7 +974,6 @@ function set_autocommands()
   })
   vim.api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
-      vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
       vim.keymap.set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
