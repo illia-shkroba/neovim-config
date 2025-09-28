@@ -18,7 +18,7 @@ local utils = require "utils"
 local location = list.location
 local quickfix = list.quickfix
 
-function set_options()
+local function set_options()
   vim.cmd.filetype "on"
 
   vim.opt.allowrevins = true
@@ -86,7 +86,7 @@ function set_options()
 end
 set_options()
 
-function set_bindings()
+local function set_bindings()
   -- cwd
   local function step_into_buffer_dir()
     local src_dir, dest_dir = vim.fn.getcwd(), vim.api.nvim_buf_get_name(0)
@@ -909,7 +909,7 @@ function set_bindings()
 end
 set_bindings()
 
-function set_commands()
+local function set_commands()
   vim.api.nvim_create_user_command(
     "Config",
     [[split `=stdpath("config") .. "/init.lua"`]],
@@ -945,7 +945,7 @@ function set_commands()
 end
 set_commands()
 
-function set_autocommands()
+local function set_autocommands()
   vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
       vim.opt_local.include = ""
@@ -1125,7 +1125,7 @@ function set_autocommands()
 end
 set_autocommands()
 
-function set_templates()
+local function set_templates()
   local function enable_template(pattern, template)
     local template_path =
       vim.fs.joinpath(vim.fn.stdpath "config", "etc", "templates", template)

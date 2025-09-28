@@ -1,7 +1,5 @@
 local M = {}
 
-local utils = require "utils"
-
 local function operatorfunc_input(input_chars)
   return input_chars
 end
