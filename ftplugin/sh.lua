@@ -34,7 +34,7 @@ vim.keymap.set(
 vim.keymap.set(
   { "v" },
   [[<CR>]],
-  [[<Cmd>w !bash<CR>]],
+  [[:w !bash<CR>]],
   { buffer = true, desc = "Run selected lines" }
 )
 vim.keymap.set(
