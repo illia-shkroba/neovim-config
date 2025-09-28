@@ -711,13 +711,13 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<C-j>]],
-    [[:lua require("text.move").down(require("utils").get_charwise_selection())<CR>gv]],
+    [[:lua require("text.move").down(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
     { desc = "Shift visual area down" }
   )
   vim.keymap.set(
     "v",
     [[<C-k>]],
-    [[:lua require("text.move").up(require("utils").get_charwise_selection())<CR>gv]],
+    [[:lua require("text.move").up(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
     { desc = "Shift visual area up" }
   )
 

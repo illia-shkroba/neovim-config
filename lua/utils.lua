@@ -59,42 +59,6 @@ function M.prefix_length(xs, ys)
   return n
 end
 
-function M.get_charwise_selection()
-  local begin_position = vim.fn.getpos "'<"
-  local line_begin, column_begin = begin_position[2], begin_position[3]
-
-  local end_position = vim.fn.getpos "'>"
-  local line_end, column_end = end_position[2], end_position[3]
-
-  local lines = vim.api.nvim_buf_get_lines(
-    vim.api.nvim_get_current_buf(),
-    line_begin - 1,
-    line_end,
-    true
-  )
-
-  local result = {
-    chars = "",
-    ends_with_newline = false,
-    mode = vim.fn.visualmode(),
-    begin = { line_begin, column_begin },
-    end_ = { line_end, column_end },
-  }
-
-  if #lines == 0 then
-    return result
-  end
-
-  result.ends_with_newline = column_end > #lines[#lines]
-    and line_end < vim.api.nvim_buf_line_count(0)
-
-  lines[#lines] = lines[#lines]:sub(1, column_end)
-  lines[1] = lines[1]:sub(column_begin)
-
-  result.chars = table.concat(lines, "\n")
-  return result
-end
-
 function M.get_linewise_selection()
   local begin_position = vim.fn.getpos "'<"
   local line_begin = begin_position[2]
