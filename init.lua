@@ -5,6 +5,7 @@ require "package-manager"
 
 local case = require "text.case"
 local list = require "list"
+local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.telescope.pickers"
 local register = require "text.register"
@@ -40,6 +41,7 @@ function set_options()
   vim.opt.mouse = ""
   vim.opt.number = true
   vim.opt.omnifunc = "syntaxcomplete#Complete"
+  vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
   vim.opt.path = { "**", "./**" }
   vim.opt.pumblend = 10
   vim.opt.pumheight = 10
@@ -549,60 +551,71 @@ function set_bindings()
   )
 
   -- text manipulation
-  vim.keymap.set("n", [[<leader>A]], function()
-    utils.map_motion(substitute.append_char_prompt)
-  end, { silent = true, desc = "Append character in area selected by motion" })
-  vim.keymap.set("n", [[<leader>a]], function()
-    utils.map_motion(substitute.prepend_char_prompt)
-  end, {
-    silent = true,
-    desc = "Prepend character in area selected by motion",
-  })
+  vim.keymap.set(
+    "n",
+    [[<leader>A]],
+    operator.expr(substitute.append_char_prompt),
+    {
+      expr = true,
+      silent = true,
+      desc = "Append character in area selected by motion",
+    }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>a]],
+    operator.expr(substitute.prepend_char_prompt),
+    {
+      expr = true,
+      silent = true,
+      desc = "Prepend character in area selected by motion",
+    }
+  )
   vim.keymap.set(
     "n",
     [[<leader>cs]],
     [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
     { desc = "Remove trailing whitespaces" }
   )
-  vim.keymap.set("n", [[<leader>S]], function()
-    utils.map_motion(function(xs)
+  vim.keymap.set(
+    "n",
+    [[<leader>S]],
+    operator.expr(function(xs)
       return substitute.substitute_char(xs, " ", "_")
-    end)
-  end, {
-    silent = true,
-    desc = "Substitute space with _ in area selected by motion",
-  })
+    end),
+    {
+      expr = true,
+      silent = true,
+      desc = "Substitute space with _ in area selected by motion",
+    }
+  )
   vim.keymap.set(
     "n",
     [[<leader>s]],
-    function()
-      utils.map_motion(substitute.substitute_char_prompt)
-    end,
-    { silent = true, desc = "Substitute character in area selected by motion" }
+    operator.expr(substitute.substitute_char_prompt),
+    {
+      expr = true,
+      silent = true,
+      desc = "Substitute character in area selected by motion",
+    }
   )
   vim.keymap.set(
     "v",
     [[<leader>A]],
-    utils.with_visual(function()
-      utils.map_visual(substitute.append_char_prompt)
-    end),
+    operator.expr(substitute.append_char_prompt),
     { expr = true, silent = true, desc = "Append character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>a]],
-    utils.with_visual(function()
-      utils.map_visual(substitute.prepend_char_prompt)
-    end),
+    operator.expr(substitute.prepend_char_prompt),
     { expr = true, silent = true, desc = "Prepend character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>S]],
-    utils.with_visual(function()
-      utils.map_visual(function(xs)
-        return substitute.substitute_char(xs, " ", "_")
-      end)
+    operator.expr(function(xs)
+      return substitute.substitute_char(xs, " ", "_")
     end),
     {
       expr = true,
@@ -613,43 +626,33 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>s]],
-    utils.with_visual(function()
-      utils.map_visual(substitute.substitute_char_prompt)
-    end),
+    operator.expr(substitute.substitute_char_prompt),
     { expr = true, silent = true, desc = "Substitute character in visual area" }
   )
 
   -- case
-  vim.keymap.set("n", [[<leader>cF]], function()
-    utils.map_motion(case.to_camel)
-  end, { desc = "Format selection by motion to camel case" })
-  vim.keymap.set("n", [[<leader>cf]], function()
-    utils.map_motion(case.to_snake)
-  end, { desc = "Format selection by motion to snake case" })
   vim.keymap.set(
-    "v",
+    "n",
     [[<leader>cF]],
-    utils.with_visual(function()
-      utils.map_visual(case.to_camel)
-    end),
-    {
-      expr = true,
-      silent = true,
-      desc = "Format selection by visual to camel case",
-    }
+    operator.expr(case.to_camel),
+    { expr = true, desc = "Format selection by motion to camel case" }
   )
   vim.keymap.set(
-    "v",
+    "n",
     [[<leader>cf]],
-    utils.with_visual(function()
-      utils.map_visual(case.to_snake)
-    end),
-    {
-      expr = true,
-      silent = true,
-      desc = "Format selection by visual to snake case",
-    }
+    operator.expr(case.to_snake),
+    { expr = true, desc = "Format selection by motion to snake case" }
   )
+  vim.keymap.set("v", [[<leader>cF]], operator.expr(case.to_camel), {
+    expr = true,
+    silent = true,
+    desc = "Format selection by visual to camel case",
+  })
+  vim.keymap.set("v", [[<leader>cf]], operator.expr(case.to_snake), {
+    expr = true,
+    silent = true,
+    desc = "Format selection by visual to snake case",
+  })
 
   -- search
   vim.keymap.set("n", [[<leader>#]], function()

@@ -1,7 +1,5 @@
 local M = {}
 
-local read = require "read"
-
 function M.try(f, ...)
   local status, result = pcall(f, ...)
   if status then
@@ -59,51 +57,6 @@ function M.prefix_length(xs, ys)
     end
   end
   return n
-end
-
-function M.map_motion(f)
-  M.with_motion(function()
-    M.map_visual(f)
-  end)
-end
-
-function M.get_motion_selection()
-  return M.with_motion(function()
-    return M.get_charwise_selection()
-  end)
-end
-
-function M.with_motion(f)
-  local motion = read.read_motion { allow_forced = false }
-
-  local mode = vim.fn.visualmode()
-  local begin_position = vim.fn.getpos "'<"
-  local end_position = vim.fn.getpos "'>"
-
-  vim.cmd.normal("v" .. motion.count .. motion.motion .. "")
-  local y = f()
-
-  vim.cmd.normal(mode .. "")
-  vim.fn.setpos("'<", begin_position)
-  vim.fn.setpos("'>", end_position)
-
-  return y
-end
-
-function M.map_visual(f)
-  local selection = M.get_charwise_selection()
-  M.with_register(function()
-    local new_text = f(selection.chars)
-    if not new_text then
-      return
-    end
-    vim.fn.setreg('"', new_text)
-    vim.cmd.normal "gvp"
-    if selection.mode == "v" and selection.ends_with_newline then
-      vim.cmd.normal [[a]] -- add newline that was removed during selection
-      vim.cmd.normal "gvo" -- go to initial cursor position
-    end
-  end)
 end
 
 function M.get_charwise_selection()
@@ -164,23 +117,10 @@ function M.get_linewise_selection()
   }
 end
 
-function M.with_register(f)
-  local old_register = vim.fn.getreg '"'
-  local y = f(old_register)
-  local new_register = vim.fn.getreg '"'
-  vim.fn.setreg('"', old_register)
-  return y, new_register
-end
-
 function M.get_cursor()
   local position = vim.fn.getcurpos()
   local line, column = position[2], position[3]
   return line, column
-end
-
-function M.get_cursor_char()
-  local column = vim.fn.col "."
-  return vim.fn.getline("."):sub(column, column)
 end
 
 function M.with_visual(f)
