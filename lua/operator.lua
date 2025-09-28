@@ -17,6 +17,13 @@ local function operator_line(operator_input)
   vim.api.nvim_put(output_lines, "l", end_of_file, false)
 end
 
+local function truncate_charwise(lines, column_begin, column_end)
+  local truncated_lines = utils.deepcopy(lines)
+  truncated_lines[#lines] = lines[#lines]:sub(1, column_end + 1)
+  truncated_lines[1] = truncated_lines[1]:sub(column_begin + 1)
+  return truncated_lines
+end
+
 local function operator_char(operator_input)
   local column_begin = operator_input.column_begin
   local column_end = operator_input.column_end
@@ -24,16 +31,21 @@ local function operator_char(operator_input)
 
   local end_of_line = (column_end + 1) >= #lines[#lines]
 
-  local truncated_lines = utils.deepcopy(lines)
-  truncated_lines[#lines] = lines[#lines]:sub(1, column_end + 1)
-  truncated_lines[1] = truncated_lines[1]:sub(column_begin + 1)
-
+  local truncated_lines = truncate_charwise(lines, column_begin, column_end)
   local input_chars = table.concat(truncated_lines, "\n")
   local output_chars = operator(input_chars)
   local output_lines = vim.split(output_chars, "\n")
 
   vim.cmd.normal '`["_dv`]'
   vim.api.nvim_put(output_lines, "c", end_of_line, false)
+end
+
+local function truncate_blockwise_with_line_ends(lines, column_begin)
+  local truncated_lines = {}
+  for _, line in pairs(lines) do
+    table.insert(truncated_lines, line:sub(column_begin + 1))
+  end
+  return truncated_lines
 end
 
 local function operator_block_with_line_ends(operator_input)
@@ -43,11 +55,7 @@ local function operator_block_with_line_ends(operator_input)
 
   local end_of_file = line_end == vim.api.nvim_buf_line_count(0)
 
-  local truncated_lines = {}
-  for _, line in pairs(lines) do
-    table.insert(truncated_lines, line:sub(column_begin + 1))
-  end
-
+  local truncated_lines = truncate_blockwise_with_line_ends(lines, column_begin)
   local input_chars = table.concat(truncated_lines, "\n")
   local output_chars = operator(input_chars)
   local output_lines = vim.split(output_chars, "\n")
@@ -65,11 +73,7 @@ local function operator_block_with_line_ends(operator_input)
   vim.api.nvim_put(put_lines, "l", end_of_file, false)
 end
 
-local function operator_block_normal(operator_input)
-  local column_begin = operator_input.column_begin
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
+local function truncate_blockwise_normal(lines, column_begin, column_end)
   local truncated_lines = {}
   for _, line in pairs(lines) do
     table.insert(
@@ -77,7 +81,16 @@ local function operator_block_normal(operator_input)
       line:sub(1, column_end + 1):sub(column_begin + 1)
     )
   end
+  return truncated_lines
+end
 
+local function operator_block_normal(operator_input)
+  local column_begin = operator_input.column_begin
+  local column_end = operator_input.column_end
+  local lines = operator_input.lines
+
+  local truncated_lines =
+    truncate_blockwise_normal(lines, column_begin, column_end)
   local input_chars = table.concat(truncated_lines, "\n")
   local output_chars = operator(input_chars)
   local output_lines = vim.split(output_chars, "\n")
