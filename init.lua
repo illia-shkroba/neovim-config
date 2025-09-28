@@ -455,9 +455,9 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>F]],
-    utils.with_visual(function()
+    operator.expr_readonly(function(search)
       telescope.grep_string {
-        search = utils.get_charwise_selection().chars,
+        search = search,
         additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" },
       }
     end),
@@ -469,9 +469,9 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>fw]],
-    utils.with_visual(function()
+    operator.expr_readonly(function(search)
       telescope.grep_string {
-        search = utils.get_charwise_selection().chars,
+        search = search,
         grep_open_files = true,
       }
     end),
@@ -664,8 +664,8 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>#]],
-    utils.with_visual(function()
-      vim.fn.setreg("/", utils.get_charwise_selection().chars .. "\\c")
+    operator.expr_readonly(function(value)
+      vim.fn.setreg("/", value .. "\\c")
       vim.v.searchforward = false
       vim.cmd.normal "n"
     end),
@@ -674,8 +674,8 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>*]],
-    utils.with_visual(function()
-      vim.fn.setreg("/", utils.get_charwise_selection().chars .. "\\c")
+    operator.expr_readonly(function(value)
+      vim.fn.setreg("/", value .. "\\c")
       vim.v.searchforward = true
       vim.cmd.normal "n"
     end),
@@ -897,12 +897,11 @@ function set_bindings()
   vim.keymap.set(
     "v",
     [[<C-w>y]],
-    utils.with_visual(function()
-      local lines = vim.fn.getline("'<", "'>")
+    operator.expr_readonly(function(lines)
       local filetype = vim.opt_local.filetype._value
 
       local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
       vim.opt_local.filetype = filetype
     end),
     { expr = true, desc = "Open a scratch window with visually selected lines" }

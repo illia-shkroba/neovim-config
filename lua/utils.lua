@@ -123,11 +123,4 @@ function M.get_cursor()
   return line, column
 end
 
-function M.with_visual(f)
-  return function()
-    vim.schedule(f)
-    return [[:]]
-  end
-end
-
 return M
