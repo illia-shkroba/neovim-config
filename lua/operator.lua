@@ -19,7 +19,7 @@ local function operator_line(operator_input)
 end
 
 local function truncate_charwise(lines, column_begin, column_end)
-  local truncated_lines = utils.deepcopy(lines)
+  local truncated_lines = vim.deepcopy(lines)
   truncated_lines[#lines] = lines[#lines]:sub(1, column_end + 1)
   truncated_lines[1] = truncated_lines[1]:sub(column_begin + 1)
   return truncated_lines

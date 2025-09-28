@@ -13,7 +13,7 @@ function with_list.reset(list)
 end
 
 function with_list.remove_item(list, item)
-  local items = utils.deepcopy(list.get())
+  local items = vim.deepcopy(list.get(), 1)
   local filtered = vim.tbl_filter(function(x)
     return not vim.deep_equal(x, item)
   end, items)

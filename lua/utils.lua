@@ -9,20 +9,6 @@ function M.try(f, ...)
   end
 end
 
-function M.deepcopy(src)
-  if type(src) ~= "table" then
-    return src
-  end
-
-  local dest = {}
-  for k, v in pairs(src) do
-    dest[M.deepcopy(k)] = M.deepcopy(v)
-  end
-
-  setmetatable(dest, getmetatable(src))
-  return dest
-end
-
 function M.prefix_length(xs, ys)
   local n = math.min(#xs, #ys)
   for i = 1, n do
