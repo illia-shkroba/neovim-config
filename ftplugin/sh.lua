@@ -3,6 +3,8 @@ if vim.b.did_sh_ftplugin then
 end
 vim.b.did_sh_ftplugin = true
 
+local operator = require "operator"
+
 vim.opt_local.expandtab = true
 vim.opt_local.makeprg = "shellcheck"
 vim.opt_local.shiftwidth = 2
@@ -38,6 +40,10 @@ vim.keymap.set(
 vim.keymap.set(
   { "v" },
   [[<leader><CR>]],
-  [[:lua vim.cmd("'>"); vim.api.nvim_put(require("utils").get_linewise_selection().lines, "l", true, false); vim.cmd("'[,']!bash")<CR>]],
-  { buffer = true, desc = "Paste selected lines' output below" }
+  operator.expr_readonly(function(lines)
+    vim.cmd "'>"
+    vim.api.nvim_put(vim.split(lines, "\n"), "l", true, false)
+    vim.cmd "'[,']!bash"
+  end),
+  { expr = true, buffer = true, desc = "Paste selected lines' output below" }
 )
