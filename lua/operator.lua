@@ -171,6 +171,7 @@ end
 
 function M.expr(f)
   return function()
+    vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
     operatorfunc_input = f
     readonly = false
     return [[g@]]
@@ -179,6 +180,7 @@ end
 
 function M.expr_readonly(f)
   return function()
+    vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
     operatorfunc_input = f
     readonly = true
     return [[g@]]
