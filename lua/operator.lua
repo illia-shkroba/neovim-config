@@ -6,6 +6,11 @@ end
 
 local readonly = true
 
+local function empty_buffer(buffer_number)
+  return vim.api.nvim_buf_line_count(buffer_number) == 1
+    and vim.api.nvim_buf_get_lines(buffer_number, 0, 1, true)[1] == ""
+end
+
 local function operator_line(operator_input)
   local input_chars = table.concat(operator_input.lines, "\n")
   local output_chars = operatorfunc_input(input_chars)
@@ -13,7 +18,14 @@ local function operator_line(operator_input)
 
   local end_of_file = operator_input.line_end == vim.api.nvim_buf_line_count(0)
   vim.cmd.normal "'[\"_d']"
+
+  local empty_buffer_before_put = empty_buffer(vim.api.nvim_get_current_buf())
   vim.api.nvim_put(output_lines, "l", end_of_file, false)
+
+  -- Remove empty line on top of the file after put.
+  if empty_buffer_before_put then
+    vim.cmd.normal 'gg"_dd'
+  end
 end
 
 local function truncate_charwise(lines, column_begin, column_end)
@@ -67,7 +79,14 @@ local function operator_block_with_line_ends(operator_input)
 
   local end_of_file = line_end == vim.api.nvim_buf_line_count(0)
   vim.cmd.normal "'[\"_d']"
+
+  local empty_buffer_before_put = empty_buffer(vim.api.nvim_get_current_buf())
   vim.api.nvim_put(put_lines, "l", end_of_file, false)
+
+  -- Remove empty line on top of the file after put.
+  if empty_buffer_before_put then
+    vim.cmd.normal 'gg"_dd'
+  end
 end
 
 local function truncate_blockwise_normal(lines, column_begin, column_end)
