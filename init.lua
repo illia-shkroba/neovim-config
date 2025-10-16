@@ -831,14 +831,6 @@ local function set_bindings()
     scratch.retained()
     vim.opt_local.filetype = "sh"
   end, { desc = "Open a scratch window with the Shell filetype" })
-  vim.keymap.set("n", [[<C-w>y]], function()
-    local line = vim.fn.getline "."
-    local filetype = vim.opt_local.filetype._value
-
-    local buffer = scratch.retained()
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { line })
-    vim.opt_local.filetype = filetype
-  end, { desc = "Open a scratch window with cursor's current line" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
@@ -895,7 +887,7 @@ local function set_bindings()
     { desc = "Prevent indent removal when 'smartindent' is on" }
   )
   vim.keymap.set(
-    "v",
+    { "n", "v" },
     [[<C-w>y]],
     operator.expr_readonly(function(lines)
       local filetype = vim.opt_local.filetype._value
@@ -904,7 +896,7 @@ local function set_bindings()
       vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
       vim.opt_local.filetype = filetype
     end),
-    { expr = true, desc = "Open a scratch window with visually selected lines" }
+    { expr = true, desc = "Open a scratch window with selected lines" }
   )
 end
 set_bindings()
