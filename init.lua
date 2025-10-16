@@ -1010,14 +1010,12 @@ local function set_autocommands()
           vim.lsp.buf.references,
           { buffer = true, desc = "References" }
         )
-        if telescope then
-          vim.keymap.set(
-            "n",
-            [[<leader>fc]],
-            telescope.lsp_references,
-            { buffer = true, desc = "References" }
-          )
-        end
+        vim.keymap.set(
+          "n",
+          [[<leader>fc]],
+          telescope.lsp_references,
+          { buffer = true, desc = "References" }
+        )
       end
 
       if client:supports_method "callHierarchy/incomingCalls" then
@@ -1027,14 +1025,12 @@ local function set_autocommands()
           vim.lsp.buf.incoming_calls,
           { buffer = true, desc = "Incoming calls" }
         )
-        if telescope then
-          vim.keymap.set(
-            "n",
-            [[<leader>fi]],
-            telescope.lsp_incoming_calls,
-            { buffer = true, desc = "Incoming calls" }
-          )
-        end
+        vim.keymap.set(
+          "n",
+          [[<leader>fi]],
+          telescope.lsp_incoming_calls,
+          { buffer = true, desc = "Incoming calls" }
+        )
       end
 
       if client:supports_method "callHierarchy/outgoingCalls" then
@@ -1044,14 +1040,12 @@ local function set_autocommands()
           vim.lsp.buf.outgoing_calls,
           { buffer = true, desc = "Outgoing calls" }
         )
-        if telescope then
-          vim.keymap.set(
-            "n",
-            [[<leader>fo]],
-            telescope.lsp_outgoing_calls,
-            { buffer = true, desc = "Outgoing calls" }
-          )
-        end
+        vim.keymap.set(
+          "n",
+          [[<leader>fo]],
+          telescope.lsp_outgoing_calls,
+          { buffer = true, desc = "Outgoing calls" }
+        )
       end
 
       if client:supports_method "textDocument/hover" then
@@ -1073,14 +1067,12 @@ local function set_autocommands()
       end
 
       if client:supports_method "workspace/symbol" then
-        if telescope then
-          vim.keymap.set(
-            "n",
-            [[<leader>fW]],
-            telescope.lsp_dynamic_workspace_symbols,
-            { buffer = true, desc = "Dynamic workspace symbols" }
-          )
-        end
+        vim.keymap.set(
+          "n",
+          [[<leader>fW]],
+          telescope.lsp_dynamic_workspace_symbols,
+          { buffer = true, desc = "Dynamic workspace symbols" }
+        )
       end
     end,
   })
