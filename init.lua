@@ -4,6 +4,7 @@ vim.g.mapleader = " "
 require "package-manager"
 
 local case = require "text.case"
+local fzf = require "fzf-lua"
 local list = require "list"
 local operator = require "operator"
 local path = require "path"
@@ -12,7 +13,6 @@ local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
 local substitute = require "text.substitute"
-local telescope = require "telescope.builtin"
 local utils = require "utils"
 
 local location = list.location
@@ -313,43 +313,36 @@ local function set_bindings()
     { desc = "Spawn new tmux pane vertically" }
   )
 
-  -- telescope
+  -- pickers
   vim.keymap.set("n", [[<leader>+]], function()
     vim.cmd.Telescope "neoclip"
   end, { desc = "Open neoclip" })
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>/]],
-    telescope.current_buffer_fuzzy_find,
-    { desc = "Grep current buffer" }
+    fzf.blines,
+    { desc = "Grep current buffer or visually selected lines" }
   )
   vim.keymap.set("n", [[<leader>F]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    telescope.grep_string {
-      word_match = "-w",
-      additional_args = { "--glob", "*" .. extension },
-    }
+    fzf.grep_cword { silent = true, rg_opts = "--glob *" .. extension }
   end, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
   vim.keymap.set("n", [[<leader>fB]], function()
-    telescope.live_grep {
-      grep_open_files = true,
-    }
+    fzf.lines()
   end, { desc = "Grep buffers" })
   vim.keymap.set(
     "n",
     [[<leader>fC]],
-    telescope.git_bcommits,
+    fzf.git_bcommits,
     { desc = "List commits affecting current buffer" }
   )
   vim.keymap.set("n", [[<leader>fG]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    return [[:lua require("telescope.builtin").grep_string ]]
-      .. [[{ word_match = "-w"]]
-      .. [[, additional_args = { "--glob", "*]]
+    return [[:lua require("fzf-lua").grep { silent = true, rg_opts = "--glob *]]
       .. extension
-      .. [[" }, search = "" }<Left><Left><Left>]]
+      .. [[" }<Left><Left><Left>]]
   end, {
     expr = true,
     desc = "Populate cmdline with search for word in files with current buffer's extension",
@@ -361,101 +354,73 @@ local function set_bindings()
     { desc = "Grep files with extension" }
   )
   vim.keymap.set("n", [[<leader>fw]], function()
-    telescope.grep_string {
-      word_match = "-w",
-      grep_open_files = true,
-    }
+    fzf.lines { query = "'" .. vim.fn.expand "<cword>" .. "'" }
   end, { desc = "Search for word under the cursor in buffers" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fb]],
-    telescope.buffers,
-    { desc = "List buffers" }
-  )
+  vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
     "n",
     [[<leader>fd]],
-    telescope.diagnostics,
+    fzf.diagnostics_workspace,
     { desc = "List diagnostics" }
   )
-  vim.keymap.set("n", [[<leader>fD]], function()
-    telescope.diagnostics { bufnr = 0 }
-  end, { desc = "List diagnostics for current buffer" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fD]],
+    fzf.lsp_document_diagnostics,
+    { desc = "List diagnostics for current buffer" }
+  )
   vim.keymap.set("n", [[<leader>fF]], function()
-    telescope.find_files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
+    fzf.files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
   end, { desc = "List files relative to current buffer" })
   vim.keymap.set("n", [[<leader>fR]], function()
-    telescope.oldfiles { cwd_only = true }
+    fzf.oldfiles { cwd = vim.fn.getcwd() }
   end, { desc = "List old files relative to current buffer" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fQ]],
-    telescope.quickfix,
-    { desc = "List quickfix" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>fS]],
-    telescope.pickers,
-    { desc = "List previous pickers" }
-  )
+  vim.keymap.set("n", [[<leader>fQ]], fzf.quickfix, { desc = "List quickfix" })
   vim.keymap.set(
     "n",
     [[<leader>fT]],
-    telescope.current_buffer_tags,
+    fzf.btags,
     { desc = "List current buffer's tags" }
   )
   vim.keymap.set(
     "n",
     [[<leader>fe]],
-    telescope.treesitter,
+    fzf.treesitter,
     { desc = "List treesitter symbols for current buffer" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>ff]],
-    telescope.find_files,
-    { desc = "List files" }
-  )
-  vim.keymap.set("n", [[<leader>fm]], telescope.marks, { desc = "List marks" })
+  vim.keymap.set("n", [[<leader>ff]], fzf.files, { desc = "List files" })
+  vim.keymap.set("n", [[<leader>fm]], fzf.marks, { desc = "List marks" })
   vim.keymap.set(
     "n",
     [[<leader>fp]],
-    telescope.filetypes,
+    fzf.filetypes,
     { desc = "List filetypes" }
   )
   vim.keymap.set(
     "n",
     [[<leader>fq]],
-    telescope.quickfixhistory,
+    fzf.quickfix_stack,
     { desc = "List quickfix lists" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>fr]],
-    telescope.oldfiles,
-    { desc = "List old files" }
-  )
+  vim.keymap.set("n", [[<leader>fr]], fzf.oldfiles, { desc = "List old files" })
   vim.keymap.set(
     "n",
     [[<leader>fs]],
-    telescope.resume,
+    fzf.resume,
     { desc = "Resume most recent picker" }
   )
-  vim.keymap.set("n", [[<leader>ft]], telescope.tags, { desc = "List tags" })
-  vim.keymap.set(
-    "n",
-    [[<leader>j]],
-    telescope.jumplist,
-    { desc = "List jumplist" }
-  )
+  vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
+  vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
+  vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
   vim.keymap.set(
     "v",
     [[<leader>F]],
     operator.expr_readonly(function(search)
-      telescope.grep_string {
+      local extension = path.extension(vim.api.nvim_buf_get_name(0))
+      fzf.grep {
+        silent = true,
         search = search,
-        additional_args = { "--glob", "*" .. vim.fn.expand "%:e:s/^/\\.\\0/" },
+        rg_opts = "--glob *" .. extension,
       }
     end),
     {
@@ -467,10 +432,7 @@ local function set_bindings()
     "v",
     [[<leader>fw]],
     operator.expr_readonly(function(search)
-      telescope.grep_string {
-        search = search,
-        grep_open_files = true,
-      }
+      fzf.lines { query = "'" .. search }
     end),
     { expr = true, desc = "Search for visually selected word in buffers" }
   )
@@ -1010,7 +972,7 @@ local function set_autocommands()
         vim.keymap.set(
           "n",
           [[<leader>fc]],
-          telescope.lsp_references,
+          fzf.lsp_references,
           { buffer = true, desc = "References" }
         )
       end
@@ -1025,7 +987,7 @@ local function set_autocommands()
         vim.keymap.set(
           "n",
           [[<leader>fi]],
-          telescope.lsp_incoming_calls,
+          fzf.lsp_incoming_calls,
           { buffer = true, desc = "Incoming calls" }
         )
       end
@@ -1040,7 +1002,7 @@ local function set_autocommands()
         vim.keymap.set(
           "n",
           [[<leader>fo]],
-          telescope.lsp_outgoing_calls,
+          fzf.lsp_outgoing_calls,
           { buffer = true, desc = "Outgoing calls" }
         )
       end
@@ -1067,7 +1029,7 @@ local function set_autocommands()
         vim.keymap.set(
           "n",
           [[<leader>fW]],
-          telescope.lsp_dynamic_workspace_symbols,
+          fzf.lsp_live_workspace_symbols,
           { buffer = true, desc = "Dynamic workspace symbols" }
         )
       end
