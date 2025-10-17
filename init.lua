@@ -360,9 +360,6 @@ local function set_bindings()
     pickers.live_grep_filetype,
     { desc = "Grep files with extension" }
   )
-  vim.keymap.set("n", [[<leader>fk]], pickers.yank_from_dictionary, {
-    desc = "Yank from dictionary in ~/.local/share/dict.txt (or $XDG_DATA_HOME)",
-  })
   vim.keymap.set("n", [[<leader>fw]], function()
     telescope.grep_string {
       word_match = "-w",
