@@ -325,7 +325,7 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>F]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    fzf.grep_cword { silent = true, rg_opts = "--glob *" .. extension }
+    fzf.grep_cword { silent = true, rg_opts = "--glob '*" .. extension .. "'" }
   end, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
@@ -340,9 +340,9 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>fG]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    return [[:lua require("fzf-lua").grep { silent = true, rg_opts = "--glob *]]
+    return [[:lua require("fzf-lua").grep { silent = true, rg_opts = "--glob '*]]
       .. extension
-      .. [[" }<Left><Left><Left>]]
+      .. [['" }<Left><Left><Left><Left>]]
   end, {
     expr = true,
     desc = "Populate cmdline with search for word in files with current buffer's extension",
@@ -420,7 +420,7 @@ local function set_bindings()
       fzf.grep {
         silent = true,
         search = search,
-        rg_opts = "--glob *" .. extension,
+        rg_opts = "--glob '*" .. extension .. "'",
       }
     end),
     {
