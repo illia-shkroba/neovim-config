@@ -29,6 +29,20 @@ return {
 
             vim.api.nvim_feedkeys(word, "n", true)
           end, { silent = true, buffer = true })
+          vim.keymap.set("t", "<C-r><C-l>", function()
+            vim.cmd.buffer "#"
+            local word = vim.fn.getline "."
+            vim.cmd.buffer "#"
+
+            vim.api.nvim_feedkeys(word, "n", true)
+          end, { silent = true, buffer = true })
+          vim.keymap.set("t", "<C-r><C-p>", function()
+            vim.cmd.buffer "#"
+            local word = vim.fn.expand "<cfile>"
+            vim.cmd.buffer "#"
+
+            vim.api.nvim_feedkeys(word, "n", true)
+          end, { silent = true, buffer = true })
           vim.keymap.set("t", "<C-r><C-w>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.expand "<cword>"
