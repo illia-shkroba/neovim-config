@@ -22,6 +22,9 @@ return {
       winopts = {
         on_create = function()
           -- Called once upon creation of the fzf main window.
+          vim.keymap.set("t", "<C-r>", function()
+            return [[<C-\><C-N>"]] .. vim.fn.getcharstr() .. [[pi]]
+          end, { expr = true, silent = true, buffer = true })
           vim.keymap.set("t", "<C-r><C-a>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.expand "<cWORD>"
