@@ -40,6 +40,7 @@ return {
       default_integrations = true,
       integrations = {
         dashboard = true,
+        fzf = true,
         gitsigns = true,
         leap = true,
         native_lsp = {
@@ -63,10 +64,6 @@ return {
           },
         },
         nvim_surround = true,
-        telescope = {
-          enabled = true,
-          -- style = "nvchad"
-        },
         treesitter = true,
         treesitter_context = true,
         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
