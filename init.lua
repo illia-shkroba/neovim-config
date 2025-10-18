@@ -314,9 +314,12 @@ local function set_bindings()
   )
 
   -- pickers
-  vim.keymap.set("n", [[<leader>+]], function()
-    vim.cmd.Telescope "neoclip"
-  end, { desc = "Open neoclip" })
+  vim.keymap.set(
+    "n",
+    [[<leader>+]],
+    require "neoclip.fzf",
+    { desc = "Open neoclip" }
+  )
   vim.keymap.set(
     { "n", "v" },
     [[<leader>/]],
