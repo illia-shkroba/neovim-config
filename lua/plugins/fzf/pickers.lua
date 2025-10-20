@@ -40,7 +40,9 @@ function M.live_grep_filetype()
               title = " Grep (" .. table.concat(selected, ", ") .. ") ",
             },
             silent = true,
-            rg_opts = table.concat(type_options, " "),
+            rg_opts = table.concat(type_options, " ")
+              .. " --column --line-number --no-heading --color=always --smart-case"
+              .. " --max-columns=4096 -e",
           }
         end
       end,
