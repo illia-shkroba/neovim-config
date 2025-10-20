@@ -4,6 +4,7 @@ return {
   opts = {},
   config = function()
     local fzf = require "fzf-lua"
+    local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
 
     local function remove_file(selected, opts)
@@ -19,6 +20,12 @@ return {
     end
 
     fzf.setup {
+      keymap = {
+        fzf = {
+          ["ctrl-b"] = win.toggle_preview,
+          ["ctrl-f"] = win.toggle_fullscreen,
+        },
+      },
       winopts = {
         on_create = function()
           -- Called once upon creation of the fzf main window.
