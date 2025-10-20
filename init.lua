@@ -328,7 +328,14 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>F]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    fzf.grep_cword { silent = true, rg_opts = "--glob '*" .. extension .. "'" }
+    fzf.grep_cword {
+      silent = true,
+      rg_opts = "--glob '*"
+        .. extension
+        .. "'"
+        .. " --column --line-number --no-heading --color=always --case-sensitive"
+        .. " --max-columns=4096 -e",
+    }
   end, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
@@ -423,7 +430,11 @@ local function set_bindings()
       fzf.grep {
         silent = true,
         search = search,
-        rg_opts = "--glob '*" .. extension .. "'",
+        rg_opts = "--glob '*"
+          .. extension
+          .. "'"
+          .. " --column --line-number --no-heading --color=always --case-sensitive"
+          .. " --max-columns=4096 -e",
       }
     end),
     {
