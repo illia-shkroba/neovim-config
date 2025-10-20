@@ -153,6 +153,12 @@ return {
           },
         },
       },
+      manpages = {
+        actions = {
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.man,
+        },
+      },
       marks = {
         actions = {
           ["ctrl-s"] = false,

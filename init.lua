@@ -339,6 +339,7 @@ local function set_bindings()
   end, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
+  vim.keymap.set("n", [[<leader>M]], fzf.manpages, { desc = "List man pages" })
   vim.keymap.set("n", [[<leader>fB]], function()
     fzf.lines()
   end, { desc = "Grep buffers" })
