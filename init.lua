@@ -348,15 +348,6 @@ local function set_bindings()
     fzf.git_bcommits,
     { desc = "List commits affecting current buffer" }
   )
-  vim.keymap.set("n", [[<leader>fG]], function()
-    local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    return [[:lua require("fzf-lua").grep { silent = true, rg_opts = "--glob '*]]
-      .. extension
-      .. [['" }<Left><Left><Left><Left>]]
-  end, {
-    expr = true,
-    desc = "Populate cmdline with search for word in files with current buffer's extension",
-  })
   vim.keymap.set(
     "n",
     [[<leader>fg]],
