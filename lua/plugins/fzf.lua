@@ -184,6 +184,13 @@ return {
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
+      tabs = {
+        actions = {
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+          ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
+        },
+      },
       tags = {
         actions = {
           ["ctrl-s"] = false,
