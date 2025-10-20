@@ -123,7 +123,14 @@ return {
       jumps = {
         actions = {
           ["ctrl-s"] = false,
-          ["ctrl-x"] = fzf.actions.file_split,
+          ["ctrl-v"] = function(selected, opts)
+            vim.cmd.vsplit()
+            fzf.actions.goto_jump(selected, opts)
+          end,
+          ["ctrl-x"] = function(selected, opts)
+            vim.cmd.split()
+            fzf.actions.goto_jump(selected, opts)
+          end,
         },
       },
       lines = {
