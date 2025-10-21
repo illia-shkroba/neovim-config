@@ -127,21 +127,19 @@ M.completion = function()
     paste_completion(selected, completions, completed_buffer, cursor)
   end
 
-  vim.schedule(function()
-    fzf.fzf_exec(completions, {
-      winopts = {
-        title = " Completions ",
-      },
-      actions = {
-        ["enter"] = paste_completion_action,
-        ["ctrl-y"] = paste_completion_action,
-        ["ctrl-e"] = fzf.actions.dummy_abort,
-      },
-      fzf_opts = {
-        ["--no-multi"] = true,
-      },
-    })
-  end)
+  fzf.fzf_exec(completions, {
+    winopts = {
+      title = " Completions ",
+    },
+    actions = {
+      ["enter"] = paste_completion_action,
+      ["ctrl-y"] = paste_completion_action,
+      ["ctrl-e"] = fzf.actions.dummy_abort,
+    },
+    fzf_opts = {
+      ["--no-multi"] = true,
+    },
+  })
 end
 
 -- To be called in `vim.keymap.set` with `expr = true`. It should only be used
