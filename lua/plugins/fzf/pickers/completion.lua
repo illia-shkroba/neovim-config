@@ -107,7 +107,10 @@ local paste_completion = function(
   ) or { column = column }
 
   -- Shift the cursor to its original position.
-  vim.cmd.normal(tostring(insert_location.column + 1) .. "|")
+  vim.api.nvim_win_set_cursor(
+    vim.api.nvim_get_current_win(),
+    { line, insert_location.column }
+  )
 
   vim.api.nvim_put({ selected[1] }, "c", cursor_at_end_of_line, true)
 end
