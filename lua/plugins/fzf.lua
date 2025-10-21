@@ -90,6 +90,7 @@ return {
       },
       files = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = fzf.actions.arg_add,
