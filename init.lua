@@ -5,6 +5,7 @@ require "package-manager"
 
 local case = require "text.case"
 local fzf = require "fzf-lua"
+local completion = require "plugins.fzf.pickers.completion"
 local list = require "list"
 local operator = require "operator"
 local path = require "path"
@@ -846,6 +847,17 @@ local function set_bindings()
     [[<C-v>#]],
     { desc = "Prevent indent removal when 'smartindent' is on" }
   )
+  vim.keymap.set("i", [[<C-z>]], function()
+    if vim.fn.pumvisible() == 1 then
+      return completion.completion_expr()
+    else
+      return [[:lua require("leap.remote").action()<CR>]]
+    end
+  end, {
+    expr = true,
+    silent = true,
+    desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
+  })
   vim.keymap.set(
     { "n", "v" },
     [[<C-w>y]],

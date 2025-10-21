@@ -46,12 +46,5 @@ return {
       "<Plug>(leap-from-window)",
       { silent = true, desc = "Leap to other windows" }
     )
-    vim.keymap.set("i", [[<C-z>]], function()
-      return [[:lua require("leap.remote").action()<CR>]]
-    end, {
-      expr = true,
-      silent = true,
-      desc = "Perform remote action with Leap",
-    })
   end,
 }
