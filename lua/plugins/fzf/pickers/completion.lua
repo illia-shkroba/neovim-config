@@ -103,7 +103,7 @@ local paste_completion = function(
 end
 
 -- It should only be used when: `vim.fn.pumvisible() == 1`.
-M.completion = function()
+M.completion = function(prioritize_init)
   local completions = vim.tbl_map(function(x)
     return x.word
   end, vim.fn.complete_info({ "items" }).items)
@@ -135,6 +135,7 @@ M.completion = function()
     },
     fzf_opts = {
       ["--no-multi"] = true,
+      ["--tac"] = not prioritize_init,
     },
   })
 end
@@ -148,14 +149,22 @@ M.completion_expr = function(opts)
     { popup_menu_up_key = [[<C-p>]], popup_menu_down_key = [[<C-n>]] }
   )
 
-  vim.schedule(M.completion)
-
   local info = vim.fn.complete_info { "items", "selected" }
+  local expr
+  local prioritize_init
   if info.selected < #info.items / 2 then
-    return string.rep(opts.popup_menu_up_key, info.selected + 1)
+    expr = string.rep(opts.popup_menu_up_key, info.selected + 1)
+    prioritize_init = true
   else
-    return string.rep(opts.popup_menu_down_key, #info.items - info.selected)
+    expr = string.rep(opts.popup_menu_down_key, #info.items - info.selected)
+    prioritize_init = false
   end
+
+  vim.schedule(function()
+    M.completion(prioritize_init)
+  end)
+
+  return expr
 end
 
 return M
