@@ -25,12 +25,7 @@ local function common_prefix(strings)
   end
 end
 
-local function ends_with_prefix_of(str, prefix)
-  assert(
-    #str <= #prefix,
-    "length of string that ends with prefix (left) should be "
-      .. "less than or equal to length of string containing prefix (right)"
-  )
+local function find_prefix_of(str, prefix)
   local sub_str = str
   local offset = 0
   while true do
@@ -38,29 +33,26 @@ local function ends_with_prefix_of(str, prefix)
     if begin == nil then
       return nil
     end
+    offset = offset + begin
 
     local suffix = sub_str:sub(begin)
     if suffix == prefix:sub(1, #suffix) then
-      return begin + offset
+      return offset - 1
     else
       sub_str = sub_str:sub(begin + 1)
-      offset = offset + begin
     end
   end
 end
 
-local substitute_inserted = function(completions, buffer, cursor)
+local remove_inserted = function(completions, buffer, cursor)
   -- The `common_prefix` is used to find a common prefix for a list of
   -- completions. Then the text on the left side of the current cursor position
   -- is matched for the common prefix that was found. If the text "partially"
-  -- matches the common prefix (see `ends_with_prefix_of`), then the text is
-  -- assumed to be "inserted" by the user before triggering the completion.
+  -- matches the common prefix (see `find_prefix_of`), then the text is assumed
+  -- to be "inserted" by the user before triggering the completion.
   local prefix = common_prefix(completions)
-  local line, column_end = cursor[1], cursor[2]
-  local column_begin = column_end - #prefix
-  if column_begin < 0 then
-    column_begin = 0
-  end
+  local line, column_end = cursor[1], cursor[2] + 1
+  local column_begin = math.max(column_end - #prefix, 0)
 
   local lines = vim.api.nvim_buf_get_text(
     buffer,
@@ -71,22 +63,21 @@ local substitute_inserted = function(completions, buffer, cursor)
     {}
   )
 
-  if #prefix > 0 and #lines > 0 then
-    local offset = ends_with_prefix_of(lines[1], prefix)
-    if offset ~= nil then
-      local insert_column = column_begin + offset - 1
-      vim.api.nvim_buf_set_text(
-        buffer,
-        line - 1,
-        insert_column,
-        line - 1,
-        column_end,
-        {}
-      )
-      return { column = insert_column }
-    end
+  local offset = find_prefix_of(lines[1], prefix)
+  if offset ~= nil and #prefix > 0 then
+    local remove_column = column_begin + offset
+    vim.api.nvim_buf_set_text(
+      buffer,
+      line - 1,
+      remove_column,
+      line - 1,
+      column_end,
+      {}
+    )
+    return { column = remove_column }
+  else
+    return nil
   end
-  return nil
 end
 
 local paste_completion = function(
@@ -96,22 +87,22 @@ local paste_completion = function(
   cursor
 )
   local line, column = cursor[1], cursor[2]
-  local lines =
-    vim.api.nvim_buf_get_lines(completed_buffer, line - 1, line, true)
-  local cursor_at_end_of_line = (column + 1) >= #lines[#lines]
+  local length =
+    #vim.api.nvim_buf_get_lines(completed_buffer, line - 1, line, true)[1]
+  local cursor_at_end_of_line = (column + 1) >= length
 
-  local insert_location = substitute_inserted(
-    completions,
-    completed_buffer,
-    cursor
-  ) or { column = column }
+  local removed_location =
+    remove_inserted(completions, completed_buffer, cursor)
+  if removed_location ~= nil then
+    -- Shift the cursor one character after the inserted text.
+    vim.api.nvim_win_set_cursor(
+      vim.api.nvim_get_current_win(),
+      { line, removed_location.column }
+    )
+  end
 
-  -- Shift the cursor to its original position.
-  vim.api.nvim_win_set_cursor(
-    vim.api.nvim_get_current_win(),
-    { line, insert_location.column }
-  )
-
+  -- The cursor captured in the insert mode is positioned one character after
+  -- the inserted text.
   vim.api.nvim_put({ selected[1] }, "c", cursor_at_end_of_line, true)
 end
 
@@ -122,6 +113,16 @@ M.completion = function()
   end, vim.fn.complete_info({ "items" }).items)
   local completed_buffer = vim.api.nvim_get_current_buf()
   local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+
+  local line, column = cursor[1], cursor[2]
+  -- In the insert mode the cursor's column is shifted by one character to the
+  -- right if the cursor has no characters before it.
+  --
+  -- Meaning, that when the cursor is at the beginning of the line, the
+  -- `column` is 0. Otherwise, it is a `column` a position (index +1) and not
+  -- an index.
+  column = math.max(column - 1, 0)
+  cursor = { line, column }
 
   local paste_completion_action = function(selected)
     paste_completion(selected, completions, completed_buffer, cursor)
