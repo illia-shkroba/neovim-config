@@ -22,8 +22,8 @@ return {
     fzf.setup {
       keymap = {
         fzf = {
-          ["ctrl-b"] = win.toggle_preview,
-          ["ctrl-f"] = win.toggle_fullscreen,
+          ["alt-s"] = win.toggle_preview,
+          ["alt-a"] = win.toggle_fullscreen,
         },
       },
       winopts = {
