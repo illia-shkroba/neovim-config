@@ -4,7 +4,7 @@ return {
     local leap = require "leap"
     local leap_user = require "leap.user"
 
-    leap.opts.case_sensitive = false
+    leap.opts.vim_opts["go.ignorecase"] = true
     leap.opts.safe_labels = "sfnutrhjklx"
     leap.opts.labels = "abcdefghijklmnopqrstuvwxyz"
 
