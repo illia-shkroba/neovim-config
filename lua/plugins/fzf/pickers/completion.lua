@@ -86,15 +86,11 @@ local paste_completion = function(
   completed_buffer,
   cursor
 )
-  local line, column = cursor[1], cursor[2]
-  local length =
-    #vim.api.nvim_buf_get_lines(completed_buffer, line - 1, line, true)[1]
-  local cursor_at_end_of_line = (column + 1) >= length
-
   local removed_location =
     remove_inserted(completions, completed_buffer, cursor)
   if removed_location ~= nil then
     -- Shift the cursor one character after the inserted text.
+    local line = cursor[1]
     vim.api.nvim_win_set_cursor(
       vim.api.nvim_get_current_win(),
       { line, removed_location.column }
@@ -103,7 +99,7 @@ local paste_completion = function(
 
   -- The cursor captured in the insert mode is positioned one character after
   -- the inserted text.
-  vim.api.nvim_put({ selected[1] }, "c", cursor_at_end_of_line, true)
+  vim.api.nvim_put({ selected[1] }, "c", false, true)
 end
 
 -- It should only be used when: `vim.fn.pumvisible() == 1`.
