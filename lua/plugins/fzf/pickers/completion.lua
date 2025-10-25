@@ -127,6 +127,11 @@ M.completion = function(prioritize_init)
   fzf.fzf_exec(completions, {
     winopts = {
       title = " Completions ",
+      relative = "cursor",
+      row = 1,
+      col = 0,
+      height = 0.40,
+      width = 0.30,
     },
     actions = {
       ["enter"] = paste_completion_action,
