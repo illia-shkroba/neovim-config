@@ -9,7 +9,7 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.tabstop = 4
 
-local function find_virtual_environment()
+local function find_venv()
   return vim.fs.find({ "env", "venv", ".env", ".venv" }, {
     path = vim.api.nvim_buf_get_name(0),
     upward = true,
@@ -31,38 +31,28 @@ vim.keymap.set(
   { buffer = true, desc = "Populate buffer with function definition" }
 )
 vim.keymap.set("n", [[<leader><CR>]], function()
-  local virtual_environment = find_virtual_environment()
+  local venv = find_venv()
 
-  local variables
-  if virtual_environment then
-    variables = "PATH='"
-      .. virtual_environment
-      .. "/bin:"
-      .. vim.fn.getenv "PATH"
-      .. "' "
-  else
-    variables = ""
-  end
+  local venv_activation = venv
+      and "source " .. vim.fs.joinpath(venv, "bin", "activate") .. " && "
+    or ""
 
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(variables .. "sh -c 'python #'")
+  vim.cmd.terminal(venv_activation .. "python '#'")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
 vim.keymap.set("n", [[<leader><Tab>]], function()
-  local virtual_environment = find_virtual_environment()
+  local venv = find_venv()
 
-  local variables
-  if virtual_environment then
-    variables = "VIRTUAL_ENV='" .. virtual_environment .. "' "
-  else
-    variables = ""
-  end
+  local venv_activation = venv
+      and "source " .. vim.fs.joinpath(venv, "bin", "activate") .. " && "
+    or ""
 
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(variables .. "ipython --no-banner -i '#'")
+  vim.cmd.terminal(venv_activation .. "ipython --no-banner -i '#'")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Load current buffer to ipython" })
