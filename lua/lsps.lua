@@ -13,6 +13,7 @@ return {
   ruff = { install = true },
   rust_analyzer = {},
   terraformls = {},
+  ty = { install = true },
   typos_lsp = { install = true },
   vimls = { install = true },
   yamlls = {
