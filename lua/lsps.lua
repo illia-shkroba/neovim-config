@@ -10,7 +10,7 @@ return {
   nil_ls = {},
   perlpls = {},
   purescriptls = { install = true },
-  pyright = { install = true },
+  ruff = { install = true },
   rust_analyzer = {},
   terraformls = {},
   typos_lsp = { install = true },
