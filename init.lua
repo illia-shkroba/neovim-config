@@ -377,7 +377,7 @@ local function set_bindings()
   end, { desc = "List files relative to current buffer" })
   vim.keymap.set("n", [[<leader>fR]], function()
     fzf.oldfiles { cwd = vim.fn.getcwd() }
-  end, { desc = "List old files relative to current buffer" })
+  end, { desc = "List old files under cwd" })
   vim.keymap.set("n", [[<leader>fQ]], fzf.quickfix, { desc = "List quickfix" })
   vim.keymap.set("n", [[<leader>fT]], fzf.tabs, { desc = "List tabs" })
   vim.keymap.set(
