@@ -24,7 +24,7 @@ local function set_options()
 
   vim.opt.allowrevins = true
   vim.opt.autoindent = true
-  vim.opt.complete = { ".", "w", "b", "u" }
+  vim.opt.complete = { ".", "w", "b", "u", "k" }
   vim.opt.completeopt = { "menuone", "popup" }
   vim.opt.cpoptions = "aABceFMs%>"
   vim.opt.cursorline = true
