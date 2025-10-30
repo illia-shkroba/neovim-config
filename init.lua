@@ -814,6 +814,18 @@ local function set_bindings()
     { desc = "write ++p" }
   )
   vim.keymap.set(
+    { "n", "v" },
+    [[<C-w>a]],
+    operator.expr_readonly(function(lines)
+      local filetype = vim.opt_local.filetype._value
+
+      local buffer = scratch.retained()
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
+      vim.opt_local.filetype = filetype
+    end),
+    { expr = true, desc = "Open a scratch window with selected lines" }
+  )
+  vim.keymap.set(
     "n",
     [[<leader>b]],
     [[<Cmd>bwipeout!<CR>]],
@@ -879,18 +891,6 @@ local function set_bindings()
     silent = true,
     desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
   })
-  vim.keymap.set(
-    { "n", "v" },
-    [[<C-w>y]],
-    operator.expr_readonly(function(lines)
-      local filetype = vim.opt_local.filetype._value
-
-      local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
-      vim.opt_local.filetype = filetype
-    end),
-    { expr = true, desc = "Open a scratch window with selected lines" }
-  )
 end
 set_bindings()
 
