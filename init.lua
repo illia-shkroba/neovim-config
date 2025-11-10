@@ -943,7 +943,7 @@ local function set_autocommands()
   })
   vim.api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
-      vim.opt_local.completeopt = { "fuzzy", "menuone", "popup" }
+      vim.opt_local.completeopt = { "fuzzy", "menuone", "noinsert", "popup" }
       vim.keymap.set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
