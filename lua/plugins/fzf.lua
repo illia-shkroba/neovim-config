@@ -64,6 +64,7 @@ return {
       },
       blines = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
@@ -76,6 +77,7 @@ return {
       },
       buffers = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = fzf.actions.arg_add,
@@ -84,6 +86,7 @@ return {
       },
       diagnostics = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
@@ -116,6 +119,7 @@ return {
       },
       grep = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = fzf.actions.arg_add,
@@ -136,6 +140,7 @@ return {
       },
       lines = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
@@ -143,12 +148,14 @@ return {
       lsp = {
         workspace_symbols = {
           actions = {
+            ["alt-f"] = false,
             ["ctrl-s"] = false,
             ["ctrl-x"] = fzf.actions.file_split,
           },
         },
         finder = {
           actions = {
+            ["alt-f"] = false,
             ["ctrl-s"] = false,
             ["ctrl-x"] = fzf.actions.file_split,
           },
@@ -169,6 +176,7 @@ return {
       },
       oldfiles = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = fzf.actions.arg_add,
@@ -193,6 +201,7 @@ return {
       },
       tabs = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
@@ -200,12 +209,14 @@ return {
       },
       tags = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       treesitter = {
         actions = {
+          ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
