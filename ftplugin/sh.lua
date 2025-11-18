@@ -40,10 +40,13 @@ vim.keymap.set(
 vim.keymap.set(
   { "v" },
   [[<leader><CR>]],
-  operator.expr_readonly(function(lines)
-    vim.cmd "'>"
-    vim.api.nvim_put(vim.split(lines, "\n"), "l", true, false)
-    vim.cmd "'[,']!bash"
-  end),
+  operator.expr {
+    function_ = function(lines)
+      vim.cmd "'>"
+      vim.api.nvim_put(vim.split(lines, "\n"), "l", true, false)
+      vim.cmd "'[,']!bash"
+    end,
+    readonly = true,
+  },
   { expr = true, buffer = true, desc = "Paste selected lines' output below" }
 )

@@ -5,6 +5,7 @@ local function operatorfunc_input(input_chars)
 end
 
 local readonly = true
+local force_mode = nil
 
 local function empty_buffer(buffer_number)
   return vim.api.nvim_buf_line_count(buffer_number) == 1
@@ -179,27 +180,34 @@ function M.operatorfunc(mode)
     lines = lines,
   }
 
+  local forced_mode = force_mode == nil and mode or force_mode
+
   if readonly then
-    operator_readonly(mode, operator_input)
+    operator_readonly(forced_mode, operator_input)
   else
-    operator(mode, operator_input)
+    operator(forced_mode, operator_input)
   end
 end
 
-function M.expr(f)
+---@param opts {function_: fun, readonly?: boolean, force_mode?: string}
+---@return fun(): string
+function M.expr(opts)
   return function()
     vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
-    operatorfunc_input = f
-    readonly = false
-    return [[g@]]
-  end
-end
 
-function M.expr_readonly(f)
-  return function()
-    vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
-    operatorfunc_input = f
-    readonly = true
+    operatorfunc_input = opts.function_
+
+    if opts.readonly == nil then
+      readonly = false
+    else
+      readonly = opts.readonly
+    end
+    if opts.force_mode == nil then
+      force_mode = nil
+    else
+      force_mode = opts.force_mode
+    end
+
     return [[g@]]
   end
 end

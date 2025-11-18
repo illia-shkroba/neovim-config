@@ -414,18 +414,21 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>F]],
-    operator.expr_readonly(function(search)
-      local extension = path.extension(vim.api.nvim_buf_get_name(0))
-      fzf.grep {
-        silent = true,
-        search = search,
-        rg_opts = "--glob '*"
-          .. extension
-          .. "'"
-          .. " --column --line-number --no-heading --color=always --case-sensitive"
-          .. " --max-columns=4096 -e",
-      }
-    end),
+    operator.expr {
+      function_ = function(search)
+        local extension = path.extension(vim.api.nvim_buf_get_name(0))
+        fzf.grep {
+          silent = true,
+          search = search,
+          rg_opts = "--glob '*"
+            .. extension
+            .. "'"
+            .. " --column --line-number --no-heading --color=always --case-sensitive"
+            .. " --max-columns=4096 -e",
+        }
+      end,
+      readonly = true,
+    },
     {
       expr = true,
       desc = "Search for visually selected word in files with current buffer's extension",
@@ -434,9 +437,12 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>fw]],
-    operator.expr_readonly(function(search)
-      fzf.lines { query = "'" .. search }
-    end),
+    operator.expr {
+      function_ = function(search)
+        fzf.lines { query = "'" .. search }
+      end,
+      readonly = true,
+    },
     { expr = true, desc = "Search for visually selected word in buffers" }
   )
 
@@ -541,7 +547,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>A]],
-    operator.expr(substitute.append_char_prompt),
+    operator.expr { function_ = substitute.append_char_prompt },
     {
       expr = true,
       silent = true,
@@ -551,7 +557,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>a]],
-    operator.expr(substitute.prepend_char_prompt),
+    operator.expr { function_ = substitute.prepend_char_prompt },
     {
       expr = true,
       silent = true,
@@ -567,9 +573,11 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>S]],
-    operator.expr(function(xs)
-      return substitute.substitute_char(xs, " ", "_")
-    end),
+    operator.expr {
+      function_ = function(xs)
+        return substitute.substitute_char(xs, " ", "_")
+      end,
+    },
     {
       expr = true,
       silent = true,
@@ -579,7 +587,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>s]],
-    operator.expr(substitute.substitute_char_prompt),
+    operator.expr { function_ = substitute.substitute_char_prompt },
     {
       expr = true,
       silent = true,
@@ -589,21 +597,23 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>A]],
-    operator.expr(substitute.append_char_prompt),
+    operator.expr { function_ = substitute.append_char_prompt },
     { expr = true, silent = true, desc = "Append character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>a]],
-    operator.expr(substitute.prepend_char_prompt),
+    operator.expr { function_ = substitute.prepend_char_prompt },
     { expr = true, silent = true, desc = "Prepend character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>S]],
-    operator.expr(function(xs)
-      return substitute.substitute_char(xs, " ", "_")
-    end),
+    operator.expr {
+      function_ = function(xs)
+        return substitute.substitute_char(xs, " ", "_")
+      end,
+    },
     {
       expr = true,
       silent = true,
@@ -613,7 +623,7 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>s]],
-    operator.expr(substitute.substitute_char_prompt),
+    operator.expr { function_ = substitute.substitute_char_prompt },
     { expr = true, silent = true, desc = "Substitute character in visual area" }
   )
 
@@ -621,25 +631,35 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>cF]],
-    operator.expr(case.to_camel),
+    operator.expr { function_ = case.to_camel },
     { expr = true, desc = "Format selection by motion to camel case" }
   )
   vim.keymap.set(
     "n",
     [[<leader>cf]],
-    operator.expr(case.to_snake),
+    operator.expr { function_ = case.to_snake },
     { expr = true, desc = "Format selection by motion to snake case" }
   )
-  vim.keymap.set("v", [[<leader>cF]], operator.expr(case.to_camel), {
-    expr = true,
-    silent = true,
-    desc = "Format selection by visual to camel case",
-  })
-  vim.keymap.set("v", [[<leader>cf]], operator.expr(case.to_snake), {
-    expr = true,
-    silent = true,
-    desc = "Format selection by visual to snake case",
-  })
+  vim.keymap.set(
+    "v",
+    [[<leader>cF]],
+    operator.expr { function_ = case.to_camel },
+    {
+      expr = true,
+      silent = true,
+      desc = "Format selection by visual to camel case",
+    }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>cf]],
+    operator.expr { function_ = case.to_snake },
+    {
+      expr = true,
+      silent = true,
+      desc = "Format selection by visual to snake case",
+    }
+  )
 
   -- search
   vim.keymap.set("n", [[<leader>#]], function()
@@ -651,21 +671,27 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>#]],
-    operator.expr_readonly(function(value)
-      vim.fn.setreg("/", value .. "\\c")
-      vim.v.searchforward = false
-      vim.cmd.normal "n"
-    end),
+    operator.expr {
+      function_ = function(value)
+        vim.fn.setreg("/", value .. "\\c")
+        vim.v.searchforward = false
+        vim.cmd.normal "n"
+      end,
+      readonly = true,
+    },
     { expr = true, desc = "Same as #, but without \\< and \\>" }
   )
   vim.keymap.set(
     "v",
     [[<leader>*]],
-    operator.expr_readonly(function(value)
-      vim.fn.setreg("/", value .. "\\c")
-      vim.v.searchforward = true
-      vim.cmd.normal "n"
-    end),
+    operator.expr {
+      function_ = function(value)
+        vim.fn.setreg("/", value .. "\\c")
+        vim.v.searchforward = true
+        vim.cmd.normal "n"
+      end,
+      readonly = true,
+    },
     { expr = true, desc = "Same as *, but without \\< and \\>" }
   )
 
@@ -772,11 +798,11 @@ local function set_bindings()
   )
 
   -- indent
-  vim.keymap.set("n", [[<p]], operator.expr(indent.align), {
+  vim.keymap.set("n", [[<p]], operator.expr { function_ = indent.align }, {
     expr = true,
     desc = "Align indentation selected by motion",
   })
-  vim.keymap.set("v", [[<p]], operator.expr(indent.align), {
+  vim.keymap.set("v", [[<p]], operator.expr { function_ = indent.align }, {
     expr = true,
     silent = true,
     desc = "Align indentation selected by visual",
@@ -834,13 +860,16 @@ local function set_bindings()
   vim.keymap.set(
     { "n", "v" },
     [[<C-w>a]],
-    operator.expr_readonly(function(lines)
-      local filetype = vim.opt_local.filetype._value
+    operator.expr {
+      function_ = function(lines)
+        local filetype = vim.opt_local.filetype._value
 
-      local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
-      vim.opt_local.filetype = filetype
-    end),
+        local buffer = scratch.retained()
+        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
+        vim.opt_local.filetype = filetype
+      end,
+      readonly = true,
+    },
     { expr = true, desc = "Open a scratch window with selected lines" }
   )
   vim.keymap.set(
