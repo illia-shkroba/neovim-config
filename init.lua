@@ -798,15 +798,25 @@ local function set_bindings()
   )
 
   -- indent
-  vim.keymap.set("n", [[<p]], operator.expr { function_ = indent.align }, {
-    expr = true,
-    desc = "Align indentation selected by motion",
-  })
-  vim.keymap.set("v", [[<p]], operator.expr { function_ = indent.align }, {
-    expr = true,
-    silent = true,
-    desc = "Align indentation selected by visual",
-  })
+  vim.keymap.set(
+    "n",
+    [[<p]],
+    operator.expr { function_ = indent.align, force_mode = "line" },
+    {
+      expr = true,
+      desc = "Align indentation selected by motion",
+    }
+  )
+  vim.keymap.set(
+    "v",
+    [[<p]],
+    operator.expr { function_ = indent.align, force_mode = "line" },
+    {
+      expr = true,
+      silent = true,
+      desc = "Align indentation selected by visual",
+    }
+  )
 
   -- text objects
   vim.keymap.set(
