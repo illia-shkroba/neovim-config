@@ -21,7 +21,7 @@ end
 vim.keymap.set(
   "n",
   [[gh]],
-  [[<Cmd>up | !ruff format %<CR>]],
+  [[<Cmd>up | !ruff format % | ruff check --fix %<CR>]],
   { buffer = true, desc = "Call `ruff format` on current buffer" }
 )
 vim.keymap.set(
