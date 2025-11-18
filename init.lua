@@ -6,6 +6,7 @@ require "package-manager"
 local case = require "text.case"
 local fzf = require "fzf-lua"
 local completion = require "plugins.fzf.pickers.completion"
+local indent = require "text.indent"
 local list = require "list"
 local operator = require "operator"
 local path = require "path"
@@ -769,6 +770,17 @@ local function set_bindings()
     [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]],
     { desc = "earlier [count]f" }
   )
+
+  -- indent
+  vim.keymap.set("n", [[<p]], operator.expr(indent.align), {
+    expr = true,
+    desc = "Align indentation selected by motion",
+  })
+  vim.keymap.set("v", [[<p]], operator.expr(indent.align), {
+    expr = true,
+    silent = true,
+    desc = "Align indentation selected by visual",
+  })
 
   -- text objects
   vim.keymap.set(
