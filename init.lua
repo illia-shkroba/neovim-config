@@ -43,7 +43,6 @@ local function set_options()
   vim.opt.mouse = ""
   vim.opt.number = true
   vim.opt.omnifunc = "syntaxcomplete#Complete"
-  vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
   vim.opt.path = { "**", "./**" }
   vim.opt.pumblend = 10
   vim.opt.pumheight = 10
