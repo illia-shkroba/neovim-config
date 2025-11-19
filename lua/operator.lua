@@ -24,7 +24,7 @@ local function operator_line(operator_input)
   vim.api.nvim_put(output_lines, "l", end_of_file, false)
 
   -- Remove empty line on top of the file after put.
-  if empty_buffer_before_put then
+  if end_of_file and empty_buffer_before_put then
     vim.cmd.normal 'gg"_dd'
   end
 end
@@ -85,7 +85,7 @@ local function operator_block_with_line_ends(operator_input)
   vim.api.nvim_put(put_lines, "l", end_of_file, false)
 
   -- Remove empty line on top of the file after put.
-  if empty_buffer_before_put then
+  if end_of_file and empty_buffer_before_put then
     vim.cmd.normal 'gg"_dd'
   end
 end
