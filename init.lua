@@ -881,6 +881,7 @@ local function set_bindings()
     },
     { expr = true, desc = "Open a scratch window with selected lines" }
   )
+  vim.keymap.set("n", [[<C-w>yy]], vim.cmd.History, { desc = "History" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
@@ -959,7 +960,7 @@ local function set_commands()
   vim.api.nvim_create_user_command(
     "History",
     function()
-      require("scratch").retained()
+      scratch.retained()
       vim.opt_local.filetype = "sh"
 
       vim.cmd [[0r !atuin search --format "{command}"]]
