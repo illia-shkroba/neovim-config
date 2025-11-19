@@ -881,6 +881,22 @@ local function set_bindings()
     },
     { expr = true, desc = "Open a scratch window with selected lines" }
   )
+  vim.keymap.set(
+    "n",
+    [[<C-w>y]],
+    operator.expr {
+      function_ = function(lines)
+        local buffer = scratch.retained()
+        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
+        vim.opt_local.filetype = "sh"
+
+        vim.cmd [[0r !atuin search --format "{command}"]]
+        vim.cmd.normal [[j[ ]]
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "History with selected lines appended at the end" }
+  )
   vim.keymap.set("n", [[<C-w>yy]], vim.cmd.History, { desc = "History" })
   vim.keymap.set(
     "n",
