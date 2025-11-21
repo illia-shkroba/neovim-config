@@ -835,7 +835,7 @@ local function set_bindings()
   vim.keymap.set(
     { "o", "v" },
     "al",
-    ":<C-U>normal 0vg$<CR>",
+    ":<C-U>normal 0v$<CR>",
     { desc = "Current line selected charwise" }
   )
   vim.keymap.set(
