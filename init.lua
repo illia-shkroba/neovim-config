@@ -471,7 +471,7 @@ local function set_bindings()
 
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
-      local buffer = scratch.onetime()
+      local buffer = scratch.retained()
       vim.api.nvim_buf_set_lines(
         buffer,
         0,
