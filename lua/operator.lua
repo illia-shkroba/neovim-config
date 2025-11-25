@@ -30,10 +30,25 @@ local function operator_line(operator_input)
 end
 
 local function truncate_charwise(lines, column_begin, column_end)
+  if #lines == 0 then
+    return lines
+  end
+
   local truncated_lines = vim.deepcopy(lines)
   truncated_lines[#lines] = lines[#lines]:sub(1, column_end + 1)
   truncated_lines[1] = truncated_lines[1]:sub(column_begin + 1)
   return truncated_lines
+end
+
+local function ends_with_eol(operator_input)
+  local column_end = operator_input.column_end
+  local lines = operator_input.lines
+
+  if #lines > 0 then
+    return (column_end + 1) >= #lines[#lines]
+  else
+    return false
+  end
 end
 
 local function operator_char(operator_input)
@@ -46,9 +61,8 @@ local function operator_char(operator_input)
   local output_chars = operatorfunc_input(input_chars)
   local output_lines = vim.split(output_chars, "\n")
 
-  local end_of_line = (column_end + 1) >= #lines[#lines]
   vim.cmd.normal '`["_dv`]'
-  vim.api.nvim_put(output_lines, "c", end_of_line, false)
+  vim.api.nvim_put(output_lines, "c", ends_with_eol(operator_input), false)
 end
 
 local function truncate_blockwise_with_line_ends(lines, column_begin)
@@ -120,10 +134,20 @@ local function ends_with_newline(operator_input)
   local column_end = operator_input.column_end
   local lines = operator_input.lines
 
-  return column_end + 1 > #lines[#lines]
+  if #lines > 0 then
+    return column_end + 1 > #lines[#lines]
+  else
+    return false
+  end
 end
 
 local function operator(mode, operator_input)
+  local lines = operator_input.lines
+  if #lines == 0 then
+    vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
+    return
+  end
+
   if mode == "line" then
     operator_line(operator_input)
   elseif mode == "char" then
