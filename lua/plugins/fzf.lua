@@ -85,6 +85,12 @@ return {
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
         },
       },
+      command_history = {
+        actions = {
+          ["ctrl-e"] = false,
+          ["ctrl-v"] = fzf.actions.ex_run,
+        },
+      },
       diagnostics = {
         actions = {
           ["alt-f"] = false,

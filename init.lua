@@ -327,6 +327,12 @@ local function set_bindings()
     fzf.blines,
     { desc = "Grep current buffer or visually selected lines" }
   )
+  vim.keymap.set(
+    { "n" },
+    [[<leader>:]],
+    fzf.command_history,
+    { desc = "Command history" }
+  )
   vim.keymap.set("n", [[<leader>F]], function()
     local extension = path.extension(vim.api.nvim_buf_get_name(0))
     fzf.grep_cword {
