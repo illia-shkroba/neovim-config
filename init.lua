@@ -329,7 +329,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     { "n" },
-    [[<leader>:]],
+    [[<leader>;]],
     fzf.command_history,
     { desc = "Command history" }
   )
