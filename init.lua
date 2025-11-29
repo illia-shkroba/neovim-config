@@ -878,6 +878,12 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
+    [[<leader>J]],
+    [[<Cmd>new | normal g`M<CR>]],
+    { desc = "Jump to mark M in a new window" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>W]],
     [[<Cmd>write ++p<CR>]],
     { desc = "write ++p" }
