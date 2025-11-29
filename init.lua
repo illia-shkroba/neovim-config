@@ -381,6 +381,12 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>fF]], function()
     fzf.files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
   end, { desc = "List files relative to current buffer" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fl]],
+    fzf.loclist,
+    { desc = "List location list" }
+  )
   vim.keymap.set("n", [[<leader>fR]], function()
     fzf.oldfiles { cwd = vim.fn.getcwd() }
   end, { desc = "List old files under cwd" })
