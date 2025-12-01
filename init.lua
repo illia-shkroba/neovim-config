@@ -390,7 +390,12 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>fR]], function()
     fzf.oldfiles { cwd = vim.fn.getcwd() }
   end, { desc = "List old files under cwd" })
-  vim.keymap.set("n", [[<leader>fQ]], fzf.quickfix, { desc = "List quickfix" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fQ]],
+    fzf.quickfix_stack,
+    { desc = "List quickfix lists" }
+  )
   vim.keymap.set("n", [[<leader>fT]], fzf.tabs, { desc = "List tabs" })
   vim.keymap.set(
     "n",
@@ -406,12 +411,7 @@ local function set_bindings()
     fzf.filetypes,
     { desc = "List filetypes" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>fq]],
-    fzf.quickfix_stack,
-    { desc = "List quickfix lists" }
-  )
+  vim.keymap.set("n", [[<leader>fq]], fzf.quickfix, { desc = "List quickfix" })
   vim.keymap.set("n", [[<leader>fr]], fzf.oldfiles, { desc = "List old files" })
   vim.keymap.set(
     "n",
