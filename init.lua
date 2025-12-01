@@ -346,7 +346,7 @@ local function set_bindings()
   end, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
-  vim.keymap.set("n", [[<leader>M]], fzf.manpages, { desc = "List man pages" })
+  vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
   vim.keymap.set("n", [[<leader>fB]], function()
     fzf.lines()
   end, { desc = "Grep buffers" })
@@ -404,7 +404,6 @@ local function set_bindings()
     { desc = "List treesitter symbols for current buffer" }
   )
   vim.keymap.set("n", [[<leader>ff]], fzf.files, { desc = "List files" })
-  vim.keymap.set("n", [[<leader>fm]], fzf.marks, { desc = "List marks" })
   vim.keymap.set(
     "n",
     [[<leader>fp]],
