@@ -964,7 +964,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>z]], function()
     local buffer = vim.api.nvim_buf_get_name(0)
     if #buffer > 0 then
-      vim.fn.delete(buffer)
+      vim.fs.rm(buffer)
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
@@ -1023,7 +1023,7 @@ local function set_commands()
 
     local previous = vim.fn.expand "#"
     if #previous > 0 then
-      vim.fn.delete(previous)
+      vim.fs.rm(previous)
       vim.cmd.bwipeout(previous)
     end
   end, { nargs = 1, bang = true, complete = "file" })

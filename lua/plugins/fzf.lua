@@ -15,7 +15,7 @@ return {
         if not entry_path then
           return
         end
-        pcall(vim.fn.delete, entry_path)
+        pcall(vim.fs.rm, entry_path)
       end
     end
 
