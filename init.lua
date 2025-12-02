@@ -6,7 +6,6 @@ require "package-manager"
 local case = require "text.case"
 local fzf = require "fzf-lua"
 local completion = require "plugins.fzf.pickers.completion"
-local indent = require "text.indent"
 local list = require "list"
 local operator = require "operator"
 local path = require "path"
@@ -818,10 +817,14 @@ local function set_bindings()
   )
 
   -- indent
+  local function align(xs)
+    return vim.text.indent(0, xs, { expandtab = 1 })
+  end
+
   vim.keymap.set(
     "n",
     [[<p]],
-    operator.expr { function_ = indent.align, force_mode = "line" },
+    operator.expr { function_ = align, force_mode = "line" },
     {
       expr = true,
       desc = "Align indentation selected by motion",
@@ -830,7 +833,7 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<p]],
-    operator.expr { function_ = indent.align, force_mode = "line" },
+    operator.expr { function_ = align, force_mode = "line" },
     {
       expr = true,
       silent = true,
