@@ -982,10 +982,10 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>o]], function()
     local buffer = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-    local row = cursor[1] - 1
+    local line = cursor[1]
 
-    vim.api.nvim_buf_set_lines(buffer, row + 1, -1, false, {})
-    vim.api.nvim_buf_set_lines(buffer, 0, row, false, {})
+    vim.api.nvim_buf_set_lines(buffer, line, -1, false, {})
+    vim.api.nvim_buf_set_lines(buffer, 0, line - 1, false, {})
   end, { desc = "Keep only the current line" })
   vim.keymap.set("n", [[<leader>v]], function()
     local mode = vim.fn.visualmode()
