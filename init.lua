@@ -898,7 +898,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<C-w>a]],
+    [[<C-w>y]],
     operator.expr {
       function_ = function(lines)
         local filetype = vim.opt_local.filetype._value
@@ -913,7 +913,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<C-w>y]],
+    [[<C-w>e]],
     operator.expr {
       function_ = function(lines)
         local buffer = scratch.retained()
@@ -927,7 +927,7 @@ local function set_bindings()
     },
     { expr = true, desc = "History with selected lines appended at the end" }
   )
-  vim.keymap.set("n", [[<C-w>yy]], vim.cmd.History, { desc = "History" })
+  vim.keymap.set("n", [[<C-w>ee]], vim.cmd.History, { desc = "History" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
