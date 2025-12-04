@@ -21,10 +21,4 @@ function M.prefix_length(xs, ys)
   return n
 end
 
-function M.get_cursor()
-  local position = vim.fn.getcurpos()
-  local line, column = position[2], position[3]
-  return line, column
-end
-
 return M

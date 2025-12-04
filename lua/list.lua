@@ -81,11 +81,12 @@ function with_list.add_from_buffer(list, buffer)
 end
 
 function M.create_current_position_item()
-  local line, column = utils.get_cursor()
+  local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+  local line, column = cursor[1], cursor[2]
   return {
     filename = vim.api.nvim_buf_get_name(0),
     lnum = line,
-    col = column,
+    col = column + 1,
     text = vim.fn.getline(line),
   }
 end
