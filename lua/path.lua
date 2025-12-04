@@ -1,10 +1,20 @@
 local M = {}
 
-local utils = require "utils"
+local function prefix_length(xs, ys)
+  local n = math.min(#xs, #ys)
+  for i = 1, n do
+    local x, y = xs[i], ys[i]
+
+    if x ~= y then
+      return i - 1
+    end
+  end
+  return n
+end
 
 function M.step_into(src_dir, dest_dir)
   local xs, ys = vim.split(src_dir, "/"), vim.split(dest_dir, "/")
-  local n = utils.prefix_length(xs, ys)
+  local n = prefix_length(xs, ys)
 
   local prefix = table.concat(ys, "/", 1, n)
   return vim.fs.joinpath(prefix, ys[n + 1] or "")
