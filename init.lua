@@ -911,6 +911,22 @@ local function set_bindings()
     },
     { expr = true, desc = "Open a scratch window with selected lines" }
   )
+  vim.keymap.set("n", [[<C-w>yy]], function()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line = cursor[1]
+    local lines = vim.api.nvim_buf_get_lines(
+      vim.api.nvim_get_current_buf(),
+      line - 1,
+      line - 1 + vim.v.count1,
+      true
+    )
+
+    local filetype = vim.opt_local.filetype._value
+
+    local buffer = scratch.retained()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+    vim.opt_local.filetype = filetype
+  end, { desc = "Open a scratch window with [count] lines" })
   vim.keymap.set(
     "n",
     [[<C-w>e]],
