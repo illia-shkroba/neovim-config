@@ -14,6 +14,7 @@ local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
 local substitute = require "text.substitute"
+local text = require "text"
 local utils = require "utils"
 
 local location = list.location
@@ -933,7 +934,13 @@ local function set_bindings()
     operator.expr {
       function_ = function(lines)
         local buffer = scratch.retained()
-        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
+        vim.api.nvim_buf_set_lines(
+          buffer,
+          0,
+          1,
+          false,
+          vim.split(align(lines), "\n")
+        )
         vim.opt_local.filetype = "sh"
 
         vim.cmd [[0r !atuin search --format "{command}"]]
@@ -954,7 +961,13 @@ local function set_bindings()
     )
 
     local buffer = scratch.retained()
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+    vim.api.nvim_buf_set_lines(
+      buffer,
+      0,
+      1,
+      false,
+      text.with_lines(align)(lines)
+    )
     vim.opt_local.filetype = "sh"
 
     vim.cmd [[0r !atuin search --format "{command}"]]
