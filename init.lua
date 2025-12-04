@@ -943,7 +943,23 @@ local function set_bindings()
     },
     { expr = true, desc = "History with selected lines appended at the end" }
   )
-  vim.keymap.set("n", [[<C-w>ee]], vim.cmd.History, { desc = "History" })
+  vim.keymap.set("n", [[<C-w>ee]], function()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line = cursor[1]
+    local lines = vim.api.nvim_buf_get_lines(
+      vim.api.nvim_get_current_buf(),
+      line - 1,
+      line - 1 + vim.v.count1,
+      true
+    )
+
+    local buffer = scratch.retained()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+    vim.opt_local.filetype = "sh"
+
+    vim.cmd [[0r !atuin search --format "{command}"]]
+    vim.cmd.normal [[G]]
+  end, { desc = "History with [count] lines" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
