@@ -958,7 +958,7 @@ local function set_bindings()
     vim.opt_local.filetype = "sh"
 
     vim.cmd [[0r !atuin search --format "{command}"]]
-    vim.cmd.normal [[G]]
+    vim.cmd.normal [[] G]]
   end, { desc = "History with [count] lines" })
   vim.keymap.set(
     "n",
