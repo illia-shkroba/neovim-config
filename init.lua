@@ -897,82 +897,96 @@ local function set_bindings()
     [[<Cmd>write ++p<CR>]],
     { desc = "write ++p" }
   )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<C-w>y]],
-    operator.expr {
-      function_ = function(lines)
-        local filetype = vim.opt_local.filetype._value
+  for _, lhs in pairs { [[<C-w>y]], [[<C-w><C-y>]] } do
+    vim.keymap.set(
+      { "n", "v" },
+      lhs,
+      operator.expr {
+        function_ = function(lines)
+          local filetype = vim.opt_local.filetype._value
 
-        local buffer = scratch.retained()
-        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, vim.split(lines, "\n"))
-        vim.opt_local.filetype = filetype
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Open a scratch window with selected lines" }
-  )
-  vim.keymap.set("n", [[<C-w>yy]], function()
-    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-    local line = cursor[1]
-    local lines = vim.api.nvim_buf_get_lines(
-      vim.api.nvim_get_current_buf(),
-      line - 1,
-      line - 1 + vim.v.count1,
-      true
+          local buffer = scratch.retained()
+          vim.api.nvim_buf_set_lines(
+            buffer,
+            0,
+            1,
+            false,
+            vim.split(lines, "\n")
+          )
+          vim.opt_local.filetype = filetype
+        end,
+        readonly = true,
+      },
+      { expr = true, desc = "Open a scratch window with selected lines" }
     )
+  end
+  for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
+    vim.keymap.set("n", lhs, function()
+      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+      local line = cursor[1]
+      local lines = vim.api.nvim_buf_get_lines(
+        vim.api.nvim_get_current_buf(),
+        line - 1,
+        line - 1 + vim.v.count1,
+        true
+      )
 
-    local filetype = vim.opt_local.filetype._value
+      local filetype = vim.opt_local.filetype._value
 
-    local buffer = scratch.retained()
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
-    vim.opt_local.filetype = filetype
-  end, { desc = "Open a scratch window with [count] lines" })
-  vim.keymap.set(
-    "n",
-    [[<C-w>e]],
-    operator.expr {
-      function_ = function(lines)
-        local buffer = scratch.retained()
-        vim.api.nvim_buf_set_lines(
-          buffer,
-          0,
-          1,
-          false,
-          vim.split(align(lines), "\n")
-        )
-        vim.opt_local.filetype = "sh"
+      local buffer = scratch.retained()
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+      vim.opt_local.filetype = filetype
+    end, { desc = "Open a scratch window with [count] lines" })
+  end
+  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
+    vim.keymap.set(
+      "n",
+      lhs,
+      operator.expr {
+        function_ = function(lines)
+          local buffer = scratch.retained()
+          vim.api.nvim_buf_set_lines(
+            buffer,
+            0,
+            1,
+            false,
+            vim.split(align(lines), "\n")
+          )
+          vim.opt_local.filetype = "sh"
 
-        vim.cmd [[0r !atuin search --format "{command}"]]
-        vim.cmd.normal [[j[ ]]
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "History with selected lines appended at the end" }
-  )
-  vim.keymap.set("n", [[<C-w>ee]], function()
-    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-    local line = cursor[1]
-    local lines = vim.api.nvim_buf_get_lines(
-      vim.api.nvim_get_current_buf(),
-      line - 1,
-      line - 1 + vim.v.count1,
-      true
+          vim.cmd [[0r !atuin search --format "{command}"]]
+          vim.cmd.normal [[j[ ]]
+        end,
+        readonly = true,
+      },
+      { expr = true, desc = "History with selected lines appended at the end" }
     )
+  end
+  for _, lhs in pairs { [[<C-w>ee]], [[<C-w><C-e><C-e>]] } do
+    vim.keymap.set("n", lhs, function()
+      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+      local line = cursor[1]
+      local lines = vim.api.nvim_buf_get_lines(
+        vim.api.nvim_get_current_buf(),
+        line - 1,
+        line - 1 + vim.v.count1,
+        true
+      )
 
-    local buffer = scratch.retained()
-    vim.api.nvim_buf_set_lines(
-      buffer,
-      0,
-      1,
-      false,
-      text.with_lines(align)(lines)
-    )
-    vim.opt_local.filetype = "sh"
+      local buffer = scratch.retained()
+      vim.api.nvim_buf_set_lines(
+        buffer,
+        0,
+        1,
+        false,
+        text.with_lines(align)(lines)
+      )
+      vim.opt_local.filetype = "sh"
 
-    vim.cmd [[0r !atuin search --format "{command}"]]
-    vim.cmd.normal [[] G]]
-  end, { desc = "History with [count] lines" })
+      vim.cmd [[0r !atuin search --format "{command}"]]
+      vim.cmd.normal [[] G]]
+    end, { desc = "History with [count] lines" })
+  end
   vim.keymap.set(
     "n",
     [[<leader>b]],
