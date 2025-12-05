@@ -16,6 +16,29 @@ local function empty_buffer(buffer_number)
     and vim.api.nvim_buf_get_lines(buffer_number, 0, 1, true)[1] == ""
 end
 
+local function remove_top_empty_line(buffer_number)
+  -- Keep the `'[` and `']` marks.
+  local changed_begin = vim.api.nvim_buf_get_mark(buffer_number, "[")
+  local changed_end = vim.api.nvim_buf_get_mark(buffer_number, "]")
+
+  vim.cmd.normal 'gg"_dd'
+
+  vim.api.nvim_buf_set_mark(
+    buffer_number,
+    "[",
+    changed_begin[1] - 1,
+    changed_begin[2],
+    {}
+  )
+  vim.api.nvim_buf_set_mark(
+    buffer_number,
+    "]",
+    changed_end[1] - 1,
+    changed_end[2],
+    {}
+  )
+end
+
 local function operator_line(operator_input)
   local input_chars = table.concat(operator_input.lines, "\n")
   local output_chars = operatorfunc_input(input_chars)
@@ -29,7 +52,7 @@ local function operator_line(operator_input)
 
   -- Remove empty line on top of the file after put.
   if end_of_file and empty_buffer_before_put then
-    vim.cmd.normal 'gg"_dd'
+    remove_top_empty_line(vim.api.nvim_get_current_buf())
   end
 end
 
@@ -104,7 +127,7 @@ local function operator_block_with_line_ends(operator_input)
 
   -- Remove empty line on top of the file after put.
   if end_of_file and empty_buffer_before_put then
-    vim.cmd.normal 'gg"_dd'
+    remove_top_empty_line(vim.api.nvim_get_current_buf())
   end
 end
 
