@@ -955,7 +955,7 @@ local function set_bindings()
           vim.opt_local.filetype = "sh"
 
           vim.cmd [[0r !atuin search --format "{command}"]]
-          vim.cmd.normal [[j[ ]]
+          vim.cmd.normal [[] G]]
         end,
         readonly = true,
       },
