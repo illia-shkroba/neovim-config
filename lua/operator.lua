@@ -4,6 +4,10 @@ local function operatorfunc_input(input_chars)
   return input_chars
 end
 
+local mode = {
+  blocking = false,
+  mode = "n",
+}
 local readonly = true
 local force_type = nil
 
@@ -157,6 +161,13 @@ local function operator(type_, operator_input)
   elseif type_ == "block" and not ends_with_newline(operator_input) then
     operator_block_normal(operator_input)
   end
+
+  if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
+    local changed_begin = vim.api.nvim_buf_get_mark(0, "[")
+    local changed_end = vim.api.nvim_buf_get_mark(0, "]")
+    vim.api.nvim_buf_set_mark(0, "<", changed_begin[1], changed_begin[2], {})
+    vim.api.nvim_buf_set_mark(0, ">", changed_end[1], changed_end[2], {})
+  end
 end
 
 local function operator_readonly(type_, operator_input)
@@ -218,6 +229,7 @@ end
 function M.expr(opts)
   return function()
     vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
+    mode = vim.api.nvim_get_mode()
 
     operatorfunc_input = opts.function_
 
