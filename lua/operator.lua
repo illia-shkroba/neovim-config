@@ -5,7 +5,7 @@ local function operatorfunc_input(input_chars)
 end
 
 local readonly = true
-local force_mode = nil
+local force_type = nil
 
 local function empty_buffer(buffer_number)
   return vim.api.nvim_buf_line_count(buffer_number) == 1
@@ -141,40 +141,40 @@ local function ends_with_newline(operator_input)
   end
 end
 
-local function operator(mode, operator_input)
+local function operator(type_, operator_input)
   local lines = operator_input.lines
   if #lines == 0 then
     vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
     return
   end
 
-  if mode == "line" then
+  if type_ == "line" then
     operator_line(operator_input)
-  elseif mode == "char" then
+  elseif type_ == "char" then
     operator_char(operator_input)
-  elseif mode == "block" and ends_with_newline(operator_input) then
+  elseif type_ == "block" and ends_with_newline(operator_input) then
     operator_block_with_line_ends(operator_input)
-  elseif mode == "block" and not ends_with_newline(operator_input) then
+  elseif type_ == "block" and not ends_with_newline(operator_input) then
     operator_block_normal(operator_input)
   end
 end
 
-local function operator_readonly(mode, operator_input)
+local function operator_readonly(type_, operator_input)
   local column_begin = operator_input.column_begin
   local column_end = operator_input.column_end
   local lines = operator_input.lines
 
   local operatorfunc_input_lines
 
-  if mode == "line" then
+  if type_ == "line" then
     operatorfunc_input_lines = lines
-  elseif mode == "char" then
+  elseif type_ == "char" then
     operatorfunc_input_lines =
       truncate_charwise(lines, column_begin, column_end)
-  elseif mode == "block" and ends_with_newline(operator_input) then
+  elseif type_ == "block" and ends_with_newline(operator_input) then
     operatorfunc_input_lines =
       truncate_blockwise_with_line_ends(lines, column_begin)
-  elseif mode == "block" and not ends_with_newline(operator_input) then
+  elseif type_ == "block" and not ends_with_newline(operator_input) then
     operatorfunc_input_lines =
       truncate_blockwise_normal(lines, column_begin, column_end)
   end
@@ -182,7 +182,7 @@ local function operator_readonly(mode, operator_input)
   operatorfunc_input(table.concat(operatorfunc_input_lines, "\n"))
 end
 
-function M.operatorfunc(mode)
+function M.operatorfunc(type_)
   local begin = vim.api.nvim_buf_get_mark(0, "[")
   local line_begin, column_begin = begin[1], begin[2]
 
@@ -204,16 +204,16 @@ function M.operatorfunc(mode)
     lines = lines,
   }
 
-  local forced_mode = force_mode == nil and mode or force_mode
+  local forced_type = force_type == nil and type_ or force_type
 
   if readonly then
-    operator_readonly(forced_mode, operator_input)
+    operator_readonly(forced_type, operator_input)
   else
-    operator(forced_mode, operator_input)
+    operator(forced_type, operator_input)
   end
 end
 
----@param opts {function_: fun, readonly?: boolean, force_mode?: string}
+---@param opts {function_: fun, readonly?: boolean, force_type?: string}
 ---@return fun(): string
 function M.expr(opts)
   return function()
@@ -226,10 +226,10 @@ function M.expr(opts)
     else
       readonly = opts.readonly
     end
-    if opts.force_mode == nil then
-      force_mode = nil
+    if opts.force_type == nil then
+      force_type = nil
     else
-      force_mode = opts.force_mode
+      force_type = opts.force_type
     end
 
     return [[g@]]
