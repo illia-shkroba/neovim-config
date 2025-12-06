@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 
 require "package-manager"
 
+local actions = require "plugins.fzf.actions"
 local case = require "text.case"
 local fzf = require "fzf-lua"
 local completion = require "plugins.fzf.pickers.completion"
@@ -356,12 +357,13 @@ local function set_bindings()
     fzf.git_bcommits,
     { desc = "List commits affecting current buffer" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>fg]],
-    pickers.grep_filetype,
-    { desc = "Grep files with extension" }
-  )
+  vim.keymap.set("n", [[<leader>fg]], function()
+    pickers.grep_filetype {
+      actions = {
+        ["enter"] = actions.live_grep_filetype,
+      },
+    }
+  end, { desc = "Grep files with extension" })
   vim.keymap.set("n", [[<leader>fw]], function()
     fzf.lines { query = "'" .. vim.fn.expand "<cword>" .. "'" }
   end, { desc = "Search for word under the cursor in buffers" })

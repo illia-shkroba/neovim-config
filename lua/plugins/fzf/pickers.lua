@@ -2,7 +2,13 @@ local M = {}
 
 local fzf = require "fzf-lua"
 
-function M.grep_filetype()
+function M.grep_filetype(opts)
+  opts = opts or {}
+  opts.winopts = opts.winopts ~= nil and opts.winopts
+    or {
+      title = " Filetypes Grep ",
+    }
+
   local current_filetype = vim.opt_local.filetype._value
   local filetypes = vim.fn.getcompletion("", "filetype")
 
@@ -17,36 +23,7 @@ function M.grep_filetype()
     table.insert(filetypes, 1, current_filetype)
   end
 
-  fzf.fzf_exec(filetypes, {
-    winopts = {
-      title = " Filetypes (Live Grep) ",
-    },
-    actions = {
-      ["enter"] = function(selected)
-        if vim.tbl_contains(selected, "") then
-          fzf.live_grep {
-            silent = true,
-          }
-        else
-          local type_options = {}
-
-          for _, sel in ipairs(selected) do
-            table.insert(type_options, "--type=" .. sel)
-          end
-
-          fzf.live_grep {
-            winopts = {
-              title = " Grep (" .. table.concat(selected, ", ") .. ") ",
-            },
-            silent = true,
-            rg_opts = table.concat(type_options, " ")
-              .. " --column --line-number --no-heading --color=always --smart-case"
-              .. " --max-columns=4096 -e",
-          }
-        end
-      end,
-    },
-  })
+  fzf.fzf_exec(filetypes, opts)
 end
 
 return M
