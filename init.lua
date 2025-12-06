@@ -359,7 +359,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>fg]],
-    pickers.live_grep_filetype,
+    pickers.grep_filetype,
     { desc = "Grep files with extension" }
   )
   vim.keymap.set("n", [[<leader>fw]], function()

@@ -2,12 +2,11 @@ local M = {}
 
 local fzf = require "fzf-lua"
 
-function M.live_grep_filetype()
+function M.grep_filetype()
   local current_filetype = vim.opt_local.filetype._value
   local filetypes = vim.fn.getcompletion("", "filetype")
 
-  -- "" file type resembles "no file type". After "" file type is selected,
-  -- `live_grep_filetype` works as a plain `live_grep`.
+  -- "" file type resembles "no file type".
   table.insert(filetypes, 1, "")
 
   -- Put `current_filetype` first in the result's list.
