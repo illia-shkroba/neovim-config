@@ -387,9 +387,17 @@ local function set_bindings()
       },
     }
   end, { desc = "Grep files with extension" })
-  vim.keymap.set("n", [[<leader>fw]], function()
-    fzf.lines { query = "'" .. vim.fn.expand "<cword>" .. "'" }
-  end, { desc = "Search for word under the cursor in buffers" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fw]],
+    operator.expr {
+      function_ = function(search)
+        fzf.lines { query = "'" .. search }
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Search in buffers using search selected by motion" }
+  )
   vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
     "n",
