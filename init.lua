@@ -357,7 +357,30 @@ local function set_bindings()
     fzf.git_bcommits,
     { desc = "List commits affecting current buffer" }
   )
-  vim.keymap.set("n", [[<leader>fg]], function()
+  vim.keymap.set(
+    "n",
+    [[<leader>fg]],
+    operator.expr {
+      function_ = function(search)
+        pickers.grep_filetype {
+          winopts = {
+            title = " Filetypes Grep (" .. search .. ") ",
+          },
+          actions = {
+            ["enter"] = function(selected)
+              actions.grep_filetype(search, selected)
+            end,
+          },
+        }
+      end,
+      readonly = true,
+    },
+    {
+      expr = true,
+      desc = "Grep files with extension using search selected by motion",
+    }
+  )
+  vim.keymap.set("n", [[<leader>fG]], function()
     pickers.grep_filetype {
       actions = {
         ["enter"] = actions.live_grep_filetype,
