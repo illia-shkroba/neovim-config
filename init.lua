@@ -1106,6 +1106,33 @@ local function set_commands()
     end,
     { desc = "Open a scratch window with a Shell history fetched from atuin" }
   )
+  vim.api.nvim_create_user_command("Mails", function(opts)
+    local root = vim.env.MAIL
+    if #opts.fargs > 0 then
+      local topic = opts.fargs[1]
+      root = vim.fs.joinpath(root, topic)
+    end
+
+    fzf.live_grep {
+      cwd = root,
+      silent = true,
+      rg_opts = "--column --line-number"
+        .. " --pre markitdown-wrapper --smart-case --text --hidden --no-ignore",
+    }
+  end, {
+    nargs = "?",
+    complete = function(arg_lead)
+      local root = vim.env.MAIL
+      local topics = {}
+
+      for item, type_ in vim.fs.dir(root, { depth = 1 }) do
+        if type_ == "directory" and item:sub(1, #arg_lead) == arg_lead then
+          table.insert(topics, item)
+        end
+      end
+      return topics
+    end,
+  })
   vim.api.nvim_create_user_command("Mv", function(opts)
     local dest
     if vim.fn.isdirectory(opts.fargs[1]) == 1 then
@@ -1129,6 +1156,16 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
       vim.opt_local.include = ""
+    end,
+  })
+  vim.api.nvim_create_autocmd("BufWinEnter", {
+    pattern = "*.msg",
+    callback = function()
+      scratch.retained()
+      vim.opt_local.filetype = "markdown"
+
+      vim.cmd [[0r !markitdown-wrapper '#']]
+      vim.cmd.normal [[gg]]
     end,
   })
   -- Show most recent commit when entering "COMMIT_EDITMSG".
