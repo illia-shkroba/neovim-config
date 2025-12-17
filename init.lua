@@ -276,7 +276,7 @@ local function set_bindings()
 
       local buffer = vim.api.nvim_get_current_buf()
       vim.api.nvim_buf_set_lines(buffer, 0, -1, false, dumped)
-      vim.opt_local.filetype = "qf"
+      vim.opt_local.filetype = "sh"
     end
   end
 
