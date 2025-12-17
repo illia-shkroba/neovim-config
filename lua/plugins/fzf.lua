@@ -152,6 +152,19 @@ return {
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
+      loclist = {
+        actions = {
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+          ["ctrl-z"] = { fn = fzf.actions.list_del, reload = true },
+        },
+      },
+      loclist_stack = {
+        actions = {
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+        },
+      },
       lsp = {
         workspace_symbols = {
           actions = {
