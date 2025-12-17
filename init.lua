@@ -955,13 +955,22 @@ local function set_bindings()
   end
   for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
     vim.keymap.set("n", lhs, function()
+      local origin_buffer = vim.api.nvim_get_current_buf()
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
       local line = cursor[1]
       local lines = vim.api.nvim_buf_get_lines(
-        vim.api.nvim_get_current_buf(),
+        origin_buffer,
         line - 1,
         line - 1 + vim.v.count1,
         true
+      )
+      vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
+      vim.api.nvim_buf_set_mark(
+        origin_buffer,
+        "]",
+        line - 1 + vim.v.count1,
+        0,
+        {}
       )
 
       local filetype = vim.opt_local.filetype._value
@@ -997,13 +1006,22 @@ local function set_bindings()
   end
   for _, lhs in pairs { [[<C-w>ee]], [[<C-w><C-e><C-e>]] } do
     vim.keymap.set("n", lhs, function()
+      local origin_buffer = vim.api.nvim_get_current_buf()
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
       local line = cursor[1]
       local lines = vim.api.nvim_buf_get_lines(
-        vim.api.nvim_get_current_buf(),
+        origin_buffer,
         line - 1,
         line - 1 + vim.v.count1,
         true
+      )
+      vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
+      vim.api.nvim_buf_set_mark(
+        origin_buffer,
+        "]",
+        line - 1 + vim.v.count1,
+        0,
+        {}
       )
 
       local buffer = scratch.retained()
