@@ -33,7 +33,7 @@ vim.opt_local.errorformat = "%-G,"
   .. "%W%>%f:%l:%c:,"
 
 local stylish_config = vim.fn.stdpath "config"
-  .. "/etc/options/file-type-options/haskell/stylish-haskell.yaml"
+  .. "/etc/options/filetype-options/haskell/stylish-haskell.yaml"
 vim.opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
 vim.keymap.set(
