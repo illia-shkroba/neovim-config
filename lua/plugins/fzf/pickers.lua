@@ -1,6 +1,7 @@
 local M = {}
 
 local fzf = require "fzf-lua"
+local filetypes = require "filetypes"
 
 function M.grep_filetype(opts)
   opts = opts or {}
@@ -9,21 +10,21 @@ function M.grep_filetype(opts)
       title = " Filetypes Grep ",
     }
 
-  local current_filetype = vim.opt_local.filetype._value
-  local filetypes = vim.fn.getcompletion("", "filetype")
+  local matching_filetypes = filetypes.match_rg(vim.opt_local.filetype._value)
+  local all_filetypes = vim.deepcopy(filetypes.rg)
 
-  -- "" file type resembles "no file type".
-  table.insert(filetypes, 1, "")
+  local other_filetypes = vim.tbl_filter(function(x)
+    return not vim.tbl_contains(matching_filetypes, x)
+  end, all_filetypes)
 
-  -- Put `current_filetype` first in the result's list.
-  if current_filetype ~= "" then
-    filetypes = vim.tbl_filter(function(x)
-      return x ~= current_filetype
-    end, filetypes)
-    table.insert(filetypes, 1, current_filetype)
+  for _, filetype in pairs(other_filetypes) do
+    table.insert(matching_filetypes, filetype)
   end
 
-  fzf.fzf_exec(filetypes, opts)
+  -- "" file type resembles "no file type".
+  table.insert(matching_filetypes, 1, "")
+
+  fzf.fzf_exec(matching_filetypes, opts)
 end
 
 return M
