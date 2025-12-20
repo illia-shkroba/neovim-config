@@ -10,8 +10,7 @@ local function read(path)
       "Unable to read `"
         .. path
         .. "` file. Run `"
-        .. config
-        .. "/etc/filetypes/gen.sh"
+        .. vim.fs.joinpath(config, "etc", "filetypes", "gen.sh")
         .. "` script.",
       vim.log.levels.ERROR
     )
@@ -26,8 +25,9 @@ local function read(path)
   return contents
 end
 
-M.nvim_to_rg = read(config .. "/etc/filetypes/nvim-to-rg.json")
-M.rg = read(config .. "/etc/filetypes/rg.json")
+M.nvim_to_rg =
+  read(vim.fs.joinpath(config, "etc", "filetypes", "nvim-to-rg.json"))
+M.rg = read(vim.fs.joinpath(config, "etc", "filetypes", "rg.json"))
 
 local function glob(path, pattern)
   return vim.glob.to_lpeg(pattern):match(path) ~= nil
