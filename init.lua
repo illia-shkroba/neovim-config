@@ -362,7 +362,7 @@ local function set_bindings()
     [[<leader>fg]],
     operator.expr {
       function_ = function(search)
-        pickers.grep_filetype {
+        pickers.rg_filetypes {
           winopts = {
             title = " Filetypes Grep (" .. search .. ") ",
           },
@@ -381,7 +381,7 @@ local function set_bindings()
     }
   )
   vim.keymap.set("n", [[<leader>fG]], function()
-    pickers.grep_filetype {
+    pickers.rg_filetypes {
       actions = {
         ["enter"] = actions.live_grep_filetype,
       },
