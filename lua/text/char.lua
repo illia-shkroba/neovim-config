@@ -2,7 +2,7 @@ local M = {}
 
 local utils = require "utils"
 
-function M.substitute_char_prompt(xs)
+function M.substitute_prompt(xs)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
@@ -36,10 +36,10 @@ function M.substitute_char_prompt(xs)
     substitution = insertable_newline
   end
 
-  return M.substitute_char(xs, target, substitution)
+  return M.substitute(xs, target, substitution)
 end
 
-function M.substitute_char(xs, target, substitution)
+function M.substitute(xs, target, substitution)
   local acc = ""
 
   local i = 1
@@ -54,7 +54,7 @@ function M.substitute_char(xs, target, substitution)
   return acc
 end
 
-function M.prepend_char_prompt(xs)
+function M.prepend_prompt(xs)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
@@ -86,10 +86,10 @@ function M.prepend_char_prompt(xs)
     prefix = insertable_newline
   end
 
-  return M.prepend_char(xs, target, prefix)
+  return M.prepend(xs, target, prefix)
 end
 
-function M.prepend_char(xs, target, prefix)
+function M.prepend(xs, target, prefix)
   local acc = ""
 
   local i = 1
@@ -104,7 +104,7 @@ function M.prepend_char(xs, target, prefix)
   return acc
 end
 
-function M.append_char_prompt(xs)
+function M.append_prompt(xs)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
@@ -136,10 +136,10 @@ function M.append_char_prompt(xs)
     suffix = insertable_newline
   end
 
-  return M.append_char(xs, target, suffix)
+  return M.append(xs, target, suffix)
 end
 
-function M.append_char(xs, target, suffix)
+function M.append(xs, target, suffix)
   local acc = ""
 
   local i = 1

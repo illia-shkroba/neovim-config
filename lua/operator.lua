@@ -1,7 +1,20 @@
 local M = {}
 
-local function operatorfunc_input(input_chars)
+local text = require "text"
+local linewise = require "text.linewise"
+local charwise = require "text.charwise"
+local blockwise = require "text.blockwise"
+
+---@param input_chars string
+---@return string
+local function operatorfunc_(input_chars)
   return input_chars
+end
+
+---@param input_lines table<integer, string>
+---@return table<integer, string>
+local function operatorfunc_lines_(input_lines)
+  return input_lines
 end
 
 local mode = {
@@ -11,226 +24,111 @@ local mode = {
 local readonly = true
 local force_type = nil
 
-local function empty_buffer(buffer_number)
-  return vim.api.nvim_buf_line_count(buffer_number) == 1
-    and vim.api.nvim_buf_get_lines(buffer_number, 0, 1, true)[1] == ""
+---@param region Region
+---@return nil
+local function operator_line(region)
+  local output_lines = operatorfunc_lines_(region.lines)
+  linewise.substitute(region, output_lines)
 end
 
-local function remove_top_empty_line(buffer_number)
-  -- Keep the `'[` and `']` marks.
-  local changed_begin = vim.api.nvim_buf_get_mark(buffer_number, "[")
-  local changed_end = vim.api.nvim_buf_get_mark(buffer_number, "]")
-
-  vim.cmd.normal 'gg"_dd'
-
-  vim.api.nvim_buf_set_mark(
-    buffer_number,
-    "[",
-    changed_begin[1] - 1,
-    changed_begin[2],
-    {}
-  )
-  vim.api.nvim_buf_set_mark(
-    buffer_number,
-    "]",
-    changed_end[1] - 1,
-    changed_end[2],
-    {}
-  )
+---@param region Region
+---@return nil
+local function operator_char(region)
+  local truncated_lines = charwise.truncate(region)
+  local output_lines = operatorfunc_lines_(truncated_lines)
+  charwise.substitute(region, output_lines)
 end
 
-local function operator_line(operator_input)
-  local input_chars = table.concat(operator_input.lines, "\n")
-  local output_chars = operatorfunc_input(input_chars)
-  local output_lines = vim.split(output_chars, "\n")
-
-  local end_of_file = operator_input.line_end == vim.api.nvim_buf_line_count(0)
-  vim.cmd.normal "'[\"_d']"
-
-  local empty_buffer_before_put = empty_buffer(vim.api.nvim_get_current_buf())
-  vim.api.nvim_put(output_lines, "l", end_of_file, false)
-
-  -- Remove empty line on top of the file after put.
-  if end_of_file and empty_buffer_before_put then
-    remove_top_empty_line(vim.api.nvim_get_current_buf())
-  end
+---@param region Region
+---@return nil
+local function operator_block_with_line_ends(region)
+  local truncated_lines = blockwise.truncate_with_line_ends(region)
+  local output_lines = operatorfunc_lines_(truncated_lines)
+  blockwise.substitute_with_line_ends(region, output_lines)
 end
 
-local function truncate_charwise(lines, column_begin, column_end)
-  if #lines == 0 then
-    return lines
-  end
-
-  local truncated_lines = vim.deepcopy(lines)
-  truncated_lines[#lines] = lines[#lines]:sub(1, column_end + 1)
-  truncated_lines[1] = truncated_lines[1]:sub(column_begin + 1)
-  return truncated_lines
+---@param region Region
+---@return nil
+local function operator_block_normal(region)
+  local truncated_lines = blockwise.truncate_normal(region)
+  local output_lines = operatorfunc_lines_(truncated_lines)
+  blockwise.substitute_normal(region, output_lines)
 end
 
-local function ends_with_eol(operator_input)
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
-  if #lines > 0 then
-    return (column_end + 1) >= #lines[#lines]
-  else
-    return false
-  end
-end
-
-local function operator_char(operator_input)
-  local column_begin = operator_input.column_begin
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
-  local truncated_lines = truncate_charwise(lines, column_begin, column_end)
-  local input_chars = table.concat(truncated_lines, "\n")
-  local output_chars = operatorfunc_input(input_chars)
-  local output_lines = vim.split(output_chars, "\n")
-
-  vim.cmd.normal '`["_dv`]'
-  vim.api.nvim_put(output_lines, "c", ends_with_eol(operator_input), false)
-end
-
-local function truncate_blockwise_with_line_ends(lines, column_begin)
-  local truncated_lines = {}
-  for _, line in pairs(lines) do
-    table.insert(truncated_lines, line:sub(column_begin + 1))
-  end
-  return truncated_lines
-end
-
-local function operator_block_with_line_ends(operator_input)
-  local column_begin = operator_input.column_begin
-  local line_end = operator_input.line_end
-  local lines = operator_input.lines
-
-  local truncated_lines = truncate_blockwise_with_line_ends(lines, column_begin)
-  local input_chars = table.concat(truncated_lines, "\n")
-  local output_chars = operatorfunc_input(input_chars)
-  local output_lines = vim.split(output_chars, "\n")
-
-  local put_lines = {}
-  local n = math.min(#lines, #output_lines)
-  for i = 1, n do
-    table.insert(put_lines, lines[i]:sub(1, column_begin) .. output_lines[i])
-  end
-  for i = n + 1, #lines do
-    table.insert(put_lines, lines[i]:sub(1, column_begin))
-  end
-
-  local end_of_file = line_end == vim.api.nvim_buf_line_count(0)
-  vim.cmd.normal "'[\"_d']"
-
-  local empty_buffer_before_put = empty_buffer(vim.api.nvim_get_current_buf())
-  vim.api.nvim_put(put_lines, "l", end_of_file, false)
-
-  -- Remove empty line on top of the file after put.
-  if end_of_file and empty_buffer_before_put then
-    remove_top_empty_line(vim.api.nvim_get_current_buf())
-  end
-end
-
-local function truncate_blockwise_normal(lines, column_begin, column_end)
-  local truncated_lines = {}
-  for _, line in pairs(lines) do
-    table.insert(
-      truncated_lines,
-      line:sub(1, column_end + 1):sub(column_begin + 1)
-    )
-  end
-  return truncated_lines
-end
-
-local function operator_block_normal(operator_input)
-  local column_begin = operator_input.column_begin
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
-  local truncated_lines =
-    truncate_blockwise_normal(lines, column_begin, column_end)
-  local input_chars = table.concat(truncated_lines, "\n")
-  local output_chars = operatorfunc_input(input_chars)
-  local output_lines = vim.split(output_chars, "\n")
-
-  vim.cmd.normal '`["_d`]'
-  vim.api.nvim_put(output_lines, "b", false, false)
-end
-
-local function ends_with_newline(operator_input)
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
-  if #lines > 0 then
-    return column_end + 1 > #lines[#lines]
-  else
-    return false
-  end
-end
-
-local function operator(type_, operator_input)
-  local lines = operator_input.lines
-  if #lines == 0 then
+---@param type_ "line"|"char"|"block"
+---@param region Region
+---@return nil
+local function operator(type_, region)
+  if #region.lines == 0 then
     vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
     return
   end
 
   if type_ == "line" then
-    operator_line(operator_input)
+    operator_line(region)
   elseif type_ == "char" then
-    operator_char(operator_input)
-  elseif type_ == "block" and ends_with_newline(operator_input) then
-    operator_block_with_line_ends(operator_input)
-  elseif type_ == "block" and not ends_with_newline(operator_input) then
-    operator_block_normal(operator_input)
+    operator_char(region)
+  elseif type_ == "block" and text.ends_with_newline(region) then
+    operator_block_with_line_ends(region)
+  elseif type_ == "block" and not text.ends_with_newline(region) then
+    operator_block_normal(region)
   end
 
   if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
-    local changed_begin = vim.api.nvim_buf_get_mark(0, "[")
-    local changed_end = vim.api.nvim_buf_get_mark(0, "]")
-    vim.api.nvim_buf_set_mark(0, "<", changed_begin[1], changed_begin[2], {})
-    vim.api.nvim_buf_set_mark(0, ">", changed_end[1], changed_end[2], {})
+    local changed_begin = vim.api.nvim_buf_get_mark(region.buffer_number, "[")
+    local changed_end = vim.api.nvim_buf_get_mark(region.buffer_number, "]")
+    vim.api.nvim_buf_set_mark(
+      region.buffer_number,
+      "<",
+      changed_begin[1],
+      changed_begin[2],
+      {}
+    )
+    vim.api.nvim_buf_set_mark(
+      region.buffer_number,
+      ">",
+      changed_end[1],
+      changed_end[2],
+      {}
+    )
   end
 end
 
-local function operator_readonly(type_, operator_input)
-  local column_begin = operator_input.column_begin
-  local column_end = operator_input.column_end
-  local lines = operator_input.lines
-
-  local operatorfunc_input_lines
+---@param type_ "line"|"char"|"block"
+---@param region Region
+---@return nil
+local function operator_readonly(type_, region)
+  local truncated_lines
 
   if type_ == "line" then
-    operatorfunc_input_lines = lines
+    truncated_lines = region.lines
   elseif type_ == "char" then
-    operatorfunc_input_lines =
-      truncate_charwise(lines, column_begin, column_end)
-  elseif type_ == "block" and ends_with_newline(operator_input) then
-    operatorfunc_input_lines =
-      truncate_blockwise_with_line_ends(lines, column_begin)
-  elseif type_ == "block" and not ends_with_newline(operator_input) then
-    operatorfunc_input_lines =
-      truncate_blockwise_normal(lines, column_begin, column_end)
+    truncated_lines = charwise.truncate(region)
+  elseif type_ == "block" and text.ends_with_newline(region) then
+    truncated_lines = blockwise.truncate_with_line_ends(region)
+  elseif type_ == "block" and not text.ends_with_newline(region) then
+    truncated_lines = blockwise.truncate_normal(region)
   end
 
-  operatorfunc_input(table.concat(operatorfunc_input_lines, "\n"))
+  operatorfunc_(table.concat(truncated_lines, "\n"))
 end
 
+---@param type_ "line"|"char"|"block"
+---@return nil
 function M.operatorfunc(type_)
-  local begin = vim.api.nvim_buf_get_mark(0, "[")
+  local buffer_number = vim.api.nvim_get_current_buf()
+
+  local begin = vim.api.nvim_buf_get_mark(buffer_number, "[")
   local line_begin, column_begin = begin[1], begin[2]
 
-  local end_ = vim.api.nvim_buf_get_mark(0, "]")
+  local end_ = vim.api.nvim_buf_get_mark(buffer_number, "]")
   local line_end, column_end = end_[1], end_[2]
 
-  local lines = vim.api.nvim_buf_get_lines(
-    vim.api.nvim_get_current_buf(),
-    line_begin - 1,
-    line_end,
-    true
-  )
+  local lines =
+    vim.api.nvim_buf_get_lines(buffer_number, line_begin - 1, line_end, true)
 
-  local operator_input = {
+  local region = {
+    buffer_number = buffer_number,
     line_begin = line_begin,
     column_begin = column_begin,
     line_end = line_end,
@@ -238,12 +136,12 @@ function M.operatorfunc(type_)
     lines = lines,
   }
 
-  local forced_type = force_type == nil and type_ or force_type
+  local forced_type = force_type or type_
 
   if readonly then
-    operator_readonly(forced_type, operator_input)
+    operator_readonly(forced_type, region)
   else
-    operator(forced_type, operator_input)
+    operator(forced_type, region)
   end
 end
 
@@ -254,7 +152,8 @@ function M.expr(opts)
     vim.opt.operatorfunc = "v:lua.require'operator'.operatorfunc"
     mode = vim.api.nvim_get_mode()
 
-    operatorfunc_input = opts.function_
+    operatorfunc_ = opts.function_
+    operatorfunc_lines_ = text.with_lines(opts.function_)
 
     if opts.readonly == nil then
       readonly = false

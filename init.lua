@@ -13,7 +13,7 @@ local pickers = require "plugins.fzf.pickers"
 local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
-local substitute = require "text.substitute"
+local char = require "text.char"
 local text = require "text"
 local utils = require "utils"
 
@@ -588,7 +588,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>A]],
-    operator.expr { function_ = substitute.append_char_prompt },
+    operator.expr { function_ = char.append_prompt },
     {
       expr = true,
       silent = true,
@@ -598,7 +598,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>a]],
-    operator.expr { function_ = substitute.prepend_char_prompt },
+    operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
       silent = true,
@@ -616,7 +616,7 @@ local function set_bindings()
     [[<leader>S]],
     operator.expr {
       function_ = function(xs)
-        return substitute.substitute_char(xs, " ", "_")
+        return char.substitute(xs, " ", "_")
       end,
     },
     {
@@ -628,7 +628,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>s]],
-    operator.expr { function_ = substitute.substitute_char_prompt },
+    operator.expr { function_ = char.substitute_prompt },
     {
       expr = true,
       silent = true,
@@ -638,13 +638,13 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>A]],
-    operator.expr { function_ = substitute.append_char_prompt },
+    operator.expr { function_ = char.append_prompt },
     { expr = true, silent = true, desc = "Append character in visual area" }
   )
   vim.keymap.set(
     "v",
     [[<leader>a]],
-    operator.expr { function_ = substitute.prepend_char_prompt },
+    operator.expr { function_ = char.prepend_prompt },
     { expr = true, silent = true, desc = "Prepend character in visual area" }
   )
   vim.keymap.set(
@@ -652,7 +652,7 @@ local function set_bindings()
     [[<leader>S]],
     operator.expr {
       function_ = function(xs)
-        return substitute.substitute_char(xs, " ", "_")
+        return char.substitute(xs, " ", "_")
       end,
     },
     {
@@ -664,7 +664,7 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<leader>s]],
-    operator.expr { function_ = substitute.substitute_char_prompt },
+    operator.expr { function_ = char.substitute_prompt },
     { expr = true, silent = true, desc = "Substitute character in visual area" }
   )
 
