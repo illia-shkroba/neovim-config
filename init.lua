@@ -360,18 +360,7 @@ local function set_bindings()
     "n",
     [[<leader>fg]],
     operator.expr {
-      function_ = function(search)
-        pickers.rg_filetypes {
-          winopts = {
-            title = " Filetypes Grep (" .. search .. ") ",
-          },
-          actions = {
-            ["enter"] = function(selected)
-              pickers.grep_by_filetype(search, selected)
-            end,
-          },
-        }
-      end,
+      function_ = pickers.grep_by_filetype,
       readonly = true,
     },
     {
@@ -379,13 +368,12 @@ local function set_bindings()
       desc = "Grep files with extension using search selected by motion",
     }
   )
-  vim.keymap.set("n", [[<leader>fG]], function()
-    pickers.rg_filetypes {
-      actions = {
-        ["enter"] = pickers.live_grep_by_filetype,
-      },
-    }
-  end, { desc = "Grep files with extension" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fG]],
+    pickers.live_grep_by_filetype,
+    { desc = "Grep files with extension" }
+  )
   vim.keymap.set(
     "n",
     [[<leader>fw]],

@@ -3,49 +3,47 @@ local M = {}
 local fzf = require "fzf-lua"
 local filetypes = require "filetypes"
 
-function M.grep_by_filetype(search, selected)
-  if vim.tbl_contains(selected, "") then
-    fzf.grep {
-      silent = true,
-      search = search,
-    }
-  else
-    local type_options = {}
+local function grep_by_filetype(picker, search, matching_filetypes)
+  if matching_filetypes == nil then
+    local filetype = vim.opt_local.filetype._value
+    local filename = vim.fs.basename(vim.api.nvim_buf_get_name(0))
 
-    for _, sel in ipairs(selected) do
-      table.insert(type_options, "--type=" .. sel)
-    end
-
-    fzf.grep {
-      winopts = {
-        title = " Grep (" .. table.concat(selected, ", ") .. ") ",
-      },
-      silent = true,
-      search = search,
-      rg_opts = table.concat(type_options, " ")
-        .. " --column --line-number --no-heading --color=always --smart-case"
-        .. " --max-columns=4096 -e",
-    }
+    matching_filetypes = filetypes.match_rg(filetype, filename)
   end
-end
 
-function M.live_grep_by_filetype(selected)
-  if vim.tbl_contains(selected, "") then
-    fzf.live_grep {
+  if matching_filetypes == {} or vim.tbl_contains(matching_filetypes, "") then
+    picker {
       silent = true,
+      search = search,
     }
   else
     local type_options = {}
 
-    for _, sel in ipairs(selected) do
+    for _, sel in ipairs(matching_filetypes) do
       table.insert(type_options, "--type=" .. sel)
     end
 
-    fzf.live_grep {
+    picker {
       winopts = {
-        title = " Grep (" .. table.concat(selected, ", ") .. ") ",
+        title = " Grep (" .. table.concat(matching_filetypes, ", ") .. ") ",
+      },
+      actions = {
+        ["alt-t"] = function()
+          M.rg_filetypes {
+            winopts = {
+              title = search and " Filetypes Grep (" .. search .. ") "
+                or " Filetypes Grep ",
+            },
+            actions = {
+              ["enter"] = function(selected)
+                grep_by_filetype(picker, search, selected)
+              end,
+            },
+          }
+        end,
       },
       silent = true,
+      search = search,
       rg_opts = table.concat(type_options, " ")
         .. " --column --line-number --no-heading --color=always --smart-case"
         .. " --max-columns=4096 -e",
@@ -64,6 +62,14 @@ function M.rg_filetypes(opts)
   -- "" file type resembles "no file type".
   table.insert(all_filetypes, 1, "")
   fzf.fzf_exec(all_filetypes, opts)
+end
+
+function M.grep_by_filetype(search, matching_filetypes)
+  grep_by_filetype(fzf.grep, search, matching_filetypes)
+end
+
+function M.live_grep_by_filetype(matching_filetypes)
+  grep_by_filetype(fzf.live_grep, nil, matching_filetypes)
 end
 
 return M
