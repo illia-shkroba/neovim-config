@@ -710,6 +710,17 @@ local function set_bindings()
     return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
   vim.keymap.set(
+    "n",
+    [[<leader>/]],
+    operator.expr {
+      function_ = function(search)
+        vim.fn.setreg("/", "\\V" .. search)
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Set selection by motion to / register" }
+  )
+  vim.keymap.set(
     "v",
     [[<leader>#]],
     operator.expr {
@@ -734,6 +745,21 @@ local function set_bindings()
       readonly = true,
     },
     { expr = true, desc = "Same as *, but without \\< and \\>" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>/]],
+    operator.expr {
+      function_ = function(search)
+        vim.fn.setreg("/", "\\V" .. search)
+      end,
+      readonly = true,
+    },
+    {
+      expr = true,
+      silent = true,
+      desc = "Set selection by visual to / register",
+    }
   )
 
   -- cmdline
