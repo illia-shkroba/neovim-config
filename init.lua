@@ -3,7 +3,6 @@ vim.g.mapleader = " "
 
 require "package-manager"
 
-local actions = require "plugins.fzf.actions"
 local case = require "text.case"
 local fzf = require "fzf-lua"
 local completion = require "plugins.fzf.pickers.completion"
@@ -368,7 +367,7 @@ local function set_bindings()
           },
           actions = {
             ["enter"] = function(selected)
-              actions.grep_filetype(search, selected)
+              pickers.grep_by_filetype(search, selected)
             end,
           },
         }
@@ -383,7 +382,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>fG]], function()
     pickers.rg_filetypes {
       actions = {
-        ["enter"] = actions.live_grep_filetype,
+        ["enter"] = pickers.live_grep_by_filetype,
       },
     }
   end, { desc = "Grep files with extension" })
