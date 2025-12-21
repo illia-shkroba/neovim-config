@@ -323,12 +323,6 @@ local function set_bindings()
     { desc = "Open neoclip" }
   )
   vim.keymap.set(
-    { "n", "v" },
-    [[<leader>/]],
-    fzf.blines,
-    { desc = "Grep current buffer or visually selected lines" }
-  )
-  vim.keymap.set(
     { "n" },
     [[<leader>;]],
     fzf.command_history,
@@ -348,6 +342,12 @@ local function set_bindings()
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
   vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>f/]],
+    fzf.blines,
+    { desc = "Grep current buffer or visually selected lines" }
+  )
   vim.keymap.set("n", [[<leader>fB]], function()
     fzf.lines()
   end, { desc = "Grep buffers" })
