@@ -34,6 +34,7 @@ local function set_options()
   vim.opt.formatoptions = "tcro/qnl1j"
   vim.opt.hidden = true
   vim.opt.hlsearch = true
+  vim.opt.ignorecase = false
   vim.opt.inccommand = "split"
   vim.opt.incsearch = true
   vim.opt.jumpoptions = { "stack" }
