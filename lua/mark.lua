@@ -20,7 +20,7 @@ function M.with_marks(frozen_marks)
     vim.api.nvim_buf_set_mark(
       frozen_marks.buffer_number,
       mark,
-      value[1] - 1,
+      value[1],
       value[2],
       {}
     )
