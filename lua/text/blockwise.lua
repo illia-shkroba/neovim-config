@@ -1,7 +1,8 @@
 local M = {}
 
-local text = require "text"
 local linewise = require "text.linewise"
+local mark = require "mark"
+local text = require "text"
 
 ---@param region Region
 ---@param target table<integer, string>|nil
@@ -22,7 +23,14 @@ function M.substitute_with_line_ends(region, target)
 
   local end_of_file = region.line_end
     == vim.api.nvim_buf_line_count(region.buffer_number)
-  vim.cmd.normal "'[\"_d']"
+
+  vim.api.nvim_buf_set_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    false,
+    {}
+  )
 
   local empty_buffer_before_put = text.empty_buffer(region.buffer_number)
   vim.api.nvim_put(put_lines, "l", end_of_file, false)
@@ -38,8 +46,45 @@ end
 ---@return nil
 function M.substitute_normal(region, target)
   target = target or region.lines
-  vim.cmd.normal '`["_d`]'
+  M.delete(region)
   vim.api.nvim_put(target, "b", false, false)
+end
+
+---@param region Region
+---@return nil
+function M.delete(region)
+  local function delete()
+    mark.with_marks {
+      buffer_number = region.buffer_number,
+      marks = { "[", "]" },
+      function_ = function()
+        vim.api.nvim_buf_set_mark(
+          region.buffer_number,
+          "[",
+          region.line_begin,
+          region.column_begin,
+          {}
+        )
+        vim.api.nvim_buf_set_mark(
+          region.buffer_number,
+          "]",
+          region.line_end,
+          region.column_end,
+          {}
+        )
+        vim.cmd.normal '`["_d`]'
+      end,
+    }
+  end
+
+  local current_buffer_number = vim.api.nvim_get_current_buf()
+  if current_buffer_number == region.buffer_number then
+    delete()
+  else
+    vim.cmd.buffer(region.buffer_number)
+    delete()
+    vim.cmd.buffer(current_buffer_number)
+  end
 end
 
 ---@param region Region

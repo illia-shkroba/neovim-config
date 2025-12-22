@@ -10,7 +10,14 @@ function M.substitute(region, target)
   target = target or region.lines
   local end_of_file = region.line_end
     == vim.api.nvim_buf_line_count(region.buffer_number)
-  vim.cmd.normal "'[\"_d']"
+
+  vim.api.nvim_buf_set_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    false,
+    {}
+  )
 
   local empty_buffer_before_put = text.empty_buffer(region.buffer_number)
   vim.api.nvim_put(target, "l", end_of_file, false)
@@ -28,7 +35,7 @@ function M.remove_top_empty_line(buffer_number)
     buffer_number = buffer_number,
     marks = { "[", "]" },
     function_ = function()
-      vim.cmd.normal 'gg"_dd'
+      vim.api.nvim_buf_set_lines(buffer_number, 0, 1, false, {})
     end,
   }
 end

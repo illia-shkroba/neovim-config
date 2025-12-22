@@ -7,7 +7,16 @@ local text = require "text"
 ---@return nil
 function M.substitute(region, target)
   target = target or region.lines
-  vim.cmd.normal '`["_dv`]'
+
+  vim.api.nvim_buf_set_text(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.column_begin,
+    region.line_end - 1,
+    region.column_end + 1,
+    {}
+  )
+
   vim.api.nvim_put(target, "c", text.ends_with_eol(region), false)
 end
 
