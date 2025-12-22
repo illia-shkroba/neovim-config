@@ -145,7 +145,7 @@ function M.operatorfunc(type_)
   end
 end
 
----@param opts {function_: fun, readonly?: boolean, force_type?: string}
+---@param opts {function_: fun(), readonly?: boolean, force_type?: string}
 ---@return fun(): string
 function M.expr(opts)
   return function()
