@@ -33,6 +33,8 @@ function M.ends_with_newline(region)
 end
 
 -- Lift function to work with lines.
+---@param f fun(string): string
+---@return fun(table): table<integer, string>
 function M.with_lines(f)
   return function(lines)
     local xs = table.concat(lines, "\n")
