@@ -872,7 +872,7 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<p]],
-    operator.expr { function_ = align, forced_type = "line" },
+    operator.expr { function_ = align, force_type = "line" },
     {
       expr = true,
       desc = "Align indentation selected by motion",
@@ -881,7 +881,7 @@ local function set_bindings()
   vim.keymap.set(
     "v",
     [[<p]],
-    operator.expr { function_ = align, forced_type = "line" },
+    operator.expr { function_ = align, force_type = "line" },
     {
       expr = true,
       silent = true,
