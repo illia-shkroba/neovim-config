@@ -55,22 +55,21 @@ local function operator_block_normal(region)
   blockwise.substitute_normal(region, output_lines)
 end
 
----@param type_ "line"|"char"|"block"
 ---@param region Region
 ---@return nil
-local function operator(type_, region)
+local function operator(region)
   if #region.lines == 0 then
     vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
     return
   end
 
-  if type_ == "line" then
+  if region.type_ == "line" then
     operator_line(region)
-  elseif type_ == "char" then
+  elseif region.type_ == "char" then
     operator_char(region)
-  elseif type_ == "block" and text.ends_with_newline(region) then
+  elseif region.type_ == "block" and text.ends_with_newline(region) then
     operator_block_with_line_ends(region)
-  elseif type_ == "block" and not text.ends_with_newline(region) then
+  elseif region.type_ == "block" and not text.ends_with_newline(region) then
     operator_block_normal(region)
   end
 
@@ -94,19 +93,18 @@ local function operator(type_, region)
   end
 end
 
----@param type_ "line"|"char"|"block"
 ---@param region Region
 ---@return nil
-local function operator_readonly(type_, region)
+local function operator_readonly(region)
   local truncated_lines
 
-  if type_ == "line" then
+  if region.type_ == "line" then
     truncated_lines = region.lines
-  elseif type_ == "char" then
+  elseif region.type_ == "char" then
     truncated_lines = charwise.truncate(region)
-  elseif type_ == "block" and text.ends_with_newline(region) then
+  elseif region.type_ == "block" and text.ends_with_newline(region) then
     truncated_lines = blockwise.truncate_with_line_ends(region)
-  elseif type_ == "block" and not text.ends_with_newline(region) then
+  elseif region.type_ == "block" and not text.ends_with_newline(region) then
     truncated_lines = blockwise.truncate_normal(region)
   end
 
@@ -133,15 +131,14 @@ function M.operatorfunc(type_)
     column_begin = column_begin,
     line_end = line_end,
     column_end = column_end,
+    type_ = force_type or type_,
     lines = lines,
   }
 
-  local forced_type = force_type or type_
-
   if readonly then
-    operator_readonly(forced_type, region)
+    operator_readonly(region)
   else
-    operator(forced_type, region)
+    operator(region)
   end
 end
 

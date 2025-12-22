@@ -6,6 +6,7 @@ local M = {}
 ---@field column_begin integer
 ---@field line_end integer
 ---@field column_end integer
+---@field type_ "line"|"char"|"block"
 ---@field lines table<integer, string>
 
 ---@param region Region
