@@ -1,5 +1,6 @@
 local M = {}
 
+local mark = require "mark"
 local text = require "text"
 
 ---@param region Region
@@ -23,26 +24,13 @@ end
 ---@param buffer_number integer
 ---@return nil
 function M.remove_top_empty_line(buffer_number)
-  -- Keep the `'[` and `']` marks.
-  local changed_begin = vim.api.nvim_buf_get_mark(buffer_number, "[")
-  local changed_end = vim.api.nvim_buf_get_mark(buffer_number, "]")
-
-  vim.cmd.normal 'gg"_dd'
-
-  vim.api.nvim_buf_set_mark(
-    buffer_number,
-    "[",
-    changed_begin[1] - 1,
-    changed_begin[2],
-    {}
-  )
-  vim.api.nvim_buf_set_mark(
-    buffer_number,
-    "]",
-    changed_end[1] - 1,
-    changed_end[2],
-    {}
-  )
+  mark.with_marks {
+    buffer_number = buffer_number,
+    marks = { "[", "]" },
+    function_ = function()
+      vim.cmd.normal 'gg"_dd'
+    end,
+  }
 end
 
 return M
