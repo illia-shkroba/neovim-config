@@ -41,9 +41,9 @@ vim.keymap.set(
   { "v" },
   [[<leader><CR>]],
   operator.expr {
-    function_ = function(lines)
+    function_ = function(region)
       vim.cmd "'>"
-      vim.api.nvim_put(vim.split(lines, "\n"), "l", true, false)
+      vim.api.nvim_put(region.lines, "l", true, false)
       vim.cmd "'[,']!bash"
     end,
     readonly = true,

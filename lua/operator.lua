@@ -2,10 +2,10 @@ local M = {}
 
 local region = require "text.region"
 
----@param input_chars string
+---@param region_ Region
 ---@return string|nil
-local function operatorfunc_(input_chars)
-  return input_chars
+local function operatorfunc_(region_)
+  return nil
 end
 
 local mode = {
@@ -44,8 +44,9 @@ local function operator(region_)
     return
   end
 
-  local truncated_lines = region.truncate(region_)
-  local output_chars = operatorfunc_(table.concat(truncated_lines, "\n"))
+  local truncated_region = vim.deepcopy(region_)
+  truncated_region.lines = region.truncate(region_)
+  local output_chars = operatorfunc_(truncated_region)
 
   if output_chars == nil or #output_chars == 0 then
     vim.notify(
@@ -67,8 +68,9 @@ end
 ---@param region_ Region
 ---@return nil
 local function operator_readonly(region_)
-  local truncated_lines = region.truncate(region_)
-  operatorfunc_(table.concat(truncated_lines, "\n"))
+  local truncated_region = vim.deepcopy(region_)
+  truncated_region.lines = region.truncate(region_)
+  operatorfunc_(truncated_region)
 end
 
 ---@param type_ "line"|"char"|"block"
@@ -102,7 +104,7 @@ function M.operatorfunc(type_)
   end
 end
 
----@param opts {function_: fun(), readonly?: boolean, force_type?: string}
+---@param opts {function_: fun(Region): (string|nil), readonly?: boolean, force_type?: string}
 ---@return fun(): string
 function M.expr(opts)
   return function()

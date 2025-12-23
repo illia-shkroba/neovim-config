@@ -2,11 +2,14 @@ local M = {}
 
 local utils = require "utils"
 
-function M.substitute_prompt(xs)
+---@param region Region
+---@return string
+function M.substitute_prompt(region)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
-    return nil
+    vim.notify("No target provided to `substitute`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   vim.cmd.redraw()
@@ -14,7 +17,8 @@ function M.substitute_prompt(xs)
   vim.print "Enter substitution char: "
   local substitution = utils.try(vim.fn.getcharstr)
   if not substitution then
-    return nil
+    vim.notify("No substitution provided to `substitute`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   -- For some reason `substitution` has "kb" when hitting backspace and
@@ -36,10 +40,16 @@ function M.substitute_prompt(xs)
     substitution = insertable_newline
   end
 
-  return M.substitute(xs, target, substitution)
+  return M.substitute(region, target, substitution)
 end
 
-function M.substitute(xs, target, substitution)
+---@param region Region
+---@param target string
+---@param substitution string
+---@return string
+function M.substitute(region, target, substitution)
+  local xs = table.concat(region.lines, "\n")
+
   local acc = ""
 
   local i = 1
@@ -54,11 +64,14 @@ function M.substitute(xs, target, substitution)
   return acc
 end
 
-function M.prepend_prompt(xs)
+---@param region Region
+---@return string
+function M.prepend_prompt(region)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
-    return nil
+    vim.notify("No target provided to `prepend`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   vim.cmd.redraw()
@@ -66,7 +79,8 @@ function M.prepend_prompt(xs)
   vim.print "Enter prefix char: "
   local prefix = utils.try(vim.fn.getcharstr)
   if not prefix then
-    return nil
+    vim.notify("No prefix provided to `prepend`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   -- For some reason `prefix` has "kb" when hitting backspace and
@@ -74,7 +88,7 @@ function M.prepend_prompt(xs)
   -- `prefix == vim.fn.nr2char(128)` is `false`.
   local backspace_number = 128 -- kb
   if prefix == "" or vim.fn.char2nr(prefix) == backspace_number then
-    return xs
+    return table.concat(region.lines, "\n")
   end
 
   local read_newline = vim.fn.nr2char(13) -- ^M
@@ -86,10 +100,16 @@ function M.prepend_prompt(xs)
     prefix = insertable_newline
   end
 
-  return M.prepend(xs, target, prefix)
+  return M.prepend(region, target, prefix)
 end
 
-function M.prepend(xs, target, prefix)
+---@param region Region
+---@param target string
+---@param prefix string
+---@return string
+function M.prepend(region, target, prefix)
+  local xs = table.concat(region.lines, "\n")
+
   local acc = ""
 
   local i = 1
@@ -104,11 +124,14 @@ function M.prepend(xs, target, prefix)
   return acc
 end
 
-function M.append_prompt(xs)
+---@param region Region
+---@return string
+function M.append_prompt(region)
   vim.print "Enter target char: "
   local target = utils.try(vim.fn.getcharstr)
   if not target then
-    return nil
+    vim.notify("No target provided to `append`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   vim.cmd.redraw()
@@ -116,7 +139,8 @@ function M.append_prompt(xs)
   vim.print "Enter suffix char: "
   local suffix = utils.try(vim.fn.getcharstr)
   if not suffix then
-    return nil
+    vim.notify("No suffix provided to `append`.", vim.log.levels.INFO)
+    return table.concat(region.lines, "\n")
   end
 
   -- For some reason `suffix` has "kb" when hitting backspace and
@@ -124,7 +148,7 @@ function M.append_prompt(xs)
   -- `suffix == vim.fn.nr2char(128)` is `false`.
   local backspace_number = 128 -- kb
   if suffix == "" or vim.fn.char2nr(suffix) == backspace_number then
-    return xs
+    return table.concat(region.lines, "\n")
   end
 
   local read_newline = vim.fn.nr2char(13) -- ^M
@@ -136,10 +160,16 @@ function M.append_prompt(xs)
     suffix = insertable_newline
   end
 
-  return M.append(xs, target, suffix)
+  return M.append(region, target, suffix)
 end
 
-function M.append(xs, target, suffix)
+---@param region Region
+---@param target string
+---@param suffix string
+---@return string
+function M.append(region, target, suffix)
+  local xs = table.concat(region.lines, "\n")
+
   local acc = ""
 
   local i = 1

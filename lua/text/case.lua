@@ -1,6 +1,10 @@
 local M = {}
 
-function M.to_camel(xs)
+---@param region Region
+---@return string
+function M.to_camel(region)
+  local xs = table.concat(region.lines, "\n")
+
   local acc = ""
 
   local i = 1
@@ -19,7 +23,11 @@ function M.to_camel(xs)
   return acc
 end
 
-function M.to_snake(xs)
+---@param region Region
+---@return string
+function M.to_snake(region)
+  local xs = table.concat(region.lines, "\n")
+
   local acc = ""
 
   local i = 1
