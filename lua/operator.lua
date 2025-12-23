@@ -3,7 +3,7 @@ local M = {}
 local region = require "text.region"
 
 ---@param input_chars string
----@return string
+---@return string|nil
 local function operatorfunc_(input_chars)
   return input_chars
 end
@@ -46,6 +46,16 @@ local function operator(region_)
 
   local truncated_lines = region.truncate(region_)
   local output_chars = operatorfunc_(table.concat(truncated_lines, "\n"))
+
+  if output_chars == nil or #output_chars == 0 then
+    vim.notify(
+      "`operator`'s `expr` expects non-empty output from the provided `function_`."
+        .. " Pass `readonly = true` to the `expr` if the `function_` only consumes input.",
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
   local output_lines = vim.split(output_chars, "\n")
   region.substitute(region_, output_lines)
 
