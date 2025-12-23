@@ -50,7 +50,7 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
-  [[<leader>gt]],
+  [[<leader>tg]],
   [[:!fast-tags -R --qualified .]],
   { buffer = true, desc = "Generate tags" }
 )

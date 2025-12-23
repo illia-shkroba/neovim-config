@@ -22,7 +22,7 @@ vim.opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto
 
 vim.keymap.set(
   "n",
-  [[<leader>gt]],
+  [[<leader>tg]],
   [[:!fast-tags -R --qualified .]],
   { buffer = true, desc = "Generate tags" }
 )

@@ -807,7 +807,7 @@ local function set_bindings()
   end, { desc = "Edit register in a buffer" })
 
   -- tags
-  vim.keymap.set("n", [[<leader>gt]], function()
+  vim.keymap.set("n", [[<leader>tg]], function()
     local language = vim.opt_local.filetype._value
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
   end, { expr = true, desc = "Generate tags" })
