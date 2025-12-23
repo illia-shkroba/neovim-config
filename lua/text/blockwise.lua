@@ -56,7 +56,10 @@ function M.delete(region)
   local function delete()
     mark.with_marks {
       buffer_number = region.buffer_number,
-      marks = { "[", "]" },
+      marks = {
+        { name = "[" },
+        { name = "]" },
+      },
       function_ = function()
         vim.api.nvim_buf_set_mark(
           region.buffer_number,
