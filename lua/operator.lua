@@ -1,7 +1,6 @@
 local M = {}
 
 local region = require "text.region"
-local text = require "text"
 
 ---@param input_chars string
 ---@return string
@@ -46,7 +45,8 @@ local function operator(region_)
   end
 
   local truncated_lines = region.truncate(region_)
-  local output_lines = text.with_lines(operatorfunc_)(truncated_lines)
+  local output_chars = operatorfunc_(table.concat(truncated_lines, "\n"))
+  local output_lines = vim.split(output_chars, "\n")
   region.substitute(region_, output_lines)
 
   if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
