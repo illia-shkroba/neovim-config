@@ -9,12 +9,6 @@ local function operatorfunc_(input_chars)
   return input_chars
 end
 
----@param input_lines table<integer, string>
----@return table<integer, string>
-local function operatorfunc_lines_(input_lines)
-  return input_lines
-end
-
 local mode = {
   blocking = false,
   mode = "n",
@@ -31,7 +25,7 @@ local function operator(region_)
   end
 
   local truncated_lines = region.truncate(region_)
-  local output_lines = operatorfunc_lines_(truncated_lines)
+  local output_lines = text.with_lines(operatorfunc_)(truncated_lines)
   region.substitute(region_, output_lines)
 
   if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
@@ -100,7 +94,6 @@ function M.expr(opts)
     mode = vim.api.nvim_get_mode()
 
     operatorfunc_ = opts.function_
-    operatorfunc_lines_ = text.with_lines(opts.function_)
 
     if opts.readonly == nil then
       readonly = false
