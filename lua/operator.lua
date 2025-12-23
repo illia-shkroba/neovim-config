@@ -18,6 +18,27 @@ local force_type = nil
 
 ---@param region_ Region
 ---@return nil
+local function restore_visual_selection(region_)
+  local changed_begin = vim.api.nvim_buf_get_mark(region_.buffer_number, "[")
+  local changed_end = vim.api.nvim_buf_get_mark(region_.buffer_number, "]")
+  vim.api.nvim_buf_set_mark(
+    region_.buffer_number,
+    "<",
+    changed_begin[1],
+    changed_begin[2],
+    {}
+  )
+  vim.api.nvim_buf_set_mark(
+    region_.buffer_number,
+    ">",
+    changed_end[1],
+    changed_end[2],
+    {}
+  )
+end
+
+---@param region_ Region
+---@return nil
 local function operator(region_)
   if #region_.lines == 0 then
     vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
@@ -29,22 +50,7 @@ local function operator(region_)
   region.substitute(region_, output_lines)
 
   if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
-    local changed_begin = vim.api.nvim_buf_get_mark(region_.buffer_number, "[")
-    local changed_end = vim.api.nvim_buf_get_mark(region_.buffer_number, "]")
-    vim.api.nvim_buf_set_mark(
-      region_.buffer_number,
-      "<",
-      changed_begin[1],
-      changed_begin[2],
-      {}
-    )
-    vim.api.nvim_buf_set_mark(
-      region_.buffer_number,
-      ">",
-      changed_end[1],
-      changed_end[2],
-      {}
-    )
+    restore_visual_selection(region_)
   end
 end
 
