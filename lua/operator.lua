@@ -1,9 +1,7 @@
 local M = {}
 
+local region = require "text.region"
 local text = require "text"
-local linewise = require "text.linewise"
-local charwise = require "text.charwise"
-local blockwise = require "text.blockwise"
 
 ---@param input_chars string
 ---@return string
@@ -24,67 +22,30 @@ local mode = {
 local readonly = true
 local force_type = nil
 
----@param region Region
+---@param region_ Region
 ---@return nil
-local function operator_line(region)
-  local output_lines = operatorfunc_lines_(region.lines)
-  linewise.substitute(region, output_lines)
-end
-
----@param region Region
----@return nil
-local function operator_char(region)
-  local truncated_lines = charwise.truncate(region)
-  local output_lines = operatorfunc_lines_(truncated_lines)
-  charwise.substitute(region, output_lines)
-end
-
----@param region Region
----@return nil
-local function operator_block_with_line_ends(region)
-  local truncated_lines = blockwise.truncate_with_line_ends(region)
-  local output_lines = operatorfunc_lines_(truncated_lines)
-  blockwise.substitute_with_line_ends(region, output_lines)
-end
-
----@param region Region
----@return nil
-local function operator_block_normal(region)
-  local truncated_lines = blockwise.truncate_normal(region)
-  local output_lines = operatorfunc_lines_(truncated_lines)
-  blockwise.substitute_normal(region, output_lines)
-end
-
----@param region Region
----@return nil
-local function operator(region)
-  if #region.lines == 0 then
+local function operator(region_)
+  if #region_.lines == 0 then
     vim.notify("Nothing selected with operator.", vim.log.levels.WARN)
     return
   end
 
-  if region.type_ == "line" then
-    operator_line(region)
-  elseif region.type_ == "char" then
-    operator_char(region)
-  elseif region.type_ == "block" and text.ends_with_newline(region) then
-    operator_block_with_line_ends(region)
-  elseif region.type_ == "block" and not text.ends_with_newline(region) then
-    operator_block_normal(region)
-  end
+  local truncated_lines = region.truncate(region_)
+  local output_lines = operatorfunc_lines_(truncated_lines)
+  region.substitute(region_, output_lines)
 
   if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
-    local changed_begin = vim.api.nvim_buf_get_mark(region.buffer_number, "[")
-    local changed_end = vim.api.nvim_buf_get_mark(region.buffer_number, "]")
+    local changed_begin = vim.api.nvim_buf_get_mark(region_.buffer_number, "[")
+    local changed_end = vim.api.nvim_buf_get_mark(region_.buffer_number, "]")
     vim.api.nvim_buf_set_mark(
-      region.buffer_number,
+      region_.buffer_number,
       "<",
       changed_begin[1],
       changed_begin[2],
       {}
     )
     vim.api.nvim_buf_set_mark(
-      region.buffer_number,
+      region_.buffer_number,
       ">",
       changed_end[1],
       changed_end[2],
@@ -93,21 +54,10 @@ local function operator(region)
   end
 end
 
----@param region Region
+---@param region_ Region
 ---@return nil
-local function operator_readonly(region)
-  local truncated_lines
-
-  if region.type_ == "line" then
-    truncated_lines = region.lines
-  elseif region.type_ == "char" then
-    truncated_lines = charwise.truncate(region)
-  elseif region.type_ == "block" and text.ends_with_newline(region) then
-    truncated_lines = blockwise.truncate_with_line_ends(region)
-  elseif region.type_ == "block" and not text.ends_with_newline(region) then
-    truncated_lines = blockwise.truncate_normal(region)
-  end
-
+local function operator_readonly(region_)
+  local truncated_lines = region.truncate(region_)
   operatorfunc_(table.concat(truncated_lines, "\n"))
 end
 
@@ -125,7 +75,7 @@ function M.operatorfunc(type_)
   local lines =
     vim.api.nvim_buf_get_lines(buffer_number, line_begin - 1, line_end, true)
 
-  local region = {
+  local region_ = {
     buffer_number = buffer_number,
     line_begin = line_begin,
     column_begin = column_begin,
@@ -136,9 +86,9 @@ function M.operatorfunc(type_)
   }
 
   if readonly then
-    operator_readonly(region)
+    operator_readonly(region_)
   else
-    operator(region)
+    operator(region_)
   end
 end
 
