@@ -714,7 +714,9 @@ local function set_bindings()
     [[<leader>/]],
     operator.expr {
       function_ = function(region)
-        vim.fn.setreg("/", "\\V" .. table.concat(region.lines, "\n"))
+        local search =
+          string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
+        vim.fn.setreg("/", "\\V" .. search)
       end,
       readonly = true,
     },
@@ -751,7 +753,9 @@ local function set_bindings()
     [[<leader>/]],
     operator.expr {
       function_ = function(region)
-        vim.fn.setreg("/", "\\V" .. table.concat(region.lines, "\n"))
+        local search =
+          string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
+        vim.fn.setreg("/", "\\V" .. search)
       end,
       readonly = true,
     },
