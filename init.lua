@@ -717,6 +717,7 @@ local function set_bindings()
         local search =
           string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
         vim.fn.setreg("/", "\\V" .. search)
+        vim.opt.hlsearch = true
       end,
       readonly = true,
     },
@@ -756,6 +757,7 @@ local function set_bindings()
         local search =
           string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
         vim.fn.setreg("/", "\\V" .. search)
+        vim.opt.hlsearch = true
       end,
       readonly = true,
     },
