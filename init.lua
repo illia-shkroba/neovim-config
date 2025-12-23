@@ -359,7 +359,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<leader>fg]],
+    [[<leader>g]],
     operator.expr {
       function_ = pickers.grep_by_filetype,
       readonly = true,
@@ -371,7 +371,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<leader>fG]],
+    [[<leader>G]],
     pickers.live_grep_by_filetype,
     { desc = "Grep files with extension" }
   )
