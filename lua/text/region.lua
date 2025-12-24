@@ -1,9 +1,5 @@
 local M = {}
 
-local blockwise = require "text.blockwise"
-local charwise = require "text.charwise"
-local linewise = require "text.linewise"
-
 ---@class Region
 ---@field buffer_number integer
 ---@field line_begin integer
@@ -59,15 +55,112 @@ end
 ---@param region Region
 ---@param target table<integer, string>
 ---@return nil
+local function substitute_linewise(region, target)
+  vim.api.nvim_buf_set_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    false,
+    target
+  )
+end
+
+---@param region Region
+---@param target table<integer, string>
+---@return nil
+local function substitute_charwise(region, target)
+  vim.api.nvim_buf_set_text(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.column_begin,
+    region.line_end - 1,
+    region.column_end + 1,
+    target
+  )
+end
+
+---@param region Region
+---@param target table<integer, string>
+---@return nil
+local function substitute_blockwise_with_line_ends(region, target)
+  local buffer_lines = vim.api.nvim_buf_get_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    true
+  )
+  local n = math.min(#buffer_lines, #target)
+
+  local put_lines = {}
+  for i = 1, n do
+    table.insert(
+      put_lines,
+      buffer_lines[i]:sub(1, region.column_begin) .. target[i]
+    )
+  end
+  for i = n + 1, #buffer_lines do
+    table.insert(put_lines, buffer_lines[i]:sub(1, region.column_begin))
+  end
+
+  vim.api.nvim_buf_set_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    false,
+    put_lines
+  )
+end
+
+---@param region Region
+---@param target table<integer, string>
+---@return nil
+local function substitute_blockwise_normal(region, target)
+  local buffer_lines = vim.api.nvim_buf_get_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    true
+  )
+  local n = math.min(#buffer_lines, #target)
+
+  local put_lines = {}
+  for i = 1, n do
+    table.insert(
+      put_lines,
+      buffer_lines[i]:sub(1, region.column_begin)
+        .. target[i]
+        .. buffer_lines[i]:sub(region.column_end + 2)
+    )
+  end
+  for i = n + 1, #buffer_lines do
+    table.insert(
+      put_lines,
+      buffer_lines[i]:sub(1, region.column_begin)
+        .. buffer_lines[i]:sub(region.column_end + 2)
+    )
+  end
+
+  vim.api.nvim_buf_set_lines(
+    region.buffer_number,
+    region.line_begin - 1,
+    region.line_end,
+    false,
+    put_lines
+  )
+end
+
+---@param region Region
+---@param target table<integer, string>
+---@return nil
 function M.substitute(region, target)
   if region.type_ == "line" then
-    linewise.substitute(region, target)
+    substitute_linewise(region, target)
   elseif region.type_ == "char" then
-    charwise.substitute(region, target)
+    substitute_charwise(region, target)
   elseif region.type_ == "block_newline" then
-    blockwise.substitute_with_line_ends(region, target)
+    substitute_blockwise_with_line_ends(region, target)
   elseif region.type_ == "block" then
-    blockwise.substitute_normal(region, target)
+    substitute_blockwise_normal(region, target)
   else
     vim.notify(
       [[Invalid `region.type_ = "]]
@@ -80,15 +173,53 @@ end
 
 ---@param region Region
 ---@return table<integer, string>
+local function truncate_charwise(region)
+  local lines = region.lines
+
+  if #lines == 0 then
+    return lines
+  end
+
+  local truncated_lines = vim.deepcopy(lines)
+  truncated_lines[#lines] = lines[#lines]:sub(1, region.column_end + 1)
+  truncated_lines[1] = truncated_lines[1]:sub(region.column_begin + 1)
+  return truncated_lines
+end
+
+---@param region Region
+---@return table<integer, string>
+local function truncate_blockwise_with_line_ends(region)
+  local truncated_lines = {}
+  for _, line in pairs(region.lines) do
+    table.insert(truncated_lines, line:sub(region.column_begin + 1))
+  end
+  return truncated_lines
+end
+
+---@param region Region
+---@return table<integer, string>
+local function truncate_blockwise_normal(region)
+  local truncated_lines = {}
+  for _, line in pairs(region.lines) do
+    table.insert(
+      truncated_lines,
+      line:sub(1, region.column_end + 1):sub(region.column_begin + 1)
+    )
+  end
+  return truncated_lines
+end
+
+---@param region Region
+---@return table<integer, string>
 function M.truncate(region)
   if region.type_ == "line" then
     return region.lines
   elseif region.type_ == "char" then
-    return charwise.truncate(region)
+    return truncate_charwise(region)
   elseif region.type_ == "block_newline" then
-    return blockwise.truncate_with_line_ends(region)
+    return truncate_blockwise_with_line_ends(region)
   elseif region.type_ == "block" then
-    return blockwise.truncate_normal(region)
+    return truncate_blockwise_normal(region)
   else
     vim.notify(
       [[Invalid `region.type_ = "]]
