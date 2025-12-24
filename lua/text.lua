@@ -1,14 +1,5 @@
 local M = {}
 
----@class Region
----@field buffer_number integer
----@field line_begin integer
----@field column_begin integer
----@field line_end integer
----@field column_end integer
----@field type_ "line"|"char"|"block"
----@field lines table<integer, string>
-
 ---@param region Region
 ---@return boolean
 function M.ends_with_eol(region)
