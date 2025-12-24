@@ -9,14 +9,6 @@ local M = {}
 ---@field type_ "line"|"char"|"block"|"block_newline"
 ---@field lines table<integer, string>
 
----@class RegionInput
----@field buffer_number integer
----@field line_begin integer
----@field column_begin integer
----@field line_end integer
----@field column_end integer
----@field type_ "line"|"char"|"block"
-
 ---@param region Region
 ---@param target table<integer, string>
 ---@return nil
@@ -195,6 +187,45 @@ local function truncate(region)
     return region.lines
   end
 end
+
+---@class MarksRegionInput
+---@field buffer_number integer
+---@field mark_begin string
+---@field mark_end string
+---@field type_ "line"|"char"|"block"
+
+---@param marks_region_input MarksRegionInput
+---@return Region
+function M.from_marks(marks_region_input)
+  local begin = vim.api.nvim_buf_get_mark(
+    marks_region_input.buffer_number,
+    marks_region_input.mark_begin
+  )
+  local line_begin, column_begin = begin[1], begin[2]
+
+  local end_ = vim.api.nvim_buf_get_mark(
+    marks_region_input.buffer_number,
+    marks_region_input.mark_end
+  )
+  local line_end, column_end = end_[1], end_[2]
+
+  return M.from {
+    buffer_number = marks_region_input.buffer_number,
+    line_begin = line_begin,
+    column_begin = column_begin,
+    line_end = line_end,
+    column_end = column_end,
+    type_ = marks_region_input.type_,
+  }
+end
+
+---@class RegionInput
+---@field buffer_number integer
+---@field line_begin integer
+---@field column_begin integer
+---@field line_end integer
+---@field column_end integer
+---@field type_ "line"|"char"|"block"
 
 ---@param region_input RegionInput
 ---@return Region
