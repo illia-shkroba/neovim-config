@@ -17,23 +17,37 @@ local force_type = nil
 
 ---@param region_ Region
 ---@return nil
-local function restore_visual_selection(region_)
-  local changed_begin = vim.api.nvim_buf_get_mark(region_.buffer_number, "[")
-  local changed_end = vim.api.nvim_buf_get_mark(region_.buffer_number, "]")
+local function restore_marks(region_)
   vim.api.nvim_buf_set_mark(
     region_.buffer_number,
-    "<",
-    changed_begin[1],
-    changed_begin[2],
+    "[",
+    region_.line_begin,
+    region_.column_begin,
     {}
   )
   vim.api.nvim_buf_set_mark(
     region_.buffer_number,
-    ">",
-    changed_end[1],
-    changed_end[2],
+    "]",
+    region_.line_end,
+    region_.column_end,
     {}
   )
+  if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
+    vim.api.nvim_buf_set_mark(
+      region_.buffer_number,
+      "<",
+      region_.line_begin,
+      region_.column_begin,
+      {}
+    )
+    vim.api.nvim_buf_set_mark(
+      region_.buffer_number,
+      ">",
+      region_.line_end,
+      region_.column_end,
+      {}
+    )
+  end
 end
 
 ---@param region_ Region
@@ -56,11 +70,9 @@ local function operator(region_)
   end
 
   local output_lines = vim.split(output_chars, "\n")
-  region.substitute(region_, output_lines)
+  local new_region = region.substitute(region_, output_lines)
 
-  if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
-    restore_visual_selection(region_)
-  end
+  restore_marks(new_region)
 end
 
 ---@param type_ "line"|"char"|"block"
