@@ -6,10 +6,9 @@ local linewise = require "text.linewise"
 local text = require "text"
 
 ---@param region Region
----@param target table<integer, string>|nil
+---@param target table<integer, string>
 ---@return nil
 function M.substitute(region, target)
-  target = target or region.lines
   if region.type_ == "line" then
     linewise.substitute(region, target)
   elseif region.type_ == "char" then

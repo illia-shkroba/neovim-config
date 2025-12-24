@@ -3,11 +3,9 @@ local M = {}
 local mark = require "mark"
 
 ---@param region Region
----@param target table<integer, string>|nil
+---@param target table<integer, string>
 ---@return nil
 function M.substitute(region, target)
-  target = target or region.lines
-
   vim.api.nvim_buf_set_lines(
     region.buffer_number,
     region.line_begin - 1,

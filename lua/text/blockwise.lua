@@ -1,10 +1,9 @@
 local M = {}
 
 ---@param region Region
----@param target table<integer, string>|nil
+---@param target table<integer, string>
 ---@return nil
 function M.substitute_with_line_ends(region, target)
-  target = target or region.lines
   local buffer_lines = vim.api.nvim_buf_get_lines(
     region.buffer_number,
     region.line_begin - 1,
@@ -34,10 +33,9 @@ function M.substitute_with_line_ends(region, target)
 end
 
 ---@param region Region
----@param target table<integer, string>|nil
+---@param target table<integer, string>
 ---@return nil
 function M.substitute_normal(region, target)
-  target = target or region.lines
   local buffer_lines = vim.api.nvim_buf_get_lines(
     region.buffer_number,
     region.line_begin - 1,
