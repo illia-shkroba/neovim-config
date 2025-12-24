@@ -17,41 +17,6 @@ local M = {}
 ---@field column_end integer
 ---@field type_ "line"|"char"|"block"
 
----@param region_input RegionInput
----@return Region
-function M.from(region_input)
-  local lines = vim.api.nvim_buf_get_lines(
-    region_input.buffer_number,
-    region_input.line_begin - 1,
-    region_input.line_end,
-    true
-  )
-
-  local type_
-  if
-    region_input.type_ == "block"
-    and #lines > 0
-    and region_input.column_end + 1 > #lines[#lines]
-  then
-    type_ = "block_newline"
-  else
-    type_ = region_input.type_
-  end
-
-  local region = {
-    buffer_number = region_input.buffer_number,
-    line_begin = region_input.line_begin,
-    column_begin = region_input.column_begin,
-    line_end = region_input.line_end,
-    column_end = region_input.column_end,
-    type_ = type_,
-    lines = lines,
-  }
-  region.lines = M.truncate(region)
-
-  return region
-end
-
 ---@param region Region
 ---@param target table<integer, string>
 ---@return nil
@@ -211,7 +176,7 @@ end
 
 ---@param region Region
 ---@return table<integer, string>
-function M.truncate(region)
+local function truncate(region)
   if region.type_ == "line" then
     return region.lines
   elseif region.type_ == "char" then
@@ -229,6 +194,41 @@ function M.truncate(region)
     )
     return region.lines
   end
+end
+
+---@param region_input RegionInput
+---@return Region
+function M.from(region_input)
+  local lines = vim.api.nvim_buf_get_lines(
+    region_input.buffer_number,
+    region_input.line_begin - 1,
+    region_input.line_end,
+    true
+  )
+
+  local type_
+  if
+    region_input.type_ == "block"
+    and #lines > 0
+    and region_input.column_end + 1 > #lines[#lines]
+  then
+    type_ = "block_newline"
+  else
+    type_ = region_input.type_
+  end
+
+  local region = {
+    buffer_number = region_input.buffer_number,
+    line_begin = region_input.line_begin,
+    column_begin = region_input.column_begin,
+    line_end = region_input.line_end,
+    column_end = region_input.column_end,
+    type_ = type_,
+    lines = lines,
+  }
+  region.lines = truncate(region)
+
+  return region
 end
 
 return M
