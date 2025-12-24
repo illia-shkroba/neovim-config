@@ -9,9 +9,16 @@ local M = {}
 ---@field type_ "line"|"char"|"block"|"block_newline"
 ---@field lines table<integer, string>
 
+---@param type_ "line"|"char"|"block"|"block_newline"
+---@return "line"|"char"|"block"
+local function bare_type(type_)
+  ---@diagnostic disable-next-line: return-type-mismatch
+  return type_ == "block_newline" and "block" or type_
+end
+
 ---@param region Region
 ---@param target table<integer, string>
----@return nil
+---@return Region
 local function substitute_linewise(region, target)
   vim.api.nvim_buf_set_lines(
     region.buffer_number,
@@ -20,11 +27,20 @@ local function substitute_linewise(region, target)
     false,
     target
   )
+
+  return M.from {
+    buffer_number = region.buffer_number,
+    line_begin = region.line_begin,
+    column_begin = region.column_begin,
+    line_end = region.line_begin + #target - 1,
+    column_end = region.column_end,
+    type_ = bare_type(region.type_),
+  }
 end
 
 ---@param region Region
 ---@param target table<integer, string>
----@return nil
+---@return Region
 local function substitute_charwise(region, target)
   vim.api.nvim_buf_set_text(
     region.buffer_number,
@@ -34,11 +50,33 @@ local function substitute_charwise(region, target)
     region.column_end + 1,
     target
   )
+
+  local new_line_end
+  local new_column_end
+  if #target == 0 then
+    new_line_end = region.line_begin
+    new_column_end = region.column_begin - 1
+  elseif #target == 1 then
+    new_line_end = region.line_begin
+    new_column_end = region.column_begin + #target[1] - 1
+  else
+    new_line_end = region.line_begin + #target - 1
+    new_column_end = #target[#target] - 1
+  end
+
+  return M.from {
+    buffer_number = region.buffer_number,
+    line_begin = region.line_begin,
+    column_begin = region.column_begin,
+    line_end = new_line_end,
+    column_end = new_column_end,
+    type_ = bare_type(region.type_),
+  }
 end
 
 ---@param region Region
 ---@param target table<integer, string>
----@return nil
+---@return Region
 local function substitute_blockwise_with_line_ends(region, target)
   local buffer_lines = vim.api.nvim_buf_get_lines(
     region.buffer_number,
@@ -66,11 +104,22 @@ local function substitute_blockwise_with_line_ends(region, target)
     false,
     put_lines
   )
+
+  local new_region = M.from {
+    buffer_number = region.buffer_number,
+    line_begin = region.line_begin,
+    column_begin = region.column_begin,
+    line_end = region.line_begin + #put_lines - 1,
+    column_end = #put_lines > 0 and #put_lines[#put_lines] or region.column_end,
+    type_ = bare_type(region.type_),
+  }
+  new_region.type_ = "block_newline"
+  return new_region
 end
 
 ---@param region Region
 ---@param target table<integer, string>
----@return nil
+---@return Region
 local function substitute_blockwise_normal(region, target)
   local buffer_lines = vim.api.nvim_buf_get_lines(
     region.buffer_number,
@@ -104,20 +153,40 @@ local function substitute_blockwise_normal(region, target)
     false,
     put_lines
   )
+
+  local new_column_end
+  if #buffer_lines > 0 and #target > 0 then
+    new_column_end = #buffer_lines[1]:sub(1, region.column_begin)
+      + #target[1]
+      - 1
+  else
+    new_column_end = region.column_end
+  end
+
+  local new_region = M.from {
+    buffer_number = region.buffer_number,
+    line_begin = region.line_begin,
+    column_begin = region.column_begin,
+    line_end = region.line_begin + #put_lines - 1,
+    column_end = new_column_end,
+    type_ = bare_type(region.type_),
+  }
+  new_region.type_ = "block"
+  return new_region
 end
 
 ---@param region Region
 ---@param target table<integer, string>
----@return nil
+---@return Region
 function M.substitute(region, target)
   if region.type_ == "line" then
-    substitute_linewise(region, target)
+    return substitute_linewise(region, target)
   elseif region.type_ == "char" then
-    substitute_charwise(region, target)
+    return substitute_charwise(region, target)
   elseif region.type_ == "block_newline" then
-    substitute_blockwise_with_line_ends(region, target)
+    return substitute_blockwise_with_line_ends(region, target)
   elseif region.type_ == "block" then
-    substitute_blockwise_normal(region, target)
+    return substitute_blockwise_normal(region, target)
   else
     vim.notify(
       [[Invalid `region.type_ = "]]
@@ -125,6 +194,7 @@ function M.substitute(region, target)
         .. [["` passed to `substitute`.]],
       vim.log.levels.WARN
     )
+    return region
   end
 end
 
