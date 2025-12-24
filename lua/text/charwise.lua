@@ -1,7 +1,5 @@
 local M = {}
 
-local text = require "text"
-
 ---@param region Region
 ---@param target table<integer, string>|nil
 ---@return nil
@@ -14,10 +12,8 @@ function M.substitute(region, target)
     region.column_begin,
     region.line_end - 1,
     region.column_end + 1,
-    {}
+    target
   )
-
-  vim.api.nvim_put(target, "c", text.ends_with_eol(region), false)
 end
 
 ---@param region Region
