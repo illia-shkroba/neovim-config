@@ -4,16 +4,17 @@ vim.g.mapleader = " "
 require "package-manager"
 
 local case = require "text.case"
-local fzf = require "fzf-lua"
+local char = require "text.char"
 local completion = require "plugins.fzf.pickers.completion"
+local fzf = require "fzf-lua"
 local list = require "list"
 local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
+local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
-local char = require "text.char"
 local text = require "text"
 local utils = require "utils"
 
@@ -379,8 +380,8 @@ local function set_bindings()
     "n",
     [[<leader>fw]],
     operator.expr {
-      function_ = function(region)
-        fzf.lines { query = "'" .. table.concat(region.lines, "\n") }
+      function_ = function(region_)
+        fzf.lines { query = "'" .. table.concat(region_.lines, "\n") }
       end,
       readonly = true,
     },
@@ -446,11 +447,11 @@ local function set_bindings()
     "v",
     [[<leader>F]],
     operator.expr {
-      function_ = function(region)
+      function_ = function(region_)
         local extension = path.extension(vim.api.nvim_buf_get_name(0))
         fzf.grep {
           silent = true,
-          search = table.concat(region.lines, "\n"),
+          search = table.concat(region_.lines, "\n"),
           rg_opts = "--glob '*"
             .. extension
             .. "'"
@@ -469,8 +470,8 @@ local function set_bindings()
     "v",
     [[<leader>fw]],
     operator.expr {
-      function_ = function(region)
-        fzf.lines { query = "'" .. table.concat(region.lines, "\n") }
+      function_ = function(region_)
+        fzf.lines { query = "'" .. table.concat(region_.lines, "\n") }
       end,
       readonly = true,
     },
@@ -615,8 +616,8 @@ local function set_bindings()
     "n",
     [[<leader>S]],
     operator.expr {
-      function_ = function(region)
-        return char.substitute(region, " ", "_")
+      function_ = function(region_)
+        return char.substitute(region_, " ", "_")
       end,
     },
     {
@@ -651,8 +652,8 @@ local function set_bindings()
     "v",
     [[<leader>S]],
     operator.expr {
-      function_ = function(region)
-        return char.substitute(region, " ", "_")
+      function_ = function(region_)
+        return char.substitute(region_, " ", "_")
       end,
     },
     {
@@ -713,9 +714,9 @@ local function set_bindings()
     "n",
     [[<leader>/]],
     operator.expr {
-      function_ = function(region)
+      function_ = function(region_)
         local search =
-          string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
+          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
         vim.fn.setreg("/", "\\V" .. search)
         vim.opt.hlsearch = true
       end,
@@ -727,8 +728,8 @@ local function set_bindings()
     "v",
     [[<leader>#]],
     operator.expr {
-      function_ = function(region)
-        vim.fn.setreg("/", table.concat(region.lines, "\n") .. "\\c")
+      function_ = function(region_)
+        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
         vim.v.searchforward = false
         vim.cmd.normal "n"
       end,
@@ -740,8 +741,8 @@ local function set_bindings()
     "v",
     [[<leader>*]],
     operator.expr {
-      function_ = function(region)
-        vim.fn.setreg("/", table.concat(region.lines, "\n") .. "\\c")
+      function_ = function(region_)
+        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
         vim.v.searchforward = true
         vim.cmd.normal "n"
       end,
@@ -753,9 +754,9 @@ local function set_bindings()
     "v",
     [[<leader>/]],
     operator.expr {
-      function_ = function(region)
+      function_ = function(region_)
         local search =
-          string.gsub(table.concat(region.lines, "\n"), [[\]], [[\\]])
+          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
         vim.fn.setreg("/", "\\V" .. search)
         vim.opt.hlsearch = true
       end,
@@ -871,10 +872,10 @@ local function set_bindings()
   )
 
   -- indent
-  local function align(region)
+  local function align(region_)
     return vim.text.indent(
       0,
-      table.concat(region.lines, "\n"),
+      table.concat(region_.lines, "\n"),
       { expandtab = 1 }
     )
   end
@@ -936,6 +937,26 @@ local function set_bindings()
   )
 
   -- other
+  local function bind_substitute_origin(buffer_number, region_)
+    local new_region = region_
+    vim.keymap.set({ "n" }, [[ZP]], function()
+      local scratch_lines = vim.api.nvim_buf_get_lines(
+        buffer_number,
+        0,
+        vim.api.nvim_buf_line_count(buffer_number),
+        true
+      )
+      if #scratch_lines == 1 and scratch_lines[1] == "" then
+        scratch_lines = {}
+      end
+
+      new_region = region.substitute(new_region, scratch_lines)
+    end, {
+      buffer = buffer_number,
+      desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
+    })
+  end
+
   vim.keymap.set(
     "n",
     [[<C-l>]],
@@ -959,11 +980,12 @@ local function set_bindings()
       { "n", "v" },
       lhs,
       operator.expr {
-        function_ = function(region)
+        function_ = function(region_)
           local filetype = vim.opt_local.filetype._value
 
           local buffer = scratch.retained()
-          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region.lines)
+          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+          bind_substitute_origin(buffer, region_)
           vim.opt_local.filetype = filetype
         end,
         readonly = true,
@@ -1003,14 +1025,14 @@ local function set_bindings()
       "n",
       lhs,
       operator.expr {
-        function_ = function(region)
+        function_ = function(region_)
           local buffer = scratch.retained()
           vim.api.nvim_buf_set_lines(
             buffer,
             0,
             1,
             false,
-            vim.split(align(region), "\n")
+            vim.split(align(region_), "\n")
           )
           vim.opt_local.filetype = "sh"
 
