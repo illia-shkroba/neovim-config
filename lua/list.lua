@@ -1,7 +1,5 @@
 local M = {}
 
-local utils = require "utils"
-
 local with_list = {}
 
 function with_list.create(list, name)

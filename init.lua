@@ -418,7 +418,7 @@ local function set_bindings()
     fzf.quickfix_stack,
     { desc = "List quickfix lists" }
   )
-  vim.keymap.set("n", [[<leader>fT]], fzf.tabs, { desc = "List tabs" })
+  vim.keymap.set("n", [[<leader>T]], fzf.tabs, { desc = "List tabs" })
   vim.keymap.set(
     "n",
     [[<leader>fe]],
@@ -546,6 +546,10 @@ local function set_bindings()
     local buffer = scratch.onetime()
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:t" })
   end, { desc = "Paste current buffer's filename in a scratch window" })
+  vim.keymap.set("n", [[<leader>mw]], function()
+    local buffer = scratch.onetime()
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.getcwd() })
+  end, { desc = "Paste current working directory in a scratch window" })
   vim.keymap.set("n", [[<leader>my]], function()
     local buffer = scratch.onetime()
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
@@ -566,7 +570,10 @@ local function set_bindings()
   )
 
   -- paste
+  vim.keymap.set("n", [[<leader>IP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
   vim.keymap.set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
+  vim.keymap.set("n", [[<leader>iP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
+  vim.keymap.set("n", [[<leader>ip]], [[<Cmd>iput<CR>]], { desc = "iput" })
   vim.keymap.set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
   vim.keymap.set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
   vim.keymap.set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
