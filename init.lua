@@ -1005,12 +1005,16 @@ local function set_bindings()
       local origin_buffer = vim.api.nvim_get_current_buf()
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
       local line = cursor[1]
-      local lines = vim.api.nvim_buf_get_lines(
-        origin_buffer,
-        line - 1,
-        line - 1 + vim.v.count1,
-        true
-      )
+
+      local region_ = region.from {
+        buffer_number = origin_buffer,
+        line_begin = line,
+        column_begin = 0,
+        line_end = line - 1 + vim.v.count1,
+        column_end = 0,
+        type_ = "line",
+      }
+
       vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
       vim.api.nvim_buf_set_mark(
         origin_buffer,
@@ -1023,7 +1027,8 @@ local function set_bindings()
       local filetype = vim.opt_local.filetype._value
 
       local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, lines)
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+      bind_substitute_origin(buffer, region_)
       vim.opt_local.filetype = filetype
     end, { desc = "Open a scratch window with [count] lines" })
   end
