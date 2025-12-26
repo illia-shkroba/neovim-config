@@ -15,7 +15,6 @@ local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
-local text = require "text"
 local utils = require "utils"
 
 local location = list.location
