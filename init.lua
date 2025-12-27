@@ -8,6 +8,7 @@ local char = require "text.char"
 local completion = require "plugins.fzf.pickers.completion"
 local fzf = require "fzf-lua"
 local list = require "list"
+local mark = require "mark"
 local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
@@ -1123,12 +1124,16 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
   vim.keymap.set("n", [[<leader>qw]], [[<Cmd>xall<CR>]], { desc = "xall" })
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
-  vim.keymap.set(
-    "n",
-    [[<leader>w]],
-    [[<Cmd>update ++p<CR>]],
-    { desc = "update ++p" }
-  )
+  vim.keymap.set("n", [[<leader>w]], function()
+    local buffer_number = vim.api.nvim_get_current_buf()
+    mark.with_marks {
+      buffer_number = buffer_number,
+      marks = { { name = "[" }, { name = "]" } },
+      function_ = function()
+        vim.cmd [[update ++p]]
+      end,
+    }
+  end, { desc = "Like update ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>z]], function()
     local buffer = vim.api.nvim_buf_get_name(0)
     if #buffer > 0 then
