@@ -12,14 +12,14 @@ local M = {}
 
 ---@class FrozenMarks
 ---@field buffer_number integer
----@field marks table<integer, {name: string, fix?: fun(Mark): Position}>
+---@field marks table<integer, {name: string, adjustment?: fun(Mark): Position}>
 ---@field function_ fun(): nil
 
 ---@param frozen_marks FrozenMarks
 ---@return nil
 function M.with_marks(frozen_marks)
   local marks = {}
-  local fixes = {}
+  local adjustments = {}
 
   for _, mark_input in pairs(frozen_marks.marks) do
     local raw_mark =
@@ -31,17 +31,17 @@ function M.with_marks(frozen_marks)
       line = raw_mark[1],
       column = raw_mark[2],
     })
-    fixes[mark_input.name] = mark_input.fix
+    adjustments[mark_input.name] = mark_input.adjustment
   end
 
   frozen_marks.function_()
 
   for _, mark in pairs(marks) do
-    local fix = fixes[mark.name]
+    local adjustment = adjustments[mark.name]
       or function(m)
         return { line = m.line, column = m.column }
       end
-    local position = fix(mark)
+    local position = adjustment(mark)
     vim.api.nvim_buf_set_mark(
       frozen_marks.buffer_number,
       mark.name,
