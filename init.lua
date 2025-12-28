@@ -1126,13 +1126,29 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
   vim.keymap.set("n", [[<leader>w]], function()
     local buffer_number = vim.api.nvim_get_current_buf()
-    utils.try(mark.with_marks, {
+    mark.with_marks {
       buffer_number = buffer_number,
-      marks = { { name = "[" }, { name = "]" } },
+      marks = {
+        {
+          name = "[",
+          on_error = function()
+            return { line = 1, column = 0 }
+          end,
+        },
+        {
+          name = "]",
+          on_error = function(m)
+            return {
+              line = vim.api.nvim_buf_line_count(m.buffer_number),
+              column = 0,
+            }
+          end,
+        },
+      },
       function_ = function()
         vim.cmd [[update ++p]]
       end,
-    })
+    }
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>z]], function()
     local buffer = vim.api.nvim_buf_get_name(0)
