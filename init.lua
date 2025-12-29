@@ -958,6 +958,20 @@ local function set_bindings()
       end
 
       new_region = region.substitute(new_region, scratch_lines)
+      vim.api.nvim_buf_set_mark(
+        new_region.buffer_number,
+        "[",
+        new_region.line_begin,
+        new_region.column_begin,
+        {}
+      )
+      vim.api.nvim_buf_set_mark(
+        new_region.buffer_number,
+        "]",
+        new_region.line_end,
+        new_region.column_end,
+        {}
+      )
     end, {
       buffer = buffer_number,
       desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
