@@ -349,7 +349,7 @@ local function set_bindings()
     fzf.blines,
     { desc = "Grep current buffer or visually selected lines" }
   )
-  vim.keymap.set("n", [[<leader>fB]], function()
+  vim.keymap.set("n", [[<leader>fW]], function()
     fzf.lines()
   end, { desc = "Grep buffers" })
   vim.keymap.set(
@@ -1405,7 +1405,7 @@ local function set_autocommands()
       if client:supports_method "workspace/symbol" then
         vim.keymap.set(
           "n",
-          [[<leader>fW]],
+          [[<leader>fB]],
           fzf.lsp_live_workspace_symbols,
           { buffer = true, desc = "Dynamic workspace symbols" }
         )
