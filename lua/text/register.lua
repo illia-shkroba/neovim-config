@@ -1,46 +1,39 @@
 local M = {}
 
+local scratch = require "scratch"
 local utils = require "utils"
 
 function M.edit_register_prompt()
   vim.print "Enter register name: "
   local raw_register = utils.try(vim.fn.getcharstr)
   if not raw_register then
-    return nil
+    return
   end
 
-  -- Appending to a register is not allowed.
   local register = string.lower(raw_register)
-  if not string.match(register, '[a-z"0-9-#=*+_/]') then
-    vim.notify(
-      'Unable to modify register "' .. raw_register,
-      vim.log.levels.INFO
+
+  local buffer = scratch.retained()
+  vim.api.nvim_buf_set_lines(
+    buffer,
+    0,
+    1,
+    false,
+    vim.split(vim.fn.getreg(register), "\n")
+  )
+
+  vim.keymap.set({ "n" }, [[ZP]], function()
+    local scratch_lines = vim.api.nvim_buf_get_lines(
+      buffer,
+      0,
+      vim.api.nvim_buf_line_count(buffer),
+      true
     )
-    return nil
-  end
 
-  local listed = false
-  local scratch = true
-  local buffer = vim.api.nvim_create_buf(listed, scratch)
-  vim.cmd.sbuffer(buffer)
-
-  vim.api.nvim_paste(vim.fn.getreg(register), false, -1)
-
-  vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
+    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+  end, {
     buffer = buffer,
-    callback = function()
-      local contents = table.concat(
-        vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, true),
-        "\n"
-      )
-      vim.fn.setreg(register, contents)
-      vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
-
-      vim.schedule(function()
-        vim.cmd([[bwipeout! ]] .. buffer)
-      end)
-    end,
-    once = true,
+    desc = [[Paste scratch buffer's text into register "]] .. register,
   })
 end
 
