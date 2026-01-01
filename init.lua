@@ -525,16 +525,6 @@ local function set_bindings()
       )
     end
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
-  vim.keymap.set("n", [[<leader>mc]], function()
-    local buffer = scratch.retained()
-    vim.api.nvim_buf_set_lines(
-      buffer,
-      0,
-      1,
-      false,
-      vim.split(vim.fn.getreg "+", "\n")
-    )
-  end, { desc = "Paste clipboard contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
     local buffer = scratch.onetime()
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
