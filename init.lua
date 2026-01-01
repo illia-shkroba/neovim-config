@@ -51,6 +51,7 @@ local function set_options()
   vim.opt.relativenumber = true
   vim.opt.shiftround = true
   vim.opt.shiftwidth = 2
+  vim.opt.timeout = false
 
   -- Enable insertion of an indent on a next line after {, before } (with "O",
   -- and after 'cinwords'. Also, disables ">>" on lines starting with #.
