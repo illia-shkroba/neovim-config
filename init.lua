@@ -330,17 +330,7 @@ local function set_bindings()
     fzf.command_history,
     { desc = "Command history" }
   )
-  vim.keymap.set("n", [[<leader>F]], function()
-    local extension = path.extension(vim.api.nvim_buf_get_name(0))
-    fzf.grep_cword {
-      silent = true,
-      rg_opts = "--glob '*"
-        .. extension
-        .. "'"
-        .. " --column --line-number --no-heading --color=always --case-sensitive"
-        .. " --max-columns=4096 -e",
-    }
-  end, {
+  vim.keymap.set("n", [[<leader>F]], pickers.grep_cword_by_filetype, {
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
   vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
@@ -448,18 +438,7 @@ local function set_bindings()
     "v",
     [[<leader>F]],
     operator.expr {
-      function_ = function(region_)
-        local extension = path.extension(vim.api.nvim_buf_get_name(0))
-        fzf.grep {
-          silent = true,
-          search = table.concat(region_.lines, "\n"),
-          rg_opts = "--glob '*"
-            .. extension
-            .. "'"
-            .. " --column --line-number --no-heading --color=always --case-sensitive"
-            .. " --max-columns=4096 -e",
-        }
-      end,
+      function_ = pickers.grep_by_filetype,
       readonly = true,
     },
     {

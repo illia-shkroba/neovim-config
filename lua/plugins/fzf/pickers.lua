@@ -84,4 +84,10 @@ function M.live_grep_by_filetype(matching_filetypes)
   grep_by_filetype(fzf.live_grep, nil, matching_filetypes)
 end
 
+---@param matching_filetypes table<integer, string>|nil
+---@return nil
+function M.grep_cword_by_filetype(matching_filetypes)
+  grep_by_filetype(fzf.grep_cword, nil, matching_filetypes)
+end
+
 return M
