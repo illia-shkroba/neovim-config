@@ -32,35 +32,35 @@ return {
           -- Called once upon creation of the fzf main window.
           vim.keymap.set("t", "<C-r>", function()
             return [[<C-\><C-N>"]] .. vim.fn.getcharstr() .. [[pi]]
-          end, { expr = true, silent = true, buffer = true })
+          end, { expr = true, buffer = true })
           vim.keymap.set("t", "<C-r><C-a>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.expand "<cWORD>"
             vim.cmd.buffer "#"
 
             vim.api.nvim_feedkeys(word, "n", true)
-          end, { silent = true, buffer = true })
+          end, { buffer = true })
           vim.keymap.set("t", "<C-r><C-l>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.getline "."
             vim.cmd.buffer "#"
 
             vim.api.nvim_feedkeys(word, "n", true)
-          end, { silent = true, buffer = true })
+          end, { buffer = true })
           vim.keymap.set("t", "<C-r><C-p>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.expand "<cfile>"
             vim.cmd.buffer "#"
 
             vim.api.nvim_feedkeys(word, "n", true)
-          end, { silent = true, buffer = true })
+          end, { buffer = true })
           vim.keymap.set("t", "<C-r><C-w>", function()
             vim.cmd.buffer "#"
             local word = vim.fn.expand "<cword>"
             vim.cmd.buffer "#"
 
             vim.api.nvim_feedkeys(word, "n", true)
-          end, { silent = true, buffer = true })
+          end, { buffer = true })
         end,
       },
       blines = {

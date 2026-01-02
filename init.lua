@@ -546,7 +546,6 @@ local function set_bindings()
     operator.expr { function_ = char.append_prompt },
     {
       expr = true,
-      silent = true,
       desc = "Append character in area",
     }
   )
@@ -556,7 +555,6 @@ local function set_bindings()
     operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
-      silent = true,
       desc = "Prepend character in area",
     }
   )
@@ -576,7 +574,6 @@ local function set_bindings()
     },
     {
       expr = true,
-      silent = true,
       desc = "Substitute space with _ in area",
     }
   )
@@ -586,7 +583,6 @@ local function set_bindings()
     operator.expr { function_ = char.substitute_prompt },
     {
       expr = true,
-      silent = true,
       desc = "Substitute character in area",
     }
   )
@@ -1060,7 +1056,6 @@ local function set_bindings()
     end
   end, {
     expr = true,
-    silent = true,
     desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
   })
 end

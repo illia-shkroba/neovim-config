@@ -20,7 +20,7 @@ return {
       { "n", "o" },
       [[<C-z>]],
       require("leap.remote").action,
-      { silent = true, desc = "Perform remote action with Leap" }
+      { desc = "Perform remote action with Leap" }
     )
     vim.keymap.set(
       { "n", "v", "o" },
