@@ -350,7 +350,7 @@ local function set_bindings()
     { desc = "List commits affecting current buffer" }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>g]],
     operator.expr {
       function_ = pickers.grep_by_filetype,
@@ -358,7 +358,7 @@ local function set_bindings()
     },
     {
       expr = true,
-      desc = "Grep files with extension using search selected by motion",
+      desc = "Grep files with extension using search",
     }
   )
   vim.keymap.set(
@@ -434,18 +434,6 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
   vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
-  vim.keymap.set(
-    "v",
-    [[<leader>F]],
-    operator.expr {
-      function_ = pickers.grep_by_filetype,
-      readonly = true,
-    },
-    {
-      expr = true,
-      desc = "Search for visually selected word in files with current buffer's extension",
-    }
-  )
   vim.keymap.set(
     "v",
     [[<leader>fw]],
