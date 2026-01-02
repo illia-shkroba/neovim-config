@@ -368,7 +368,7 @@ local function set_bindings()
     { desc = "Grep files with extension" }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>fw]],
     operator.expr {
       function_ = function(region_)
@@ -376,7 +376,7 @@ local function set_bindings()
       end,
       readonly = true,
     },
-    { expr = true, desc = "Search in buffers using search selected by motion" }
+    { expr = true, desc = "Search in buffers" }
   )
   vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
@@ -434,17 +434,6 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
   vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
-  vim.keymap.set(
-    "v",
-    [[<leader>fw]],
-    operator.expr {
-      function_ = function(region_)
-        fzf.lines { query = "'" .. table.concat(region_.lines, "\n") }
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Search for visually selected word in buffers" }
-  )
 
   -- git
   vim.keymap.set(
@@ -552,23 +541,23 @@ local function set_bindings()
 
   -- text manipulation
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>A]],
     operator.expr { function_ = char.append_prompt },
     {
       expr = true,
       silent = true,
-      desc = "Append character in area selected by motion",
+      desc = "Append character in area",
     }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>a]],
     operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
       silent = true,
-      desc = "Prepend character in area selected by motion",
+      desc = "Prepend character in area",
     }
   )
   vim.keymap.set(
@@ -578,7 +567,7 @@ local function set_bindings()
     { desc = "Remove trailing whitespaces" }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>S]],
     operator.expr {
       function_ = function(region_)
@@ -588,84 +577,32 @@ local function set_bindings()
     {
       expr = true,
       silent = true,
-      desc = "Substitute space with _ in area selected by motion",
+      desc = "Substitute space with _ in area",
     }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>s]],
     operator.expr { function_ = char.substitute_prompt },
     {
       expr = true,
       silent = true,
-      desc = "Substitute character in area selected by motion",
+      desc = "Substitute character in area",
     }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>A]],
-    operator.expr { function_ = char.append_prompt },
-    { expr = true, silent = true, desc = "Append character in visual area" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>a]],
-    operator.expr { function_ = char.prepend_prompt },
-    { expr = true, silent = true, desc = "Prepend character in visual area" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>S]],
-    operator.expr {
-      function_ = function(region_)
-        return char.substitute(region_, " ", "_")
-      end,
-    },
-    {
-      expr = true,
-      silent = true,
-      desc = "Substitute space with _ in visual area",
-    }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>s]],
-    operator.expr { function_ = char.substitute_prompt },
-    { expr = true, silent = true, desc = "Substitute character in visual area" }
   )
 
   -- case
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>cF]],
     operator.expr { function_ = case.to_camel },
-    { expr = true, desc = "Format selection by motion to camel case" }
+    { expr = true, desc = "Format selection to camel case" }
   )
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>cf]],
     operator.expr { function_ = case.to_snake },
-    { expr = true, desc = "Format selection by motion to snake case" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>cF]],
-    operator.expr { function_ = case.to_camel },
-    {
-      expr = true,
-      silent = true,
-      desc = "Format selection by visual to camel case",
-    }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>cf]],
-    operator.expr { function_ = case.to_snake },
-    {
-      expr = true,
-      silent = true,
-      desc = "Format selection by visual to snake case",
-    }
+    { expr = true, desc = "Format selection to snake case" }
   )
 
   -- search
@@ -676,7 +613,7 @@ local function set_bindings()
     return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<leader>/]],
     operator.expr {
       function_ = function(region_)
@@ -687,7 +624,7 @@ local function set_bindings()
       end,
       readonly = true,
     },
-    { expr = true, desc = "Set selection by motion to / register" }
+    { expr = true, desc = "Set selection to / register" }
   )
   vim.keymap.set(
     "v",
@@ -714,24 +651,6 @@ local function set_bindings()
       readonly = true,
     },
     { expr = true, desc = "Same as *, but without \\< and \\>" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>/]],
-    operator.expr {
-      function_ = function(region_)
-        local search =
-          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
-        vim.fn.setreg("/", "\\V" .. search)
-        vim.opt.hlsearch = true
-      end,
-      readonly = true,
-    },
-    {
-      expr = true,
-      silent = true,
-      desc = "Set selection by visual to / register",
-    }
   )
 
   -- cmdline
@@ -846,22 +765,12 @@ local function set_bindings()
   end
 
   vim.keymap.set(
-    "n",
+    { "n", "v" },
     [[<p]],
     operator.expr { function_ = align, force_type = "line" },
     {
       expr = true,
-      desc = "Align indentation selected by motion",
-    }
-  )
-  vim.keymap.set(
-    "v",
-    [[<p]],
-    operator.expr { function_ = align, force_type = "line" },
-    {
-      expr = true,
-      silent = true,
-      desc = "Align indentation selected by visual",
+      desc = "Align indentation",
     }
   )
 
