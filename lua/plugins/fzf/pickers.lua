@@ -11,8 +11,25 @@ local function grep_by_filetype(picker, search, matching_filetypes)
     matching_filetypes = filetypes.match_rg(filetype, filename)
   end
 
-  if matching_filetypes == {} or vim.tbl_contains(matching_filetypes, "") then
+  local actions = {
+    ["alt-t"] = function()
+      M.rg_filetypes {
+        winopts = {
+          title = search and " Filetypes Grep (" .. search .. ") "
+            or " Filetypes Grep ",
+        },
+        actions = {
+          ["enter"] = function(selected)
+            grep_by_filetype(picker, search, selected)
+          end,
+        },
+      }
+    end,
+  }
+
+  if #matching_filetypes == 0 or vim.tbl_contains(matching_filetypes, "") then
     picker {
+      actions = actions,
       silent = true,
       search = search,
     }
@@ -27,21 +44,7 @@ local function grep_by_filetype(picker, search, matching_filetypes)
       winopts = {
         title = " Grep (" .. table.concat(matching_filetypes, ", ") .. ") ",
       },
-      actions = {
-        ["alt-t"] = function()
-          M.rg_filetypes {
-            winopts = {
-              title = search and " Filetypes Grep (" .. search .. ") "
-                or " Filetypes Grep ",
-            },
-            actions = {
-              ["enter"] = function(selected)
-                grep_by_filetype(picker, search, selected)
-              end,
-            },
-          }
-        end,
-      },
+      actions = actions,
       silent = true,
       search = search,
       rg_opts = table.concat(type_options, " ")
