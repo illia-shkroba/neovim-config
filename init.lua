@@ -665,14 +665,6 @@ local function set_bindings()
     [[s///gc<Left><Left><Left>]],
     { desc = "Populate cmdline with s///gc" }
   )
-  vim.keymap.set("n", [[<leader>cv]], function()
-    local begin = vim.api.nvim_buf_get_mark(0, "[")
-    local end_ = vim.api.nvim_buf_get_mark(0, "]")
-    return [[:]] .. tostring(begin[1]) .. "," .. tostring(end_[1])
-  end, {
-    expr = true,
-    desc = "Substitute word under the cursor in previously changed or yanked text area",
-  })
 
   -- move
   vim.keymap.set(
