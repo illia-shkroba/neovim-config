@@ -546,7 +546,7 @@ local function set_bindings()
     operator.expr { function_ = char.append_prompt },
     {
       expr = true,
-      desc = "Append character in area",
+      desc = "Append character",
     }
   )
   vim.keymap.set(
@@ -555,7 +555,7 @@ local function set_bindings()
     operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
-      desc = "Prepend character in area",
+      desc = "Prepend character",
     }
   )
   vim.keymap.set(
@@ -574,7 +574,7 @@ local function set_bindings()
     },
     {
       expr = true,
-      desc = "Substitute space with _ in area",
+      desc = "Substitute space with _",
     }
   )
   vim.keymap.set(
@@ -583,7 +583,7 @@ local function set_bindings()
     operator.expr { function_ = char.substitute_prompt },
     {
       expr = true,
-      desc = "Substitute character in area",
+      desc = "Substitute character",
     }
   )
 
@@ -679,13 +679,13 @@ local function set_bindings()
     "v",
     [[<C-j>]],
     [[:lua require("text.move").down(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
-    { desc = "Shift visual area down" }
+    { desc = "Shift down" }
   )
   vim.keymap.set(
     "v",
     [[<C-k>]],
     [[:lua require("text.move").up(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
-    { desc = "Shift visual area up" }
+    { desc = "Shift up" }
   )
 
   -- register
@@ -783,7 +783,7 @@ local function set_bindings()
     { "o", "v" },
     "av",
     ":<C-U>normal '[V']<CR>",
-    { desc = "Previously changed or yanked text area selected linewise" }
+    { desc = "Previously changed or yanked text region selected linewise" }
   )
   vim.keymap.set(
     { "o", "v" },
@@ -803,7 +803,7 @@ local function set_bindings()
     { "o", "v" },
     "iv",
     ":<C-U>normal `[v`]<CR>",
-    { desc = "Previously changed or yanked text area selected charwise" }
+    { desc = "Previously changed or yanked text region selected charwise" }
   )
 
   -- other
@@ -1018,7 +1018,7 @@ local function set_bindings()
     return "`[" .. mode .. "`]"
   end, {
     expr = true,
-    desc = "Visually select previously changed or yanked text area",
+    desc = "Visually select previously changed or yanked text region",
   })
   vim.keymap.set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
   vim.keymap.set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
