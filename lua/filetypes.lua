@@ -2,6 +2,8 @@ local M = {}
 
 local config = vim.fn.stdpath "config"
 
+---@param path string
+---@return string|nil
 local function read(path)
   local handle = io.open(path)
 
@@ -27,13 +29,20 @@ end
 
 M.nvim_to_rg =
   read(vim.fs.joinpath(config, "etc", "filetypes", "nvim-to-rg.json"))
-M.rg = read(vim.fs.joinpath(config, "etc", "filetypes", "rg.json"))
+M.rg_to_patterns =
+  read(vim.fs.joinpath(config, "etc", "filetypes", "rg-to-patterns.json"))
 
+---@param filename string
+---@param pattern string
+---@return boolean
 local function glob(filename, pattern)
   return vim.glob.to_lpeg(pattern):match(filename) ~= nil
 end
 
-local function match_rg(nvim_filetype, filename)
+---@param nvim_filetype string
+---@param filename string
+---@return table<integer, string>
+function M.match_rg(nvim_filetype, filename)
   local rg_matches = M.nvim_to_rg[nvim_filetype]
   if rg_matches == nil then
     return {}
@@ -44,19 +53,13 @@ local function match_rg(nvim_filetype, filename)
   end
 
   return vim.tbl_filter(function(rg_match)
-    for _, pattern in pairs(rg_match.filenames) do
+    for _, pattern in pairs(M.rg_to_patterns[rg_match]) do
       if glob(filename, pattern) then
         return true
       end
     end
     return false
   end, rg_matches)
-end
-
-function M.match_rg(nvim_filetype, filename)
-  return vim.tbl_map(function(x)
-    return x.rg_type
-  end, match_rg(nvim_filetype, filename))
 end
 
 return M

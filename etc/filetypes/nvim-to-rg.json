@@ -1,2499 +1,661 @@
 {
   "": [
-    {
-      "rg_type": "agda",
-      "filenames": [
-        "*.agda",
-        "*.lagda"
-      ]
-    },
-    {
-      "rg_type": "asciidoc",
-      "filenames": [
-        "*.asc"
-      ]
-    },
-    {
-      "rg_type": "asp",
-      "filenames": [
-        "*.ascx",
-        "*.aspx"
-      ]
-    },
-    {
-      "rg_type": "ats",
-      "filenames": [
-        "*.ats",
-        "*.dats",
-        "*.hats",
-        "*.sats"
-      ]
-    },
-    {
-      "rg_type": "avro",
-      "filenames": [
-        "*.avdl",
-        "*.avpr",
-        "*.avsc"
-      ]
-    },
-    {
-      "rg_type": "bazel",
-      "filenames": [
-        "*.bazelrc"
-      ]
-    },
-    {
-      "rg_type": "brotli",
-      "filenames": [
-        "*.br"
-      ]
-    },
-    {
-      "rg_type": "bzip2",
-      "filenames": [
-        "*.bz2",
-        "*.tbz2"
-      ]
-    },
-    {
-      "rg_type": "c",
-      "filenames": [
-        "*.[chH]",
-        "*.[chH].in",
-        "*.cats"
-      ]
-    },
-    {
-      "rg_type": "candid",
-      "filenames": [
-        "*.did"
-      ]
-    },
-    {
-      "rg_type": "carp",
-      "filenames": [
-        "*.carp"
-      ]
-    },
-    {
-      "rg_type": "cbor",
-      "filenames": [
-        "*.cbor"
-      ]
-    },
-    {
-      "rg_type": "ceylon",
-      "filenames": [
-        "*.ceylon"
-      ]
-    },
-    {
-      "rg_type": "cml",
-      "filenames": [
-        "*.cml"
-      ]
-    },
-    {
-      "rg_type": "coffeescript",
-      "filenames": [
-        "*.coffee"
-      ]
-    },
-    {
-      "rg_type": "config",
-      "filenames": [
-        "*.config"
-      ]
-    },
-    {
-      "rg_type": "cpp",
-      "filenames": [
-        "*.[ChH]",
-        "*.[ChH].in",
-        "*.[ch]pp",
-        "*.[ch]pp.in",
-        "*.[ch]xx",
-        "*.[ch]xx.in"
-      ]
-    },
-    {
-      "rg_type": "creole",
-      "filenames": [
-        "*.creole"
-      ]
-    },
-    {
-      "rg_type": "crystal",
-      "filenames": [
-        "*.ecr",
-        "Projectfile"
-      ]
-    },
-    {
-      "rg_type": "dita",
-      "filenames": [
-        "*.dita",
-        "*.ditamap",
-        "*.ditaval"
-      ]
-    },
-    {
-      "rg_type": "docker",
-      "filenames": [
-        "*Dockerfile*"
-      ]
-    },
-    {
-      "rg_type": "dvc",
-      "filenames": [
-        "*.dvc",
-        "Dvcfile"
-      ]
-    },
-    {
-      "rg_type": "fidl",
-      "filenames": [
-        "*.fidl"
-      ]
-    },
-    {
-      "rg_type": "flatbuffers",
-      "filenames": [
-        "*.fbs"
-      ]
-    },
-    {
-      "rg_type": "fortran",
-      "filenames": [
-        "*.pfo"
-      ]
-    },
-    {
-      "rg_type": "fut",
-      "filenames": [
-        "*.fut"
-      ]
-    },
-    {
-      "rg_type": "gap",
-      "filenames": [
-        "*.gap",
-        "*.gi",
-        "*.tst"
-      ]
-    },
-    {
-      "rg_type": "gradle",
-      "filenames": [
-        "gradle-wrapper.*",
-        "gradlew"
-      ]
-    },
-    {
-      "rg_type": "gzip",
-      "filenames": [
-        "*.gz",
-        "*.tgz"
-      ]
-    },
-    {
-      "rg_type": "haskell",
-      "filenames": [
-        "*.c2hs",
-        "*.cpphs"
-      ]
-    },
-    {
-      "rg_type": "html",
-      "filenames": [
-        "*.ejs"
-      ]
-    },
-    {
-      "rg_type": "java",
-      "filenames": [
-        "*.jspx"
-      ]
-    },
-    {
-      "rg_type": "jinja",
-      "filenames": [
-        "*.j2",
-        "*.jinja2"
-      ]
-    },
-    {
-      "rg_type": "json",
-      "filenames": [
-        "*.sarif"
-      ]
-    },
-    {
-      "rg_type": "jupyter",
-      "filenames": [
-        "*.jpynb"
-      ]
-    },
-    {
-      "rg_type": "license",
-      "filenames": [
-        "*[.-]LICEN[CS]E*",
-        "AGPL-*[0-9]*",
-        "APACHE-*[0-9]*",
-        "BSD-*[0-9]*",
-        "CC-BY-*",
-        "COPYING[.-]*",
-        "COPYRIGHT",
-        "COPYRIGHT[.-]*",
-        "EULA",
-        "EULA[.-]*",
-        "GFDL-*[0-9]*",
-        "GNU-*[0-9]*",
-        "GPL-*[0-9]*",
-        "LGPL-*[0-9]*",
-        "LICEN[CS]E",
-        "LICEN[CS]E[.-]*",
-        "MIT-*[0-9]*",
-        "MPL-*[0-9]*",
-        "NOTICE",
-        "NOTICE[.-]*",
-        "OFL-*[0-9]*",
-        "PATENTS",
-        "PATENTS[.-]*",
-        "UNLICEN[CS]E",
-        "UNLICEN[CS]E[.-]*",
-        "agpl[.-]*",
-        "gpl[.-]*",
-        "lgpl[.-]*",
-        "licen[cs]e",
-        "licen[cs]e.*"
-      ]
-    },
-    {
-      "rg_type": "lock",
-      "filenames": [
-        "*.lock"
-      ]
-    },
-    {
-      "rg_type": "log",
-      "filenames": [
-        "*.log"
-      ]
-    },
-    {
-      "rg_type": "lz4",
-      "filenames": [
-        "*.lz4"
-      ]
-    },
-    {
-      "rg_type": "lzma",
-      "filenames": [
-        "*.lzma"
-      ]
-    },
-    {
-      "rg_type": "m4",
-      "filenames": [
-        "*.ac"
-      ]
-    },
-    {
-      "rg_type": "make",
-      "filenames": [
-        "[Mm]akefile",
-        "[Mm]akefile.in"
-      ]
-    },
-    {
-      "rg_type": "mako",
-      "filenames": [
-        "*.mako",
-        "*.mao"
-      ]
-    },
-    {
-      "rg_type": "man",
-      "filenames": [
-        "*.[0-9][cEFMmpSx]",
-        "*.[0-9lnpx]"
-      ]
-    },
-    {
-      "rg_type": "markdown",
-      "filenames": [
-        "*.mdx"
-      ]
-    },
-    {
-      "rg_type": "md",
-      "filenames": [
-        "*.mdx"
-      ]
-    },
-    {
-      "rg_type": "mint",
-      "filenames": [
-        "*.mint"
-      ]
-    },
-    {
-      "rg_type": "mk",
-      "filenames": [
-        "mkfile"
-      ]
-    },
-    {
-      "rg_type": "msbuild",
-      "filenames": [
-        "*.proj",
-        "*.props",
-        "*.targets",
-        "*.vcxproj"
-      ]
-    },
-    {
-      "rg_type": "nim",
-      "filenames": [
-        "*.nimf"
-      ]
-    },
-    {
-      "rg_type": "perl",
-      "filenames": [
-        "*.perl",
-        "*.plh"
-      ]
-    },
-    {
-      "rg_type": "php",
-      "filenames": [
-        "*.pht"
-      ]
-    },
-    {
-      "rg_type": "prolog",
-      "filenames": [
-        "*.P",
-        "*.prolog"
-      ]
-    },
-    {
-      "rg_type": "qmake",
-      "filenames": [
-        "*.prf",
-        "*.pri"
-      ]
-    },
-    {
-      "rg_type": "raku",
-      "filenames": [
-        "*.pl6"
-      ]
-    },
-    {
-      "rg_type": "rdoc",
-      "filenames": [
-        "*.rdoc"
-      ]
-    },
-    {
-      "rg_type": "readme",
-      "filenames": [
-        "*README",
-        "README*"
-      ]
-    },
-    {
-      "rg_type": "reasonml",
-      "filenames": [
-        "*.re",
-        "*.rei"
-      ]
-    },
-    {
-      "rg_type": "red",
-      "filenames": [
-        "*.red",
-        "*.reds"
-      ]
-    },
-    {
-      "rg_type": "seed7",
-      "filenames": [
-        "*.s7i",
-        "*.sd7"
-      ]
-    },
-    {
-      "rg_type": "sh",
-      "filenames": [
-        "*.bashrc",
-        "*.cshrc",
-        "*.kshrc",
-        ".bash_login",
-        ".logout",
-        "bash_login",
-        "bash_logout",
-        "bash_profile",
-        "profile",
-        "zprofile"
-      ]
-    },
-    {
-      "rg_type": "slim",
-      "filenames": [
-        "*.skim",
-        "*.slim",
-        "*.slime"
-      ]
-    },
-    {
-      "rg_type": "sml",
-      "filenames": [
-        "*.sig"
-      ]
-    },
-    {
-      "rg_type": "spark",
-      "filenames": [
-        "*.spark"
-      ]
-    },
-    {
-      "rg_type": "sql",
-      "filenames": [
-        "*.psql"
-      ]
-    },
-    {
-      "rg_type": "sv",
-      "filenames": [
-        "*.vg"
-      ]
-    },
-    {
-      "rg_type": "systemd",
-      "filenames": [
-        "*.automount",
-        "*.device",
-        "*.link",
-        "*.mount",
-        "*.path",
-        "*.scope",
-        "*.service",
-        "*.slice",
-        "*.socket",
-        "*.swap",
-        "*.target",
-        "*.timer"
-      ]
-    },
-    {
-      "rg_type": "taskpaper",
-      "filenames": [
-        "*.taskpaper"
-      ]
-    },
-    {
-      "rg_type": "textile",
-      "filenames": [
-        "*.textile"
-      ]
-    },
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "*.terraformrc",
-        "*.tfrc"
-      ]
-    },
-    {
-      "rg_type": "typoscript",
-      "filenames": [
-        "*.typoscript"
-      ]
-    },
-    {
-      "rg_type": "usd",
-      "filenames": [
-        "*.usdc"
-      ]
-    },
-    {
-      "rg_type": "vcl",
-      "filenames": [
-        "*.vcl"
-      ]
-    },
-    {
-      "rg_type": "verilog",
-      "filenames": [
-        "*.vh"
-      ]
-    },
-    {
-      "rg_type": "webidl",
-      "filenames": [
-        "*.webidl",
-        "*.widl"
-      ]
-    },
-    {
-      "rg_type": "wiki",
-      "filenames": [
-        "*.mediawiki"
-      ]
-    },
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.sch",
-        "*.xjb",
-        "*.xml.dist"
-      ]
-    },
-    {
-      "rg_type": "xz",
-      "filenames": [
-        "*.txz",
-        "*.xz"
-      ]
-    },
-    {
-      "rg_type": "z",
-      "filenames": [
-        "*.Z"
-      ]
-    },
-    {
-      "rg_type": "zsh",
-      "filenames": [
-        "zprofile"
-      ]
-    },
-    {
-      "rg_type": "zstd",
-      "filenames": [
-        "*.zst",
-        "*.zstd"
-      ]
-    }
+    "agda",
+    "asciidoc",
+    "asp",
+    "ats",
+    "avro",
+    "bazel",
+    "brotli",
+    "bzip2",
+    "c",
+    "candid",
+    "carp",
+    "cbor",
+    "ceylon",
+    "cml",
+    "coffeescript",
+    "config",
+    "cpp",
+    "creole",
+    "crystal",
+    "dita",
+    "docker",
+    "dvc",
+    "fidl",
+    "flatbuffers",
+    "fortran",
+    "fut",
+    "gap",
+    "gradle",
+    "gzip",
+    "haskell",
+    "html",
+    "java",
+    "jinja",
+    "json",
+    "jupyter",
+    "license",
+    "lock",
+    "log",
+    "lz4",
+    "lzma",
+    "m4",
+    "make",
+    "mako",
+    "man",
+    "markdown",
+    "md",
+    "mint",
+    "mk",
+    "msbuild",
+    "nim",
+    "perl",
+    "php",
+    "prolog",
+    "qmake",
+    "raku",
+    "rdoc",
+    "readme",
+    "reasonml",
+    "red",
+    "seed7",
+    "sh",
+    "slim",
+    "sml",
+    "spark",
+    "sql",
+    "sv",
+    "systemd",
+    "taskpaper",
+    "textile",
+    "tf",
+    "typoscript",
+    "usd",
+    "vcl",
+    "verilog",
+    "webidl",
+    "wiki",
+    "xml",
+    "xz",
+    "z",
+    "zsh",
+    "zstd"
   ],
   "ada": [
-    {
-      "rg_type": "ada",
-      "filenames": [
-        "*.adb",
-        "*.ads"
-      ]
-    },
-    {
-      "rg_type": "gprbuild",
-      "filenames": [
-        "*.gpr"
-      ]
-    }
+    "ada",
+    "gprbuild"
   ],
   "aidl": [
-    {
-      "rg_type": "aidl",
-      "filenames": [
-        "*.aidl"
-      ]
-    }
+    "aidl"
   ],
   "asciidoc": [
-    {
-      "rg_type": "asciidoc",
-      "filenames": [
-        "*.adoc",
-        "*.asciidoc"
-      ]
-    }
+    "asciidoc"
   ],
   "asm": [
-    {
-      "rg_type": "asm",
-      "filenames": [
-        "*.S",
-        "*.asm",
-        "*.s"
-      ]
-    }
+    "asm"
   ],
   "aspvbs": [
-    {
-      "rg_type": "asp",
-      "filenames": [
-        "*.asp"
-      ]
-    }
+    "asp"
   ],
   "awk": [
-    {
-      "rg_type": "awk",
-      "filenames": [
-        "*.awk"
-      ]
-    }
+    "awk"
   ],
   "bib": [
-    {
-      "rg_type": "tex",
-      "filenames": [
-        "*.bib"
-      ]
-    }
+    "tex"
   ],
   "bitbake": [
-    {
-      "rg_type": "bitbake",
-      "filenames": [
-        "*.bb",
-        "*.bbappend",
-        "*.bbclass"
-      ]
-    }
+    "bitbake"
   ],
   "bp": [
-    {
-      "rg_type": "amake",
-      "filenames": [
-        "*.bp"
-      ]
-    }
+    "amake"
   ],
   "bst": [
-    {
-      "rg_type": "buildstream",
-      "filenames": [
-        "*.bst"
-      ]
-    }
+    "buildstream"
   ],
   "bzl": [
-    {
-      "rg_type": "bazel",
-      "filenames": [
-        "*.BUILD",
-        "*.bazel",
-        "*.bzl",
-        "BUILD",
-        "MODULE.bazel",
-        "WORKSPACE",
-        "WORKSPACE.bazel"
-      ]
-    },
-    {
-      "rg_type": "pants",
-      "filenames": [
-        "BUILD"
-      ]
-    }
+    "bazel",
+    "pants"
   ],
   "cabal": [
-    {
-      "rg_type": "cabal",
-      "filenames": [
-        "*.cabal"
-      ]
-    }
+    "cabal"
   ],
   "cfg": [
-    {
-      "rg_type": "config",
-      "filenames": [
-        "*.cfg"
-      ]
-    }
+    "config"
   ],
   "clojure": [
-    {
-      "rg_type": "clojure",
-      "filenames": [
-        "*.clj",
-        "*.cljc",
-        "*.cljs",
-        "*.cljx"
-      ]
-    },
-    {
-      "rg_type": "edn",
-      "filenames": [
-        "*.edn"
-      ]
-    }
+    "clojure",
+    "edn"
   ],
   "cmake": [
-    {
-      "rg_type": "cmake",
-      "filenames": [
-        "*.cmake",
-        "CMakeLists.txt"
-      ]
-    }
+    "cmake"
   ],
   "conf": [
-    {
-      "rg_type": "bitbake",
-      "filenames": [
-        "*.conf"
-      ]
-    },
-    {
-      "rg_type": "config",
-      "filenames": [
-        "*.conf"
-      ]
-    },
-    {
-      "rg_type": "systemd",
-      "filenames": [
-        "*.conf"
-      ]
-    }
+    "bitbake",
+    "config",
+    "systemd"
   ],
   "cpp": [
-    {
-      "rg_type": "cpp",
-      "filenames": [
-        "*.cc",
-        "*.cc.in",
-        "*.hh",
-        "*.hh.in",
-        "*.inl"
-      ]
-    },
-    {
-      "rg_type": "h",
-      "filenames": [
-        "*.h",
-        "*.hh",
-        "*.hpp"
-      ]
-    },
-    {
-      "rg_type": "objc",
-      "filenames": [
-        "*.h"
-      ]
-    },
-    {
-      "rg_type": "objcpp",
-      "filenames": [
-        "*.h"
-      ]
-    },
-    {
-      "rg_type": "sv",
-      "filenames": [
-        "*.h"
-      ]
-    }
+    "cpp",
+    "h",
+    "objc",
+    "objcpp",
+    "sv"
   ],
   "crystal": [
-    {
-      "rg_type": "crystal",
-      "filenames": [
-        "*.cr"
-      ]
-    }
+    "crystal"
   ],
   "cs": [
-    {
-      "rg_type": "asp",
-      "filenames": [
-        "*.ascx.cs",
-        "*.aspx.cs"
-      ]
-    },
-    {
-      "rg_type": "cs",
-      "filenames": [
-        "*.cs"
-      ]
-    },
-    {
-      "rg_type": "csharp",
-      "filenames": [
-        "*.cs"
-      ]
-    }
+    "asp",
+    "cs",
+    "csharp"
   ],
   "csh": [
-    {
-      "rg_type": "sh",
-      "filenames": [
-        "*.csh",
-        ".cshrc",
-        ".login"
-      ]
-    }
+    "sh"
   ],
   "css": [
-    {
-      "rg_type": "css",
-      "filenames": [
-        "*.css"
-      ]
-    },
-    {
-      "rg_type": "minified",
-      "filenames": [
-        "*.min.css"
-      ]
-    }
+    "css",
+    "minified"
   ],
   "csv": [
-    {
-      "rg_type": "csv",
-      "filenames": [
-        "*.csv"
-      ]
-    }
+    "csv"
   ],
   "cuda": [
-    {
-      "rg_type": "cuda",
-      "filenames": [
-        "*.cu",
-        "*.cuh"
-      ]
-    }
+    "cuda"
   ],
   "d": [
-    {
-      "rg_type": "d",
-      "filenames": [
-        "*.d"
-      ]
-    }
+    "d"
   ],
   "dart": [
-    {
-      "rg_type": "dart",
-      "filenames": [
-        "*.dart"
-      ]
-    }
+    "dart"
   ],
   "def": [
-    {
-      "rg_type": "swig",
-      "filenames": [
-        "*.def"
-      ]
-    }
+    "swig"
   ],
   "dhall": [
-    {
-      "rg_type": "dhall",
-      "filenames": [
-        "*.dhall"
-      ]
-    }
+    "dhall"
   ],
   "diff": [
-    {
-      "rg_type": "diff",
-      "filenames": [
-        "*.diff",
-        "*.patch"
-      ]
-    }
+    "diff"
   ],
   "dosbatch": [
-    {
-      "rg_type": "bat",
-      "filenames": [
-        "*.bat"
-      ]
-    },
-    {
-      "rg_type": "batch",
-      "filenames": [
-        "*.bat"
-      ]
-    },
-    {
-      "rg_type": "cmd",
-      "filenames": [
-        "*.bat",
-        "*.cmd"
-      ]
-    },
-    {
-      "rg_type": "gradle",
-      "filenames": [
-        "gradlew.bat"
-      ]
-    }
+    "bat",
+    "batch",
+    "cmd",
+    "gradle"
   ],
   "dosini": [
-    {
-      "rg_type": "config",
-      "filenames": [
-        "*.ini"
-      ]
-    }
+    "config"
   ],
   "dtd": [
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.dtd"
-      ]
-    }
+    "xml"
   ],
   "dts": [
-    {
-      "rg_type": "devicetree",
-      "filenames": [
-        "*.dts",
-        "*.dtsi"
-      ]
-    },
-    {
-      "rg_type": "dts",
-      "filenames": [
-        "*.dts",
-        "*.dtsi"
-      ]
-    }
+    "devicetree",
+    "dts"
   ],
   "eelixir": [
-    {
-      "rg_type": "elixir",
-      "filenames": [
-        "*.eex",
-        "*.leex"
-      ]
-    }
+    "elixir"
   ],
   "elf": [
-    {
-      "rg_type": "make",
-      "filenames": [
-        "[Gg][Nn][Uu]makefile.am",
-        "[Mm]akefile.am"
-      ]
-    }
+    "make"
   ],
   "elixir": [
-    {
-      "rg_type": "elixir",
-      "filenames": [
-        "*.ex",
-        "*.exs"
-      ]
-    }
+    "elixir"
   ],
   "elm": [
-    {
-      "rg_type": "elm",
-      "filenames": [
-        "*.elm"
-      ]
-    }
+    "elm"
   ],
   "epuppet": [
-    {
-      "rg_type": "puppet",
-      "filenames": [
-        "*.epp"
-      ]
-    }
+    "puppet"
   ],
   "erlang": [
-    {
-      "rg_type": "erlang",
-      "filenames": [
-        "*.erl",
-        "*.hrl"
-      ]
-    }
+    "erlang"
   ],
   "eruby": [
-    {
-      "rg_type": "erb",
-      "filenames": [
-        "*.erb"
-      ]
-    },
-    {
-      "rg_type": "puppet",
-      "filenames": [
-        "*.erb"
-      ]
-    }
+    "erb",
+    "puppet"
   ],
   "fennel": [
-    {
-      "rg_type": "fennel",
-      "filenames": [
-        "*.fnl"
-      ]
-    }
+    "fennel"
   ],
   "fish": [
-    {
-      "rg_type": "fish",
-      "filenames": [
-        "*.fish"
-      ]
-    }
+    "fish"
   ],
   "fortran": [
-    {
-      "rg_type": "fortran",
-      "filenames": [
-        "*.F",
-        "*.F77",
-        "*.F90",
-        "*.F95",
-        "*.f",
-        "*.f77",
-        "*.f90",
-        "*.f95"
-      ]
-    }
+    "fortran"
   ],
   "fsharp": [
-    {
-      "rg_type": "fsharp",
-      "filenames": [
-        "*.fs",
-        "*.fsi",
-        "*.fsx"
-      ]
-    }
+    "fsharp"
   ],
   "gdmo": [
-    {
-      "rg_type": "motoko",
-      "filenames": [
-        "*.mo"
-      ]
-    }
+    "motoko"
   ],
   "gdscript": [
-    {
-      "rg_type": "gap",
-      "filenames": [
-        "*.gd"
-      ]
-    }
+    "gap"
   ],
   "gn": [
-    {
-      "rg_type": "gn",
-      "filenames": [
-        "*.gn",
-        "*.gni"
-      ]
-    }
+    "gn"
   ],
   "go": [
-    {
-      "rg_type": "go",
-      "filenames": [
-        "*.go"
-      ]
-    }
+    "go"
   ],
   "graphql": [
-    {
-      "rg_type": "graphql",
-      "filenames": [
-        "*.graphql",
-        "*.graphqls"
-      ]
-    }
+    "graphql"
   ],
   "groovy": [
-    {
-      "rg_type": "gradle",
-      "filenames": [
-        "*.gradle"
-      ]
-    },
-    {
-      "rg_type": "groovy",
-      "filenames": [
-        "*.gradle",
-        "*.groovy"
-      ]
-    }
+    "gradle",
+    "groovy"
   ],
   "haml": [
-    {
-      "rg_type": "haml",
-      "filenames": [
-        "*.haml"
-      ]
-    }
+    "haml"
   ],
   "handlebars": [
-    {
-      "rg_type": "hbs",
-      "filenames": [
-        "*.hbs"
-      ]
-    }
+    "hbs"
   ],
   "hare": [
-    {
-      "rg_type": "hare",
-      "filenames": [
-        "*.ha"
-      ]
-    }
+    "hare"
   ],
   "haskell": [
-    {
-      "rg_type": "haskell",
-      "filenames": [
-        "*.hs",
-        "*.hsc"
-      ]
-    },
-    {
-      "rg_type": "hs",
-      "filenames": [
-        "*.hs"
-      ]
-    }
+    "haskell",
+    "hs"
   ],
   "hcl": [
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "*.terraform.lock.hcl"
-      ]
-    }
+    "tf"
   ],
   "heex": [
-    {
-      "rg_type": "elixir",
-      "filenames": [
-        "*.heex"
-      ]
-    }
+    "elixir"
   ],
   "html": [
-    {
-      "rg_type": "cshtml",
-      "filenames": [
-        "*.cshtml"
-      ]
-    },
-    {
-      "rg_type": "html",
-      "filenames": [
-        "*.htm",
-        "*.html"
-      ]
-    },
-    {
-      "rg_type": "minified",
-      "filenames": [
-        "*.min.html"
-      ]
-    }
+    "cshtml",
+    "html",
+    "minified"
   ],
   "hy": [
-    {
-      "rg_type": "hy",
-      "filenames": [
-        "*.hy"
-      ]
-    }
+    "hy"
   ],
   "idl": [
-    {
-      "rg_type": "webidl",
-      "filenames": [
-        "*.idl"
-      ]
-    }
+    "webidl"
   ],
   "idlang": [
-    {
-      "rg_type": "prolog",
-      "filenames": [
-        "*.pro"
-      ]
-    },
-    {
-      "rg_type": "qmake",
-      "filenames": [
-        "*.pro"
-      ]
-    }
+    "prolog",
+    "qmake"
   ],
   "idris2": [
-    {
-      "rg_type": "idris",
-      "filenames": [
-        "*.idr"
-      ]
-    }
+    "idris"
   ],
   "janet": [
-    {
-      "rg_type": "janet",
-      "filenames": [
-        "*.janet"
-      ]
-    }
+    "janet"
   ],
   "java": [
-    {
-      "rg_type": "java",
-      "filenames": [
-        "*.java"
-      ]
-    }
+    "java"
   ],
   "javascript": [
-    {
-      "rg_type": "js",
-      "filenames": [
-        "*.cjs",
-        "*.js",
-        "*.mjs"
-      ]
-    },
-    {
-      "rg_type": "minified",
-      "filenames": [
-        "*.min.js"
-      ]
-    }
+    "js",
+    "minified"
   ],
   "javascriptreact": [
-    {
-      "rg_type": "js",
-      "filenames": [
-        "*.jsx"
-      ]
-    }
+    "js"
   ],
   "jinja": [
-    {
-      "rg_type": "jinja",
-      "filenames": [
-        "*.jinja"
-      ]
-    }
+    "jinja"
   ],
   "jproperties": [
-    {
-      "rg_type": "gradle",
-      "filenames": [
-        "gradle.properties"
-      ]
-    },
-    {
-      "rg_type": "java",
-      "filenames": [
-        "*.properties"
-      ]
-    }
+    "gradle",
+    "java"
   ],
   "json": [
-    {
-      "rg_type": "json",
-      "filenames": [
-        "*.json",
-        "composer.lock"
-      ]
-    },
-    {
-      "rg_type": "jupyter",
-      "filenames": [
-        "*.ipynb"
-      ]
-    },
-    {
-      "rg_type": "lock",
-      "filenames": [
-        "package-lock.json"
-      ]
-    },
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "*.auto.tfvars.json",
-        "*.tf.json",
-        "terraform.tfvars.json"
-      ]
-    }
+    "json",
+    "jupyter",
+    "lock",
+    "tf"
   ],
   "jsonl": [
-    {
-      "rg_type": "jsonl",
-      "filenames": [
-        "*.jsonl"
-      ]
-    }
+    "jsonl"
   ],
   "jsp": [
-    {
-      "rg_type": "java",
-      "filenames": [
-        "*.jsp"
-      ]
-    }
+    "java"
   ],
   "julia": [
-    {
-      "rg_type": "jl",
-      "filenames": [
-        "*.jl"
-      ]
-    },
-    {
-      "rg_type": "julia",
-      "filenames": [
-        "*.jl"
-      ]
-    },
-    {
-      "rg_type": "lisp",
-      "filenames": [
-        "*.jl"
-      ]
-    }
+    "jl",
+    "julia",
+    "lisp"
   ],
   "kotlin": [
-    {
-      "rg_type": "gradle",
-      "filenames": [
-        "*.gradle.kts"
-      ]
-    },
-    {
-      "rg_type": "kotlin",
-      "filenames": [
-        "*.kt",
-        "*.kts"
-      ]
-    }
+    "gradle",
+    "kotlin"
   ],
   "kwt": [
-    {
-      "rg_type": "k",
-      "filenames": [
-        "*.k"
-      ]
-    }
+    "k"
   ],
   "lean": [
-    {
-      "rg_type": "lean",
-      "filenames": [
-        "*.lean"
-      ]
-    }
+    "lean"
   ],
   "less": [
-    {
-      "rg_type": "less",
-      "filenames": [
-        "*.less"
-      ]
-    }
+    "less"
   ],
   "lhaskell": [
-    {
-      "rg_type": "haskell",
-      "filenames": [
-        "*.lhs"
-      ]
-    },
-    {
-      "rg_type": "hs",
-      "filenames": [
-        "*.lhs"
-      ]
-    }
+    "haskell",
+    "hs"
   ],
   "lidris2": [
-    {
-      "rg_type": "idris",
-      "filenames": [
-        "*.lidr"
-      ]
-    }
+    "idris"
   ],
   "lilypond": [
-    {
-      "rg_type": "lilypond",
-      "filenames": [
-        "*.ily",
-        "*.ly"
-      ]
-    }
+    "lilypond"
   ],
   "lisp": [
-    {
-      "rg_type": "elisp",
-      "filenames": [
-        "*.el"
-      ]
-    },
-    {
-      "rg_type": "lisp",
-      "filenames": [
-        "*.el",
-        "*.lisp",
-        "*.lsp"
-      ]
-    }
+    "elisp",
+    "lisp"
   ],
   "livebook": [
-    {
-      "rg_type": "elixir",
-      "filenames": [
-        "*.livemd"
-      ]
-    }
+    "elixir"
   ],
   "lua": [
-    {
-      "rg_type": "lua",
-      "filenames": [
-        "*.lua"
-      ]
-    }
+    "lua"
   ],
   "m4": [
-    {
-      "rg_type": "m4",
-      "filenames": [
-        "*.m4"
-      ]
-    }
+    "m4"
   ],
   "make": [
-    {
-      "rg_type": "amake",
-      "filenames": [
-        "*.mk"
-      ]
-    },
-    {
-      "rg_type": "make",
-      "filenames": [
-        "*.mak",
-        "*.mk",
-        "[Gg][Nn][Uu]makefile",
-        "[Gg][Nn][Uu]makefile.in"
-      ]
-    }
+    "amake",
+    "make"
   ],
   "markdown": [
-    {
-      "rg_type": "markdown",
-      "filenames": [
-        "*.markdown",
-        "*.md",
-        "*.mdown",
-        "*.mdwn",
-        "*.mkd",
-        "*.mkdn"
-      ]
-    },
-    {
-      "rg_type": "md",
-      "filenames": [
-        "*.markdown",
-        "*.md",
-        "*.mdown",
-        "*.mdwn",
-        "*.mkd",
-        "*.mkdn"
-      ]
-    }
+    "markdown",
+    "md"
   ],
   "matlab": [
-    {
-      "rg_type": "matlab",
-      "filenames": [
-        "*.m"
-      ]
-    },
-    {
-      "rg_type": "objc",
-      "filenames": [
-        "*.m"
-      ]
-    }
+    "matlab",
+    "objc"
   ],
   "mediawiki": [
-    {
-      "rg_type": "wiki",
-      "filenames": [
-        "*.wiki"
-      ]
-    }
+    "wiki"
   ],
   "meson": [
-    {
-      "rg_type": "meson",
-      "filenames": [
-        "meson.build",
-        "meson.options",
-        "meson_options.txt"
-      ]
-    }
+    "meson"
   ],
   "nim": [
-    {
-      "rg_type": "nim",
-      "filenames": [
-        "*.nim",
-        "*.nimble",
-        "*.nims"
-      ]
-    }
+    "nim"
   ],
   "nix": [
-    {
-      "rg_type": "nix",
-      "filenames": [
-        "*.nix"
-      ]
-    }
+    "nix"
   ],
   "nroff": [
-    {
-      "rg_type": "objcpp",
-      "filenames": [
-        "*.mm"
-      ]
-    }
+    "objcpp"
   ],
   "ocaml": [
-    {
-      "rg_type": "ml",
-      "filenames": [
-        "*.ml"
-      ]
-    },
-    {
-      "rg_type": "ocaml",
-      "filenames": [
-        "*.ml",
-        "*.mli",
-        "*.mll",
-        "*.mly"
-      ]
-    }
+    "ml",
+    "ocaml"
   ],
   "org": [
-    {
-      "rg_type": "org",
-      "filenames": [
-        "*.org",
-        "*.org_archive"
-      ]
-    }
+    "org"
   ],
   "pascal": [
-    {
-      "rg_type": "pascal",
-      "filenames": [
-        "*.dpr",
-        "*.lpr",
-        "*.pas"
-      ]
-    }
+    "pascal"
   ],
   "pccts": [
-    {
-      "rg_type": "gap",
-      "filenames": [
-        "*.g"
-      ]
-    }
+    "gap"
   ],
   "pdf": [
-    {
-      "rg_type": "pdf",
-      "filenames": [
-        "*.pdf"
-      ]
-    }
+    "pdf"
   ],
   "perl": [
-    {
-      "rg_type": "perl",
-      "filenames": [
-        "*.PL",
-        "*.pl",
-        "*.plx",
-        "*.pm"
-      ]
-    },
-    {
-      "rg_type": "prolog",
-      "filenames": [
-        "*.pl"
-      ]
-    }
+    "perl",
+    "prolog"
   ],
   "php": [
-    {
-      "rg_type": "php",
-      "filenames": [
-        "*.php",
-        "*.php3",
-        "*.php4",
-        "*.php5",
-        "*.php7",
-        "*.php8",
-        "*.phtml"
-      ]
-    }
+    "php"
   ],
   "plaintex": [
-    {
-      "rg_type": "tex",
-      "filenames": [
-        "*.tex"
-      ]
-    }
+    "tex"
   ],
   "po": [
-    {
-      "rg_type": "po",
-      "filenames": [
-        "*.po"
-      ]
-    }
+    "po"
   ],
   "pod": [
-    {
-      "rg_type": "pod",
-      "filenames": [
-        "*.pod"
-      ]
-    }
+    "pod"
   ],
   "postscr": [
-    {
-      "rg_type": "postscript",
-      "filenames": [
-        "*.eps",
-        "*.ps"
-      ]
-    }
+    "postscript"
   ],
   "pov": [
-    {
-      "rg_type": "bitbake",
-      "filenames": [
-        "*.inc"
-      ]
-    },
-    {
-      "rg_type": "pascal",
-      "filenames": [
-        "*.inc"
-      ]
-    }
+    "bitbake",
+    "pascal"
   ],
   "progress": [
-    {
-      "rg_type": "swig",
-      "filenames": [
-        "*.i"
-      ]
-    }
+    "swig"
   ],
   "proto": [
-    {
-      "rg_type": "protobuf",
-      "filenames": [
-        "*.proto"
-      ]
-    }
+    "protobuf"
   ],
   "ps1": [
-    {
-      "rg_type": "ps",
-      "filenames": [
-        "*.ps1",
-        "*.psd1",
-        "*.psm1"
-      ]
-    }
+    "ps"
   ],
   "ps1xml": [
-    {
-      "rg_type": "ps",
-      "filenames": [
-        "*.ps1xml"
-      ]
-    }
+    "ps"
   ],
   "puppet": [
-    {
-      "rg_type": "pascal",
-      "filenames": [
-        "*.pp"
-      ]
-    },
-    {
-      "rg_type": "puppet",
-      "filenames": [
-        "*.pp"
-      ]
-    }
+    "pascal",
+    "puppet"
   ],
   "purescript": [
-    {
-      "rg_type": "purs",
-      "filenames": [
-        "*.purs"
-      ]
-    }
+    "purs"
   ],
   "pyrex": [
-    {
-      "rg_type": "cython",
-      "filenames": [
-        "*.pxd",
-        "*.pxi",
-        "*.pyx"
-      ]
-    }
+    "cython"
   ],
   "python": [
-    {
-      "rg_type": "py",
-      "filenames": [
-        "*.py",
-        "*.pyi"
-      ]
-    },
-    {
-      "rg_type": "python",
-      "filenames": [
-        "*.py",
-        "*.pyi"
-      ]
-    }
+    "py",
+    "python"
   ],
   "qml": [
-    {
-      "rg_type": "qml",
-      "filenames": [
-        "*.qml"
-      ]
-    }
+    "qml"
   ],
   "r": [
-    {
-      "rg_type": "r",
-      "filenames": [
-        "*.R",
-        "*.r"
-      ]
-    },
-    {
-      "rg_type": "red",
-      "filenames": [
-        "*.r"
-      ]
-    }
+    "r",
+    "red"
   ],
   "racket": [
-    {
-      "rg_type": "racket",
-      "filenames": [
-        "*.rkt"
-      ]
-    }
+    "racket"
   ],
   "raku": [
-    {
-      "rg_type": "raku",
-      "filenames": [
-        "*.p6",
-        "*.pm6",
-        "*.raku",
-        "*.rakudoc",
-        "*.rakumod",
-        "*.rakutest"
-      ]
-    }
+    "raku"
   ],
   "rc": [
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "terraform.rc"
-      ]
-    }
+    "tf"
   ],
   "rescript": [
-    {
-      "rg_type": "rescript",
-      "filenames": [
-        "*.res",
-        "*.resi"
-      ]
-    }
+    "rescript"
   ],
   "rmd": [
-    {
-      "rg_type": "r",
-      "filenames": [
-        "*.Rmd"
-      ]
-    }
+    "r"
   ],
   "rng": [
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.rng"
-      ]
-    }
+    "xml"
   ],
   "rnoweb": [
-    {
-      "rg_type": "r",
-      "filenames": [
-        "*.Rnw"
-      ]
-    }
+    "r"
   ],
   "robot": [
-    {
-      "rg_type": "robot",
-      "filenames": [
-        "*.robot"
-      ]
-    }
+    "robot"
   ],
   "rst": [
-    {
-      "rg_type": "rst",
-      "filenames": [
-        "*.rst"
-      ]
-    }
+    "rst"
   ],
   "ruby": [
-    {
-      "rg_type": "puppet",
-      "filenames": [
-        "*.rb"
-      ]
-    },
-    {
-      "rg_type": "ruby",
-      "filenames": [
-        "*.gemspec",
-        "*.rb",
-        "*.rbw",
-        ".irbrc",
-        "Gemfile",
-        "Rakefile",
-        "config.ru"
-      ]
-    }
+    "puppet",
+    "ruby"
   ],
   "rust": [
-    {
-      "rg_type": "rust",
-      "filenames": [
-        "*.rs"
-      ]
-    }
+    "rust"
   ],
   "sass": [
-    {
-      "rg_type": "sass",
-      "filenames": [
-        "*.sass"
-      ]
-    }
+    "sass"
   ],
   "sbt": [
-    {
-      "rg_type": "scala",
-      "filenames": [
-        "*.sbt"
-      ]
-    }
+    "scala"
   ],
   "scala": [
-    {
-      "rg_type": "lisp",
-      "filenames": [
-        "*.sc"
-      ]
-    },
-    {
-      "rg_type": "scala",
-      "filenames": [
-        "*.scala"
-      ]
-    }
+    "lisp",
+    "scala"
   ],
   "scheme": [
-    {
-      "rg_type": "lisp",
-      "filenames": [
-        "*.scm"
-      ]
-    }
+    "lisp"
   ],
   "scss": [
-    {
-      "rg_type": "css",
-      "filenames": [
-        "*.scss"
-      ]
-    },
-    {
-      "rg_type": "sass",
-      "filenames": [
-        "*.scss"
-      ]
-    }
+    "css",
+    "sass"
   ],
   "sh": [
-    {
-      "rg_type": "ebuild",
-      "filenames": [
-        "*.ebuild",
-        "*.eclass"
-      ]
-    },
-    {
-      "rg_type": "sh",
-      "filenames": [
-        "*.bash",
-        "*.ksh",
-        "*.sh",
-        ".bash_logout",
-        ".bash_profile",
-        ".bashrc",
-        ".kshrc",
-        ".profile",
-        "bashrc"
-      ]
-    }
+    "ebuild",
+    "sh"
   ],
   "smarty": [
-    {
-      "rg_type": "smarty",
-      "filenames": [
-        "*.tpl"
-      ]
-    }
+    "smarty"
   ],
   "sml": [
-    {
-      "rg_type": "sml",
-      "filenames": [
-        "*.sml"
-      ]
-    }
+    "sml"
   ],
   "solidity": [
-    {
-      "rg_type": "solidity",
-      "filenames": [
-        "*.sol"
-      ]
-    }
+    "solidity"
   ],
   "solution": [
-    {
-      "rg_type": "msbuild",
-      "filenames": [
-        "*.sln"
-      ]
-    }
+    "msbuild"
   ],
   "soy": [
-    {
-      "rg_type": "soy",
-      "filenames": [
-        "*.soy"
-      ]
-    }
+    "soy"
   ],
   "spec": [
-    {
-      "rg_type": "spec",
-      "filenames": [
-        "*.spec"
-      ]
-    }
+    "spec"
   ],
   "sql": [
-    {
-      "rg_type": "sql",
-      "filenames": [
-        "*.sql"
-      ]
-    }
+    "sql"
   ],
   "st": [
-    {
-      "rg_type": "tex",
-      "filenames": [
-        "*.cls"
-      ]
-    }
+    "tex"
   ],
   "stylus": [
-    {
-      "rg_type": "stylus",
-      "filenames": [
-        "*.styl"
-      ]
-    }
+    "stylus"
   ],
   "svelte": [
-    {
-      "rg_type": "svelte",
-      "filenames": [
-        "*.svelte"
-      ]
-    }
+    "svelte"
   ],
   "svg": [
-    {
-      "rg_type": "svg",
-      "filenames": [
-        "*.svg"
-      ]
-    }
+    "svg"
   ],
   "swift": [
-    {
-      "rg_type": "swift",
-      "filenames": [
-        "*.swift"
-      ]
-    }
+    "swift"
   ],
   "systemverilog": [
-    {
-      "rg_type": "sv",
-      "filenames": [
-        "*.sv",
-        "*.svh"
-      ]
-    },
-    {
-      "rg_type": "verilog",
-      "filenames": [
-        "*.sv",
-        "*.svh"
-      ]
-    }
+    "sv",
+    "verilog"
   ],
   "tads": [
-    {
-      "rg_type": "perl",
-      "filenames": [
-        "*.t"
-      ]
-    }
+    "perl"
   ],
   "tcl": [
-    {
-      "rg_type": "tcl",
-      "filenames": [
-        "*.tcl"
-      ]
-    }
+    "tcl"
   ],
   "tcsh": [
-    {
-      "rg_type": "sh",
-      "filenames": [
-        "*.tcsh",
-        ".tcshrc"
-      ]
-    }
+    "sh"
   ],
   "terraform-vars": [
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "*.auto.tfvars",
-        "terraform.tfvars"
-      ]
-    }
+    "tf"
   ],
   "tex": [
-    {
-      "rg_type": "tex",
-      "filenames": [
-        "*.dtx",
-        "*.ins",
-        "*.ltx",
-        "*.sty"
-      ]
-    }
+    "tex"
   ],
   "texinfo": [
-    {
-      "rg_type": "texinfo",
-      "filenames": [
-        "*.texi"
-      ]
-    }
+    "texinfo"
   ],
   "text": [
-    {
-      "rg_type": "license",
-      "filenames": [
-        "COPYING"
-      ]
-    },
-    {
-      "rg_type": "txt",
-      "filenames": [
-        "*.txt"
-      ]
-    }
+    "license",
+    "txt"
   ],
   "tf": [
-    {
-      "rg_type": "tf",
-      "filenames": [
-        "*.tf"
-      ]
-    }
+    "tf"
   ],
   "thrift": [
-    {
-      "rg_type": "thrift",
-      "filenames": [
-        "*.thrift"
-      ]
-    }
+    "thrift"
   ],
   "toml": [
-    {
-      "rg_type": "alire",
-      "filenames": [
-        "alire.toml"
-      ]
-    },
-    {
-      "rg_type": "toml",
-      "filenames": [
-        "*.toml",
-        "Cargo.lock"
-      ]
-    }
+    "alire",
+    "toml"
   ],
   "twig": [
-    {
-      "rg_type": "twig",
-      "filenames": [
-        "*.twig"
-      ]
-    }
+    "twig"
   ],
   "typescript": [
-    {
-      "rg_type": "ts",
-      "filenames": [
-        "*.cts",
-        "*.mts",
-        "*.ts"
-      ]
-    },
-    {
-      "rg_type": "typescript",
-      "filenames": [
-        "*.cts",
-        "*.mts",
-        "*.ts"
-      ]
-    },
-    {
-      "rg_type": "typoscript",
-      "filenames": [
-        "*.ts"
-      ]
-    }
+    "ts",
+    "typescript",
+    "typoscript"
   ],
   "typescriptreact": [
-    {
-      "rg_type": "ts",
-      "filenames": [
-        "*.tsx"
-      ]
-    },
-    {
-      "rg_type": "typescript",
-      "filenames": [
-        "*.tsx"
-      ]
-    }
+    "ts",
+    "typescript"
   ],
   "usd": [
-    {
-      "rg_type": "usd",
-      "filenames": [
-        "*.usd",
-        "*.usda"
-      ]
-    }
+    "usd"
   ],
   "v": [
-    {
-      "rg_type": "coq",
-      "filenames": [
-        "*.v"
-      ]
-    },
-    {
-      "rg_type": "sv",
-      "filenames": [
-        "*.v"
-      ]
-    },
-    {
-      "rg_type": "v",
-      "filenames": [
-        "*.v",
-        "*.vsh"
-      ]
-    },
-    {
-      "rg_type": "verilog",
-      "filenames": [
-        "*.v"
-      ]
-    }
+    "coq",
+    "sv",
+    "v",
+    "verilog"
   ],
   "vala": [
-    {
-      "rg_type": "vala",
-      "filenames": [
-        "*.vala"
-      ]
-    }
+    "vala"
   ],
   "vb": [
-    {
-      "rg_type": "asp",
-      "filenames": [
-        "*.ascx.vb",
-        "*.aspx.vb"
-      ]
-    },
-    {
-      "rg_type": "vb",
-      "filenames": [
-        "*.vb"
-      ]
-    }
+    "asp",
+    "vb"
   ],
   "vhdl": [
-    {
-      "rg_type": "vhdl",
-      "filenames": [
-        "*.vhd",
-        "*.vhdl"
-      ]
-    }
+    "vhdl"
   ],
   "vim": [
-    {
-      "rg_type": "vim",
-      "filenames": [
-        "*.vim",
-        ".gvimrc",
-        ".vimrc",
-        "_gvimrc",
-        "_vimrc",
-        "gvimrc",
-        "vimrc"
-      ]
-    },
-    {
-      "rg_type": "vimscript",
-      "filenames": [
-        "*.vim",
-        ".gvimrc",
-        ".vimrc",
-        "_gvimrc",
-        "_vimrc",
-        "gvimrc",
-        "vimrc"
-      ]
-    }
+    "vim",
+    "vimscript"
   ],
   "vue": [
-    {
-      "rg_type": "js",
-      "filenames": [
-        "*.vue"
-      ]
-    },
-    {
-      "rg_type": "vue",
-      "filenames": [
-        "*.vue"
-      ]
-    }
+    "js",
+    "vue"
   ],
   "wgsl": [
-    {
-      "rg_type": "wgsl",
-      "filenames": [
-        "*.wgsl"
-      ]
-    }
+    "wgsl"
   ],
   "xhtml": [
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.xhtml"
-      ]
-    }
+    "xml"
   ],
   "xml": [
-    {
-      "rg_type": "csproj",
-      "filenames": [
-        "*.csproj"
-      ]
-    },
-    {
-      "rg_type": "msbuild",
-      "filenames": [
-        "*.csproj",
-        "*.fsproj"
-      ]
-    },
-    {
-      "rg_type": "ps",
-      "filenames": [
-        "*.cdxml"
-      ]
-    },
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.xml"
-      ]
-    }
+    "csproj",
+    "msbuild",
+    "ps",
+    "xml"
   ],
   "xsd": [
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.xsd"
-      ]
-    }
+    "xml"
   ],
   "xslt": [
-    {
-      "rg_type": "xml",
-      "filenames": [
-        "*.xsl",
-        "*.xslt"
-      ]
-    }
+    "xml"
   ],
   "yacc": [
-    {
-      "rg_type": "yacc",
-      "filenames": [
-        "*.y"
-      ]
-    }
+    "yacc"
   ],
   "yaml": [
-    {
-      "rg_type": "crystal",
-      "filenames": [
-        "shard.yml"
-      ]
-    },
-    {
-      "rg_type": "dockercompose",
-      "filenames": [
-        "docker-compose.*.yml",
-        "docker-compose.yml"
-      ]
-    },
-    {
-      "rg_type": "yaml",
-      "filenames": [
-        "*.yaml",
-        "*.yml"
-      ]
-    }
+    "crystal",
+    "dockercompose",
+    "yaml"
   ],
   "yang": [
-    {
-      "rg_type": "yang",
-      "filenames": [
-        "*.yang"
-      ]
-    }
+    "yang"
   ],
   "zig": [
-    {
-      "rg_type": "zig",
-      "filenames": [
-        "*.zig"
-      ]
-    }
+    "zig"
   ],
   "zsh": [
-    {
-      "rg_type": "sh",
-      "filenames": [
-        "*.zsh",
-        ".zlogin",
-        ".zlogout",
-        ".zprofile",
-        ".zshenv",
-        ".zshrc",
-        "zlogin",
-        "zlogout",
-        "zshenv",
-        "zshrc"
-      ]
-    },
-    {
-      "rg_type": "zsh",
-      "filenames": [
-        "*.zsh",
-        ".zlogin",
-        ".zlogout",
-        ".zprofile",
-        ".zshenv",
-        ".zshrc",
-        "zlogin",
-        "zlogout",
-        "zshenv",
-        "zshrc"
-      ]
-    }
+    "sh",
+    "zsh"
   ]
 }

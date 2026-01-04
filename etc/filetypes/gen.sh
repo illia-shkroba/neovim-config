@@ -11,14 +11,16 @@ types-cross() {
       rg_type=$(cut -d ':' -f 1 <<< "$line")
 
       echo "$line" | cut -d ':' -f 2 | tr -d ' ' | tr ',' '\n' \
-        | while read -r filename; do
+        | while read -r pattern; do
           local filetype
-          filetype=$(echo 'setl ft?' | nvim -es -- "$filename" | cut -d '=' -f 2)
+          filetype=$(echo 'setl ft?' | nvim -es -- "$pattern" | cut -d '=' -f 2)
 
-          echo '{"rg_type": "'"$rg_type"'", "filename": "'"$filename"'", "filetype": "'"$filetype"'"}'
+          echo '{"rg_type": "'"$rg_type"'", "pattern": "'"$pattern"'", "filetype": "'"$filetype"'"}'
         done
     done
 }
 
-types-cross | jq --slurp --from-file "$SCRIPT_DIR"/nvim-to-rg.jq > "$SCRIPT_DIR"/nvim-to-rg.json
-types-cross | jq '.rg_type' | jq --slurp --compact-output 'unique' > "$SCRIPT_DIR"/rg.json
+types_cross_output=$(types-cross)
+
+jq --slurp --from-file "$SCRIPT_DIR"/nvim-to-rg.jq > "$SCRIPT_DIR"/nvim-to-rg.json <<< "$types_cross_output"
+jq --slurp --from-file "$SCRIPT_DIR"/rg-to-patterns.jq > "$SCRIPT_DIR"/rg-to-patterns.json <<< "$types_cross_output"
