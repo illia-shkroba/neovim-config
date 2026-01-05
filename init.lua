@@ -334,6 +334,7 @@ local function set_bindings()
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
   vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
+  vim.keymap.set({ "n" }, "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
   vim.keymap.set(
     { "n", "v" },
     [[<leader>f/]],

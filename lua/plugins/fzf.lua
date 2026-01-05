@@ -240,6 +240,13 @@ return {
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
+      tagstack = {
+        actions = {
+          ["alt-f"] = false,
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+        },
+      },
       treesitter = {
         actions = {
           ["alt-f"] = false,
