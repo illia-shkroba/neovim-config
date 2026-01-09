@@ -617,6 +617,7 @@ local function set_bindings()
         local search =
           string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
         vim.fn.setreg("/", "\\V" .. search)
+        vim.fn.histadd("search", "\\V" .. search)
         vim.opt.hlsearch = true
       end,
       readonly = true,
