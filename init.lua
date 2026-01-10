@@ -434,7 +434,9 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
   vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
+  vim.keymap.set("n", [[<leader>k]], fzf.changes, { desc = "List changes" })
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
+  vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
 
   -- git
   vim.keymap.set(
