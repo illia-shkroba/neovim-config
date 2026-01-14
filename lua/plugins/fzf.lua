@@ -85,6 +85,19 @@ return {
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
         },
       },
+      changes = {
+        actions = {
+          ["ctrl-s"] = false,
+          ["ctrl-v"] = function(selected, opts)
+            vim.cmd.vsplit()
+            fzf.actions.goto_jump(selected, opts)
+          end,
+          ["ctrl-x"] = function(selected, opts)
+            vim.cmd.split()
+            fzf.actions.goto_jump(selected, opts)
+          end,
+        },
+      },
       command_history = {
         actions = {
           ["ctrl-e"] = false,
