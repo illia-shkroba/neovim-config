@@ -1,36 +1,27 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  build = function()
-    local ts_update =
-      require("nvim-treesitter.install").update { with_sync = true }
-    ts_update()
-  end,
+  branch = "main",
+  lazy = false,
+  build = ":TSUpdate",
   config = function()
-    require("nvim-treesitter.configs").setup {
-      ensure_installed = {
-        "bash",
-        "c_sharp",
-        "dockerfile",
-        "haskell",
-        "java",
-        "json",
-        "lua",
-        "markdown",
-        "nix",
-        "python",
-        "sql",
-        "terraform",
-        "vim",
-        "vimdoc",
-        "yaml",
-      },
-      sync_install = false,
-      auto_install = false,
+    local treesitter = require "nvim-treesitter"
 
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
+    treesitter.install {
+      "bash",
+      "c_sharp",
+      "dockerfile",
+      "haskell",
+      "java",
+      "json",
+      "lua",
+      "markdown",
+      "nix",
+      "python",
+      "sql",
+      "terraform",
+      "vim",
+      "vimdoc",
+      "yaml",
     }
   end,
 }

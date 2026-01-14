@@ -36,6 +36,13 @@ local stylish_config = vim.fn.stdpath "config"
   .. "/etc/options/filetype-options/haskell/stylish-haskell.yaml"
 vim.opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "<filetype>" },
+  callback = function()
+    vim.treesitter.start()
+  end,
+})
+
 vim.keymap.set(
   { "n", "v" },
   [[<leader><CR>]],
