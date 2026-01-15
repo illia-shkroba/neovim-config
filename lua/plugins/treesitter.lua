@@ -16,6 +16,7 @@ return {
       "lua",
       "markdown",
       "nix",
+      "purescript",
       "python",
       "sql",
       "terraform",
