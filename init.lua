@@ -896,6 +896,21 @@ local function set_bindings()
       { expr = true, desc = "Open a scratch window with selected lines" }
     )
   end
+  for _, lhs in pairs { [[<C-w>a]], [[<C-w><C-a>]] } do
+    vim.keymap.set("n", lhs, function()
+      vim.cmd [[sp `=tempname()`]]
+      vim.opt_local.filetype = "markdown"
+    end, { desc = "Temporary file" })
+  end
+  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
+    vim.keymap.set("n", lhs, function()
+      scratch.retained()
+      vim.opt_local.filetype = "sh"
+
+      vim.cmd [[0r !atuin search --format "{command}"]]
+      vim.cmd.normal [[G]]
+    end, { desc = "History" })
+  end
   for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
     vim.keymap.set("n", lhs, function()
       local origin_buffer = vim.api.nvim_get_current_buf()
@@ -927,15 +942,6 @@ local function set_bindings()
       bind_substitute_origin(buffer, region_)
       vim.opt_local.filetype = filetype
     end, { desc = "Open a scratch window with [count] lines" })
-  end
-  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
-    vim.keymap.set("n", lhs, function()
-      scratch.retained()
-      vim.opt_local.filetype = "sh"
-
-      vim.cmd [[0r !atuin search --format "{command}"]]
-      vim.cmd.normal [[G]]
-    end, { desc = "History" })
   end
   vim.keymap.set(
     "n",
