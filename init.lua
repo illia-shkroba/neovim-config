@@ -929,66 +929,13 @@ local function set_bindings()
     end, { desc = "Open a scratch window with [count] lines" })
   end
   for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
-    vim.keymap.set(
-      "n",
-      lhs,
-      operator.expr {
-        function_ = function(region_)
-          local buffer = scratch.retained()
-          vim.api.nvim_buf_set_lines(
-            buffer,
-            0,
-            1,
-            false,
-            vim.split(align(region_), "\n")
-          )
-          vim.opt_local.filetype = "sh"
-
-          vim.cmd [[0r !atuin search --format "{command}"]]
-          vim.cmd.normal [[] G]]
-        end,
-        readonly = true,
-      },
-      { expr = true, desc = "History with selected lines appended at the end" }
-    )
-  end
-  for _, lhs in pairs { [[<C-w>ee]], [[<C-w><C-e><C-e>]] } do
     vim.keymap.set("n", lhs, function()
-      local origin_buffer = vim.api.nvim_get_current_buf()
-      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-      local line = cursor[1]
-
-      local region_ = region.from {
-        buffer_number = origin_buffer,
-        line_begin = line,
-        column_begin = 0,
-        line_end = line - 1 + vim.v.count1,
-        column_end = 0,
-        type_ = "line",
-      }
-
-      vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
-      vim.api.nvim_buf_set_mark(
-        origin_buffer,
-        "]",
-        line - 1 + vim.v.count1,
-        0,
-        {}
-      )
-
-      local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(
-        buffer,
-        0,
-        1,
-        false,
-        vim.split(align(region_), "\n")
-      )
+      scratch.retained()
       vim.opt_local.filetype = "sh"
 
       vim.cmd [[0r !atuin search --format "{command}"]]
-      vim.cmd.normal [[] G]]
-    end, { desc = "History with [count] lines" })
+      vim.cmd.normal [[G]]
+    end, { desc = "History" })
   end
   vim.keymap.set(
     "n",
