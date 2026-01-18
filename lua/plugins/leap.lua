@@ -29,10 +29,22 @@ return {
       { silent = true, desc = "Leap" }
     )
     vim.keymap.set(
+      { "n", "v", "o" },
+      [[<C-q>]],
+      "<Plug>(leap-from-window)",
+      { silent = true, desc = "Leap to other windows" }
+    )
+    vim.keymap.set(
       { "i" },
       [[<C-s>]],
       "<Plug>(leap)",
       { silent = true, desc = "Leap" }
+    )
+    vim.keymap.set(
+      { "i" },
+      [[<C-q>]],
+      "<Plug>(leap-from-window)",
+      { silent = true, desc = "Leap to other windows" }
     )
   end,
 }
