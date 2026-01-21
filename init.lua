@@ -337,7 +337,7 @@ local function set_bindings()
   vim.keymap.set({ "n" }, "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>f/]],
+    [[<leader>?]],
     fzf.blines,
     { desc = "Grep current buffer or visually selected lines" }
   )
