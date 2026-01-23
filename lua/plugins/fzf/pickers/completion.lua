@@ -154,7 +154,6 @@ M.completion = function(prioritize_init)
     },
     fzf_opts = {
       ["--no-multi"] = true,
-      ["--no-sort"] = true,
       ["--tiebreak"] = "length,end,index",
       ["--tac"] = not prioritize_init,
     },
