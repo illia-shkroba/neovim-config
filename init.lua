@@ -867,6 +867,12 @@ local function set_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
+  vim.keymap.set("n", [[<leader>E]], function()
+    local window = vim.api.nvim_get_current_win()
+    vim.cmd.windo "wincmd J"
+    vim.api.nvim_set_current_win(window)
+    vim.cmd.wincmd "H"
+  end, { desc = "Apply tall layout" })
   vim.keymap.set(
     "n",
     [[<leader>J]],
