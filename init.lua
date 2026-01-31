@@ -17,6 +17,7 @@ local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
 local utils = require "utils"
+local window_picker = require "window-picker"
 
 local location = list.location
 local quickfix = list.quickfix
@@ -901,6 +902,14 @@ local function set_bindings()
       },
       { expr = true, desc = "Open a scratch window with selected lines" }
     )
+  end
+  for _, lhs in pairs { [[<C-w>a]], [[<C-w><C-a>]] } do
+    vim.keymap.set("n", lhs, function()
+      local window = window_picker.pick_window()
+      if window ~= nil then
+        vim.api.nvim_set_current_win(window)
+      end
+    end, { desc = "Pick window" })
   end
   for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
     vim.keymap.set("n", lhs, function()
