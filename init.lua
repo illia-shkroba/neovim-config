@@ -882,7 +882,13 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>W]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
-      vim.cmd [[write ++p]]
+      local buffer = vim.api.nvim_buf_get_name(0)
+      if path.remote(buffer) then
+        -- `++p` option causes an error when used with a "remote buffer".
+        vim.cmd [[write]]
+      else
+        vim.cmd [[write ++p]]
+      end
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
   for _, lhs in pairs { [[<C-w>y]], [[<C-w><C-y>]] } do
@@ -1002,7 +1008,13 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
   vim.keymap.set("n", [[<leader>w]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
-      vim.cmd [[update ++p]]
+      local buffer = vim.api.nvim_buf_get_name(0)
+      if path.remote(buffer) then
+        -- `++p` option causes an error when used with a "remote buffer".
+        vim.cmd [[update]]
+      else
+        vim.cmd [[update ++p]]
+      end
     end)
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>z]], function()
