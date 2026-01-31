@@ -11,7 +11,7 @@ return {
       -- 'floating-big-letter' draw big letter on a floating window
       -- 'floating-letter' draw letter on a floating window
       -- used
-      hint = "statusline-winbar",
+      hint = "floating-letter",
 
       -- when you go to window selection mode, status bar will show one of
       -- following letters on them so you can use that letter to select the window
@@ -47,7 +47,7 @@ return {
       },
 
       -- whether to show 'Pick window:' prompt
-      show_prompt = true,
+      show_prompt = false,
 
       -- prompt message to show to get the user input
       prompt_message = "Pick window: ",
