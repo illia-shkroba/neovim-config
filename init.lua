@@ -926,6 +926,18 @@ local function set_bindings()
       vim.opt_local.filetype = "markdown"
     end, { desc = "Temporary file" })
   end
+  for _, lhs in pairs { [[<C-w>u]], [[<C-w><C-u>]] } do
+    vim.keymap.set("n", lhs, function()
+      local target_window = window_picker.pick_window()
+      if target_window ~= nil then
+        local current_window = vim.api.nvim_get_current_win()
+
+        vim.api.nvim_set_current_win(target_window)
+        vim.cmd.wincmd "q"
+        vim.api.nvim_set_current_win(current_window)
+      end
+    end, { desc = "Quit picked window" })
+  end
   for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
     vim.keymap.set("n", lhs, function()
       local origin_buffer = vim.api.nvim_get_current_buf()
