@@ -804,8 +804,27 @@ local function set_bindings()
   )
 
   -- other
+  local substitute_origin_namespace =
+    vim.api.nvim_create_namespace "substitute_origin"
+
   local function bind_substitute_origin(buffer_number, region_)
     local new_region = region_
+
+    local mark_begin_id = vim.api.nvim_buf_set_extmark(
+      new_region.buffer_number,
+      substitute_origin_namespace,
+      new_region.line_begin - 1,
+      new_region.column_begin,
+      { right_gravity = true, undo_restore = true }
+    )
+    local mark_end_id = vim.api.nvim_buf_set_extmark(
+      new_region.buffer_number,
+      substitute_origin_namespace,
+      new_region.line_end - 1,
+      new_region.column_end,
+      { right_gravity = true, undo_restore = true }
+    )
+
     vim.keymap.set({ "n" }, [[ZP]], function()
       local scratch_lines = vim.api.nvim_buf_get_lines(
         buffer_number,
@@ -817,7 +836,50 @@ local function set_bindings()
         scratch_lines = {}
       end
 
+      local mark_begin = vim.api.nvim_buf_get_extmark_by_id(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        mark_begin_id,
+        {}
+      )
+      new_region.line_begin, new_region.column_begin =
+        mark_begin[1] + 1, mark_begin[2]
+      local mark_end = vim.api.nvim_buf_get_extmark_by_id(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        mark_end_id,
+        {}
+      )
+      new_region.line_end, new_region.column_end = mark_end[1] + 1, mark_end[2]
+
       new_region = region.substitute(new_region, scratch_lines)
+
+      vim.api.nvim_buf_del_extmark(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        mark_begin_id
+      )
+      vim.api.nvim_buf_del_extmark(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        mark_end_id
+      )
+
+      mark_begin_id = vim.api.nvim_buf_set_extmark(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        new_region.line_begin - 1,
+        new_region.column_begin,
+        { right_gravity = true, undo_restore = true }
+      )
+      mark_end_id = vim.api.nvim_buf_set_extmark(
+        new_region.buffer_number,
+        substitute_origin_namespace,
+        new_region.line_end - 1,
+        new_region.column_end,
+        { right_gravity = true, undo_restore = true }
+      )
+
       vim.api.nvim_buf_set_mark(
         new_region.buffer_number,
         "[",
