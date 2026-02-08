@@ -69,7 +69,7 @@ return {
       filter_rules = {
         -- when there is only one window available to pick from, use that window
         -- without prompting the user to select
-        autoselect_one = true,
+        autoselect_one = false,
 
         -- whether you want to include the window you are currently on to window
         -- selection or not

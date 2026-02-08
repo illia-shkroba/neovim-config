@@ -935,12 +935,14 @@ local function set_bindings()
   for _, lhs in pairs { [[<C-w>u]], [[<C-w><C-u>]] } do
     vim.keymap.set("n", lhs, function()
       local target_window = window_picker.pick_window()
-      if target_window ~= nil then
+      while target_window ~= nil do
         local current_window = vim.api.nvim_get_current_win()
 
         vim.api.nvim_set_current_win(target_window)
         vim.cmd.wincmd "q"
         vim.api.nvim_set_current_win(current_window)
+
+        target_window = window_picker.pick_window()
       end
     end, { desc = "Quit picked window" })
   end
