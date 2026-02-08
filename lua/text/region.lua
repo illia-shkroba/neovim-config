@@ -9,13 +9,6 @@ local M = {}
 ---@field type_ "line"|"char"|"block"|"block_newline"
 ---@field lines table<integer, string>
 
----@param type_ "line"|"char"|"block"|"block_newline"
----@return "line"|"char"|"block"
-local function bare_type(type_)
-  ---@diagnostic disable-next-line: return-type-mismatch
-  return type_ == "block_newline" and "block" or type_
-end
-
 ---@param region Region
 ---@param target table<integer, string>
 ---@return Region
@@ -28,14 +21,12 @@ local function substitute_linewise(region, target)
     target
   )
 
-  return M.from {
-    buffer_number = region.buffer_number,
+  return M.update(region, {
     line_begin = region.line_begin,
     column_begin = region.column_begin,
     line_end = region.line_begin + #target - 1,
     column_end = region.column_end,
-    type_ = bare_type(region.type_),
-  }
+  })
 end
 
 ---@param region Region
@@ -64,14 +55,12 @@ local function substitute_charwise(region, target)
     new_column_end = #target[#target] - 1
   end
 
-  return M.from {
-    buffer_number = region.buffer_number,
+  return M.update(region, {
     line_begin = region.line_begin,
     column_begin = region.column_begin,
     line_end = new_line_end,
     column_end = new_column_end,
-    type_ = bare_type(region.type_),
-  }
+  })
 end
 
 ---@param region Region
@@ -105,16 +94,12 @@ local function substitute_blockwise_with_line_ends(region, target)
     put_lines
   )
 
-  local new_region = M.from {
-    buffer_number = region.buffer_number,
+  return M.update(region, {
     line_begin = region.line_begin,
     column_begin = region.column_begin,
     line_end = region.line_begin + #put_lines - 1,
     column_end = #put_lines > 0 and #put_lines[#put_lines] or region.column_end,
-    type_ = bare_type(region.type_),
-  }
-  new_region.type_ = "block_newline"
-  return new_region
+  })
 end
 
 ---@param region Region
@@ -163,16 +148,12 @@ local function substitute_blockwise_normal(region, target)
     new_column_end = region.column_end
   end
 
-  local new_region = M.from {
-    buffer_number = region.buffer_number,
+  return M.update(region, {
     line_begin = region.line_begin,
     column_begin = region.column_begin,
     line_end = region.line_begin + #put_lines - 1,
     column_end = new_column_end,
-    type_ = bare_type(region.type_),
-  }
-  new_region.type_ = "block"
-  return new_region
+  })
 end
 
 ---@param region Region
@@ -330,6 +311,37 @@ function M.from(region_input)
   region.lines = truncate(region)
 
   return region
+end
+
+---@class UpdateInput
+---@field line_begin integer
+---@field column_begin integer
+---@field line_end integer
+---@field column_end integer
+
+---@param region Region
+---@param update_input UpdateInput
+---@return Region
+function M.update(region, update_input)
+  local lines = vim.api.nvim_buf_get_lines(
+    region.buffer_number,
+    update_input.line_begin - 1,
+    update_input.line_end,
+    true
+  )
+
+  local new_region = {
+    buffer_number = region.buffer_number,
+    line_begin = update_input.line_begin,
+    column_begin = update_input.column_begin,
+    line_end = update_input.line_end,
+    column_end = update_input.column_end,
+    type_ = region.type_,
+    lines = lines,
+  }
+  new_region.lines = truncate(new_region)
+
+  return new_region
 end
 
 return M
