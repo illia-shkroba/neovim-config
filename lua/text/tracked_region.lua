@@ -60,18 +60,25 @@ end
 ---@param region_ Region
 ---@return TrackedRegion
 function M.from_region(region_)
+  local column_begin, column_end
+  if region_.type_ == "line" then
+    column_begin, column_end = 0, 0
+  else
+    column_begin, column_end = region_.column_begin, region_.column_end
+  end
+
   local mark_begin = vim.api.nvim_buf_set_extmark(
     region_.buffer_number,
     namespace,
     region_.line_begin - 1,
-    region_.column_begin,
+    column_begin,
     { right_gravity = true, undo_restore = true }
   )
   local mark_end = vim.api.nvim_buf_set_extmark(
     region_.buffer_number,
     namespace,
     region_.line_end - 1,
-    region_.column_end,
+    column_end,
     { right_gravity = true, undo_restore = true }
   )
 
