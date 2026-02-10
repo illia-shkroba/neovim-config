@@ -66,17 +66,25 @@ return {
         -- Navigation
         set("n", "]c", function()
           if vim.wo.diff then
-            vim.cmd.normal { "]c", bang = true }
+            for _ = 1, vim.v.count1 do
+              vim.cmd.normal { "]c", bang = true }
+            end
           else
-            gitsigns.nav_hunk "next"
+            for _ = 1, vim.v.count1 do
+              gitsigns.nav_hunk "next"
+            end
           end
         end, { desc = "Go to next hunk" })
 
         set("n", "[c", function()
           if vim.wo.diff then
-            vim.cmd.normal { "[c", bang = true }
+            for _ = 1, vim.v.count1 do
+              vim.cmd.normal { "[c", bang = true }
+            end
           else
-            gitsigns.nav_hunk "prev"
+            for _ = 1, vim.v.count1 do
+              gitsigns.nav_hunk "prev"
+            end
           end
         end, { desc = "Go to previous hunk" })
 
