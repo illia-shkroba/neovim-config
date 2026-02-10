@@ -4,6 +4,7 @@ return {
   opts = {},
   config = function()
     local fzf = require "fzf-lua"
+    local fzf_defaults = (require "fzf-lua.defaults").defaults
     local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
 
@@ -119,6 +120,23 @@ return {
       },
       files = {
         actions = {
+          ["alt-t"] = function(_, opts)
+            fzf.files {
+              cwd = opts.cwd,
+              winopts = {
+                title = " Files (cwd) ",
+              },
+              actions = {
+                ["alt-t"] = function()
+                  fzf.files {
+                    cwd = opts.cwd,
+                  }
+                end,
+              },
+              find_opts = [[-maxdepth 1 ]] .. fzf_defaults.files.find_opts,
+              fd_opts = [[--max-depth 1 ]] .. fzf_defaults.files.fd_opts,
+            }
+          end,
           ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
