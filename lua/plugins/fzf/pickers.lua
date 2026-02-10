@@ -6,8 +6,9 @@ local filetypes = require "filetypes"
 ---@param picker any
 ---@param search string|nil
 ---@param matching_filetypes table<integer, string>|nil
+---@param query string|nil
 ---@return nil
-local function grep_by_filetype(picker, search, matching_filetypes)
+local function grep_by_filetype(picker, search, matching_filetypes, query)
   if matching_filetypes == nil then
     local filetype = vim.opt_local.filetype._value
     local filename = vim.fs.basename(vim.api.nvim_buf_get_name(0))
@@ -23,8 +24,8 @@ local function grep_by_filetype(picker, search, matching_filetypes)
             or " Filetypes Grep ",
         },
         actions = {
-          ["enter"] = function(selected)
-            grep_by_filetype(picker, search, selected)
+          ["enter"] = function(selected, opts)
+            grep_by_filetype(picker, search, selected, opts.__INFO.last_query)
           end,
         },
       }
@@ -36,6 +37,7 @@ local function grep_by_filetype(picker, search, matching_filetypes)
       actions = actions,
       silent = true,
       search = search,
+      query = query,
     }
   else
     local type_options = {}
@@ -51,6 +53,7 @@ local function grep_by_filetype(picker, search, matching_filetypes)
       actions = actions,
       silent = true,
       search = search,
+      query = query,
       rg_opts = table.concat(type_options, " ")
         .. " --column --line-number --no-heading --color=always --smart-case"
         .. " --max-columns=4096 -e",
