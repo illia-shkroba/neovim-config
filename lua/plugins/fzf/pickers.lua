@@ -1,6 +1,8 @@
 local M = {}
 
 local fzf = require "fzf-lua"
+local path = require "fzf-lua.path"
+local utils = require "fzf-lua.utils"
 local filetypes = require "filetypes"
 
 ---@param picker any
@@ -98,5 +100,95 @@ end
 function M.grep_cword_by_filetype(matching_filetypes)
   grep_by_filetype(fzf.grep_cword, nil, matching_filetypes)
 end
+
+---@class DirectoriesInput
+---@field cwd string|nil
+
+---@param directories_input DirectoriesInput|nil
+---@return nil
+function M.directories(directories_input)
+  directories_input = directories_input or {}
+
+  fzf.files {
+    cwd = directories_input.cwd,
+    winopts = {
+      title = " Directories ",
+    },
+    actions = vim.tbl_deep_extend("keep", {
+      ["alt-t"] = function()
+        M.directories_cwd(directories_input)
+      end,
+    }, M.directories_actions),
+    find_opts = [[-type d \! -path '*/.git/*']],
+    fd_opts = [[--color=never --type d --exclude .git]],
+  }
+end
+
+---@param directories_input DirectoriesInput|nil
+---@return nil
+function M.directories_cwd(directories_input)
+  directories_input = directories_input or {}
+
+  fzf.files {
+    cwd = directories_input.cwd,
+    winopts = {
+      title = " Directories (cwd) ",
+    },
+    actions = vim.tbl_deep_extend("keep", {
+      ["alt-t"] = function()
+        M.directories(directories_input)
+      end,
+    }, M.directories_actions),
+    find_opts = [[-maxdepth 1 -type d \! -path '*/.git/*']],
+    fd_opts = [[--max-depth 1 --color=never --type d --exclude .git]],
+  }
+end
+
+---@param e string
+---@return string
+local function absolute_path_from_entry(e)
+  return path.entry_to_file(e:match "[^\t]+$" or e, { cwd = utils.cwd() }).path
+end
+
+M.directories_actions = {
+  ["enter"] = function(selected, opts)
+    if #selected == 0 then
+      return
+    end
+    opts.scope = "tab"
+    fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
+  end,
+  ["ctrl-f"] = function(selected)
+    if #selected == 0 then
+      return
+    end
+    fzf.files { cwd = absolute_path_from_entry(selected[1]) }
+  end,
+  ["ctrl-s"] = false,
+  ["ctrl-t"] = function(selected, opts)
+    if #selected == 0 then
+      return
+    end
+    vim.cmd.tabedit()
+    opts.scope = "tab"
+    fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
+  end,
+  ["ctrl-v"] = function(selected, opts)
+    if #selected == 0 then
+      return
+    end
+    vim.cmd.vnew()
+    opts.scope = "local"
+    fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
+  end,
+  ["ctrl-x"] = function(selected, opts)
+    if #selected == 0 then
+      return
+    end
+    vim.cmd.new()
+    opts.scope = "local"
+    fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
+  end,
+}
 
 return M

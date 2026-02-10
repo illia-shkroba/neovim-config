@@ -7,6 +7,7 @@ return {
     local fzf_defaults = (require "fzf-lua.defaults").defaults
     local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
+    local pickers = require "plugins.fzf.pickers"
 
     local function remove_file(selected, opts)
       for _, sel in ipairs(selected) do
@@ -286,36 +287,7 @@ return {
         },
       },
       zoxide = {
-        actions = {
-          ["enter"] = function(selected, opts)
-            opts.scope = "tab"
-            fzf.actions.zoxide_cd(selected, opts)
-          end,
-          ["ctrl-f"] = function(selected)
-            if #selected == 0 then
-              return
-            end
-            local cwd = selected[1]:match "[^\t]+$" or selected[1]
-
-            fzf.files { cwd = cwd }
-          end,
-          ["ctrl-s"] = false,
-          ["ctrl-t"] = function(selected, opts)
-            vim.cmd.tabedit()
-            opts.scope = "tab"
-            fzf.actions.zoxide_cd(selected, opts)
-          end,
-          ["ctrl-v"] = function(selected, opts)
-            vim.cmd.vnew()
-            opts.scope = "local"
-            fzf.actions.zoxide_cd(selected, opts)
-          end,
-          ["ctrl-x"] = function(selected, opts)
-            vim.cmd.new()
-            opts.scope = "local"
-            fzf.actions.zoxide_cd(selected, opts)
-          end,
-        },
+        actions = pickers.directories_actions,
       },
     }
   end,

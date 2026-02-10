@@ -371,6 +371,12 @@ local function set_bindings()
     { desc = "Grep files with extension" }
   )
   vim.keymap.set(
+    "n",
+    [[<leader>fv]],
+    pickers.directories,
+    { desc = "List directories" }
+  )
+  vim.keymap.set(
     { "n", "v" },
     [[<leader>fw]],
     operator.expr {
