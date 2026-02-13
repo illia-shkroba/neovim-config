@@ -318,6 +318,14 @@ local function set_bindings()
     [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
     { desc = "Spawn new tmux pane vertically" }
   )
+  vim.keymap.set(
+    "n",
+    [[<leader>l"]],
+    [[<Cmd>execute "silent !tmux split-window -v -c '" .. expand('%:p:h') .. "'"<CR>]],
+    {
+      desc = "Spawn new tmux pane vertically with buffer's parent directory as CWD",
+    }
+  )
 
   -- pickers
   vim.keymap.set(
