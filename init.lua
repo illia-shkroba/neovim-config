@@ -795,6 +795,9 @@ local function set_bindings()
     ":<C-U>normal va%<CR>",
     { desc = "Missing text object for a% from matchit" }
   )
+  vim.keymap.set({ "o", "v" }, "a;", function()
+    return "a" .. vim.fn.getcharsearch().char
+  end, { expr = true, desc = "Around last search char" })
   vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
   vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
   vim.keymap.set(
@@ -809,6 +812,9 @@ local function set_bindings()
     ":<C-U>normal 0v$<CR>",
     { desc = "Current line selected charwise" }
   )
+  vim.keymap.set({ "o", "v" }, "i;", function()
+    return "i" .. vim.fn.getcharsearch().char
+  end, { expr = true, desc = "Inside last search char" })
   vim.keymap.set(
     { "o", "v" },
     "il",
