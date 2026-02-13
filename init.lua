@@ -387,6 +387,12 @@ local function set_bindings()
     },
     { expr = true, desc = "Search in buffers" }
   )
+  vim.keymap.set(
+    "n",
+    [[<leader>fa]],
+    fzf.builtin,
+    { desc = "All builtin pickers" }
+  )
   vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
     "n",
