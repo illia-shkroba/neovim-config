@@ -1202,12 +1202,6 @@ local function set_autocommands()
       if client:supports_method "textDocument/references" then
         vim.keymap.set(
           "n",
-          [[<leader>qc]],
-          vim.lsp.buf.references,
-          { buffer = true, desc = "References" }
-        )
-        vim.keymap.set(
-          "n",
           [[<leader>fc]],
           fzf.lsp_references,
           { buffer = true, desc = "References" }
@@ -1277,7 +1271,6 @@ local function set_autocommands()
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
 
       local function unset_bindings()
-        vim.keymap.del("n", [[<leader>qc]], { buffer = event.buf })
         vim.keymap.del("n", [[<leader>fc]], { buffer = event.buf })
         vim.keymap.del("n", [[<leader>qi]], { buffer = event.buf })
         vim.keymap.del("n", [[<leader>fi]], { buffer = event.buf })
@@ -1285,8 +1278,7 @@ local function set_autocommands()
         vim.keymap.del("n", [[<leader>fo]], { buffer = event.buf })
         vim.keymap.del("n", [[K]], { buffer = event.buf })
         vim.keymap.del("n", [[gd]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>fd]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>fW]], { buffer = event.buf })
+        vim.keymap.del("n", [[<leader>fB]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
