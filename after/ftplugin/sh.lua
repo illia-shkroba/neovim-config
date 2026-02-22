@@ -44,6 +44,13 @@ vim.keymap.set({ "n" }, [[<leader><CR>]], function()
   }
   vim.api.nvim_put(region_.lines, "l", true, false)
   vim.cmd "'[,']!bash"
+
+  local begin = vim.api.nvim_buf_get_mark(buffer_number, "[")
+  local end_ = vim.api.nvim_buf_get_mark(buffer_number, "]")
+
+  if begin[1] <= end_[1] then
+    vim.cmd.normal "'[gc']"
+  end
 end, {
   buffer = true,
   desc = "Paste lines' output from the beginning of the buffer until the current line below",
@@ -68,6 +75,13 @@ vim.keymap.set(
       vim.cmd "'>"
       vim.api.nvim_put(region_.lines, "l", true, false)
       vim.cmd "'[,']!bash"
+
+      local begin = vim.api.nvim_buf_get_mark(region_.buffer_number, "[")
+      local end_ = vim.api.nvim_buf_get_mark(region_.buffer_number, "]")
+
+      if begin[1] <= end_[1] then
+        vim.cmd.normal "'[gc']"
+      end
     end,
     readonly = true,
   },
