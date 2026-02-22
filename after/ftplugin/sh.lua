@@ -4,6 +4,7 @@ end
 vim.b.did_sh_ftplugin = true
 
 local operator = require "operator"
+local region = require "text.region"
 
 vim.opt_local.expandtab = true
 vim.opt_local.makeprg = "shellcheck"
@@ -29,9 +30,24 @@ vim.keymap.set(
   { buffer = true, desc = "Run current line" }
 )
 vim.keymap.set({ "n" }, [[<leader><CR>]], function()
-  vim.api.nvim_put({ vim.api.nvim_get_current_line() }, "l", true, false)
-  vim.cmd ".!bash"
-end, { buffer = true, desc = "Paste current line's output below" })
+  local buffer_number = vim.api.nvim_get_current_buf()
+  local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+  local current_line = cursor[1]
+
+  local region_ = region.from {
+    buffer_number = buffer_number,
+    line_begin = 1,
+    column_begin = 0,
+    line_end = current_line,
+    column_end = 0,
+    type_ = "line",
+  }
+  vim.api.nvim_put(region_.lines, "l", true, false)
+  vim.cmd "'[,']!bash"
+end, {
+  buffer = true,
+  desc = "Paste lines' output from the beginning of the buffer until the current line below",
+})
 vim.keymap.set(
   "n",
   [[<leader><Tab>]],
@@ -48,9 +64,9 @@ vim.keymap.set(
   { "v" },
   [[<leader><CR>]],
   operator.expr {
-    function_ = function(region)
+    function_ = function(region_)
       vim.cmd "'>"
-      vim.api.nvim_put(region.lines, "l", true, false)
+      vim.api.nvim_put(region_.lines, "l", true, false)
       vim.cmd "'[,']!bash"
     end,
     readonly = true,
