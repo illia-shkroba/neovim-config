@@ -675,6 +675,35 @@ local function set_bindings()
     { expr = true, desc = "Same as *, but without \\< and \\>" }
   )
 
+  -- surround
+  vim.keymap.set("i", "<C-b>", "<Plug>(nvim-surround-insert)", {
+    desc = "Add a surrounding pair around the cursor (insert mode)",
+  })
+  vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)", {
+    desc = "Add a surrounding pair around a motion (normal mode)",
+  })
+  vim.keymap.set("n", "yss", "<Plug>(nvim-surround-normal-cur)", {
+    desc = "Add a surrounding pair around the current line (normal mode)",
+  })
+  vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)", {
+    desc = "Add a surrounding pair around a motion, on new lines (normal mode)",
+  })
+  vim.keymap.set("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", {
+    desc = "Add a surrounding pair around the current line, on new lines (normal mode)",
+  })
+  vim.keymap.set("v", "<C-b>", "<Plug>(nvim-surround-visual)", {
+    desc = "Add a surrounding pair around a visual selection",
+  })
+  vim.keymap.set("n", "ds", "<Plug>(nvim-surround-delete)", {
+    desc = "Delete a surrounding pair",
+  })
+  vim.keymap.set("n", "cs", "<Plug>(nvim-surround-change)", {
+    desc = "Change a surrounding pair",
+  })
+  vim.keymap.set("n", "cS", "<Plug>(nvim-surround-change-line)", {
+    desc = "Change a surrounding pair, putting replacements on new lines",
+  })
+
   -- cmdline
   vim.keymap.set("c", [[<C-j>]], [[<Down>]], {
     desc = "Go to next item matching command that was typed so far in cmdline",
