@@ -93,6 +93,37 @@ end
 set_options()
 
 local function set_bindings()
+  -- case
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>cF]],
+    operator.expr { function_ = case.to_camel },
+    { expr = true, desc = "Format selection to camel case" }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>cf]],
+    operator.expr { function_ = case.to_snake },
+    { expr = true, desc = "Format selection to snake case" }
+  )
+
+  -- cmdline
+  vim.keymap.set("c", [[<C-j>]], [[<Down>]], {
+    desc = "Go to next item matching command that was typed so far in cmdline",
+  })
+  vim.keymap.set("c", [[<C-k>]], [[<Up>]], {
+    desc = "Go to previous item matching command that was typed so far in cmdline",
+  })
+  vim.keymap.set("c", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+    desc = [[Wrap current line with \< and \>]],
+  })
+  vim.keymap.set(
+    "c",
+    [[<C-s>]],
+    [[s///gc<Left><Left><Left>]],
+    { desc = "Populate cmdline with s///gc" }
+  )
+
   -- cwd
   local function step_into_buffer_dir()
     local src_dir, dest_dir = vim.fn.getcwd(), vim.api.nvim_buf_get_name(0)
@@ -162,354 +193,18 @@ local function set_bindings()
     end
   end, { desc = "tcd by one level into current buffer's directory" })
 
-  -- quickfix/location
-  vim.keymap.set("n", [[<leader>qA]], function()
-    local index = quickfix.get_current_item_index()
-    local item = quickfix.get_current_item()
-    quickfix.remove_item(item)
-    utils.try(vim.cmd, [[cc ]] .. index)
-    if item.text then
-      vim.notify(
-        "Removed quickfix item: " .. vim.trim(item.text),
-        vim.log.levels.INFO
-      )
-    end
-  end, { desc = "Remove current quickfix item" })
-  vim.keymap.set("n", [[<leader>lA]], function()
-    local index = location.get_current_item_index()
-    local item = location.get_current_item()
-    location.remove_item(item)
-    utils.try(vim.cmd, [[ll ]] .. index)
-    if item.text then
-      vim.notify(
-        "Removed location item: " .. vim.trim(item.text),
-        vim.log.levels.INFO
-      )
-    end
-  end, { desc = "Remove current location item" })
-
-  vim.keymap.set("n", [[<leader>qX]], function()
-    quickfix.reset()
-    vim.notify(
-      "Removed all quickfix items: " .. quickfix.get_title(),
-      vim.log.levels.INFO
-    )
-  end, { desc = "Remove all quickfix items" })
-  vim.keymap.set("n", [[<leader>lX]], function()
-    location.reset()
-    vim.notify(
-      "Removed all location items: " .. location.get_title(),
-      vim.log.levels.INFO
-    )
-  end, { desc = "Remove all location items" })
-
-  vim.keymap.set("n", [[<leader>qa]], function()
-    quickfix.add_item(list.create_current_position_item())
-    vim.cmd.clast()
-  end, { desc = "Add current line as quickfix item" })
-  vim.keymap.set("n", [[<leader>la]], function()
-    location.add_item(list.create_current_position_item())
-    vim.cmd.llast()
-  end, { desc = "Add current line as location item" })
-
-  vim.keymap.set(
-    "n",
-    [[<leader>qe]],
-    vim.diagnostic.setqflist,
-    { desc = "Load diagnostic to quickfix list" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>le]],
-    vim.diagnostic.setloclist,
-    { desc = "Load diagnostic to location list" }
-  )
-
-  vim.keymap.set(
-    { "n", "o" },
-    [[<leader>qj]],
-    [[<Cmd>execute v:count1 .. 'cbelow'<CR>]],
-    { desc = "cbelow" }
-  )
-  vim.keymap.set(
-    { "n", "o" },
-    [[<leader>lj]],
-    [[<Cmd>execute v:count1 .. 'lbelow'<CR>]],
-    { desc = "lbelow" }
-  )
-  vim.keymap.set(
-    { "n", "o" },
-    [[<leader>qk]],
-    [[<Cmd>execute v:count1 .. 'cabove'<CR>]],
-    { desc = "cabove" }
-  )
-  vim.keymap.set(
-    { "n", "o" },
-    [[<leader>lk]],
-    [[<Cmd>execute v:count1 .. 'labove'<CR>]],
-    { desc = "labove" }
-  )
-
-  vim.keymap.set("n", [[<leader>qx]], function()
-    local name = utils.try(vim.fn.input, "Enter quickfix list: ")
-    if name then
-      quickfix.create(name)
-    end
-  end, { desc = "Create new quickfix list" })
-  vim.keymap.set("n", [[<leader>lx]], function()
-    local name = utils.try(vim.fn.input, "Enter location list: ")
-    if name then
-      location.create(name)
-    end
-  end, { desc = "Create new location list" })
-
-  local function dump_list(current_list)
-    local dumped = current_list.dump()
-    if #dumped > 0 then
-      local title = current_list.get_title()
-
-      if utils.try(vim.cmd.drop, title) == nil then
-        -- Buffer named `title` __is not__ available.
-        local buffer = vim.api.nvim_create_buf(true, false)
-        vim.cmd.drop(buffer)
-        vim.cmd.file(current_list.get_title())
-      else
-        -- Buffer named `title` __is__ available.
-        -- No need to open it since it was opened with `drop` already.
-      end
-
-      local buffer = vim.api.nvim_get_current_buf()
-      vim.api.nvim_buf_set_lines(buffer, 0, -1, false, dumped)
-      vim.opt_local.filetype = "sh"
-    end
-  end
-
-  local function load_list(current_list, buffer)
-    local title = current_list.get_title()
-    if #title == 0 then
-      title = vim.api.nvim_buf_get_name(buffer)
-      current_list.set_title(title)
-    end
-    current_list.reset()
-    current_list.add_from_buffer(buffer)
-    vim.notify(
-      "Load list from the current buffer: " .. title,
-      vim.log.levels.INFO
-    )
-  end
-
-  vim.keymap.set("n", [[<leader>qd]], function()
-    dump_list(quickfix)
-  end, { desc = "Dump quickfix list to a buffer" })
-  vim.keymap.set("n", [[<leader>ql]], function()
-    load_list(quickfix, vim.api.nvim_get_current_buf())
-  end, { desc = "Load quickfix list from the current buffer" })
-  vim.keymap.set("n", [[<leader>ld]], function()
-    dump_list(location)
-  end, { desc = "Dump location list to a buffer" })
-  vim.keymap.set("n", [[<leader>ll]], function()
-    load_list(location, vim.api.nvim_get_current_buf())
-  end, { desc = "Load location list from the current buffer" })
-
-  -- tmux
-  vim.keymap.set(
-    "n",
-    [[<leader>"]],
-    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
-    { desc = "Spawn new tmux pane vertically" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>l"]],
-    [[<Cmd>execute "silent !tmux split-window -v -c '" .. expand('%:p:h') .. "'"<CR>]],
-    {
-      desc = "Spawn new tmux pane vertically with buffer's parent directory as CWD",
-    }
-  )
-
-  -- pickers
-  vim.keymap.set(
-    "n",
-    [[<leader>+]],
-    require "neoclip.fzf",
-    { desc = "Open neoclip" }
-  )
-  vim.keymap.set(
-    { "n" },
-    [[<leader>;]],
-    fzf.command_history,
-    { desc = "Command history" }
-  )
-  vim.keymap.set("n", [[<leader>F]], pickers.grep_cword_by_filetype, {
-    desc = "Search for word under the cursor in files with current buffer's extension",
-  })
-  vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
-  vim.keymap.set({ "n" }, "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
+  -- delete
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>?]],
-    fzf.blines,
-    { desc = "Grep current buffer or visually selected lines" }
-  )
-  vim.keymap.set("n", [[<leader>fW]], function()
-    fzf.lines()
-  end, { desc = "Grep buffers" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fC]],
-    fzf.git_bcommits,
-    { desc = "List commits affecting current buffer" }
+    [[<leader>D]],
+    [["_D]],
+    { desc = [[Alias for: "_D]] }
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>g]],
-    operator.expr {
-      function_ = pickers.grep_by_filetype,
-      readonly = true,
-    },
-    {
-      expr = true,
-      desc = "Grep files with extension using search",
-    }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>G]],
-    pickers.live_grep_by_filetype,
-    { desc = "Grep files with extension" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>fv]],
-    pickers.directories,
-    { desc = "List directories" }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>fw]],
-    operator.expr {
-      function_ = function(region_)
-        fzf.lines { query = "'" .. table.concat(region_.lines, "\n") }
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Search in buffers" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>fa]],
-    fzf.builtin,
-    { desc = "All builtin pickers" }
-  )
-  vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fd]],
-    fzf.diagnostics_workspace,
-    { desc = "List diagnostics" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>fD]],
-    fzf.lsp_document_diagnostics,
-    { desc = "List diagnostics for current buffer" }
-  )
-  vim.keymap.set("n", [[<leader>fF]], function()
-    fzf.files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
-  end, { desc = "List files relative to current buffer" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fl]],
-    fzf.loclist,
-    { desc = "List location list" }
-  )
-  vim.keymap.set("n", [[<leader>fR]], function()
-    fzf.oldfiles { cwd = vim.fn.getcwd() }
-  end, { desc = "List old files under cwd" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fQ]],
-    fzf.quickfix_stack,
-    { desc = "List quickfix lists" }
-  )
-  vim.keymap.set("n", [[<leader>T]], fzf.tabs, { desc = "List tabs" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fe]],
-    fzf.treesitter,
-    { desc = "List treesitter symbols for current buffer" }
-  )
-  vim.keymap.set("n", [[<leader>ff]], fzf.files, { desc = "List files" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fp]],
-    fzf.filetypes,
-    { desc = "List filetypes" }
-  )
-  vim.keymap.set("n", [[<leader>fq]], fzf.quickfix, { desc = "List quickfix" })
-  vim.keymap.set("n", [[<leader>fr]], fzf.oldfiles, { desc = "List old files" })
-  vim.keymap.set(
-    "n",
-    [[<leader>fs]],
-    fzf.resume,
-    { desc = "Resume most recent picker" }
-  )
-  vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
-  vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
-  vim.keymap.set("n", [[<leader>k]], fzf.changes, { desc = "List changes" })
-  vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
-  vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
-
-  -- leap
-  vim.keymap.set(
-    { "n", "o" },
-    [[<C-z>]],
-    require("leap.remote").action,
-    { desc = "Perform remote action with Leap" }
-  )
-  vim.keymap.set(
-    { "n", "v", "o" },
-    [[<C-s>]],
-    "<Plug>(leap)",
-    { silent = true, desc = "Leap" }
-  )
-  vim.keymap.set(
-    { "n", "v", "o" },
-    [[<C-q>]],
-    "<Plug>(leap-from-window)",
-    { silent = true, desc = "Leap to other windows" }
-  )
-  vim.keymap.set(
-    { "i" },
-    [[<C-s>]],
-    "<Plug>(leap)",
-    { silent = true, desc = "Leap" }
-  )
-  vim.keymap.set(
-    { "i" },
-    [[<C-q>]],
-    "<Plug>(leap-from-window)",
-    { silent = true, desc = "Leap to other windows" }
-  )
-
-  -- git
-  vim.keymap.set(
-    "n",
-    [[<leader>hD]],
-    [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
-    { desc = "Show git diff with HEAD" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>hP]],
-    [[<Cmd>update ++p | Git add --patch -- %<CR>]],
-    { desc = "git add --patch" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>hd]],
-    [[<Cmd>vertical Gdiffsplit!<CR>]],
-    { desc = "Show git diff" }
+    [[<leader>d]],
+    [["_d]],
+    { desc = [[Alias for: "_d]] }
   )
 
   -- expression
@@ -559,275 +254,24 @@ local function set_bindings()
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
   end, { desc = "Paste current buffer's name in a scratch window" })
 
-  -- delete
+  -- git
   vim.keymap.set(
-    { "n", "v" },
-    [[<leader>D]],
-    [["_D]],
-    { desc = [[Alias for: "_D]] }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>d]],
-    [["_d]],
-    { desc = [[Alias for: "_d]] }
-  )
-
-  -- paste
-  vim.keymap.set("n", [[<leader>IP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
-  vim.keymap.set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
-  vim.keymap.set("n", [[<leader>iP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
-  vim.keymap.set("n", [[<leader>ip]], [[<Cmd>iput<CR>]], { desc = "iput" })
-  vim.keymap.set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
-  vim.keymap.set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
-  vim.keymap.set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
-
-  -- yank
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>Y]],
-    [["+yg_]],
-    { desc = [[Alias for: "+yg_]] }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>y]],
-    [["+y]],
-    { desc = [[Alias for: "+y]] }
-  )
-
-  -- text manipulation
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>A]],
-    operator.expr { function_ = char.append_prompt },
-    {
-      expr = true,
-      desc = "Append character",
-    }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>a]],
-    operator.expr { function_ = char.prepend_prompt },
-    {
-      expr = true,
-      desc = "Prepend character",
-    }
+    "n",
+    [[<leader>hD]],
+    [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
+    { desc = "Show git diff with HEAD" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>cs]],
-    [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
-    { desc = "Remove trailing whitespaces" }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>S]],
-    operator.expr {
-      function_ = function(region_)
-        return char.substitute(region_, " ", "_")
-      end,
-    },
-    {
-      expr = true,
-      desc = "Substitute space with _",
-    }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>s]],
-    operator.expr { function_ = char.substitute_prompt },
-    {
-      expr = true,
-      desc = "Substitute character",
-    }
-  )
-
-  -- case
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>cF]],
-    operator.expr { function_ = case.to_camel },
-    { expr = true, desc = "Format selection to camel case" }
-  )
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>cf]],
-    operator.expr { function_ = case.to_snake },
-    { expr = true, desc = "Format selection to snake case" }
-  )
-
-  -- search
-  vim.keymap.set("n", [[<leader>#]], function()
-    return "?" .. vim.fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true, desc = "Same as #, but without \\< and \\>" })
-  vim.keymap.set("n", [[<leader>*]], function()
-    return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true, desc = "Same as *, but without \\< and \\>" })
-  vim.keymap.set(
-    { "n", "v" },
-    [[<leader>/]],
-    operator.expr {
-      function_ = function(region_)
-        local search =
-          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
-        vim.fn.setreg("/", "\\V" .. search)
-        vim.fn.histadd("search", "\\V" .. search)
-        vim.opt.hlsearch = true
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Set selection to / register" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>#]],
-    operator.expr {
-      function_ = function(region_)
-        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
-        vim.v.searchforward = false
-        vim.cmd.normal "n"
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Same as #, but without \\< and \\>" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<leader>*]],
-    operator.expr {
-      function_ = function(region_)
-        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
-        vim.v.searchforward = true
-        vim.cmd.normal "n"
-      end,
-      readonly = true,
-    },
-    { expr = true, desc = "Same as *, but without \\< and \\>" }
-  )
-
-  -- surround
-  vim.keymap.set("i", "<C-b>", "<Plug>(nvim-surround-insert)", {
-    desc = "Add a surrounding pair around the cursor (insert mode)",
-  })
-  vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)", {
-    desc = "Add a surrounding pair around a motion (normal mode)",
-  })
-  vim.keymap.set("n", "yss", "<Plug>(nvim-surround-normal-cur)", {
-    desc = "Add a surrounding pair around the current line (normal mode)",
-  })
-  vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)", {
-    desc = "Add a surrounding pair around a motion, on new lines (normal mode)",
-  })
-  vim.keymap.set("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", {
-    desc = "Add a surrounding pair around the current line, on new lines (normal mode)",
-  })
-  vim.keymap.set("v", "<C-b>", "<Plug>(nvim-surround-visual)", {
-    desc = "Add a surrounding pair around a visual selection",
-  })
-  vim.keymap.set("n", "ds", "<Plug>(nvim-surround-delete)", {
-    desc = "Delete a surrounding pair",
-  })
-  vim.keymap.set("n", "cs", "<Plug>(nvim-surround-change)", {
-    desc = "Change a surrounding pair",
-  })
-  vim.keymap.set("n", "cS", "<Plug>(nvim-surround-change-line)", {
-    desc = "Change a surrounding pair, putting replacements on new lines",
-  })
-
-  -- cmdline
-  vim.keymap.set("c", [[<C-j>]], [[<Down>]], {
-    desc = "Go to next item matching command that was typed so far in cmdline",
-  })
-  vim.keymap.set("c", [[<C-k>]], [[<Up>]], {
-    desc = "Go to previous item matching command that was typed so far in cmdline",
-  })
-  vim.keymap.set("c", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
-    desc = [[Wrap current line with \< and \>]],
-  })
-  vim.keymap.set(
-    "c",
-    [[<C-s>]],
-    [[s///gc<Left><Left><Left>]],
-    { desc = "Populate cmdline with s///gc" }
-  )
-
-  -- move
-  vim.keymap.set(
-    "v",
-    [[<C-j>]],
-    [[:lua require("text.move").down(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
-    { desc = "Shift down" }
-  )
-  vim.keymap.set(
-    "v",
-    [[<C-k>]],
-    [[:lua require("text.move").up(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
-    { desc = "Shift up" }
-  )
-
-  -- register
-  vim.keymap.set("n", [[<leader>Q]], function()
-    register.edit_register_prompt()
-  end, { desc = "Edit register in a buffer" })
-
-  -- tags
-  vim.keymap.set("n", [[<leader>tg]], function()
-    local language = vim.opt_local.filetype._value
-    return [[:!ctags -R --languages=]] .. language .. [[ .]]
-  end, { expr = true, desc = "Generate tags" })
-
-  -- popup-menu
-  vim.keymap.set("i", [[<C-k>]], function()
-    return vim.fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
-  end, { expr = true, desc = "Go up in popup-menu" })
-  vim.keymap.set("i", [[<C-j>]], function()
-    return vim.fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
-  end, { expr = true, desc = "Go down in popup-menu" })
-
-  -- tabs
-  vim.keymap.set(
-    "n",
-    [[<leader>tc]],
-    [[<Cmd>tabclose<CR>]],
-    { desc = "Close tab" }
+    [[<leader>hP]],
+    [[<Cmd>update ++p | Git add --patch -- %<CR>]],
+    { desc = "git add --patch" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>to]],
-    [[<Cmd>tabonly<CR>]],
-    { desc = "Focus tab" }
-  )
-  vim.keymap.set("n", [[<leader>tw]], function()
-    vim.cmd.windo "update"
-    vim.cmd.tabclose()
-  end, { desc = "Update tab's buffers and close" })
-  vim.keymap.set(
-    "n",
-    [[<leader>tT]],
-    [[<Cmd>-tabmove<CR>]],
-    { desc = "Move tab left" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>tt]],
-    [[<Cmd>+tabmove<CR>]],
-    { desc = "Move tab right" }
-  )
-
-  -- undo
-  vim.keymap.set(
-    "n",
-    [[<leader>r]],
-    [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]],
-    { desc = "later [count]f" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>u]],
-    [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]],
-    { desc = "earlier [count]f" }
+    [[<leader>hd]],
+    [[<Cmd>vertical Gdiffsplit!<CR>]],
+    { desc = "Show git diff" }
   )
 
   -- indent
@@ -849,46 +293,50 @@ local function set_bindings()
     }
   )
 
-  -- text objects
+  -- leap
   vim.keymap.set(
-    { "o", "v" },
-    "a%",
-    ":<C-U>normal va%<CR>",
-    { desc = "Missing text object for a% from matchit" }
-  )
-  vim.keymap.set({ "o", "v" }, "a;", function()
-    return "a" .. vim.fn.getcharsearch().char
-  end, { expr = true, desc = "Around last search char" })
-  vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
-  vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
-  vim.keymap.set(
-    { "o", "v" },
-    "av",
-    ":<C-U>normal '[V']<CR>",
-    { desc = "Previously changed or yanked text region selected linewise" }
+    { "n", "o" },
+    [[<C-z>]],
+    require("leap.remote").action,
+    { desc = "Perform remote action with Leap" }
   )
   vim.keymap.set(
-    { "o", "v" },
-    "al",
-    ":<C-U>normal 0v$<CR>",
-    { desc = "Current line selected charwise" }
+    { "n", "v", "o" },
+    [[<C-s>]],
+    "<Plug>(leap)",
+    { silent = true, desc = "Leap" }
   )
-  vim.keymap.set({ "o", "v" }, "i;", function()
-    return "i" .. vim.fn.getcharsearch().char
-  end, { expr = true, desc = "Inside last search char" })
   vim.keymap.set(
-    { "o", "v" },
-    "il",
-    ":<C-U>normal _vg_<CR>",
-    { desc = "Current line without blanks selected charwise" }
+    { "n", "v", "o" },
+    [[<C-q>]],
+    "<Plug>(leap-from-window)",
+    { silent = true, desc = "Leap to other windows" }
   )
-  vim.keymap.set({ "o", "v" }, "ia", "i<", { desc = "i<" })
-  vim.keymap.set({ "o", "v" }, "ir", "i[", { desc = "i[" })
   vim.keymap.set(
-    { "o", "v" },
-    "iv",
-    ":<C-U>normal `[v`]<CR>",
-    { desc = "Previously changed or yanked text region selected charwise" }
+    { "i" },
+    [[<C-s>]],
+    "<Plug>(leap)",
+    { silent = true, desc = "Leap" }
+  )
+  vim.keymap.set(
+    { "i" },
+    [[<C-q>]],
+    "<Plug>(leap-from-window)",
+    { silent = true, desc = "Leap to other windows" }
+  )
+
+  -- move
+  vim.keymap.set(
+    "v",
+    [[<C-j>]],
+    [[:lua require("text.move").down(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
+    { desc = "Shift down" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<C-k>]],
+    [[:lua require("text.move").up(vim.api.nvim_buf_get_mark(0, "<"), vim.api.nvim_buf_get_mark(0, ">"))<CR>gv]],
+    { desc = "Shift up" }
   )
 
   -- other
@@ -1137,6 +585,558 @@ local function set_bindings()
     expr = true,
     desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
   })
+
+  -- paste
+  vim.keymap.set("n", [[<leader>IP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
+  vim.keymap.set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
+  vim.keymap.set("n", [[<leader>iP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
+  vim.keymap.set("n", [[<leader>ip]], [[<Cmd>iput<CR>]], { desc = "iput" })
+  vim.keymap.set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
+  vim.keymap.set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
+  vim.keymap.set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
+
+  -- pickers
+  vim.keymap.set(
+    "n",
+    [[<leader>+]],
+    require "neoclip.fzf",
+    { desc = "Open neoclip" }
+  )
+  vim.keymap.set(
+    { "n" },
+    [[<leader>;]],
+    fzf.command_history,
+    { desc = "Command history" }
+  )
+  vim.keymap.set("n", [[<leader>F]], pickers.grep_cword_by_filetype, {
+    desc = "Search for word under the cursor in files with current buffer's extension",
+  })
+  vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
+  vim.keymap.set({ "n" }, "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>?]],
+    fzf.blines,
+    { desc = "Grep current buffer or visually selected lines" }
+  )
+  vim.keymap.set("n", [[<leader>fW]], function()
+    fzf.lines()
+  end, { desc = "Grep buffers" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fC]],
+    fzf.git_bcommits,
+    { desc = "List commits affecting current buffer" }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>g]],
+    operator.expr {
+      function_ = pickers.grep_by_filetype,
+      readonly = true,
+    },
+    {
+      expr = true,
+      desc = "Grep files with extension using search",
+    }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>G]],
+    pickers.live_grep_by_filetype,
+    { desc = "Grep files with extension" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fv]],
+    pickers.directories,
+    { desc = "List directories" }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>fw]],
+    operator.expr {
+      function_ = function(region_)
+        fzf.lines { query = "'" .. table.concat(region_.lines, "\n") }
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Search in buffers" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fa]],
+    fzf.builtin,
+    { desc = "All builtin pickers" }
+  )
+  vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fd]],
+    fzf.diagnostics_workspace,
+    { desc = "List diagnostics" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fD]],
+    fzf.lsp_document_diagnostics,
+    { desc = "List diagnostics for current buffer" }
+  )
+  vim.keymap.set("n", [[<leader>fF]], function()
+    fzf.files { cwd = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) }
+  end, { desc = "List files relative to current buffer" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fl]],
+    fzf.loclist,
+    { desc = "List location list" }
+  )
+  vim.keymap.set("n", [[<leader>fR]], function()
+    fzf.oldfiles { cwd = vim.fn.getcwd() }
+  end, { desc = "List old files under cwd" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fQ]],
+    fzf.quickfix_stack,
+    { desc = "List quickfix lists" }
+  )
+  vim.keymap.set("n", [[<leader>T]], fzf.tabs, { desc = "List tabs" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fe]],
+    fzf.treesitter,
+    { desc = "List treesitter symbols for current buffer" }
+  )
+  vim.keymap.set("n", [[<leader>ff]], fzf.files, { desc = "List files" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fp]],
+    fzf.filetypes,
+    { desc = "List filetypes" }
+  )
+  vim.keymap.set("n", [[<leader>fq]], fzf.quickfix, { desc = "List quickfix" })
+  vim.keymap.set("n", [[<leader>fr]], fzf.oldfiles, { desc = "List old files" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fs]],
+    fzf.resume,
+    { desc = "Resume most recent picker" }
+  )
+  vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
+  vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
+  vim.keymap.set("n", [[<leader>k]], fzf.changes, { desc = "List changes" })
+  vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
+  vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
+
+  -- popup-menu
+  vim.keymap.set("i", [[<C-k>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Up>]] or [[<C-k>]]
+  end, { expr = true, desc = "Go up in popup-menu" })
+  vim.keymap.set("i", [[<C-j>]], function()
+    return vim.fn.pumvisible() == 1 and [[<Down>]] or [[<C-j>]]
+  end, { expr = true, desc = "Go down in popup-menu" })
+
+  -- quickfix/location
+  vim.keymap.set("n", [[<leader>qA]], function()
+    local index = quickfix.get_current_item_index()
+    local item = quickfix.get_current_item()
+    quickfix.remove_item(item)
+    utils.try(vim.cmd, [[cc ]] .. index)
+    if item.text then
+      vim.notify(
+        "Removed quickfix item: " .. vim.trim(item.text),
+        vim.log.levels.INFO
+      )
+    end
+  end, { desc = "Remove current quickfix item" })
+  vim.keymap.set("n", [[<leader>lA]], function()
+    local index = location.get_current_item_index()
+    local item = location.get_current_item()
+    location.remove_item(item)
+    utils.try(vim.cmd, [[ll ]] .. index)
+    if item.text then
+      vim.notify(
+        "Removed location item: " .. vim.trim(item.text),
+        vim.log.levels.INFO
+      )
+    end
+  end, { desc = "Remove current location item" })
+
+  vim.keymap.set("n", [[<leader>qX]], function()
+    quickfix.reset()
+    vim.notify(
+      "Removed all quickfix items: " .. quickfix.get_title(),
+      vim.log.levels.INFO
+    )
+  end, { desc = "Remove all quickfix items" })
+  vim.keymap.set("n", [[<leader>lX]], function()
+    location.reset()
+    vim.notify(
+      "Removed all location items: " .. location.get_title(),
+      vim.log.levels.INFO
+    )
+  end, { desc = "Remove all location items" })
+
+  vim.keymap.set("n", [[<leader>qa]], function()
+    quickfix.add_item(list.create_current_position_item())
+    vim.cmd.clast()
+  end, { desc = "Add current line as quickfix item" })
+  vim.keymap.set("n", [[<leader>la]], function()
+    location.add_item(list.create_current_position_item())
+    vim.cmd.llast()
+  end, { desc = "Add current line as location item" })
+
+  vim.keymap.set(
+    "n",
+    [[<leader>qe]],
+    vim.diagnostic.setqflist,
+    { desc = "Load diagnostic to quickfix list" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>le]],
+    vim.diagnostic.setloclist,
+    { desc = "Load diagnostic to location list" }
+  )
+
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>qj]],
+    [[<Cmd>execute v:count1 .. 'cbelow'<CR>]],
+    { desc = "cbelow" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>lj]],
+    [[<Cmd>execute v:count1 .. 'lbelow'<CR>]],
+    { desc = "lbelow" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>qk]],
+    [[<Cmd>execute v:count1 .. 'cabove'<CR>]],
+    { desc = "cabove" }
+  )
+  vim.keymap.set(
+    { "n", "o" },
+    [[<leader>lk]],
+    [[<Cmd>execute v:count1 .. 'labove'<CR>]],
+    { desc = "labove" }
+  )
+
+  vim.keymap.set("n", [[<leader>qx]], function()
+    local name = utils.try(vim.fn.input, "Enter quickfix list: ")
+    if name then
+      quickfix.create(name)
+    end
+  end, { desc = "Create new quickfix list" })
+  vim.keymap.set("n", [[<leader>lx]], function()
+    local name = utils.try(vim.fn.input, "Enter location list: ")
+    if name then
+      location.create(name)
+    end
+  end, { desc = "Create new location list" })
+
+  local function dump_list(current_list)
+    local dumped = current_list.dump()
+    if #dumped > 0 then
+      local title = current_list.get_title()
+
+      if utils.try(vim.cmd.drop, title) == nil then
+        -- Buffer named `title` __is not__ available.
+        local buffer = vim.api.nvim_create_buf(true, false)
+        vim.cmd.drop(buffer)
+        vim.cmd.file(current_list.get_title())
+      else
+        -- Buffer named `title` __is__ available.
+        -- No need to open it since it was opened with `drop` already.
+      end
+
+      local buffer = vim.api.nvim_get_current_buf()
+      vim.api.nvim_buf_set_lines(buffer, 0, -1, false, dumped)
+      vim.opt_local.filetype = "sh"
+    end
+  end
+
+  local function load_list(current_list, buffer)
+    local title = current_list.get_title()
+    if #title == 0 then
+      title = vim.api.nvim_buf_get_name(buffer)
+      current_list.set_title(title)
+    end
+    current_list.reset()
+    current_list.add_from_buffer(buffer)
+    vim.notify(
+      "Load list from the current buffer: " .. title,
+      vim.log.levels.INFO
+    )
+  end
+
+  vim.keymap.set("n", [[<leader>qd]], function()
+    dump_list(quickfix)
+  end, { desc = "Dump quickfix list to a buffer" })
+  vim.keymap.set("n", [[<leader>ql]], function()
+    load_list(quickfix, vim.api.nvim_get_current_buf())
+  end, { desc = "Load quickfix list from the current buffer" })
+  vim.keymap.set("n", [[<leader>ld]], function()
+    dump_list(location)
+  end, { desc = "Dump location list to a buffer" })
+  vim.keymap.set("n", [[<leader>ll]], function()
+    load_list(location, vim.api.nvim_get_current_buf())
+  end, { desc = "Load location list from the current buffer" })
+
+  -- register
+  vim.keymap.set("n", [[<leader>Q]], function()
+    register.edit_register_prompt()
+  end, { desc = "Edit register in a buffer" })
+
+  -- search
+  vim.keymap.set("n", [[<leader>#]], function()
+    return "?" .. vim.fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true, desc = "Same as #, but without \\< and \\>" })
+  vim.keymap.set("n", [[<leader>*]], function()
+    return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true, desc = "Same as *, but without \\< and \\>" })
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>/]],
+    operator.expr {
+      function_ = function(region_)
+        local search =
+          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
+        vim.fn.setreg("/", "\\V" .. search)
+        vim.fn.histadd("search", "\\V" .. search)
+        vim.opt.hlsearch = true
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Set selection to / register" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>#]],
+    operator.expr {
+      function_ = function(region_)
+        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
+        vim.v.searchforward = false
+        vim.cmd.normal "n"
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Same as #, but without \\< and \\>" }
+  )
+  vim.keymap.set(
+    "v",
+    [[<leader>*]],
+    operator.expr {
+      function_ = function(region_)
+        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
+        vim.v.searchforward = true
+        vim.cmd.normal "n"
+      end,
+      readonly = true,
+    },
+    { expr = true, desc = "Same as *, but without \\< and \\>" }
+  )
+
+  -- surround
+  vim.keymap.set("i", "<C-b>", "<Plug>(nvim-surround-insert)", {
+    desc = "Add a surrounding pair around the cursor (insert mode)",
+  })
+  vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)", {
+    desc = "Add a surrounding pair around a motion (normal mode)",
+  })
+  vim.keymap.set("n", "yss", "<Plug>(nvim-surround-normal-cur)", {
+    desc = "Add a surrounding pair around the current line (normal mode)",
+  })
+  vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)", {
+    desc = "Add a surrounding pair around a motion, on new lines (normal mode)",
+  })
+  vim.keymap.set("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", {
+    desc = "Add a surrounding pair around the current line, on new lines (normal mode)",
+  })
+  vim.keymap.set("v", "<C-b>", "<Plug>(nvim-surround-visual)", {
+    desc = "Add a surrounding pair around a visual selection",
+  })
+  vim.keymap.set("n", "ds", "<Plug>(nvim-surround-delete)", {
+    desc = "Delete a surrounding pair",
+  })
+  vim.keymap.set("n", "cs", "<Plug>(nvim-surround-change)", {
+    desc = "Change a surrounding pair",
+  })
+  vim.keymap.set("n", "cS", "<Plug>(nvim-surround-change-line)", {
+    desc = "Change a surrounding pair, putting replacements on new lines",
+  })
+
+  -- tabs
+  vim.keymap.set(
+    "n",
+    [[<leader>tc]],
+    [[<Cmd>tabclose<CR>]],
+    { desc = "Close tab" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>to]],
+    [[<Cmd>tabonly<CR>]],
+    { desc = "Focus tab" }
+  )
+  vim.keymap.set("n", [[<leader>tw]], function()
+    vim.cmd.windo "update"
+    vim.cmd.tabclose()
+  end, { desc = "Update tab's buffers and close" })
+  vim.keymap.set(
+    "n",
+    [[<leader>tT]],
+    [[<Cmd>-tabmove<CR>]],
+    { desc = "Move tab left" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>tt]],
+    [[<Cmd>+tabmove<CR>]],
+    { desc = "Move tab right" }
+  )
+
+  -- tags
+  vim.keymap.set("n", [[<leader>tg]], function()
+    local language = vim.opt_local.filetype._value
+    return [[:!ctags -R --languages=]] .. language .. [[ .]]
+  end, { expr = true, desc = "Generate tags" })
+
+  -- text manipulation
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>A]],
+    operator.expr { function_ = char.append_prompt },
+    {
+      expr = true,
+      desc = "Append character",
+    }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>a]],
+    operator.expr { function_ = char.prepend_prompt },
+    {
+      expr = true,
+      desc = "Prepend character",
+    }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>cs]],
+    [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
+    { desc = "Remove trailing whitespaces" }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>S]],
+    operator.expr {
+      function_ = function(region_)
+        return char.substitute(region_, " ", "_")
+      end,
+    },
+    {
+      expr = true,
+      desc = "Substitute space with _",
+    }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>s]],
+    operator.expr { function_ = char.substitute_prompt },
+    {
+      expr = true,
+      desc = "Substitute character",
+    }
+  )
+
+  -- text objects
+  vim.keymap.set(
+    { "o", "v" },
+    "a%",
+    ":<C-U>normal va%<CR>",
+    { desc = "Missing text object for a% from matchit" }
+  )
+  vim.keymap.set({ "o", "v" }, "a;", function()
+    return "a" .. vim.fn.getcharsearch().char
+  end, { expr = true, desc = "Around last search char" })
+  vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
+  vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
+  vim.keymap.set(
+    { "o", "v" },
+    "av",
+    ":<C-U>normal '[V']<CR>",
+    { desc = "Previously changed or yanked text region selected linewise" }
+  )
+  vim.keymap.set(
+    { "o", "v" },
+    "al",
+    ":<C-U>normal 0v$<CR>",
+    { desc = "Current line selected charwise" }
+  )
+  vim.keymap.set({ "o", "v" }, "i;", function()
+    return "i" .. vim.fn.getcharsearch().char
+  end, { expr = true, desc = "Inside last search char" })
+  vim.keymap.set(
+    { "o", "v" },
+    "il",
+    ":<C-U>normal _vg_<CR>",
+    { desc = "Current line without blanks selected charwise" }
+  )
+  vim.keymap.set({ "o", "v" }, "ia", "i<", { desc = "i<" })
+  vim.keymap.set({ "o", "v" }, "ir", "i[", { desc = "i[" })
+  vim.keymap.set(
+    { "o", "v" },
+    "iv",
+    ":<C-U>normal `[v`]<CR>",
+    { desc = "Previously changed or yanked text region selected charwise" }
+  )
+
+  -- tmux
+  vim.keymap.set(
+    "n",
+    [[<leader>"]],
+    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
+    { desc = "Spawn new tmux pane vertically" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>l"]],
+    [[<Cmd>execute "silent !tmux split-window -v -c '" .. expand('%:p:h') .. "'"<CR>]],
+    {
+      desc = "Spawn new tmux pane vertically with buffer's parent directory as CWD",
+    }
+  )
+
+  -- undo
+  vim.keymap.set(
+    "n",
+    [[<leader>r]],
+    [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]],
+    { desc = "later [count]f" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>u]],
+    [[<Cmd>execute 'earlier ' .. v:count1 .. 'f'<CR>]],
+    { desc = "earlier [count]f" }
+  )
+
+  -- yank
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>Y]],
+    [["+yg_]],
+    { desc = [[Alias for: "+yg_]] }
+  )
+  vim.keymap.set(
+    { "n", "v" },
+    [[<leader>y]],
+    [["+y]],
+    { desc = [[Alias for: "+y]] }
+  )
 end
 set_bindings()
 
