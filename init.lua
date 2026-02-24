@@ -428,6 +428,28 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
+  for _, lhs in pairs { [[<C-w><leader>d]], [[<leader><C-w>d]] } do
+    vim.keymap.set(
+      { "n", "v" },
+      lhs,
+      operator.expr {
+        function_ = function(region_)
+          local filetype = vim.opt_local.filetype._value
+
+          local buffer = scratch.retained()
+          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+          vim.opt_local.filetype = filetype
+
+          region.substitute(region_, {})
+        end,
+        readonly = true,
+      },
+      {
+        expr = true,
+        desc = "Open a scratch window with selected lines and delete the lines",
+      }
+    )
+  end
   for _, lhs in pairs { [[<C-w>y]], [[<C-w><C-y>]] } do
     vim.keymap.set(
       { "n", "v" },
