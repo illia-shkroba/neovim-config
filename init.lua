@@ -460,6 +460,38 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
   vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
 
+  -- leap
+  vim.keymap.set(
+    { "n", "o" },
+    [[<C-z>]],
+    require("leap.remote").action,
+    { desc = "Perform remote action with Leap" }
+  )
+  vim.keymap.set(
+    { "n", "v", "o" },
+    [[<C-s>]],
+    "<Plug>(leap)",
+    { silent = true, desc = "Leap" }
+  )
+  vim.keymap.set(
+    { "n", "v", "o" },
+    [[<C-q>]],
+    "<Plug>(leap-from-window)",
+    { silent = true, desc = "Leap to other windows" }
+  )
+  vim.keymap.set(
+    { "i" },
+    [[<C-s>]],
+    "<Plug>(leap)",
+    { silent = true, desc = "Leap" }
+  )
+  vim.keymap.set(
+    { "i" },
+    [[<C-q>]],
+    "<Plug>(leap-from-window)",
+    { silent = true, desc = "Leap to other windows" }
+  )
+
   -- git
   vim.keymap.set(
     "n",
