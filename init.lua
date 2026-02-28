@@ -428,7 +428,7 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
-  for _, lhs in pairs { [[<C-w><leader>d]], [[<leader><C-w>d]] } do
+  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
     vim.keymap.set(
       { "n", "v" },
       lhs,
@@ -476,15 +476,9 @@ local function set_bindings()
       end
     end, { desc = "Pick window" })
   end
-  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
-    vim.keymap.set("n", lhs, function()
-      scratch.retained()
-      vim.opt_local.filetype = "sh"
-
-      vim.cmd [[0r !atuin search --format "{command}"]]
-      vim.cmd.normal [[G]]
-    end, { desc = "History" })
-  end
+  vim.keymap.set("n", [[<leader>hh]], function()
+    vim.cmd.History()
+  end, { desc = "History" })
   for _, lhs in pairs { [[<C-w>m]], [[<C-w><C-m>]] } do
     vim.keymap.set("n", lhs, function()
       vim.cmd [[sp `=tempname()`]]
