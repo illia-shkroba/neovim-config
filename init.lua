@@ -331,6 +331,16 @@ local function set_bindings()
     "<Plug>(leap-from-window)",
     { silent = true, desc = "Leap to other windows" }
   )
+  vim.keymap.set("i", [[<C-z>]], function()
+    if vim.fn.pumvisible() == 1 then
+      return completion.completion_expr()
+    else
+      return [[:lua require("leap.remote").action()<CR>]]
+    end
+  end, {
+    expr = true,
+    desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
+  })
 
   -- move
   vim.keymap.set(
@@ -613,16 +623,6 @@ local function set_bindings()
     [[<C-v>#]],
     { desc = "Prevent indent removal when 'smartindent' is on" }
   )
-  vim.keymap.set("i", [[<C-z>]], function()
-    if vim.fn.pumvisible() == 1 then
-      return completion.completion_expr()
-    else
-      return [[:lua require("leap.remote").action()<CR>]]
-    end
-  end, {
-    expr = true,
-    desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
-  })
 
   -- paste
   vim.keymap.set("n", [[<leader>IP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
