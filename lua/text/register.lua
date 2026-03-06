@@ -4,14 +4,23 @@ local scratch = require "scratch"
 local status = require "status"
 local utils = require "utils"
 
-function M.edit_register_prompt()
+---@return string|nil
+local function register_prompt()
   vim.print "Enter register name: "
   local raw_register = utils.try(vim.fn.getcharstr)
   if not raw_register then
     return
   end
 
-  local register = string.lower(raw_register)
+  return string.lower(raw_register)
+end
+
+---@return nil
+function M.edit_register_prompt()
+  local register = register_prompt()
+  if register == nil then
+    return
+  end
 
   local buffer = scratch.retained()
   vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
@@ -24,6 +33,18 @@ function M.edit_register_prompt()
     vim.split(vim.fn.getreg(register), "\n")
   )
 
+  vim.keymap.set({ "n" }, [[cq]], function()
+    register = register_prompt()
+    if register == nil then
+      return
+    end
+
+    vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
+    vim.notify([[Switched to register "]] .. register, vim.log.levels.INFO)
+  end, {
+    buffer = buffer,
+    desc = [[Switch to register without changing scratch buffer]],
+  })
   vim.keymap.set({ "n" }, [[ZP]], function()
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
@@ -36,7 +57,7 @@ function M.edit_register_prompt()
     vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
   end, {
     buffer = buffer,
-    desc = [[Paste scratch buffer's text into register "]] .. register,
+    desc = [[Paste scratch buffer's text into register]],
   })
 end
 
