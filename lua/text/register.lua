@@ -1,6 +1,7 @@
 local M = {}
 
 local scratch = require "scratch"
+local status = require "status"
 local utils = require "utils"
 
 function M.edit_register_prompt()
@@ -13,6 +14,8 @@ function M.edit_register_prompt()
   local register = string.lower(raw_register)
 
   local buffer = scratch.retained()
+  vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
+
   vim.api.nvim_buf_set_lines(
     buffer,
     0,

@@ -214,6 +214,8 @@ local function set_bindings()
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
       local buffer = scratch.retained()
+      vim.opt_local.statusline = "tmux " .. status.statusline
+
       vim.api.nvim_buf_set_lines(
         buffer,
         0,
@@ -235,22 +237,27 @@ local function set_bindings()
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
     local buffer = scratch.onetime()
+    vim.opt_local.statusline = "date " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
-  end, { desc = "Paste current buffer's absolute path in a scratch window" })
+  end, { desc = "Paste current date in a scratch window" })
   vim.keymap.set("n", [[<leader>mp]], function()
     local buffer = scratch.onetime()
+    vim.opt_local.statusline = "absolute " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:p" })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
     local buffer = scratch.onetime()
+    vim.opt_local.statusline = "filename " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:t" })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>mw]], function()
     local buffer = scratch.onetime()
+    vim.opt_local.statusline = "cwd " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.getcwd() })
   end, { desc = "Paste current working directory in a scratch window" })
   vim.keymap.set("n", [[<leader>my]], function()
     local buffer = scratch.onetime()
+    vim.opt_local.statusline = "relative " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
   end, { desc = "Paste current buffer's name in a scratch window" })
 
@@ -399,6 +406,13 @@ local function set_bindings()
     }
   end
 
+  local function region_statusline(region_)
+    local absolute = vim.api.nvim_buf_get_name(region_.buffer_number)
+    local relative = vim.fs.relpath(vim.fn.getcwd(), absolute)
+
+    return (relative or absolute) .. " " .. status.statusline
+  end
+
   vim.keymap.set(
     "n",
     [[<C-l>]],
@@ -437,8 +451,10 @@ local function set_bindings()
           local filetype = vim.opt_local.filetype._value
 
           local buffer = scratch.retained()
-          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
           vim.opt_local.filetype = filetype
+          vim.opt_local.statusline = region_statusline(region_)
+
+          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
           region.substitute(region_, {})
         end,
@@ -459,9 +475,12 @@ local function set_bindings()
           local filetype = vim.opt_local.filetype._value
 
           local buffer = scratch.retained()
-          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
-          bind_substitute_origin(buffer, region_)
           vim.opt_local.filetype = filetype
+          vim.opt_local.statusline = region_statusline(region_)
+
+          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+
+          bind_substitute_origin(buffer, region_)
         end,
         readonly = true,
       },
@@ -526,9 +545,12 @@ local function set_bindings()
       local filetype = vim.opt_local.filetype._value
 
       local buffer = scratch.retained()
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
-      bind_substitute_origin(buffer, region_)
       vim.opt_local.filetype = filetype
+      vim.opt_local.statusline = region_statusline(region_)
+
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+
+      bind_substitute_origin(buffer, region_)
     end, { desc = "Open a scratch window with [count] lines" })
   end
   vim.keymap.set(
@@ -1167,6 +1189,7 @@ local function set_commands()
     function()
       scratch.retained()
       vim.opt_local.filetype = "sh"
+      vim.opt_local.statusline = "history " .. status.statusline
 
       vim.cmd [[0r !atuin search --format "{command}"]]
       vim.cmd.normal [[G]]
