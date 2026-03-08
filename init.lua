@@ -71,6 +71,7 @@ local function set_options()
   vim.opt.wrapscan = false
 
   vim.g.netrw_banner = 0
+  vim.g.no_python_maps = 1
 
   vim.cmd [[
     func! Thesaurus(findstart, base)
