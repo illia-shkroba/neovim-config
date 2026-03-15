@@ -1077,14 +1077,9 @@ local function set_bindings()
   vim.keymap.set(
     { "n", "v" },
     [[<leader>S]],
-    operator.expr {
-      function_ = function(region_)
-        return char.substitute(region_, " ", "_")
-      end,
-    },
+    [[<Cmd>%substitute//\=@s/gc<CR>]],
     {
-      expr = true,
-      desc = "Substitute space with _",
+      desc = [[Substitute with the contents of "s register]],
     }
   )
   vim.keymap.set(
