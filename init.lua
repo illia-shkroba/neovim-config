@@ -927,7 +927,7 @@ local function set_bindings()
 
   -- register
   vim.keymap.set("n", [[<leader>Q]], function()
-    register.edit_register_prompt()
+    register.edit_register(vim.v.register)
   end, { desc = "Edit register in a buffer" })
 
   -- search
