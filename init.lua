@@ -627,13 +627,18 @@ local function set_bindings()
   )
 
   -- paste
-  vim.keymap.set("n", [[<leader>IP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
-  vim.keymap.set("n", [[<leader>P]], [[<Cmd>iput! +<CR>]], { desc = "iput! +" })
-  vim.keymap.set("n", [[<leader>iP]], [[<Cmd>iput!<CR>]], { desc = "iput!" })
-  vim.keymap.set("n", [[<leader>ip]], [[<Cmd>iput<CR>]], { desc = "iput" })
-  vim.keymap.set("n", [[<leader>p]], [[<Cmd>iput +<CR>]], { desc = "iput +" })
-  vim.keymap.set("v", [[<leader>P]], [["+P]], { desc = [["+P]] })
-  vim.keymap.set("v", [[<leader>p]], [["+p]], { desc = [["+p]] })
+  vim.keymap.set(
+    "n",
+    [[<leader>P]],
+    [[<Cmd>execute "iput! " .. v:register<CR>]],
+    { desc = "iput! v:register" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>p]],
+    [[<Cmd>execute "iput " .. v:register<CR>]],
+    { desc = "iput v:register" }
+  )
 
   -- pickers
   vim.keymap.set(
