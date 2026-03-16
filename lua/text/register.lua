@@ -18,11 +18,9 @@ function M.edit_register(register)
   )
 
   vim.keymap.set({ "n" }, [[cq]], function()
-    vim.opt_local.statusline = "@" .. vim.v.register .. " " .. status.statusline
-    vim.notify(
-      [[Switched to register "]] .. vim.v.register,
-      vim.log.levels.INFO
-    )
+    register = vim.v.register
+    vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
+    vim.notify([[Switched to register "]] .. register, vim.log.levels.INFO)
   end, {
     buffer = buffer,
     desc = [[Switch to register without changing scratch buffer]],
