@@ -359,6 +359,18 @@ local function set_bindings()
   )
 
   -- other
+  local function pick_windows(opts)
+    local windows = {}
+
+    local window = window_picker.pick_window(opts)
+    while window ~= nil do
+      table.insert(windows, window)
+      window = window_picker.pick_window(opts)
+    end
+
+    return windows
+  end
+
   local function bind_substitute_origin(buffer_number, region_)
     local tracked = tracked_region.from_region(region_)
     vim.keymap.set({ "n" }, [[ZP]], function()
@@ -437,12 +449,45 @@ local function set_bindings()
     vim.api.nvim_set_current_win(window)
     vim.cmd.wincmd "H"
   end, { desc = "Apply tall layout" })
-  vim.keymap.set(
-    "n",
-    [[<leader>J]],
-    [[<Cmd>new | normal g`M<CR>]],
-    { desc = "Jump to mark M in a new window" }
-  )
+  vim.keymap.set("n", [[<leader>J]], function()
+    local picked_windows =
+      pick_windows { filter_rules = { include_current_win = true } }
+    if #picked_windows == 0 then
+      return
+    end
+
+    local origin_tabpage_current_window = vim.api.nvim_get_current_win()
+
+    -- Reversing is needed to put windows in order these were picked.
+    local windows = vim.iter(picked_windows):rev():totable()
+
+    vim.api.nvim_set_current_win(table.remove(windows))
+    vim.cmd.wincmd "T"
+
+    -- When a window is moved to a new tab page it's window options are preserved.
+    local target_tabpage_current_window = vim.api.nvim_get_current_win()
+
+    for _, window in pairs(windows) do
+      local buffer = vim.api.nvim_win_get_buf(window)
+      vim.cmd.sbuffer(buffer)
+
+      -- Ensuring scratch windows `statusline`s are preserved.
+      vim.opt_local.statusline = vim.wo[window].statusline
+
+      vim.api.nvim_set_current_win(target_tabpage_current_window)
+    end
+
+    for _, window in pairs(windows) do
+      vim.api.nvim_set_current_win(window)
+      vim.cmd.wincmd "q"
+    end
+
+    if not vim.list_contains(picked_windows, origin_tabpage_current_window) then
+      vim.api.nvim_set_current_win(origin_tabpage_current_window)
+    end
+
+    vim.api.nvim_set_current_win(target_tabpage_current_window)
+  end, { desc = "Move picked windows to a new tab page" })
   vim.keymap.set("n", [[<leader>W]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
       local buffer = vim.api.nvim_buf_get_name(0)
