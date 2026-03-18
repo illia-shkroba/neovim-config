@@ -977,7 +977,7 @@ local function set_bindings()
 
   -- register
   vim.keymap.set("n", [[<leader>Q]], function()
-    register.edit_register(vim.v.register)
+    register.edit_register(vim.v.register:lower())
   end, { desc = "Edit register in a buffer" })
 
   -- search

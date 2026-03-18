@@ -18,7 +18,7 @@ function M.edit_register(register)
   )
 
   vim.keymap.set({ "n" }, [[cq]], function()
-    register = vim.v.register
+    register = vim.v.register:lower()
     vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
     vim.notify([[Switched to register "]] .. register, vim.log.levels.INFO)
   end, {
