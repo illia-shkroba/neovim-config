@@ -316,7 +316,7 @@ local function set_bindings()
     { silent = true, desc = "Leap" }
   )
   vim.keymap.set(
-    { "n", "v", "o" },
+    { "n" },
     [[<C-q>]],
     "<Plug>(leap-from-window)",
     { silent = true, desc = "Leap to other windows" }
@@ -1138,6 +1138,12 @@ local function set_bindings()
   )
 
   -- text objects
+  vim.keymap.set(
+    { "o" },
+    [[<C-q>]],
+    [[V<C-s>]],
+    { remap = true, desc = "Leap select linewise" }
+  )
   vim.keymap.set(
     { "o", "v" },
     "a%",
