@@ -456,15 +456,30 @@ local function set_bindings()
       return
     end
 
+    local selected_tabpage = vim.v.count
     local origin_tabpage_current_window = vim.api.nvim_get_current_win()
 
     -- Reversing is needed to put windows in order these were picked.
     local windows = vim.iter(picked_windows):rev():totable()
 
-    vim.api.nvim_set_current_win(table.remove(windows))
-    vim.cmd.wincmd "T"
+    if selected_tabpage == 0 then
+      -- When a window is moved to a new tab page it's window options are preserved.
+      vim.api.nvim_set_current_win(table.remove(windows))
+      vim.cmd.wincmd "T"
+    else
+      local current_tabpage_id = vim.api.nvim_get_current_tabpage()
+      vim.cmd.normal(selected_tabpage .. "gt")
+      local selected_tabpage_id = vim.api.nvim_get_current_tabpage()
 
-    -- When a window is moved to a new tab page it's window options are preserved.
+      if current_tabpage_id == selected_tabpage_id then
+        vim.notify(
+          "Cannot move windows to the current tab page.",
+          vim.log.levels.WARN
+        )
+        return
+      end
+    end
+
     local target_tabpage_current_window = vim.api.nvim_get_current_win()
 
     for _, window in pairs(windows) do
