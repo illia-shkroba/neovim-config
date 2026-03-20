@@ -103,7 +103,7 @@ return {
       command_history = {
         actions = {
           ["ctrl-e"] = false,
-          ["ctrl-v"] = fzf.actions.ex_run,
+          ["ctrl-f"] = fzf.actions.ex_run,
           ["ctrl-x"] = false,
           ["ctrl-z"] = {
             fn = fzf.actions.ex_del,
