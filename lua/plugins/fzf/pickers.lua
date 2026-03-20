@@ -164,6 +164,13 @@ M.directories_actions = {
     end
     fzf.files { cwd = absolute_path_from_entry(selected[1]) }
   end,
+  ["ctrl-l"] = function(selected, opts)
+    if #selected == 0 then
+      return
+    end
+    opts.scope = "local"
+    fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
+  end,
   ["ctrl-s"] = false,
   ["ctrl-t"] = function(selected, opts)
     if #selected == 0 then
