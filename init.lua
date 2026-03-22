@@ -578,15 +578,21 @@ local function set_bindings()
   end
   for _, lhs in pairs { [[<C-w>u]], [[<C-w><C-u>]] } do
     vim.keymap.set("n", lhs, function()
-      local target_window = window_picker.pick_window()
-      while target_window ~= nil do
-        local current_window = vim.api.nvim_get_current_win()
+      local windows =
+        pick_windows { filter_rules = { include_current_win = true } }
+      if #windows == 0 then
+        return
+      end
 
-        vim.api.nvim_set_current_win(target_window)
+      local current_window = vim.api.nvim_get_current_win()
+
+      for _, window in pairs(windows) do
+        vim.api.nvim_set_current_win(window)
         vim.cmd.wincmd "q"
-        vim.api.nvim_set_current_win(current_window)
+      end
 
-        target_window = window_picker.pick_window()
+      if not vim.list_contains(windows, current_window) then
+        vim.api.nvim_set_current_win(current_window)
       end
     end, { desc = "Quit picked window" })
   end
