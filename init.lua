@@ -681,10 +681,6 @@ local function set_bindings()
   end, { desc = "Remove current buffer's file" })
   vim.keymap.set({ "n" }, [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set({ "n" }, [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
-  vim.keymap.set({ "n", "v" }, "]", [[g]], { desc = "Remap ] to g" })
-  vim.keymap.set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  vim.keymap.set({ "n", "v" }, [[]], [[g]], { desc = "Remap  to g" })
-  vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   vim.keymap.set(
     "i",
     [[#]],
@@ -1057,14 +1053,8 @@ local function set_bindings()
   vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)", {
     desc = "Add a surrounding pair around a motion (normal mode)",
   })
-  vim.keymap.set("n", "yss", "<Plug>(nvim-surround-normal-cur)", {
-    desc = "Add a surrounding pair around the current line (normal mode)",
-  })
   vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)", {
     desc = "Add a surrounding pair around a motion, on new lines (normal mode)",
-  })
-  vim.keymap.set("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", {
-    desc = "Add a surrounding pair around the current line, on new lines (normal mode)",
   })
   vim.keymap.set("v", "<C-b>", "<Plug>(nvim-surround-visual)", {
     desc = "Add a surrounding pair around a visual selection",
