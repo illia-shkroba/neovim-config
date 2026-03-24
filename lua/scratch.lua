@@ -29,6 +29,21 @@ function M.scratch(scratch_input)
     end,
     once = true,
   })
+  vim.keymap.set({ "n" }, [[ZR]], function()
+    local register = vim.v.register:lower()
+    local scratch_lines = vim.api.nvim_buf_get_lines(
+      buffer,
+      0,
+      vim.api.nvim_buf_line_count(buffer),
+      true
+    )
+
+    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
+    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+  end, {
+    buffer = buffer,
+    desc = [[Paste scratch buffer's text into register]],
+  })
   vim.keymap.set({ "n" }, [[ZS]], function()
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
