@@ -993,7 +993,7 @@ local function set_bindings()
   end, { desc = "Load location list from the current buffer" })
 
   -- register
-  vim.keymap.set("n", [[<leader>Q]], function()
+  vim.keymap.set("n", [[<leader>R]], function()
     register.edit_register(vim.v.register:lower())
   end, { desc = "Edit register in a buffer" })
 
