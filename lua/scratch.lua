@@ -7,7 +7,7 @@ local utils = require "utils"
 
 ---@param scratch_input ScratchInput
 ---@return integer
-function M.scratch(scratch_input)
+function M.open(scratch_input)
   local events
   if scratch_input.liveness == "retained" then
     events = { "BufWinLeave" }

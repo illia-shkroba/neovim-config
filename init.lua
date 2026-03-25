@@ -215,7 +215,7 @@ local function set_bindings()
 
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
-      local buffer = scratch.scratch { liveness = "retained" }
+      local buffer = scratch.open { liveness = "retained" }
       vim.opt_local.statusline = "tmux " .. status.statusline
 
       vim.api.nvim_buf_set_lines(
@@ -238,27 +238,27 @@ local function set_bindings()
     end
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
-    local buffer = scratch.scratch { liveness = "onetime" }
+    local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "date " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
   vim.keymap.set("n", [[<leader>mp]], function()
-    local buffer = scratch.scratch { liveness = "onetime" }
+    local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "absolute " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:p" })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
-    local buffer = scratch.scratch { liveness = "onetime" }
+    local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "filename " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:t" })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>mw]], function()
-    local buffer = scratch.scratch { liveness = "onetime" }
+    local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "cwd " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.getcwd() })
   end, { desc = "Paste current working directory in a scratch window" })
   vim.keymap.set("n", [[<leader>my]], function()
-    local buffer = scratch.scratch { liveness = "onetime" }
+    local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "relative " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
   end, { desc = "Paste current buffer's name in a scratch window" })
@@ -522,7 +522,7 @@ local function set_bindings()
         function_ = function(region_)
           local filetype = vim.opt_local.filetype._value
 
-          local buffer = scratch.scratch { liveness = "retained" }
+          local buffer = scratch.open { liveness = "retained" }
           vim.opt_local.filetype = filetype
           vim.opt_local.statusline = region_statusline(region_)
 
@@ -546,7 +546,7 @@ local function set_bindings()
         function_ = function(region_)
           local filetype = vim.opt_local.filetype._value
 
-          local buffer = scratch.scratch { liveness = "retained" }
+          local buffer = scratch.open { liveness = "retained" }
           vim.opt_local.filetype = filetype
           vim.opt_local.statusline = region_statusline(region_)
 
@@ -622,7 +622,7 @@ local function set_bindings()
 
       local filetype = vim.opt_local.filetype._value
 
-      local buffer = scratch.scratch { liveness = "retained" }
+      local buffer = scratch.open { liveness = "retained" }
       vim.opt_local.filetype = filetype
       vim.opt_local.statusline = region_statusline(region_)
 
@@ -1251,7 +1251,7 @@ local function set_commands()
   vim.api.nvim_create_user_command(
     "History",
     function()
-      scratch.scratch { liveness = "retained" }
+      scratch.open { liveness = "retained" }
       vim.opt_local.filetype = "sh"
       vim.opt_local.statusline = "history " .. status.statusline
 
@@ -1315,7 +1315,7 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*.msg",
     callback = function()
-      scratch.scratch { liveness = "retained" }
+      scratch.open { liveness = "retained" }
       vim.opt_local.filetype = "markdown"
 
       vim.cmd [[0r !markitdown-wrapper '#']]

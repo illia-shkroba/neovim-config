@@ -6,7 +6,7 @@ local status = require "status"
 ---@param register string
 ---@return nil
 function M.edit_register(register)
-  local buffer = scratch.scratch { liveness = "retained" }
+  local buffer = scratch.open { liveness = "retained" }
   vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
 
   vim.api.nvim_buf_set_lines(
