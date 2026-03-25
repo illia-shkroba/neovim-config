@@ -1,5 +1,6 @@
 local M = {}
 
+local register = require "text.register"
 local utils = require "utils"
 
 ---@class ScratchInput
@@ -30,7 +31,7 @@ function M.open(scratch_input)
     once = true,
   })
   vim.keymap.set({ "n" }, [[ZR]], function()
-    local register = vim.v.register:lower()
+    local register_ = register.normalize(vim.v.register)
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
       0,
@@ -38,8 +39,8 @@ function M.open(scratch_input)
       true
     )
 
-    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
-    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+    vim.fn.setreg(register_, table.concat(scratch_lines, "\n"))
+    vim.notify([[Changed register "]] .. register_, vim.log.levels.INFO)
   end, {
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],

@@ -13,8 +13,8 @@ local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
 local region = require "text.region"
-local register = require "text.register"
 local scratch = require "scratch"
+local scratch_register = require "scratch.register"
 local status = require "status"
 local tracked_region = require "text.tracked_region"
 local utils = require "utils"
@@ -994,7 +994,7 @@ local function set_bindings()
 
   -- register
   vim.keymap.set("n", [[<leader>R]], function()
-    register.edit(vim.v.register:lower())
+    scratch_register.edit(vim.v.register)
   end, { desc = "Edit register in a buffer" })
 
   -- search
