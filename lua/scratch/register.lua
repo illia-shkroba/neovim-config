@@ -1,29 +1,28 @@
 local M = {}
 
-local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
 
----@param register_ string
+---@param register string
 ---@return nil
-function M.edit(register_)
-  register_ = register.normalize(register_)
+function M.edit(register)
+  register = register:lower()
 
   local buffer = scratch.open { liveness = "retained" }
-  vim.opt_local.statusline = "@" .. register_ .. " " .. status.statusline
+  vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
 
   vim.api.nvim_buf_set_lines(
     buffer,
     0,
     1,
     false,
-    vim.split(vim.fn.getreg(register_), "\n")
+    vim.split(vim.fn.getreg(register), "\n")
   )
 
   vim.keymap.set({ "n" }, [[cr]], function()
-    register_ = register.normalize(vim.v.register)
-    vim.opt_local.statusline = "@" .. register_ .. " " .. status.statusline
-    vim.notify([[Switched to register "]] .. register_, vim.log.levels.INFO)
+    register = vim.v.register:lower()
+    vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
+    vim.notify([[Switched to register "]] .. register, vim.log.levels.INFO)
   end, {
     buffer = buffer,
     desc = [[Switch to register without changing scratch buffer]],
@@ -36,8 +35,8 @@ function M.edit(register_)
       true
     )
 
-    vim.fn.setreg(register_, table.concat(scratch_lines, "\n"))
-    vim.notify([[Changed register "]] .. register_, vim.log.levels.INFO)
+    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
+    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
   end, {
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],

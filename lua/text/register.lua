@@ -1,9 +1,21 @@
 local M = {}
 
+local utils = require "utils"
+
+---@return nil
+function M.normalized_expr()
+  local raw_register = utils.try(vim.fn.getcharstr)
+  if not raw_register then
+    return
+  end
+
+  local register = M.normalize(raw_register)
+  return [["]] .. register
+end
+
 ---@param register string
 ---@return string
 function M.normalize(register)
-  local r = register:lower()
   return ({
     ["!"] = "1",
     ["@"] = "2",
@@ -16,7 +28,7 @@ function M.normalize(register)
     ["("] = "9",
     [")"] = "0",
     ["?"] = "/",
-  })[r] or r
+  })[register] or register
 end
 
 return M

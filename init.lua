@@ -13,6 +13,7 @@ local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
 local region = require "text.region"
+local register = require "text.register"
 local scratch = require "scratch"
 local scratch_register = require "scratch.register"
 local status = require "status"
@@ -437,6 +438,10 @@ local function set_bindings()
     return (relative or absolute) .. " " .. status.statusline
   end
 
+  vim.keymap.set({ "n", "v" }, [["]], register.normalized_expr, {
+    expr = true,
+    desc = [[Same as "{register} binding but "unshifts" 1-0 and ? keys]],
+  })
   vim.keymap.set(
     "n",
     [[<C-l>]],
