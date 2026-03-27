@@ -686,6 +686,7 @@ local function set_bindings()
   end, { desc = "Remove current buffer's file" })
   vim.keymap.set({ "n" }, [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set({ "n" }, [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
+  vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   vim.keymap.set(
     "i",
     [[#]],
