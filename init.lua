@@ -1059,9 +1059,6 @@ local function set_bindings()
   vim.keymap.set("n", "ys", "<Plug>(nvim-surround-normal)", {
     desc = "Add a surrounding pair around a motion (normal mode)",
   })
-  vim.keymap.set("n", "yS", "<Plug>(nvim-surround-normal-line)", {
-    desc = "Add a surrounding pair around a motion, on new lines (normal mode)",
-  })
   vim.keymap.set("v", "<C-b>", "<Plug>(nvim-surround-visual)", {
     desc = "Add a surrounding pair around a visual selection",
   })
@@ -1070,9 +1067,6 @@ local function set_bindings()
   })
   vim.keymap.set("n", "cs", "<Plug>(nvim-surround-change)", {
     desc = "Change a surrounding pair",
-  })
-  vim.keymap.set("n", "cS", "<Plug>(nvim-surround-change-line)", {
-    desc = "Change a surrounding pair, putting replacements on new lines",
   })
 
   -- tabs
