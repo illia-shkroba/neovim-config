@@ -1340,7 +1340,7 @@ local function set_autocommands()
         { buffer = true, desc = "Populate cmdline with s///gc" }
       )
       vim.keymap.set(
-        { "i" },
+        { "i", "n", "o" },
         [[<C-z>]],
         [[]],
         { buffer = true, desc = "Skip <C-z> in Cmdwin" }
