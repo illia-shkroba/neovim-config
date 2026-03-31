@@ -429,6 +429,14 @@ local function set_bindings()
       buffer = substitute_origin_input.binding_buffer_number,
       desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
     })
+    vim.keymap.set({ "n" }, [[ZE]], function()
+      tracked = tracked_region.substitute(tracked, {})
+
+      fix_marks()
+    end, {
+      buffer = substitute_origin_input.binding_buffer_number,
+      desc = "Delete lines selected by motion in the origin buffer",
+    })
   end
 
   local function with_change_marks(buffer_number, function_)
