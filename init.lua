@@ -372,21 +372,28 @@ local function set_bindings()
     return windows
   end
 
-  local function bind_substitute_origin(buffer_number, region_)
-    local tracked = tracked_region.from_region(region_)
-    vim.keymap.set({ "n" }, [[ZP]], function()
-      local scratch_lines = vim.api.nvim_buf_get_lines(
-        buffer_number,
-        0,
-        vim.api.nvim_buf_line_count(buffer_number),
-        true
-      )
-      if #scratch_lines == 1 and scratch_lines[1] == "" then
-        scratch_lines = {}
+  ---@class SubstituteOriginInput
+  ---@field binding_buffer_number integer
+  ---@field origin_region Region
+
+  ---@param substitute_origin_input SubstituteOriginInput
+  ---@return nil
+  local function bind_substitute_origin(substitute_origin_input)
+    local tracked =
+      tracked_region.from_region(substitute_origin_input.origin_region)
+
+    ---@param lines table<integer, string>
+    ---@return table<integer, string>
+    local function normalize_substitution(lines)
+      if #lines == 1 and lines[1] == "" then
+        return {}
+      else
+        return lines
       end
+    end
 
-      tracked = tracked_region.substitute(tracked, scratch_lines)
-
+    ---@return nil
+    local function fix_marks()
       vim.api.nvim_buf_set_mark(
         tracked.region.buffer_number,
         "[",
@@ -401,8 +408,25 @@ local function set_bindings()
         tracked.region.column_end,
         {}
       )
+    end
+
+    vim.keymap.set({ "n" }, [[ZP]], function()
+      local lines = normalize_substitution(
+        vim.api.nvim_buf_get_lines(
+          substitute_origin_input.binding_buffer_number,
+          0,
+          vim.api.nvim_buf_line_count(
+            substitute_origin_input.binding_buffer_number
+          ),
+          true
+        )
+      )
+
+      tracked = tracked_region.substitute(tracked, lines)
+
+      fix_marks()
     end, {
-      buffer = buffer_number,
+      buffer = substitute_origin_input.binding_buffer_number,
       desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
     })
   end
@@ -533,7 +557,10 @@ local function set_bindings()
 
           vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
-          bind_substitute_origin(buffer, region_)
+          bind_substitute_origin {
+            binding_buffer_number = buffer,
+            origin_region = region_,
+          }
         end,
         readonly = true,
       },
@@ -609,7 +636,10 @@ local function set_bindings()
 
       vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
-      bind_substitute_origin(buffer, region_)
+      bind_substitute_origin {
+        binding_buffer_number = buffer,
+        origin_region = region_,
+      }
     end, { desc = "Open a scratch window with [count] lines" })
   end
   vim.keymap.set(
