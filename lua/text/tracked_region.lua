@@ -26,11 +26,30 @@ function M.substitute(tracked, target)
     {}
   )
 
+  -- If `substitute_linewise` is called with a region having `line_begin = 1`
+  -- and an empty `target`, then resulting `Region` will have `line_end = 0`.
+  local new_line_end
+  if tracked.region.line_end == 0 and mark_end[1] == 0 then
+    new_line_end = 0
+  else
+    new_line_end = mark_end[1] + 1
+  end
+
+  -- If `substitute_charwise` is called with a region having `column_begin = 0`
+  -- and an empty `target`, then resulting `Region` will have `column_end = -1`.
+  -- According to the `:help api-indexing` -1 denotes the last column.
+  local new_column_end
+  if tracked.region.column_end == -1 and mark_end[2] == 0 then
+    new_column_end = -1
+  else
+    new_column_end = mark_end[2]
+  end
+
   local ok, new_region = pcall(region.update, tracked.region, {
     line_begin = mark_begin[1] + 1,
     column_begin = mark_begin[2],
-    line_end = mark_end[1] + 1,
-    column_end = mark_end[2],
+    line_end = new_line_end,
+    column_end = new_column_end,
   })
 
   if not ok then
@@ -77,8 +96,13 @@ function M.from_region(region_)
   local mark_end = vim.api.nvim_buf_set_extmark(
     region_.buffer_number,
     namespace,
-    region_.line_end - 1,
-    column_end,
+    -- If `substitute_linewise` is called with a region having `line_begin = 1`
+    -- and an empty `target`, then resulting `Region` will have `line_end = 0`.
+    math.max(region_.line_end - 1, 0),
+    -- If `substitute_charwise` is called with a region having `column_begin = 0`
+    -- and an empty `target`, then resulting `Region` will have `column_end = -1`.
+    -- According to the `:help api-indexing` -1 denotes the last column.
+    math.max(column_end, 0),
     { right_gravity = true, undo_restore = true }
   )
 

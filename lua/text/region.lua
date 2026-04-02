@@ -2,10 +2,10 @@ local M = {}
 
 ---@class Region
 ---@field buffer_number integer
----@field line_begin integer
----@field column_begin integer
----@field line_end integer
----@field column_end integer
+---@field line_begin integer 1-based inclusive.
+---@field column_begin integer 0-based inclusive.
+---@field line_end integer 1-based inclusive.
+---@field column_end integer 0-based inclusive.
 ---@field type_ "line"|"char"|"block"|"block_newline"
 ---@field lines table<integer, string>
 
