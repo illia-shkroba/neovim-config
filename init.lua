@@ -633,6 +633,38 @@ local function set_bindings()
   vim.keymap.set({ "n" }, [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set({ "n" }, [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
+  vim.keymap.set("i", [[<C-f>]], function()
+    local origin_buffer = vim.api.nvim_get_current_buf()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line, column = cursor[1], cursor[2]
+
+    local region_ = region.from {
+      buffer_number = origin_buffer,
+      line_begin = line,
+      column_begin = column,
+      line_end = line,
+      column_end = column - 1,
+      type_ = "char",
+    }
+
+    vim.api.nvim_buf_set_mark(origin_buffer, "[", line, column, {})
+    vim.api.nvim_buf_set_mark(origin_buffer, "]", line, column - 1, {})
+
+    local filetype = vim.opt_local.filetype._value
+
+    local buffer = scratch.open { liveness = "retained" }
+    vim.opt_local.filetype = filetype
+    vim.opt_local.statusline = region_statusline(region_)
+
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+
+    scratch.bind_substitute_origin {
+      binding_buffer_number = buffer,
+      origin_region = region_,
+    }
+  end, {
+    desc = "Open a scratch window for insertion into current cursor position",
+  })
   vim.keymap.set(
     "i",
     [[#]],
