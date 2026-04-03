@@ -116,4 +116,11 @@ function M.from_region(region_)
   return { mark_begin = mark_begin, mark_end = mark_end, region = region_ }
 end
 
+---@param tracked TrackedRegion
+---@return table<integer, string>
+function M.lines(tracked)
+  update_inplace(tracked)
+  return tracked.region.lines
+end
+
 return M
