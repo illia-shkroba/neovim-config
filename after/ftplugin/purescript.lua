@@ -20,12 +20,7 @@ vim.opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto
   .. vim.opt_local.tabstop._value
   .. " --width 80"
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "<filetype>" },
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
+vim.treesitter.start()
 
 vim.keymap.set(
   "n",

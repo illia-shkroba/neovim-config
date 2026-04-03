@@ -16,12 +16,7 @@ vim.opt_local.formatprg = "shfmt -s -i "
   .. vim.opt_local.tabstop._value
   .. " -bn -ci -sr"
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "<filetype>" },
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
+vim.treesitter.start()
 
 vim.keymap.set(
   { "n" },

@@ -11,12 +11,7 @@ vim.opt_local.softtabstop = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.makeprg = "cargo build"
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "<filetype>" },
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
+vim.treesitter.start()
 
 vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.update()
