@@ -10,9 +10,8 @@ local namespace = vim.api.nvim_create_namespace "tracked_region"
 ---@field region Region
 
 ---@param tracked TrackedRegion
----@param target table<integer, string>
----@return TrackedRegion
-function M.substitute(tracked, target)
+---@return nil
+local function update_inplace(tracked)
   local mark_begin = vim.api.nvim_buf_get_extmark_by_id(
     tracked.region.buffer_number,
     namespace,
@@ -52,23 +51,31 @@ function M.substitute(tracked, target)
     column_end = new_column_end,
   })
 
-  if not ok then
+  if ok then
+    tracked.region = new_region
+  else
     vim.notify(
       "Unable to update substitute region from extmarks; using previous region.",
       vim.log.levels.INFO
     )
-    new_region = tracked.region
   end
+end
 
-  local substitute_region = region.substitute(new_region, target)
+---@param tracked TrackedRegion
+---@param target table<integer, string>
+---@return TrackedRegion
+function M.substitute(tracked, target)
+  update_inplace(tracked)
+
+  local substitute_region = region.substitute(tracked.region, target)
 
   vim.api.nvim_buf_del_extmark(
-    new_region.buffer_number,
+    tracked.region.buffer_number,
     namespace,
     tracked.mark_begin
   )
   vim.api.nvim_buf_del_extmark(
-    new_region.buffer_number,
+    tracked.region.buffer_number,
     namespace,
     tracked.mark_end
   )
