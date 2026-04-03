@@ -120,13 +120,27 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
   })
-  vim.keymap.set({ "n" }, [[ZE]], function()
+  vim.keymap.set({ "n" }, [[ZD]], function()
     tracked = tracked_region.substitute(tracked, {})
 
     fix_marks()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Delete lines selected by motion in the origin buffer",
+  })
+  vim.keymap.set({ "n" }, [[ZE]], function()
+    local lines = tracked_region.lines(tracked)
+
+    vim.api.nvim_buf_set_lines(
+      substitute_origin_input.binding_buffer_number,
+      0,
+      vim.api.nvim_buf_line_count(substitute_origin_input.binding_buffer_number),
+      false,
+      lines
+    )
+  end, {
+    buffer = substitute_origin_input.binding_buffer_number,
+    desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
   })
 
   vim.keymap.set({ "n" }, [[ZW]], [[ZPZQ]], {
