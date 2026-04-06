@@ -363,6 +363,16 @@ local function set_bindings()
     local windows = {}
 
     local window = window_picker.pick_window(opts)
+
+    -- Handle `autoselect_one = true`.
+    if window ~= nil then
+      local current_tabpage = vim.api.nvim_get_current_tabpage()
+      local all_windows = vim.api.nvim_tabpage_list_wins(current_tabpage)
+      if #all_windows == 1 then
+        return all_windows
+      end
+    end
+
     while window ~= nil do
       table.insert(windows, window)
       window = window_picker.pick_window(opts)
@@ -419,8 +429,9 @@ local function set_bindings()
     vim.cmd.wincmd "H"
   end, { desc = "Apply tall layout" })
   vim.keymap.set("n", [[<leader>J]], function()
-    local picked_windows =
-      pick_windows { filter_rules = { include_current_win = true } }
+    local picked_windows = pick_windows {
+      filter_rules = { autoselect_one = true, include_current_win = true },
+    }
     if #picked_windows == 0 then
       return
     end
