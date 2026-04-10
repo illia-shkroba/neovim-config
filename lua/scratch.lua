@@ -30,6 +30,13 @@ function M.open(scratch_input)
     end,
     once = true,
   })
+  vim.keymap.set({ "n" }, [[ZM]], function()
+    vim.opt_local.buftype = ""
+    vim.cmd [[file `=tempname()`]]
+  end, {
+    buffer = buffer,
+    desc = [[Make scratch window a temporary file]],
+  })
   vim.keymap.set({ "n" }, [[ZR]], function()
     local register = vim.v.register:lower()
     local scratch_lines = vim.api.nvim_buf_get_lines(
