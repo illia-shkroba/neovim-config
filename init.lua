@@ -1171,6 +1171,12 @@ local function set_bindings()
     ":<C-U>normal 0v$<CR>",
     { desc = "Current line selected charwise" }
   )
+  vim.keymap.set(
+    { "o", "v" },
+    "i%",
+    ":<C-U>normal ggVG<CR>",
+    { desc = "Current buffer selected linewise" }
+  )
   vim.keymap.set({ "o", "v" }, "i;", function()
     return "i" .. vim.fn.getcharsearch().char
   end, { expr = true, desc = "Inside last search char" })
