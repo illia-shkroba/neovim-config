@@ -1486,7 +1486,17 @@ local function set_templates()
       vim.fs.joinpath(vim.fn.stdpath "config", "etc", "templates", template)
     vim.api.nvim_create_autocmd("BufNewFile", {
       pattern = pattern,
-      command = "0r " .. template_path .. " | normal Gddgg",
+      callback = function(ev)
+        local lines = vim.api.nvim_buf_get_lines(
+          ev.buf,
+          0,
+          vim.api.nvim_buf_line_count(ev.buf),
+          true
+        )
+        if #lines == 1 and lines[1] == "" then
+          vim.cmd([[0r ]] .. template_path .. [[ | normal G"_ddgg]])
+        end
+      end,
     })
   end
 
