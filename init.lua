@@ -1448,6 +1448,15 @@ local function set_autocommands()
           { buffer = true, desc = "Dynamic workspace symbols" }
         )
       end
+
+      if client:supports_method "textDocument/signatureHelp" then
+        vim.keymap.set(
+          "i",
+          [[<C-g><C-s>]],
+          vim.lsp.buf.signature_help,
+          { buffer = true, desc = "Signature help" }
+        )
+      end
     end,
   })
   vim.api.nvim_create_autocmd("LspDetach", {
@@ -1464,6 +1473,7 @@ local function set_autocommands()
         vim.keymap.del("n", [[K]], { buffer = event.buf })
         vim.keymap.del("n", [[gd]], { buffer = event.buf })
         vim.keymap.del("n", [[<leader>fB]], { buffer = event.buf })
+        vim.keymap.del("i", [[<C-g><C-s>]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
