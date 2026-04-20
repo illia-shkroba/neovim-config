@@ -1431,6 +1431,7 @@ local function set_autocommands()
       end
 
       if client:supports_method "textDocument/definition" then
+        vim.bo[event.buf].tagfunc = "v:lua.vim.lsp.tagfunc"
         vim.keymap.set(
           "n",
           [[gd]],
@@ -1452,6 +1453,7 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("LspDetach", {
     callback = function(event)
       vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
+      vim.bo[event.buf].tagfunc = ""
 
       local function unset_bindings()
         vim.keymap.del("n", [[<leader>fc]], { buffer = event.buf })
