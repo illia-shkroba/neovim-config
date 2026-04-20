@@ -316,19 +316,19 @@ local function set_bindings()
     { silent = true, desc = "Leap" }
   )
   vim.keymap.set(
-    { "n" },
+    "n",
     [[<C-q>]],
     "<Plug>(leap-from-window)",
     { silent = true, desc = "Leap to other windows" }
   )
   vim.keymap.set(
-    { "i" },
+    "i",
     [[<C-s>]],
     "<Plug>(leap)",
     { silent = true, desc = "Leap" }
   )
   vim.keymap.set(
-    { "i" },
+    "i",
     [[<C-q>]],
     "<Plug>(leap-from-window)",
     { silent = true, desc = "Leap to other windows" }
@@ -674,8 +674,8 @@ local function set_bindings()
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
-  vim.keymap.set({ "n" }, [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
-  vim.keymap.set({ "n" }, [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
+  vim.keymap.set("n", [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
+  vim.keymap.set("n", [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   vim.keymap.set("i", [[<C-f>]], scratch_with_current_cursor_as_origin, {
     desc = "Open a scratch window for insertion into current cursor position",
@@ -709,7 +709,7 @@ local function set_bindings()
     { desc = "Open neoclip" }
   )
   vim.keymap.set(
-    { "n" },
+    "n",
     [[<leader>;]],
     fzf.command_history,
     { desc = "Command history" }
@@ -718,7 +718,7 @@ local function set_bindings()
     desc = "Search for word under the cursor in files with current buffer's extension",
   })
   vim.keymap.set("n", [[<leader>M]], fzf.marks, { desc = "List marks" })
-  vim.keymap.set({ "n" }, "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
+  vim.keymap.set("n", "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
   vim.keymap.set(
     { "n", "v" },
     [[<leader>?]],
@@ -1143,7 +1143,7 @@ local function set_bindings()
 
   -- text objects
   vim.keymap.set(
-    { "o" },
+    "o",
     [[<C-q>]],
     [[V<C-s>]],
     { remap = true, desc = "Leap select linewise" }
@@ -1329,11 +1329,11 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
       vim.opt_local.completeopt = { "fuzzy", "menuone", "noinsert", "popup" }
-      vim.keymap.set({ "i" }, [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
+      vim.keymap.set("i", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
         desc = [[Wrap current line with \< and \>]],
       })
       vim.keymap.set(
-        { "i" },
+        "i",
         [[<C-s>]],
         [[s///gc<Left><Left><Left>]],
         { buffer = true, desc = "Populate cmdline with s///gc" }
@@ -1344,14 +1344,9 @@ local function set_autocommands()
         [[]],
         { buffer = true, desc = "Skip <C-z> in Cmdwin" }
       )
-      vim.keymap.set(
-        { "n" },
-        [[<C-_>]],
-        [[i<Home>\<<End>\><Left><Left><Esc>]],
-        {
-          desc = [[Wrap current line with \< and \>]],
-        }
-      )
+      vim.keymap.set("n", [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
+        desc = [[Wrap current line with \< and \>]],
+      })
     end,
   })
   vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {

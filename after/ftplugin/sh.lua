@@ -19,12 +19,12 @@ vim.opt_local.formatprg = "shfmt -s -i "
 vim.treesitter.start()
 
 vim.keymap.set(
-  { "n" },
+  "n",
   [[<CR>]],
   [[<Cmd>.w !bash<CR>]],
   { buffer = true, desc = "Run current line" }
 )
-vim.keymap.set({ "n" }, [[<leader><CR>]], function()
+vim.keymap.set("n", [[<leader><CR>]], function()
   local buffer_number = vim.api.nvim_get_current_buf()
   local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
   local current_line = cursor[1]
@@ -57,13 +57,13 @@ vim.keymap.set(
   { buffer = true, desc = "Load current buffer to bash" }
 )
 vim.keymap.set(
-  { "v" },
+  "v",
   [[<CR>]],
   [[:w !bash<CR>]],
   { buffer = true, desc = "Run selected lines" }
 )
 vim.keymap.set(
-  { "v" },
+  "v",
   [[<leader><CR>]],
   operator.expr {
     function_ = function(region_)

@@ -30,14 +30,14 @@ function M.open(scratch_input)
     end,
     once = true,
   })
-  vim.keymap.set({ "n" }, [[ZM]], function()
+  vim.keymap.set("n", [[ZM]], function()
     vim.opt_local.buftype = ""
     vim.cmd [[file `=tempname()`]]
   end, {
     buffer = buffer,
     desc = [[Make scratch window a temporary file]],
   })
-  vim.keymap.set({ "n" }, [[ZR]], function()
+  vim.keymap.set("n", [[ZR]], function()
     local register = vim.v.register:lower()
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
@@ -52,7 +52,7 @@ function M.open(scratch_input)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
-  vim.keymap.set({ "n" }, [[ZS]], function()
+  vim.keymap.set("n", [[ZS]], function()
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
       0,
@@ -108,7 +108,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     )
   end
 
-  vim.keymap.set({ "n" }, [[ZP]], function()
+  vim.keymap.set("n", [[ZP]], function()
     local lines = normalize_substitution(
       vim.api.nvim_buf_get_lines(
         substitute_origin_input.binding_buffer_number,
@@ -127,7 +127,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
   })
-  vim.keymap.set({ "n" }, [[ZD]], function()
+  vim.keymap.set("n", [[ZD]], function()
     tracked = tracked_region.substitute(tracked, {})
 
     fix_marks()
@@ -135,7 +135,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Delete lines selected by motion in the origin buffer",
   })
-  vim.keymap.set({ "n" }, [[ZE]], function()
+  vim.keymap.set("n", [[ZE]], function()
     local lines = tracked_region.lines(tracked)
 
     vim.api.nvim_buf_set_lines(
@@ -150,7 +150,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
   })
 
-  vim.keymap.set({ "n" }, [[ZW]], [[ZPZQ]], {
+  vim.keymap.set("n", [[ZW]], [[ZPZQ]], {
     buffer = substitute_origin_input.binding_buffer_number,
     remap = true,
     desc = "ZP ZQ",
