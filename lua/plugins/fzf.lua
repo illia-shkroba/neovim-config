@@ -1,3 +1,5 @@
+local utils = require "utils"
+
 return {
   "ibhagwan/fzf-lua",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -8,6 +10,11 @@ return {
     local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
     local pickers = require "plugins.fzf.pickers"
+
+    local function args(selected, opts)
+      utils.try(vim.cmd, [[argdelete *]])
+      fzf.actions.arg_add(selected, opts)
+    end
 
     local function remove_file(selected, opts)
       for _, sel in ipairs(selected) do
@@ -83,7 +90,7 @@ return {
           ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
-          ["ctrl-y"] = fzf.actions.arg_add,
+          ["ctrl-y"] = args,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
         },
       },
@@ -141,7 +148,7 @@ return {
           ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
-          ["ctrl-y"] = fzf.actions.arg_add,
+          ["ctrl-y"] = args,
           ["ctrl-z"] = {
             fn = remove_file,
             reload = true,
@@ -167,7 +174,7 @@ return {
           ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
-          ["ctrl-y"] = fzf.actions.arg_add,
+          ["ctrl-y"] = args,
         },
       },
       jumps = {
@@ -237,7 +244,7 @@ return {
           ["alt-f"] = false,
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
-          ["ctrl-y"] = fzf.actions.arg_add,
+          ["ctrl-y"] = args,
           ["ctrl-z"] = {
             fn = remove_file,
             reload = true,
