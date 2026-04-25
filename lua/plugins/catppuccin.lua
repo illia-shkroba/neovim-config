@@ -10,7 +10,10 @@ return {
         dark = "mocha",
       },
       transparent_background = true, -- disables setting the background color. Needed for `leap` dimming to work.
-      show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+      float = {
+        transparent = true, -- enable transparent floating windows
+        solid = false, -- use solid styling for floating windows, see |winborder|
+      },
       term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
       dim_inactive = {
         enabled = true, -- dims the background color of inactive window
@@ -35,37 +38,35 @@ return {
         operators = {},
         -- miscs = {}, -- Uncomment to turn off hard-coded styles
       },
+      lsp_styles = { -- Handles the style of specific lsp hl groups (see `:h lsp-highlight`).
+        virtual_text = {
+          errors = { "italic" },
+          hints = { "italic" },
+          warnings = { "italic" },
+          information = { "italic" },
+          ok = { "italic" },
+        },
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "underline" },
+          warnings = { "underline" },
+          information = { "underline" },
+          ok = { "underline" },
+        },
+        inlay_hints = {
+          background = true,
+        },
+      },
       color_overrides = {},
       custom_highlights = {},
       default_integrations = true,
+      auto_integrations = false,
       integrations = {
-        dashboard = true,
         fzf = true,
         gitsigns = true,
         leap = true,
-        native_lsp = {
-          enabled = true,
-          virtual_text = {
-            errors = { "italic" },
-            hints = { "italic" },
-            warnings = { "italic" },
-            information = { "italic" },
-            ok = { "italic" },
-          },
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "underline" },
-            warnings = { "underline" },
-            information = { "underline" },
-            ok = { "underline" },
-          },
-          inlay_hints = {
-            background = true,
-          },
-        },
+        mason = true,
         nvim_surround = true,
-        treesitter = true,
-        treesitter_context = true,
         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
       },
     }
