@@ -1508,7 +1508,6 @@ local function set_templates()
   end
 
   enable_template("*.cpp", "template.cpp")
-  enable_template("*.dhall", "template.dhall")
   enable_template("*.dot", "template.dot")
   enable_template("*.hs", "template.hs")
   enable_template("*.java", "template.java")

@@ -1,7 +1,6 @@
 return {
   ansiblels = { install = true },
   bashls = { install = true },
-  dhall_lsp_server = {},
   dockerls = { install = true },
   dotls = {},
   harper_ls = { install = true },
