@@ -52,18 +52,9 @@ function M.open(scratch_input)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
-  vim.keymap.set("n", [[ZS]], function()
-    local scratch_lines = vim.api.nvim_buf_get_lines(
-      buffer,
-      0,
-      vim.api.nvim_buf_line_count(buffer),
-      true
-    )
-
-    vim.fn.setreg("s", table.concat(scratch_lines, "\n"))
-    vim.notify([[Changed register "s]], vim.log.levels.INFO)
-  end, {
+  vim.keymap.set("n", [[ZS]], [["sZX]], {
     buffer = buffer,
+    remap = true,
     desc = [[Paste scratch buffer's text into register "s]],
   })
 
