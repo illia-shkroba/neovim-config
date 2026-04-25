@@ -996,6 +996,26 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>X]], function()
     scratch_register.edit(vim.v.register)
   end, { desc = "Edit register in a buffer" })
+  vim.keymap.set("n", [[ZX]], function()
+    local register_ = vim.v.register:lower()
+
+    local buffer = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(
+      buffer,
+      0,
+      vim.api.nvim_buf_line_count(buffer),
+      true
+    )
+
+    vim.fn.setreg(register_, table.concat(lines, "\n"))
+    vim.notify([[Changed register "]] .. register_, vim.log.levels.INFO)
+  end, {
+    desc = "Paste buffer's text into register",
+  })
+  vim.keymap.set("n", [[ZS]], [["sZX]], {
+    remap = true,
+    desc = [[Paste buffer's text into register "s]],
+  })
 
   -- search
   vim.keymap.set("n", [[<leader>#]], function()

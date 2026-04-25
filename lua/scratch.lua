@@ -37,26 +37,6 @@ function M.open(scratch_input)
     buffer = buffer,
     desc = [[Make scratch window a temporary file]],
   })
-  vim.keymap.set("n", [[ZX]], function()
-    local register = vim.v.register:lower()
-    local scratch_lines = vim.api.nvim_buf_get_lines(
-      buffer,
-      0,
-      vim.api.nvim_buf_line_count(buffer),
-      true
-    )
-
-    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
-    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
-  end, {
-    buffer = buffer,
-    desc = [[Paste scratch buffer's text into register]],
-  })
-  vim.keymap.set("n", [[ZS]], [["sZX]], {
-    buffer = buffer,
-    remap = true,
-    desc = [[Paste scratch buffer's text into register "s]],
-  })
 
   return buffer
 end
