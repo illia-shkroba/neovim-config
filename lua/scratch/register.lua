@@ -41,6 +41,11 @@ function M.edit(register)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
+  vim.keymap.set("n", [[ZW]], [[ZPZQ]], {
+    buffer = buffer,
+    remap = true,
+    desc = "ZP ZQ",
+  })
 end
 
 return M
