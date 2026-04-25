@@ -38,6 +38,7 @@ return {
         use_focus = true,
       },
       current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
+      blame_formatter = nil, -- Use default
       sign_priority = 6,
       update_debounce = 100,
       status_formatter = nil, -- Use default
@@ -109,14 +110,15 @@ return {
         set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
         end)
+        set("n", "<leader>hQ", function()
+          gitsigns.setqflist "all"
+        end)
+        set("n", "<leader>hq", gitsigns.setqflist)
+        set("n", "<leader>hl", gitsigns.setloclist)
+        set("n", "<leader>hw", gitsigns.toggle_word_diff)
 
         -- Text object
-        set(
-          { "o", "v" },
-          "ih",
-          ":<C-U>Gitsigns select_hunk<CR>",
-          { desc = "Hunk" }
-        )
+        set({ "o", "v" }, "ih", gitsigns.select_hunk, { desc = "Hunk" })
       end,
     }
   end,
