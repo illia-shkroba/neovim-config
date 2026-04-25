@@ -6,7 +6,6 @@ return {
   harper_ls = { install = true },
   hls = {},
   lua_ls = { install = true },
-  nil_ls = {},
   perlpls = {},
   purescriptls = { install = true },
   ruff = { install = true },

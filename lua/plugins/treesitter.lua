@@ -15,7 +15,6 @@ return {
       "json",
       "lua",
       "markdown",
-      "nix",
       "purescript",
       "python",
       "sql",
