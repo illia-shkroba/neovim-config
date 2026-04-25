@@ -68,6 +68,7 @@ local function set_options()
   vim.opt.tabstop = 2
   vim.opt.tagcase = "smart"
   vim.opt.termguicolors = true
+  vim.opt.undofile = true
   vim.opt.wildmenu = true
   vim.opt.wrapscan = false
 
