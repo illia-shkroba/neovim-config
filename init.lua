@@ -688,6 +688,13 @@ local function set_bindings()
     { desc = "Prevent indent removal when 'smartindent' is on" }
   )
 
+  -- overloads
+  for _, lhs in pairs { [[<C-w>d]], [[<C-w><C-d>]] } do
+    vim.keymap.set("n", lhs, function()
+      vim.diagnostic.open_float { border = "rounded" }
+    end, { desc = "Show diagnostics under the cursor" })
+  end
+
   -- paste
   vim.keymap.set(
     "n",
