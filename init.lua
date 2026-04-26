@@ -683,6 +683,12 @@ local function set_bindings()
   })
   vim.keymap.set(
     "i",
+    [[<C-g><C-s>]],
+    vim.lsp.buf.signature_help,
+    { desc = "Signature help" }
+  )
+  vim.keymap.set(
+    "i",
     [[#]],
     [[<C-v>#]],
     { desc = "Prevent indent removal when 'smartindent' is on" }
@@ -786,9 +792,33 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
     "n",
+    [[<leader>fc]],
+    fzf.lsp_references,
+    { desc = "References" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>fd]],
     fzf.diagnostics_workspace,
     { desc = "List diagnostics" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fi]],
+    fzf.lsp_incoming_calls,
+    { desc = "Incoming calls" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fo]],
+    fzf.lsp_outgoing_calls,
+    { desc = "Outgoing calls" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>fB]],
+    fzf.lsp_live_workspace_symbols,
+    { desc = "Dynamic workspace symbols" }
   )
   vim.keymap.set(
     "n",
@@ -911,6 +941,19 @@ local function set_bindings()
     [[<leader>le]],
     vim.diagnostic.setloclist,
     { desc = "Load diagnostic to location list" }
+  )
+
+  vim.keymap.set(
+    "n",
+    [[<leader>qi]],
+    vim.lsp.buf.incoming_calls,
+    { desc = "Incoming calls" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>qo]],
+    vim.lsp.buf.outgoing_calls,
+    { desc = "Outgoing calls" }
   )
 
   vim.keymap.set(
@@ -1395,45 +1438,6 @@ local function set_autocommands()
         vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
       end
 
-      if client:supports_method "textDocument/references" then
-        vim.keymap.set(
-          "n",
-          [[<leader>fc]],
-          fzf.lsp_references,
-          { buffer = true, desc = "References" }
-        )
-      end
-
-      if client:supports_method "callHierarchy/incomingCalls" then
-        vim.keymap.set(
-          "n",
-          [[<leader>qi]],
-          vim.lsp.buf.incoming_calls,
-          { buffer = true, desc = "Incoming calls" }
-        )
-        vim.keymap.set(
-          "n",
-          [[<leader>fi]],
-          fzf.lsp_incoming_calls,
-          { buffer = true, desc = "Incoming calls" }
-        )
-      end
-
-      if client:supports_method "callHierarchy/outgoingCalls" then
-        vim.keymap.set(
-          "n",
-          [[<leader>qo]],
-          vim.lsp.buf.outgoing_calls,
-          { buffer = true, desc = "Outgoing calls" }
-        )
-        vim.keymap.set(
-          "n",
-          [[<leader>fo]],
-          fzf.lsp_outgoing_calls,
-          { buffer = true, desc = "Outgoing calls" }
-        )
-      end
-
       if client:supports_method "textDocument/hover" then
         vim.keymap.set(
           "n",
@@ -1452,24 +1456,6 @@ local function set_autocommands()
           { buffer = true, desc = "Definition" }
         )
       end
-
-      if client:supports_method "workspace/symbol" then
-        vim.keymap.set(
-          "n",
-          [[<leader>fB]],
-          fzf.lsp_live_workspace_symbols,
-          { buffer = true, desc = "Dynamic workspace symbols" }
-        )
-      end
-
-      if client:supports_method "textDocument/signatureHelp" then
-        vim.keymap.set(
-          "i",
-          [[<C-g><C-s>]],
-          vim.lsp.buf.signature_help,
-          { buffer = true, desc = "Signature help" }
-        )
-      end
     end,
   })
   vim.api.nvim_create_autocmd("LspDetach", {
@@ -1478,15 +1464,8 @@ local function set_autocommands()
       vim.bo[event.buf].tagfunc = ""
 
       local function unset_bindings()
-        vim.keymap.del("n", [[<leader>fc]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>qi]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>fi]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>qo]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>fo]], { buffer = event.buf })
         vim.keymap.del("n", [[K]], { buffer = event.buf })
         vim.keymap.del("n", [[gd]], { buffer = event.buf })
-        vim.keymap.del("n", [[<leader>fB]], { buffer = event.buf })
-        vim.keymap.del("i", [[<C-g><C-s>]], { buffer = event.buf })
       end
 
       utils.try(unset_bindings)
