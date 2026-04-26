@@ -1384,16 +1384,6 @@ local function set_autocommands()
     callback = function(event)
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-      if client:supports_method "textDocument/publishDiagnostics" then
-        vim.diagnostic.config { virtual_text = false }
-        vim.lsp.handlers["textDocument/publishDiagnostics"] =
-          vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-            underline = true,
-            virtual_text = false,
-            update_in_insert = false,
-          })
-      end
-
       if client:supports_method "textDocument/completion" then
         vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
       end
