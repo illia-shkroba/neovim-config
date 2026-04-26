@@ -1177,7 +1177,7 @@ local function set_bindings()
     { remap = true, desc = "Leap select linewise" }
   )
   vim.keymap.set(
-    { "o", "v" },
+    "o",
     "a%",
     ":<C-U>normal va%<CR>",
     { desc = "Missing text object for a% from matchit" }
