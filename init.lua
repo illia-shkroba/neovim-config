@@ -1079,10 +1079,16 @@ local function set_bindings()
     [[<leader>/]],
     operator.expr {
       function_ = function(region_)
-        local search =
-          string.gsub(table.concat(region_.lines, "\n"), [[\]], [[\\]])
-        vim.fn.setreg("/", "\\V" .. search)
-        vim.fn.histadd("search", "\\V" .. search)
+        local esc_lines = vim
+          .iter(region_.lines)
+          :map(function(v)
+            return vim.fn.escape(v, [[\]])
+          end)
+          :totable()
+        local search = [[\V]] .. table.concat(esc_lines, [[\n]])
+
+        vim.fn.setreg("/", search)
+        vim.fn.histadd("/", search)
         vim.opt.hlsearch = true
       end,
       readonly = true,
