@@ -19,14 +19,6 @@ function M.edit(register)
     vim.split(vim.fn.getreg(register), "\n")
   )
 
-  vim.keymap.set("n", [[cr]], function()
-    register = vim.v.register:lower()
-    vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
-    vim.notify([[Switched to register "]] .. register, vim.log.levels.INFO)
-  end, {
-    buffer = buffer,
-    desc = [[Switch to register without changing scratch buffer]],
-  })
   vim.keymap.set("n", [[ZP]], function()
     local scratch_lines = vim.api.nvim_buf_get_lines(
       buffer,
