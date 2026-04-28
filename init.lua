@@ -724,6 +724,12 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
+    [[<leader>=]],
+    fzf.tmux_buffers,
+    { desc = "Tmux buffers" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>;]],
     fzf.command_history,
     { desc = "Command history" }
