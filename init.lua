@@ -1234,7 +1234,7 @@ local function set_bindings()
   vim.keymap.set(
     "o",
     "a%",
-    ":<C-U>normal va%<CR>",
+    ":<C-U>execute 'normal v' .. v:count1 .. 'a%'<CR>",
     { desc = "Missing text object for a% from matchit" }
   )
   vim.keymap.set({ "o", "v" }, "a;", function()
