@@ -44,6 +44,7 @@ end
 ---@class SubstituteOriginInput
 ---@field binding_buffer_number integer
 ---@field origin_region Region
+---@field origin_window_number integer
 
 ---@param substitute_origin_input SubstituteOriginInput
 ---@return nil
@@ -119,6 +120,14 @@ function M.bind_substitute_origin(substitute_origin_input)
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
+  })
+  vim.keymap.set("n", [[ZO]], function()
+    vim.api.nvim_set_current_win(substitute_origin_input.origin_window_number)
+
+    fix_marks()
+  end, {
+    buffer = substitute_origin_input.binding_buffer_number,
+    desc = "Enter origin window and restore '[ and '] marks",
   })
 
   vim.keymap.set("n", [[ZW]], [[ZPZQ]], {

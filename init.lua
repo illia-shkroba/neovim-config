@@ -415,6 +415,8 @@ local function set_bindings()
 
   local function scratch_with_current_cursor_as_origin()
     local origin_buffer = vim.api.nvim_get_current_buf()
+    local origin_window = vim.api.nvim_get_current_win()
+
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line, column = cursor[1], cursor[2]
 
@@ -441,6 +443,7 @@ local function set_bindings()
     scratch.bind_substitute_origin {
       binding_buffer_number = buffer,
       origin_region = region_,
+      origin_window_number = origin_window,
     }
   end
 
@@ -532,6 +535,8 @@ local function set_bindings()
       lhs,
       operator.expr {
         function_ = function(region_)
+          local origin_window = vim.api.nvim_get_current_win()
+
           local filetype = vim.opt_local.filetype._value
 
           local buffer = scratch.open { liveness = "retained" }
@@ -543,6 +548,7 @@ local function set_bindings()
           scratch.bind_substitute_origin {
             binding_buffer_number = buffer,
             origin_region = region_,
+            origin_window_number = origin_window,
           }
         end,
         readonly = true,
@@ -592,6 +598,8 @@ local function set_bindings()
   for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
     vim.keymap.set("n", lhs, function()
       local origin_buffer = vim.api.nvim_get_current_buf()
+      local origin_window = vim.api.nvim_get_current_win()
+
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
       local line = cursor[1]
 
@@ -624,6 +632,7 @@ local function set_bindings()
       scratch.bind_substitute_origin {
         binding_buffer_number = buffer,
         origin_region = region_,
+        origin_window_number = origin_window,
       }
     end, { desc = "Open a scratch window with [count] lines" })
   end
