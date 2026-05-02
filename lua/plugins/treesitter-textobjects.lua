@@ -9,10 +9,12 @@ return {
         lookahead = true,
         -- You can choose the select mode (default is charwise 'v')
         selection_modes = {
-          ["@parameter.outer"] = "v", -- charwise
-          ["@function.outer"] = "V", -- linewise
+          ["@class.outer"] = "V",
+          ["@class.inner"] = "V",
+          ["@function.inner"] = "V",
+          ["@function.outer"] = "V",
         },
-        include_surrounding_whitespace = true,
+        include_surrounding_whitespace = false,
       },
       move = {
         set_jumps = true,
