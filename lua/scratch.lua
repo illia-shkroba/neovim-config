@@ -31,6 +31,7 @@ function M.open(scratch_input)
     once = true,
   })
   vim.keymap.set("n", [[ZM]], function()
+    vim.opt_local.buflisted = true
     vim.opt_local.buftype = ""
     vim.cmd [[file `=tempname()`]]
   end, {
