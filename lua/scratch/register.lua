@@ -28,6 +28,11 @@ function M.edit(register)
     )
 
     vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
+
+    if register == "/" then
+      vim.opt.hlsearch = true
+    end
+
     vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
   end, {
     buffer = buffer,
