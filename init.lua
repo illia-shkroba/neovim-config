@@ -243,6 +243,22 @@ local function set_bindings()
     vim.opt_local.statusline = "date " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
+  vim.keymap.set("n", [[<leader>mP]], function()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line = cursor[1]
+
+    local buffer = scratch.open { liveness = "onetime" }
+    vim.opt_local.statusline = "home-relative-line " .. status.statusline
+    vim.api.nvim_buf_set_lines(
+      buffer,
+      0,
+      1,
+      false,
+      { vim.fn.expand "#:p:~" .. ":" .. line }
+    )
+  end, {
+    desc = "Paste current buffer's home-relative path with cursor line in a scratch window",
+  })
   vim.keymap.set("n", [[<leader>mp]], function()
     local buffer = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "absolute " .. status.statusline
@@ -258,11 +274,16 @@ local function set_bindings()
     vim.opt_local.statusline = "cwd " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.getcwd() })
   end, { desc = "Paste current working directory in a scratch window" })
-  vim.keymap.set("n", [[<leader>my]], function()
-    local buffer = scratch.open { liveness = "onetime" }
-    vim.opt_local.statusline = "relative " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
-  end, { desc = "Paste current buffer's name in a scratch window" })
+  vim.keymap.set(
+    "n",
+    [[<leader>my]],
+    function()
+      local buffer = scratch.open { liveness = "onetime" }
+      vim.opt_local.statusline = "cwd-relative " .. status.statusline
+      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
+    end,
+    { desc = "Paste current buffer's cwd-relative path in a scratch window" }
+  )
 
   -- git
   vim.keymap.set(
