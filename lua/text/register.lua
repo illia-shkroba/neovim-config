@@ -31,4 +31,17 @@ function M.normalize(register)
   })[register] or register
 end
 
+---@param register string
+---@param lines table<integer, string>
+---@return nil
+function M.put(register, lines)
+  vim.fn.setreg(register, table.concat(lines, "\n"))
+
+  if register == "/" then
+    vim.opt.hlsearch = true
+  end
+
+  vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+end
+
 return M

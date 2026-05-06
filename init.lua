@@ -1093,13 +1093,7 @@ local function set_bindings()
       true
     )
 
-    vim.fn.setreg(register_, table.concat(lines, "\n"))
-
-    if register_ == "/" then
-      vim.opt.hlsearch = true
-    end
-
-    vim.notify([[Changed register "]] .. register_, vim.log.levels.INFO)
+    register.put(register_, lines)
   end, {
     desc = "Paste buffer's text into register",
   })

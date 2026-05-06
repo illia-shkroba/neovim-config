@@ -1,22 +1,23 @@
 local M = {}
 
+local register = require "text.register"
 local scratch = require "scratch"
 local status = require "status"
 
----@param register string
+---@param register_ string
 ---@return nil
-function M.edit(register)
-  register = register:lower()
+function M.edit(register_)
+  register_ = register_:lower()
 
   local buffer = scratch.open { liveness = "retained" }
-  vim.opt_local.statusline = "@" .. register .. " " .. status.statusline
+  vim.opt_local.statusline = "@" .. register_ .. " " .. status.statusline
 
   vim.api.nvim_buf_set_lines(
     buffer,
     0,
     1,
     false,
-    vim.split(vim.fn.getreg(register), "\n")
+    vim.split(vim.fn.getreg(register_), "\n")
   )
 
   vim.keymap.set("n", [[ZP]], function()
@@ -27,13 +28,7 @@ function M.edit(register)
       true
     )
 
-    vim.fn.setreg(register, table.concat(scratch_lines, "\n"))
-
-    if register == "/" then
-      vim.opt.hlsearch = true
-    end
-
-    vim.notify([[Changed register "]] .. register, vim.log.levels.INFO)
+    register.put(register_, scratch_lines)
   end, {
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
