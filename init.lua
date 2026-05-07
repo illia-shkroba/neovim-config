@@ -487,16 +487,6 @@ local function set_bindings()
     }
   end
 
-  vim.keymap.set({ "n", "v" }, [["]], register.normalized_expr, {
-    expr = true,
-    desc = [[Same as "{register} binding but "unshifts" 1-0 and ? keys]],
-  })
-  vim.keymap.set(
-    "n",
-    [[<C-l>]],
-    [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
-    { desc = "<C-l> with :fclose!" }
-  )
   vim.keymap.set("n", [[<leader>E]], function()
     local window = vim.api.nvim_get_current_win()
     vim.cmd.windo "wincmd J"
@@ -754,6 +744,16 @@ local function set_bindings()
   )
 
   -- overloads
+  vim.keymap.set({ "n", "v" }, [["]], register.normalized_expr, {
+    expr = true,
+    desc = [[Same as "{register} binding but "unshifts" 1-0 and ? keys]],
+  })
+  vim.keymap.set(
+    "n",
+    [[<C-l>]],
+    [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
+    { desc = "<C-l> with :fclose!" }
+  )
   for _, lhs in pairs { [[<C-w>d]], [[<C-w><C-d>]] } do
     vim.keymap.set("n", lhs, function()
       vim.diagnostic.open_float { border = "rounded" }
