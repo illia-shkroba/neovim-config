@@ -306,18 +306,37 @@ local function set_bindings()
   )
 
   -- indent
-  local function align(region_)
+  local function align(size, region_)
     return vim.text.indent(
-      0,
+      size,
       table.concat(region_.lines, "\n"),
       { expandtab = 1 }
     )
   end
 
   vim.keymap.set(
-    { "n", "v" },
+    "n",
     [[<p]],
-    operator.expr { function_ = align, force_type = "line" },
+    operator.expr {
+      function_ = function(region_)
+        return align(0, region_)
+      end,
+      force_type = "line",
+    },
+    {
+      expr = true,
+      desc = "Align indentation",
+    }
+  )
+  vim.keymap.set(
+    "v",
+    [[<p]],
+    operator.expr {
+      function_ = function(region_)
+        return align(vim.v.count, region_)
+      end,
+      force_type = "line",
+    },
     {
       expr = true,
       desc = "Align indentation",
