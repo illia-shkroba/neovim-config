@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 vim.keymap.set(
   "n",
-  [[gh]],
+  [[<leader>tf]],
   [[<Cmd>up | !ruff format % | ruff check --fix %<CR>]],
   { buffer = true, desc = "Call `ruff format` on current buffer" }
 )
