@@ -1295,6 +1295,14 @@ local function set_bindings()
       desc = "Substitute character",
     }
   )
+  vim.keymap.set("n", [[<leader>tf]], function()
+    local window = vim.api.nvim_get_current_win()
+    local cursor = vim.api.nvim_win_get_cursor(window)
+
+    vim.cmd.normal [[gqi%]]
+
+    vim.api.nvim_win_set_cursor(window, cursor)
+  end, { desc = "Format the buffer" })
 
   -- text objects
   vim.keymap.set(
