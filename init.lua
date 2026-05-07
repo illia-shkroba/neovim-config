@@ -673,7 +673,7 @@ local function set_bindings()
     [[<Cmd>bwipeout!<CR>]],
     { desc = "bwipeout!" }
   )
-  vim.keymap.set("n", [[<leader>o]], function()
+  vim.keymap.set("n", [[<leader>lo]], function()
     local buffer = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
@@ -742,6 +742,20 @@ local function set_bindings()
   end
 
   -- paste
+  for _, lhs in pairs { [[<leader>oP]], [[<leader>OP]] } do
+    vim.keymap.set(
+      "n",
+      lhs,
+      [[<Cmd>execute "put! " .. v:register<CR>]],
+      { desc = "put! v:register" }
+    )
+  end
+  vim.keymap.set(
+    "n",
+    [[<leader>op]],
+    [[<Cmd>execute "put " .. v:register<CR>]],
+    { desc = "put v:register" }
+  )
   vim.keymap.set(
     "n",
     [[<leader>P]],
