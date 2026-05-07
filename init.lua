@@ -705,10 +705,6 @@ local function set_bindings()
       vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
-  vim.keymap.set("n", [[ZW]], [[ZXZQ]], {
-    remap = true,
-    desc = "ZX ZQ",
-  })
   vim.keymap.set("n", [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set("n", [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
