@@ -596,6 +596,16 @@ local function set_bindings()
       { desc = "Empty scratch window" }
     )
   end
+  for _, lhs in pairs { [[<C-w>m]], [[<C-w><C-m>]] } do
+    vim.keymap.set("n", lhs, function()
+      local last_accessed_window = vim.fn.winnr "#"
+      if last_accessed_window > 0 then
+        vim.cmd.wincmd(last_accessed_window .. " q")
+      else
+        vim.notify("No last accessed window.", vim.log.levels.INFO)
+      end
+    end, { desc = "Close last accessed window" })
+  end
   for _, lhs in pairs { [[<C-w>u]], [[<C-w><C-u>]] } do
     vim.keymap.set("n", lhs, function()
       local windows =
