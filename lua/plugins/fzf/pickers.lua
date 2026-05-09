@@ -158,7 +158,7 @@ M.directories_actions = {
     opts.scope = "tab"
     fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
   end,
-  ["ctrl-f"] = function(selected)
+  ["alt-t"] = function(selected)
     if #selected == 0 then
       return
     end
