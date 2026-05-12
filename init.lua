@@ -1451,7 +1451,10 @@ local function set_commands()
   })
   vim.api.nvim_create_user_command("Mv", function(opts)
     local dest
-    if vim.fn.isdirectory(opts.fargs[1]) == 1 then
+    if
+      vim.fn.isdirectory(opts.fargs[1]) == 1
+      or vim.fs.basename(opts.fargs[1]) == ""
+    then
       dest = vim.fs.joinpath(opts.fargs[1], vim.fn.expand "%:t")
     else
       dest = opts.fargs[1]
