@@ -1231,8 +1231,12 @@ local function set_bindings()
     { desc = "Focus tab" }
   )
   vim.keymap.set("n", [[<leader>tw]], function()
-    vim.cmd.windo "update"
-    vim.cmd.tabclose()
+    if #vim.api.nvim_list_tabpages() == 1 then
+      vim.cmd.xall()
+    else
+      vim.cmd.windo "update"
+      vim.cmd.tabclose()
+    end
   end, { desc = "Update tab's buffers and close" })
   vim.keymap.set(
     "n",
