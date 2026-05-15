@@ -118,9 +118,16 @@ end
 
 -- It should only be used when: `vim.fn.pumvisible() == 1`.
 M.completion = function(prioritize_init)
-  local completions = vim.tbl_map(function(x)
-    return x.word
-  end, vim.fn.complete_info({ "items" }).items)
+  local completions = vim
+    .iter(vim.fn.complete_info({ "items", "matches" }).items)
+    :filter(function(item)
+      return item.match
+    end)
+    :map(function(item)
+      return item.word
+    end)
+    :totable()
+
   local completed_buffer = vim.api.nvim_get_current_buf()
   local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
 
