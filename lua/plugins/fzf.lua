@@ -128,21 +128,18 @@ return {
       files = {
         actions = {
           ["alt-t"] = function(_, opts)
-            fzf.files {
-              cwd = opts.cwd,
+            local cwd_only = not opts.__cwd_only
+            opts.__call_fn(vim.tbl_deep_extend("keep", {
+              __cwd_only = cwd_only,
+              resume = true,
               winopts = {
-                title = " Files (cwd) ",
+                title = cwd_only and " Files (cwd) " or " Files ",
               },
-              actions = {
-                ["alt-t"] = function()
-                  fzf.files {
-                    cwd = opts.cwd,
-                  }
-                end,
-              },
-              find_opts = [[-maxdepth 1 ]] .. fzf_defaults.files.find_opts,
-              fd_opts = [[--max-depth 1 ]] .. fzf_defaults.files.fd_opts,
-            }
+              find_opts = (cwd_only and [[-maxdepth 1 ]] or "")
+                .. fzf_defaults.files.find_opts,
+              fd_opts = (cwd_only and [[--max-depth 1 ]] or "")
+                .. fzf_defaults.files.fd_opts,
+            }, opts.__call_opts or {}))
           end,
           ["alt-f"] = false,
           ["ctrl-s"] = false,
