@@ -91,6 +91,7 @@ return {
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
+          ["ctrl-alt-y"] = fzf.actions.arg_add,
         },
       },
       changes = {
@@ -149,6 +150,7 @@ return {
             fn = remove_file,
             reload = true,
           },
+          ["ctrl-alt-y"] = fzf.actions.arg_add,
         },
       },
       filetypes = {
@@ -184,6 +186,7 @@ return {
           ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
+          ["ctrl-alt-y"] = fzf.actions.arg_add,
         },
       },
       jumps = {
@@ -258,6 +261,7 @@ return {
             fn = remove_file,
             reload = true,
           },
+          ["ctrl-alt-y"] = fzf.actions.arg_add,
         },
       },
       quickfix = {
