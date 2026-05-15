@@ -304,6 +304,14 @@ local function set_bindings()
     [[<Cmd>vertical Gdiffsplit!<CR>]],
     { desc = "Show git diff" }
   )
+  vim.keymap.set("n", [[<leader>iw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
+  vim.keymap.set(
+    "n",
+    [[<leader>il]],
+    [[<Cmd>Git log<CR>]],
+    { desc = "Git log" }
+  )
+  vim.keymap.set("n", [[<leader>is]], [[<Cmd>Git<CR>]], { desc = "Git" })
 
   -- indent
   local function align(size, region_)
