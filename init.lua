@@ -1311,7 +1311,7 @@ local function set_bindings()
 
     vim.cmd.normal [[gqi%]]
 
-    vim.api.nvim_win_set_cursor(window, cursor)
+    utils.try(vim.api.nvim_win_set_cursor, window, cursor)
   end, { desc = "Format the buffer" })
 
   -- text objects
