@@ -761,17 +761,15 @@ local function set_bindings()
   end
 
   -- paste
-  for _, lhs in pairs { [[<leader>oP]], [[<leader>OP]] } do
-    vim.keymap.set(
-      "n",
-      lhs,
-      [[<Cmd>execute "put! " .. v:register<CR>]],
-      { desc = "put! v:register" }
-    )
-  end
   vim.keymap.set(
     "n",
-    [[<leader>op]],
+    [[<leader>O]],
+    [[<Cmd>execute "put! " .. v:register<CR>]],
+    { desc = "put! v:register" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>o]],
     [[<Cmd>execute "put " .. v:register<CR>]],
     { desc = "put v:register" }
   )
