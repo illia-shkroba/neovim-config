@@ -556,6 +556,18 @@ local function set_bindings()
 
     vim.api.nvim_set_current_win(target_tabpage_current_window)
   end, { desc = "Move picked windows to a new tab page" })
+  vim.keymap.set("n", [[<leader>L]], function()
+    if vim.api.nvim_buf_get_name(0) == "" then
+      vim.notify(
+        "Cannot call `lvimgrep` in unnamed buffer.",
+        vim.log.levels.WARN
+      )
+      return
+    end
+
+    vim.cmd [[lvimgrep//gj %]]
+    vim.opt.hlsearch = true
+  end, { desc = "lvimgrep//gj %" })
   vim.keymap.set("n", [[<leader>W]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
       local buffer = vim.api.nvim_buf_get_name(0)
