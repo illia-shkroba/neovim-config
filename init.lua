@@ -983,6 +983,12 @@ local function set_bindings()
   end, { desc = "List old files under cwd" })
   vim.keymap.set(
     "n",
+    [[<leader>fL]],
+    fzf.loclist_stack,
+    { desc = "List location lists" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>fQ]],
     fzf.quickfix_stack,
     { desc = "List quickfix lists" }
