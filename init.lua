@@ -498,10 +498,8 @@ local function set_bindings()
   end
 
   local function region_statusline(region_)
-    local absolute = vim.api.nvim_buf_get_name(region_.buffer_number)
-    local relative = vim.fs.relpath(vim.fn.getcwd(), absolute)
-
-    return (relative or absolute) .. " " .. status.statusline
+    local name = buffer_short_name(region_.buffer_number)
+    return name .. " " .. status.statusline
   end
 
   local function scratch_with_current_cursor_as_origin()
