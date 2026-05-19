@@ -837,6 +837,12 @@ local function set_bindings()
     fzf.blines,
     { desc = "Grep current buffer or visually selected lines" }
   )
+  vim.keymap.set(
+    "n",
+    [[<leader>fA]],
+    fzf.builtin,
+    { desc = "All builtin pickers" }
+  )
   vim.keymap.set("n", [[<leader>fW]], fzf.lines, { desc = "Grep buffers" })
   vim.keymap.set(
     "n",
@@ -885,12 +891,7 @@ local function set_bindings()
     },
     { expr = true, desc = "Search in buffers" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>fa]],
-    fzf.builtin,
-    { desc = "All builtin pickers" }
-  )
+  vim.keymap.set("n", [[<leader>fa]], fzf.args, { desc = "Args" })
   vim.keymap.set("n", [[<leader>fb]], fzf.buffers, { desc = "List buffers" })
   vim.keymap.set(
     "n",

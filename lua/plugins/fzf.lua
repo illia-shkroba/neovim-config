@@ -71,6 +71,14 @@ return {
           end, { buffer = true })
         end,
       },
+      args = {
+        actions = {
+          ["alt-f"] = false,
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+          ["ctrl-z"] = { fn = fzf.actions.arg_del, reload = true },
+        },
+      },
       blines = {
         actions = {
           ["alt-f"] = false,
