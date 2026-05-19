@@ -1284,7 +1284,7 @@ local function set_bindings()
   -- text manipulation
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>A]],
+    [[<leader>ta]],
     operator.expr { function_ = char.append_prompt },
     {
       expr = true,
@@ -1293,7 +1293,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>a]],
+    [[<leader>tp]],
     operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
