@@ -231,6 +231,11 @@ return {
         },
       },
       lsp = {
+        actions = {
+          ["alt-f"] = false,
+          ["ctrl-s"] = false,
+          ["ctrl-x"] = fzf.actions.file_split,
+        },
         workspace_symbols = {
           actions = {
             ["alt-f"] = false,
