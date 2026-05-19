@@ -97,6 +97,48 @@ end
 set_options()
 
 local function set_bindings()
+  -- args
+
+  ---@param buffer integer
+  ---@return string
+  local function buffer_short_name(buffer)
+    local absolute = vim.api.nvim_buf_get_name(buffer)
+    local relative = vim.fs.relpath(vim.fn.getcwd(), absolute)
+
+    return relative or vim.fn.fnamemodify(absolute, ":~")
+  end
+
+  vim.keymap.set("n", [[<leader>A]], function()
+    vim.cmd.argadd()
+    vim.cmd.argdedupe()
+
+    vim.notify("Added to args: " .. buffer_short_name(0), vim.log.levels.INFO)
+  end, { desc = "argadd" })
+  vim.keymap.set("n", [[<leader>ad]], function()
+    local ok = pcall(vim.cmd.argdelete, "%")
+
+    if not ok then
+      vim.notify("Not in args: " .. buffer_short_name(0), vim.log.levels.WARN)
+      return
+    end
+
+    vim.notify(
+      "Removed from args: " .. buffer_short_name(0),
+      vim.log.levels.INFO
+    )
+  end, { desc = "argdelete %" })
+  vim.keymap.set("n", [[<leader>ae]], function()
+    local ok = pcall(vim.cmd.argdelete, "*")
+
+    if not ok then
+      vim.notify("Args already empty", vim.log.levels.WARN)
+      return
+    end
+
+    vim.notify("Args emptied", vim.log.levels.INFO)
+  end, { desc = "argdelete *" })
+  vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
+
   -- case
   vim.keymap.set(
     { "n", "v" },
