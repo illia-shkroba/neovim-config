@@ -198,4 +198,49 @@ M.directories_actions = {
   end,
 }
 
+---@class RecordingsInput
+---@field register string
+---@field recordings table<integer, {
+---  name: string,
+---  contents: string,
+---}>
+
+---@param recordings_input RecordingsInput
+---@return nil
+function M.recordings(recordings_input)
+  local names = vim
+    .iter(recordings_input.recordings)
+    :map(function(recording)
+      return recording.name
+    end)
+    :totable()
+
+  local name_to_contents = {}
+  for _, recording in ipairs(recordings_input.recordings) do
+    name_to_contents[recording.name] = recording.contents
+  end
+
+  fzf.fzf_exec(names, {
+    winopts = {
+      title = " Prerecorded ",
+    },
+    preview = function(items)
+      local name = items[1]
+      local contents = name_to_contents[name] or ""
+      return vim.split(contents, "\n", { plain = true })
+    end,
+    actions = {
+      ["enter"] = function(selected)
+        local name = selected[1]
+        local contents = name_to_contents[name] or ""
+        vim.fn.setreg(recordings_input.register, contents)
+      end,
+    },
+    fzf_opts = {
+      ["--no-multi"] = true,
+      ["--tiebreak"] = "length,end,index",
+    },
+  })
+end
+
 return M

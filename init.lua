@@ -12,6 +12,7 @@ local mark = require "mark"
 local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
+local recordings = require "recordings"
 local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
@@ -863,6 +864,12 @@ local function set_bindings()
     pickers.live_grep_by_filetype,
     { desc = "Grep files with extension" }
   )
+  vim.keymap.set("n", [[<leader>fm]], function()
+    pickers.recordings {
+      register = "f",
+      recordings = recordings,
+    }
+  end, { desc = [[List recordings and paste selected into "f register]] })
   vim.keymap.set(
     "n",
     [[<leader>fv]],
