@@ -21,14 +21,16 @@ return {
         local entry = path.entry_to_file(sel, opts)
         local entry_path = entry.bufname or entry.path
         assert(entry_path, "entry doesn't contain filepath")
-        if not entry_path then
-          return
-        end
         pcall(vim.fs.rm, entry_path)
       end
     end
 
     fzf.setup {
+      defaults = {
+        actions = {
+          ["ctrl-s"] = false,
+        },
+      },
       keymap = {
         fzf = {
           ["alt-a"] = win.toggle_fullscreen,
@@ -74,7 +76,6 @@ return {
       args = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.arg_del, reload = true },
         },
@@ -82,20 +83,12 @@ return {
       blines = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
-          ["ctrl-x"] = fzf.actions.file_split,
-        },
-      },
-      btags = {
-        actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       buffers = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
@@ -104,7 +97,6 @@ return {
       },
       changes = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-v"] = function(selected, opts)
             vim.cmd.vsplit()
             fzf.actions.goto_jump(selected, opts)
@@ -130,7 +122,6 @@ return {
       diagnostics = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
@@ -151,7 +142,6 @@ return {
             }, opts.__call_opts or {}))
           end,
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = {
@@ -163,14 +153,12 @@ return {
       },
       filetypes = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       git = {
         bcommits = {
           actions = {
-            ["ctrl-s"] = false,
             ["ctrl-x"] = fzf.actions.git_buf_split,
           },
         },
@@ -191,7 +179,6 @@ return {
               resume = true, -- keeps current query
             }, opts.__call_opts or {}))
           end,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-alt-y"] = fzf.actions.arg_add,
@@ -199,7 +186,6 @@ return {
       },
       jumps = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-v"] = function(selected, opts)
             vim.cmd.vsplit()
             fzf.actions.goto_jump(selected, opts)
@@ -213,53 +199,45 @@ return {
       lines = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       loclist = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.list_del, reload = true },
         },
       },
       loclist_stack = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       lsp = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
         workspace_symbols = {
           actions = {
             ["alt-f"] = false,
-            ["ctrl-s"] = false,
             ["ctrl-x"] = fzf.actions.file_split,
           },
         },
         finder = {
           actions = {
             ["alt-f"] = false,
-            ["ctrl-s"] = false,
             ["ctrl-x"] = fzf.actions.file_split,
           },
         },
       },
       manpages = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.man,
         },
       },
       marks = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.goto_mark_split,
           ["ctrl-z"] = { fn = fzf.actions.mark_del, reload = true },
         },
@@ -267,7 +245,6 @@ return {
       oldfiles = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = {
@@ -279,21 +256,18 @@ return {
       },
       quickfix = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.list_del, reload = true },
         },
       },
       quickfix_stack = {
         actions = {
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       tabs = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
         },
@@ -301,21 +275,18 @@ return {
       tags = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       tagstack = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
       treesitter = {
         actions = {
           ["alt-f"] = false,
-          ["ctrl-s"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
         },
       },
