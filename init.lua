@@ -1255,6 +1255,21 @@ local function set_bindings()
     { expr = true, desc = "Set selection to / register" }
   )
   vim.keymap.set(
+    { "n", "v" },
+    [[<leader>l/]],
+    operator.expr {
+      function_ = function(region_)
+        put_region_to_search_register(region_)
+        lvimgrep_current_buffer()
+      end,
+      readonly = true,
+    },
+    {
+      expr = true,
+      desc = "Set selection to / register and then `lvimgrep//gj %`",
+    }
+  )
+  vim.keymap.set(
     "v",
     [[<leader>#]],
     operator.expr {
