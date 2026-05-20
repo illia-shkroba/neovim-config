@@ -1204,13 +1204,7 @@ local function set_bindings()
   })
 
   -- search
-  vim.keymap.set("n", [[<leader>#]], function()
-    return "?" .. vim.fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true, desc = "Same as #, but without \\< and \\>" })
-  vim.keymap.set("n", [[<leader>*]], function()
-    return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
-  end, { expr = true, desc = "Same as *, but without \\< and \\>" })
-  vim.keymap.set("n", [[<leader>L]], function()
+  local function lvimgrep_current_buffer()
     if vim.api.nvim_buf_get_name(0) == "" then
       vim.notify(
         "Cannot call `lvimgrep` in unnamed buffer.",
@@ -1221,24 +1215,41 @@ local function set_bindings()
 
     vim.cmd [[lvimgrep//gj %]]
     vim.opt.hlsearch = true
-  end, { desc = "lvimgrep//gj %" })
+  end
+
+  ---@param region_ Region
+  ---@return nil
+  local function put_region_to_search_register(region_)
+    local esc_lines = vim
+      .iter(region_.lines)
+      :map(function(v)
+        return vim.fn.escape(v, [[\]])
+      end)
+      :totable()
+    local search = [[\V]] .. table.concat(esc_lines, [[\n]])
+
+    vim.fn.setreg("/", search)
+    vim.fn.histadd("/", search)
+    vim.opt.hlsearch = true
+  end
+
+  vim.keymap.set("n", [[<leader>#]], function()
+    return "?" .. vim.fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true, desc = "Same as #, but without \\< and \\>" })
+  vim.keymap.set("n", [[<leader>*]], function()
+    return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
+  end, { expr = true, desc = "Same as *, but without \\< and \\>" })
+  vim.keymap.set(
+    "n",
+    [[<leader>L]],
+    lvimgrep_current_buffer,
+    { desc = "lvimgrep//gj %" }
+  )
   vim.keymap.set(
     { "n", "v" },
     [[<leader>/]],
     operator.expr {
-      function_ = function(region_)
-        local esc_lines = vim
-          .iter(region_.lines)
-          :map(function(v)
-            return vim.fn.escape(v, [[\]])
-          end)
-          :totable()
-        local search = [[\V]] .. table.concat(esc_lines, [[\n]])
-
-        vim.fn.setreg("/", search)
-        vim.fn.histadd("/", search)
-        vim.opt.hlsearch = true
-      end,
+      function_ = put_region_to_search_register,
       readonly = true,
     },
     { expr = true, desc = "Set selection to / register" }
