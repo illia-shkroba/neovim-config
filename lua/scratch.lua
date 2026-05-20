@@ -21,6 +21,8 @@ function M.open(scratch_input)
   local buffer = vim.api.nvim_create_buf(listed, scratch)
   vim.cmd.sbuffer(buffer)
 
+  vim.cmd.clearjumps()
+
   vim.api.nvim_create_autocmd(events, {
     buffer = buffer,
     callback = function()
