@@ -1223,10 +1223,6 @@ local function set_bindings()
   end, {
     desc = "Paste buffer's text into register",
   })
-  vim.keymap.set("n", [[ZS]], [["sZX]], {
-    remap = true,
-    desc = [[Paste buffer's text into register "s]],
-  })
 
   -- search
   local function lvimgrep_current_buffer()
