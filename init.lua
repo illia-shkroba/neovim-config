@@ -886,7 +886,7 @@ local function set_bindings()
   vim.keymap.set("n", "<leader>]", fzf.tagstack, { desc = "Tag-stack" })
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>?]],
+    [[<leader>:]],
     fzf.blines,
     { desc = "Grep current buffer or visually selected lines" }
   )
@@ -1281,7 +1281,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>l/]],
+    [[<leader>?]],
     operator.expr {
       function_ = function(region_)
         put_region_to_search_register(region_)
