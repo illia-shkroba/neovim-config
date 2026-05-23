@@ -51,6 +51,7 @@ local function set_options()
   vim.opt.omnifunc = "syntaxcomplete#Complete"
   vim.opt.path = { "**", "./**" }
   vim.opt.pumblend = 10
+  vim.opt.pumborder = "rounded"
   vim.opt.pumheight = 10
   vim.opt.relativenumber = true
   vim.opt.shiftround = true
