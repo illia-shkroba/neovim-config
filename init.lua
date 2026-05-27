@@ -1429,7 +1429,7 @@ local function set_bindings()
     local window = vim.api.nvim_get_current_win()
     local cursor = vim.api.nvim_win_get_cursor(window)
 
-    vim.cmd.normal [[gqi%]]
+    vim.cmd.normal [[gqal]]
 
     utils.try(vim.api.nvim_win_set_cursor, window, cursor)
   end, { desc = "Format the buffer" })
@@ -1458,27 +1458,9 @@ local function set_bindings()
     ":<C-U>normal '[V']<CR>",
     { desc = "Previously changed or yanked text region selected linewise" }
   )
-  vim.keymap.set(
-    { "o", "v" },
-    "al",
-    ":<C-U>normal 0v$<CR>",
-    { desc = "Current line selected charwise" }
-  )
-  vim.keymap.set(
-    { "o", "v" },
-    "i%",
-    ":<C-U>normal ggVG<CR>",
-    { desc = "Current buffer selected linewise" }
-  )
   vim.keymap.set({ "o", "v" }, "i;", function()
     return "i" .. vim.fn.getcharsearch().char
   end, { expr = true, desc = "Inside last search char" })
-  vim.keymap.set(
-    { "o", "v" },
-    "il",
-    ":<C-U>normal _vg_<CR>",
-    { desc = "Current line without blanks selected charwise" }
-  )
   vim.keymap.set({ "o", "v" }, "ia", "i<", { desc = "i<" })
   vim.keymap.set({ "o", "v" }, "ir", "i[", { desc = "i[" })
   vim.keymap.set(
