@@ -1224,6 +1224,14 @@ local function set_bindings()
   end, {
     desc = "Paste buffer's text into register",
   })
+  vim.keymap.set("n", [[ZS]], function()
+    local last_accessed_window = vim.fn.winnr "#"
+    return last_accessed_window > 0 and [["sZX<C-w>p<C-w>m]] or [["sZXZQ]]
+  end, {
+    expr = true,
+    remap = true,
+    desc = [[Paste buffer's text into register "s, and close window]],
+  })
 
   -- search
   local function lvimgrep_current_buffer()
