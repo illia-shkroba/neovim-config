@@ -82,6 +82,10 @@ function M.bind_substitute_origin(substitute_origin_input)
       {}
     )
   end
+  ---@return nil
+  local function highlight()
+    tracked_region.highlight(tracked)
+  end
 
   vim.keymap.set("n", [[ZP]], function()
     local lines = normalize_substitution(
@@ -98,6 +102,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     tracked = tracked_region.substitute(tracked, lines)
 
     fix_marks()
+    highlight()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
@@ -128,6 +133,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     vim.api.nvim_set_current_win(substitute_origin_input.origin_window_number)
 
     fix_marks()
+    highlight()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Enter origin window and restore '[ and '] marks",

@@ -123,4 +123,20 @@ function M.lines(tracked)
   return tracked.region.lines
 end
 
+---@param tracked TrackedRegion
+---@return nil
+function M.highlight(tracked)
+  vim.hl.range(
+    tracked.region.buffer_number,
+    namespace,
+    "Visual",
+    { tracked.region.line_begin - 1, tracked.region.column_begin },
+    {
+      math.max(tracked.region.line_end - 1, 0),
+      math.max(tracked.region.column_end, 0),
+    },
+    { inclusive = true, timeout = 300 }
+  )
+end
+
 return M
