@@ -1529,8 +1529,8 @@ local function set_commands()
       vim.opt_local.filetype = "sh"
       vim.opt_local.statusline = "history " .. status.statusline
 
-      vim.cmd [[0r !atuin search --format "{command}"]]
-      vim.cmd.normal [[G]]
+      vim.cmd [[0r !atuin search --reverse --format "{command}"]]
+      vim.cmd.normal [[gg]]
     end,
     { desc = "Open a scratch window with a Shell history fetched from atuin" }
   )
