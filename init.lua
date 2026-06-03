@@ -339,6 +339,12 @@ local function set_bindings()
     [[<Cmd>vertical Gdiffsplit!<CR>]],
     { desc = "Show git diff" }
   )
+  vim.keymap.set(
+    "n",
+    [[<leader>ib]],
+    [[<Cmd>Git blame<CR>]],
+    { desc = "Git blame" }
+  )
   vim.keymap.set("n", [[<leader>iw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
   vim.keymap.set(
     "n",
