@@ -489,40 +489,6 @@ local function set_bindings()
     }
   end
 
-  local function scratch_with_current_cursor_as_origin()
-    local origin_buffer = vim.api.nvim_get_current_buf()
-    local origin_window = vim.api.nvim_get_current_win()
-
-    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-    local line, column = cursor[1], cursor[2]
-
-    local region_ = region.from {
-      buffer_number = origin_buffer,
-      line_begin = line,
-      column_begin = column,
-      line_end = line,
-      column_end = column - 1,
-      type_ = "char",
-    }
-
-    vim.api.nvim_buf_set_mark(origin_buffer, "[", line, column, {})
-    vim.api.nvim_buf_set_mark(origin_buffer, "]", line, column - 1, {})
-
-    local filetype = vim.opt_local.filetype._value
-
-    local buffer = scratch.open { liveness = "retained" }
-    vim.opt_local.filetype = filetype
-    vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
-
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
-
-    scratch.bind_substitute_origin {
-      binding_buffer_number = buffer,
-      origin_region = region_,
-      origin_window_number = origin_window,
-    }
-  end
-
   vim.keymap.set("n", [[<leader>E]], function()
     local window = vim.api.nvim_get_current_win()
     vim.cmd.windo "wincmd J"
@@ -660,12 +626,9 @@ local function set_bindings()
     vim.cmd.History()
   end, { desc = "History" })
   for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
-    vim.keymap.set(
-      "n",
-      lhs,
-      scratch_with_current_cursor_as_origin,
-      { desc = "Empty scratch window" }
-    )
+    vim.keymap.set("n", lhs, function()
+      scratch.open_with_current_cursor_as_origin { liveness = "retained" }
+    end, { desc = "Empty scratch window" })
   end
   for _, lhs in pairs { [[<C-w>m]], [[<C-w><C-m>]] } do
     vim.keymap.set("n", lhs, function()
@@ -789,7 +752,9 @@ local function set_bindings()
   vim.keymap.set("n", [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set("n", [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
-  vim.keymap.set("i", [[<C-f>]], scratch_with_current_cursor_as_origin, {
+  vim.keymap.set("i", [[<C-f>]], function()
+    scratch.open_with_current_cursor_as_origin { liveness = "retained" }
+  end, {
     desc = "Open a scratch window for insertion into current cursor position",
   })
   vim.keymap.set(
