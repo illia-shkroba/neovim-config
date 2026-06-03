@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 
 require "package-manager"
 
+local buffer = require "buffer"
 local case = require "text.case"
 local char = require "text.char"
 local completion = require "plugins.fzf.pickers.completion"
@@ -99,32 +100,22 @@ set_options()
 
 local function set_bindings()
   -- args
-
-  ---@param buffer integer
-  ---@return string
-  local function buffer_short_name(buffer)
-    local absolute = vim.api.nvim_buf_get_name(buffer)
-    local relative = vim.fs.relpath(vim.fn.getcwd(), absolute)
-
-    return relative or vim.fn.fnamemodify(absolute, ":~")
-  end
-
   vim.keymap.set("n", [[<leader>A]], function()
     vim.cmd.argadd()
     vim.cmd.argdedupe()
 
-    vim.notify("Added to args: " .. buffer_short_name(0), vim.log.levels.INFO)
+    vim.notify("Added to args: " .. buffer.short_name(0), vim.log.levels.INFO)
   end, { desc = "argadd" })
   vim.keymap.set("n", [[<leader>ad]], function()
     local ok = pcall(vim.cmd.argdelete, "%")
 
     if not ok then
-      vim.notify("Not in args: " .. buffer_short_name(0), vim.log.levels.WARN)
+      vim.notify("Not in args: " .. buffer.short_name(0), vim.log.levels.WARN)
       return
     end
 
     vim.notify(
-      "Removed from args: " .. buffer_short_name(0),
+      "Removed from args: " .. buffer.short_name(0),
       vim.log.levels.INFO
     )
   end, { desc = "argdelete %" })
@@ -499,7 +490,7 @@ local function set_bindings()
   end
 
   local function region_statusline(region_)
-    local name = buffer_short_name(region_.buffer_number)
+    local name = buffer.short_name(region_.buffer_number)
     return name .. " " .. status.statusline
   end
 
