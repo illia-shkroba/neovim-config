@@ -571,7 +571,7 @@ local function set_bindings()
         function_ = function(region_)
           local origin_window = vim.api.nvim_get_current_win()
 
-          local filetype = vim.opt_local.filetype._value
+          local filetype = vim.bo.filetype
 
           local buffer = scratch.open { liveness = "retained" }
           vim.opt_local.filetype = filetype
@@ -686,7 +686,7 @@ local function set_bindings()
         {}
       )
 
-      local filetype = vim.opt_local.filetype._value
+      local filetype = vim.bo.filetype
 
       local buffer = scratch.open { liveness = "retained" }
       vim.opt_local.filetype = filetype
@@ -1331,7 +1331,7 @@ local function set_bindings()
 
   -- tags
   vim.keymap.set("n", [[<leader>tg]], function()
-    local language = vim.opt_local.filetype._value
+    local language = vim.bo.filetype
     return [[:!ctags -R --languages=]] .. language .. [[ .]]
   end, { expr = true, desc = "Generate tags" })
 

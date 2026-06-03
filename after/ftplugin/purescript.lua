@@ -17,7 +17,7 @@ vim.opt_local.errorformat = "%-G,"
   .. "%W%>%f:%l:%c:,"
 
 vim.opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto --indent "
-  .. vim.opt_local.tabstop._value
+  .. vim.bo.tabstop
   .. " --width 80"
 
 vim.treesitter.start()

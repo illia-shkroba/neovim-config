@@ -12,9 +12,7 @@ vim.opt_local.shiftwidth = 2
 vim.opt_local.softtabstop = 2
 vim.opt_local.tabstop = 2
 
-vim.opt_local.formatprg = "shfmt -s -i "
-  .. vim.opt_local.tabstop._value
-  .. " -bn -ci -sr"
+vim.opt_local.formatprg = "shfmt -s -i " .. vim.bo.tabstop .. " -bn -ci -sr"
 
 vim.treesitter.start()
 

@@ -12,7 +12,7 @@ local filetypes = require "filetypes"
 ---@return nil
 local function grep_by_filetype(picker, search, matching_filetypes, query)
   if matching_filetypes == nil then
-    local filetype = vim.opt_local.filetype._value
+    local filetype = vim.bo.filetype
     local filename = vim.fs.basename(vim.api.nvim_buf_get_name(0))
 
     matching_filetypes = filetypes.match_rg(filetype, filename)
