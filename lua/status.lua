@@ -1,3 +1,7 @@
+local M = {}
+
+local buffer = require "buffer"
+
 -- Search status. Returns one of:
 -- * "f" - most recent search was a forward search.
 -- * "b" - most recent search was a backward search.
@@ -17,6 +21,13 @@ local function get_statusline()
     .. "%=%-14.(%l,%c%V%) %P"
 end
 
-return {
-  statusline = get_statusline(),
-}
+M.statusline = get_statusline()
+
+---@param buffer_ integer
+---@return string
+function M.buffer_statusline(buffer_)
+  local name = buffer.short_name(buffer_)
+  return name .. " " .. M.statusline
+end
+
+return M

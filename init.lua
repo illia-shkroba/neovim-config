@@ -489,11 +489,6 @@ local function set_bindings()
     }
   end
 
-  local function region_statusline(region_)
-    local name = buffer.short_name(region_.buffer_number)
-    return name .. " " .. status.statusline
-  end
-
   local function scratch_with_current_cursor_as_origin()
     local origin_buffer = vim.api.nvim_get_current_buf()
     local origin_window = vim.api.nvim_get_current_win()
@@ -517,7 +512,7 @@ local function set_bindings()
 
     local buffer = scratch.open { liveness = "retained" }
     vim.opt_local.filetype = filetype
-    vim.opt_local.statusline = region_statusline(region_)
+    vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
     vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
@@ -614,7 +609,8 @@ local function set_bindings()
 
           local buffer = scratch.open { liveness = "retained" }
           vim.opt_local.filetype = filetype
-          vim.opt_local.statusline = region_statusline(region_)
+          vim.opt_local.statusline =
+            status.buffer_statusline(region_.buffer_number)
 
           vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
@@ -731,7 +727,7 @@ local function set_bindings()
 
       local buffer = scratch.open { liveness = "retained" }
       vim.opt_local.filetype = filetype
-      vim.opt_local.statusline = region_statusline(region_)
+      vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
       vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
