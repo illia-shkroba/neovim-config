@@ -567,146 +567,134 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
-  for _, lhs in pairs { [[<C-w>y]], [[<C-w><C-y>]] } do
-    vim.keymap.set({ "n", "v" }, lhs, function()
-      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+  vim.keymap.set({ "n", "v" }, { [[<C-w>y]], [[<C-w><C-y>]] }, function()
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
 
-      local origin_line, origin_column = cursor[1], cursor[2]
+    local origin_line, origin_column = cursor[1], cursor[2]
 
-      local expr = operator.expr {
-        function_ = function(region_)
-          local origin_window = vim.api.nvim_get_current_win()
+    local expr = operator.expr {
+      function_ = function(region_)
+        local origin_window = vim.api.nvim_get_current_win()
 
-          local filetype = vim.bo.filetype
+        local filetype = vim.bo.filetype
 
-          local buffer = scratch.open { liveness = "retained" }
-          vim.opt_local.filetype = filetype
-          vim.opt_local.statusline =
-            status.buffer_statusline(region_.buffer_number)
+        local buffer = scratch.open { liveness = "retained" }
+        vim.opt_local.filetype = filetype
+        vim.opt_local.statusline =
+          status.buffer_statusline(region_.buffer_number)
 
-          vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
-          -- Fix the cursor position as it was before spawning the scratch window
-          local scratch_line = math.max(
-            1,
-            math.min(origin_line - region_.line_begin + 1, #region_.lines)
-          )
+        -- Fix the cursor position as it was before spawning the scratch window
+        local scratch_line = math.max(
+          1,
+          math.min(origin_line - region_.line_begin + 1, #region_.lines)
+        )
 
-          local column_offset
-          if region_.type_ == "line" then
-            column_offset = 0
-          elseif region_.type_ == "char" then
-            column_offset = scratch_line == 1 and region_.column_begin or 0
-          else
-            column_offset = region_.column_begin
-          end
-          local line_text = region_.lines[scratch_line] or ""
-          local scratch_column =
-            math.max(0, math.min(origin_column - column_offset, #line_text - 1))
+        local column_offset
+        if region_.type_ == "line" then
+          column_offset = 0
+        elseif region_.type_ == "char" then
+          column_offset = scratch_line == 1 and region_.column_begin or 0
+        else
+          column_offset = region_.column_begin
+        end
+        local line_text = region_.lines[scratch_line] or ""
+        local scratch_column =
+          math.max(0, math.min(origin_column - column_offset, #line_text - 1))
 
-          vim.api.nvim_win_set_cursor(
-            vim.api.nvim_get_current_win(),
-            { scratch_line, scratch_column }
-          )
+        vim.api.nvim_win_set_cursor(
+          vim.api.nvim_get_current_win(),
+          { scratch_line, scratch_column }
+        )
 
-          scratch.bind_substitute_origin {
-            binding_buffer_number = buffer,
-            origin_region = region_,
-            origin_window_number = origin_window,
-          }
-        end,
-        readonly = true,
-      }
-      return expr()
-    end, { expr = true, desc = "Open a scratch window with selected lines" })
-  end
-  for _, lhs in pairs { [[<C-w>a]], [[<C-w><C-a>]] } do
-    vim.keymap.set("n", lhs, function()
-      local window = window_picker.pick_window()
-      if window ~= nil then
-        vim.api.nvim_set_current_win(window)
-      end
-    end, { desc = "Pick window" })
-  end
+        scratch.bind_substitute_origin {
+          binding_buffer_number = buffer,
+          origin_region = region_,
+          origin_window_number = origin_window,
+        }
+      end,
+      readonly = true,
+    }
+    return expr()
+  end, { expr = true, desc = "Open a scratch window with selected lines" })
+  vim.keymap.set("n", { [[<C-w>a]], [[<C-w><C-a>]] }, function()
+    local window = window_picker.pick_window()
+    if window ~= nil then
+      vim.api.nvim_set_current_win(window)
+    end
+  end, { desc = "Pick window" })
   vim.keymap.set("n", [[<leader>hh]], function()
     vim.cmd.History()
   end, { desc = "History" })
-  for _, lhs in pairs { [[<C-w>e]], [[<C-w><C-e>]] } do
-    vim.keymap.set("n", lhs, function()
-      scratch.open_with_current_cursor_as_origin { liveness = "retained" }
-    end, { desc = "Empty scratch window" })
-  end
-  for _, lhs in pairs { [[<C-w>m]], [[<C-w><C-m>]] } do
-    vim.keymap.set("n", lhs, function()
-      local last_accessed_window = vim.fn.winnr "#"
-      if last_accessed_window > 0 then
-        vim.cmd.wincmd(last_accessed_window .. " q")
-      else
-        vim.notify("No last accessed window.", vim.log.levels.INFO)
-      end
-    end, { desc = "Close last accessed window" })
-  end
-  for _, lhs in pairs { [[<C-w>u]], [[<C-w><C-u>]] } do
-    vim.keymap.set("n", lhs, function()
-      local windows =
-        pick_windows { filter_rules = { include_current_win = true } }
-      if #windows == 0 then
-        return
-      end
+  vim.keymap.set("n", { [[<C-w>e]], [[<C-w><C-e>]] }, function()
+    scratch.open_with_current_cursor_as_origin { liveness = "retained" }
+  end, { desc = "Empty scratch window" })
+  vim.keymap.set("n", { [[<C-w>m]], [[<C-w><C-m>]] }, function()
+    local last_accessed_window = vim.fn.winnr "#"
+    if last_accessed_window > 0 then
+      vim.cmd.wincmd(last_accessed_window .. " q")
+    else
+      vim.notify("No last accessed window.", vim.log.levels.INFO)
+    end
+  end, { desc = "Close last accessed window" })
+  vim.keymap.set("n", { [[<C-w>u]], [[<C-w><C-u>]] }, function()
+    local windows =
+      pick_windows { filter_rules = { include_current_win = true } }
+    if #windows == 0 then
+      return
+    end
 
-      local current_window = vim.api.nvim_get_current_win()
+    local current_window = vim.api.nvim_get_current_win()
 
-      for _, window in pairs(windows) do
-        vim.api.nvim_set_current_win(window)
-        vim.cmd.wincmd "q"
-      end
+    for _, window in pairs(windows) do
+      vim.api.nvim_set_current_win(window)
+      vim.cmd.wincmd "q"
+    end
 
-      if not vim.list_contains(windows, current_window) then
-        vim.api.nvim_set_current_win(current_window)
-      end
-    end, { desc = "Quit picked window" })
-  end
-  for _, lhs in pairs { [[<C-w>yy]], [[<C-w><C-y><C-y>]] } do
-    vim.keymap.set("n", lhs, function()
-      local origin_buffer = vim.api.nvim_get_current_buf()
-      local origin_window = vim.api.nvim_get_current_win()
+    if not vim.list_contains(windows, current_window) then
+      vim.api.nvim_set_current_win(current_window)
+    end
+  end, { desc = "Quit picked window" })
+  vim.keymap.set("n", { [[<C-w>yy]], [[<C-w><C-y><C-y>]] }, function()
+    local origin_buffer = vim.api.nvim_get_current_buf()
+    local origin_window = vim.api.nvim_get_current_win()
 
-      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-      local line = cursor[1]
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line = cursor[1]
 
-      local region_ = region.from {
-        buffer_number = origin_buffer,
-        line_begin = line,
-        column_begin = 0,
-        line_end = line - 1 + vim.v.count1,
-        column_end = 0,
-        type_ = "line",
-      }
+    local region_ = region.from {
+      buffer_number = origin_buffer,
+      line_begin = line,
+      column_begin = 0,
+      line_end = line - 1 + vim.v.count1,
+      column_end = 0,
+      type_ = "line",
+    }
 
-      vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
-      vim.api.nvim_buf_set_mark(
-        origin_buffer,
-        "]",
-        line - 1 + vim.v.count1,
-        0,
-        {}
-      )
+    vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
+    vim.api.nvim_buf_set_mark(
+      origin_buffer,
+      "]",
+      line - 1 + vim.v.count1,
+      0,
+      {}
+    )
 
-      local filetype = vim.bo.filetype
+    local filetype = vim.bo.filetype
 
-      local buffer = scratch.open { liveness = "retained" }
-      vim.opt_local.filetype = filetype
-      vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
+    local buffer = scratch.open { liveness = "retained" }
+    vim.opt_local.filetype = filetype
+    vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
 
-      scratch.bind_substitute_origin {
-        binding_buffer_number = buffer,
-        origin_region = region_,
-        origin_window_number = origin_window,
-      }
-    end, { desc = "Open a scratch window with [count] lines" })
-  end
+    scratch.bind_substitute_origin {
+      binding_buffer_number = buffer,
+      origin_region = region_,
+      origin_window_number = origin_window,
+    }
+  end, { desc = "Open a scratch window with [count] lines" })
   vim.keymap.set(
     "n",
     [[<leader>b]],
@@ -787,11 +775,9 @@ local function set_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
-  for _, lhs in pairs { [[<C-w>d]], [[<C-w><C-d>]] } do
-    vim.keymap.set("n", lhs, function()
-      vim.diagnostic.open_float { border = "rounded" }
-    end, { desc = "Show diagnostics under the cursor" })
-  end
+  vim.keymap.set("n", { [[<C-w>d]], [[<C-w><C-d>]] }, function()
+    vim.diagnostic.open_float { border = "rounded" }
+  end, { desc = "Show diagnostics under the cursor" })
 
   -- paste
   vim.keymap.set(
