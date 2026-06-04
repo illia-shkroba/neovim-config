@@ -251,11 +251,11 @@ local function set_bindings()
 
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
-      local buffer = scratch.open { liveness = "retained" }
+      local buffer_ = scratch.open { liveness = "retained" }
       vim.opt_local.statusline = "tmux " .. status.statusline
 
       vim.api.nvim_buf_set_lines(
-        buffer,
+        buffer_,
         0,
         1,
         false,
@@ -274,18 +274,18 @@ local function set_bindings()
     end
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
-    local buffer = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "date " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { os.date "%F" })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
   vim.keymap.set("n", [[<leader>mP]], function()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
 
-    local buffer = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "home-relative-line " .. status.statusline
     vim.api.nvim_buf_set_lines(
-      buffer,
+      buffer_,
       0,
       1,
       false,
@@ -295,27 +295,27 @@ local function set_bindings()
     desc = "Paste current buffer's home-relative path with cursor line in a scratch window",
   })
   vim.keymap.set("n", [[<leader>mp]], function()
-    local buffer = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "absolute " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:p" })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#:p" })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
-    local buffer = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "filename " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#:t" })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#:t" })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>mw]], function()
-    local buffer = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "cwd " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.getcwd() })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.getcwd() })
   end, { desc = "Paste current working directory in a scratch window" })
   vim.keymap.set(
     "n",
     [[<leader>my]],
     function()
-      local buffer = scratch.open { liveness = "onetime" }
+      local buffer_ = scratch.open { liveness = "onetime" }
       vim.opt_local.statusline = "cwd-relative " .. status.statusline
-      vim.api.nvim_buf_set_lines(buffer, 0, 1, false, { vim.fn.expand "#" })
+      vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#" })
     end,
     { desc = "Paste current buffer's cwd-relative path in a scratch window" }
   )
@@ -536,8 +536,8 @@ local function set_bindings()
     local target_tabpage_current_window = vim.api.nvim_get_current_win()
 
     for _, window in pairs(windows) do
-      local buffer = vim.api.nvim_win_get_buf(window)
-      vim.cmd.sbuffer(buffer)
+      local buffer_ = vim.api.nvim_win_get_buf(window)
+      vim.cmd.sbuffer(buffer_)
 
       -- Ensuring scratch windows `statusline`s are preserved.
       vim.opt_local.statusline = vim.wo[window].statusline
@@ -558,8 +558,8 @@ local function set_bindings()
   end, { desc = "Move picked windows to a new tab page" })
   vim.keymap.set("n", [[<leader>W]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
-      local buffer = vim.api.nvim_buf_get_name(0)
-      if path.remote(buffer) then
+      local buffer_ = vim.api.nvim_buf_get_name(0)
+      if path.remote(buffer_) then
         -- `++p` option causes an error when used with a "remote buffer".
         vim.cmd [[write]]
       else
@@ -578,12 +578,12 @@ local function set_bindings()
 
         local filetype = vim.bo.filetype
 
-        local buffer = scratch.open { liveness = "retained" }
+        local buffer_ = scratch.open { liveness = "retained" }
         vim.opt_local.filetype = filetype
         vim.opt_local.statusline =
           status.buffer_statusline(region_.buffer_number)
 
-        vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+        vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, region_.lines)
 
         -- Fix the cursor position as it was before spawning the scratch window
         local scratch_line = math.max(
@@ -609,7 +609,7 @@ local function set_bindings()
         )
 
         scratch.bind_substitute_origin {
-          binding_buffer_number = buffer,
+          binding_buffer_number = buffer_,
           origin_region = region_,
           origin_window_number = origin_window,
         }
@@ -683,14 +683,14 @@ local function set_bindings()
 
     local filetype = vim.bo.filetype
 
-    local buffer = scratch.open { liveness = "retained" }
+    local buffer_ = scratch.open { liveness = "retained" }
     vim.opt_local.filetype = filetype
     vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
-    vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, region_.lines)
 
     scratch.bind_substitute_origin {
-      binding_buffer_number = buffer,
+      binding_buffer_number = buffer_,
       origin_region = region_,
       origin_window_number = origin_window,
     }
@@ -702,12 +702,12 @@ local function set_bindings()
     { desc = "bwipeout!" }
   )
   vim.keymap.set("n", [[<leader>lo]], function()
-    local buffer = vim.api.nvim_get_current_buf()
+    local buffer_ = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
 
-    vim.api.nvim_buf_set_lines(buffer, line, -1, false, {})
-    vim.api.nvim_buf_set_lines(buffer, 0, line - 1, false, {})
+    vim.api.nvim_buf_set_lines(buffer_, line, -1, false, {})
+    vim.api.nvim_buf_set_lines(buffer_, 0, line - 1, false, {})
   end, { desc = "Keep only the current line" })
   vim.keymap.set("n", [[<leader>v]], function()
     local mode = vim.fn.visualmode()
@@ -727,8 +727,8 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
   vim.keymap.set("n", [[<leader>w]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
-      local buffer = vim.api.nvim_buf_get_name(0)
-      if path.remote(buffer) then
+      local buffer_ = vim.api.nvim_buf_get_name(0)
+      if path.remote(buffer_) then
         -- `++p` option causes an error when used with a "remote buffer".
         vim.cmd [[update]]
       else
@@ -737,10 +737,10 @@ local function set_bindings()
     end)
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>z]], function()
-    local buffer = vim.api.nvim_buf_get_name(0)
-    if #buffer > 0 then
-      vim.fs.rm(buffer)
-      vim.notify("Removed file: " .. buffer, vim.log.levels.INFO)
+    local buffer_ = vim.api.nvim_buf_get_name(0)
+    if #buffer_ > 0 then
+      vim.fs.rm(buffer_)
+      vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
   vim.keymap.set("n", [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
@@ -1108,28 +1108,28 @@ local function set_bindings()
 
       if utils.try(vim.cmd.drop, title) == nil then
         -- Buffer named `title` __is not__ available.
-        local buffer = vim.api.nvim_create_buf(true, false)
-        vim.cmd.drop(buffer)
+        local buffer_ = vim.api.nvim_create_buf(true, false)
+        vim.cmd.drop(buffer_)
         vim.cmd.file(current_list.get_title())
       else
         -- Buffer named `title` __is__ available.
         -- No need to open it since it was opened with `drop` already.
       end
 
-      local buffer = vim.api.nvim_get_current_buf()
-      vim.api.nvim_buf_set_lines(buffer, 0, -1, false, dumped)
+      local buffer_ = vim.api.nvim_get_current_buf()
+      vim.api.nvim_buf_set_lines(buffer_, 0, -1, false, dumped)
       vim.opt_local.filetype = "sh"
     end
   end
 
-  local function load_list(current_list, buffer)
+  local function load_list(current_list, buffer_)
     local title = current_list.get_title()
     if #title == 0 then
-      title = vim.api.nvim_buf_get_name(buffer)
+      title = vim.api.nvim_buf_get_name(buffer_)
       current_list.set_title(title)
     end
     current_list.reset()
-    current_list.add_from_buffer(buffer)
+    current_list.add_from_buffer(buffer_)
     vim.notify(
       "Load list from the current buffer: " .. title,
       vim.log.levels.INFO
@@ -1156,11 +1156,11 @@ local function set_bindings()
   vim.keymap.set("n", [[ZX]], function()
     local register_ = vim.v.register:lower()
 
-    local buffer = vim.api.nvim_get_current_buf()
+    local buffer_ = vim.api.nvim_get_current_buf()
     local lines = vim.api.nvim_buf_get_lines(
-      buffer,
+      buffer_,
       0,
-      vim.api.nvim_buf_line_count(buffer),
+      vim.api.nvim_buf_line_count(buffer_),
       true
     )
 
