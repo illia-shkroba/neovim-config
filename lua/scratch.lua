@@ -1,5 +1,6 @@
 local M = {}
 
+local buffer = require "buffer"
 local region = require "text.region"
 local status = require "status"
 local tracked_region = require "text.tracked_region"
@@ -31,19 +32,19 @@ function M.open_with_current_cursor_as_origin(scratch_input)
 
   local filetype = vim.bo.filetype
 
-  local buffer = M.open(scratch_input)
+  local buffer_ = M.open(scratch_input)
   vim.opt_local.filetype = filetype
   vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
-  vim.api.nvim_buf_set_lines(buffer, 0, 1, false, region_.lines)
+  vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, region_.lines)
 
   M.bind_substitute_origin {
-    binding_buffer_number = buffer,
+    binding_buffer_number = buffer_,
     origin_region = region_,
     origin_window_number = origin_window,
   }
 
-  return buffer
+  return buffer_
 end
 
 ---@param scratch_input ScratchInput
@@ -58,30 +59,28 @@ function M.open(scratch_input)
 
   local listed = false
   local scratch = true
-  local buffer = vim.api.nvim_create_buf(listed, scratch)
-  vim.cmd.sbuffer(buffer)
+  local buffer_ = vim.api.nvim_create_buf(listed, scratch)
+  vim.cmd.sbuffer(buffer_)
 
   vim.cmd.clearjumps()
 
   vim.api.nvim_create_autocmd(events, {
-    buffer = buffer,
+    buffer = buffer_,
     callback = function()
       vim.schedule(function()
-        utils.try(vim.cmd, [[bwipeout! ]] .. buffer)
+        utils.try(vim.cmd, [[bwipeout! ]] .. buffer_)
       end)
     end,
     once = true,
   })
   vim.keymap.set("n", [[ZM]], function()
-    vim.opt_local.buflisted = true
-    vim.opt_local.buftype = ""
-    vim.cmd [[file `=tempname()`]]
+    buffer.as_temporary(buffer_)
   end, {
-    buffer = buffer,
+    buffer = buffer_,
     desc = [[Make scratch window a temporary file]],
   })
 
-  return buffer
+  return buffer_
 end
 
 ---@class SubstituteOriginInput
