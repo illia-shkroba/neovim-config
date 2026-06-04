@@ -1213,12 +1213,14 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>*]], function()
     return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
-  vim.keymap.set(
-    "n",
-    [[<leader>L]],
-    lvimgrep_current_buffer,
-    { desc = "lvimgrep//gj %" }
-  )
+  vim.keymap.set("n", [[<leader>L]], function()
+    local buffer_ = vim.api.nvim_get_current_buf()
+    if buffer.type_(buffer_) == "scratch" then
+      buffer.as_temporary(buffer_)
+    end
+
+    lvimgrep_current_buffer()
+  end, { desc = "lvimgrep//gj %" })
   vim.keymap.set(
     { "n", "v" },
     [[<leader>/]],
@@ -1233,6 +1235,10 @@ local function set_bindings()
     [[<leader>?]],
     operator.expr {
       function_ = function(region_)
+        if buffer.type_(region_.buffer_number) == "scratch" then
+          buffer.as_temporary(region_.buffer_number)
+        end
+
         put_region_to_search_register(region_)
         lvimgrep_current_buffer()
       end,
