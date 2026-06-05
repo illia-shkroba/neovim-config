@@ -1419,6 +1419,17 @@ local function set_bindings()
     ":<C-U>normal `[v`]<CR>",
     { desc = "Previously changed or yanked text region selected charwise" }
   )
+  vim.keymap.set({ "o", "v" }, "s", function()
+    require("leap.treesitter").select {
+      opts = require("leap.user").with_traversal_keys("<C-n>", "<C-p>"),
+    }
+  end, { desc = "Leap select treesitter node" })
+  vim.keymap.set(
+    { "o", "v" },
+    "S",
+    [[Vs]],
+    { remap = true, desc = "Leap select treesitter node linewise" }
+  )
 
   -- tmux
   vim.keymap.set(
