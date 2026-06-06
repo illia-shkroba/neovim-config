@@ -106,17 +106,18 @@ function M.bind_substitute_origin(substitute_origin_input)
 
   ---@return nil
   local function fix_marks()
+    local line_count = vim.api.nvim_buf_line_count(tracked.region.buffer_number)
     vim.api.nvim_buf_set_mark(
       tracked.region.buffer_number,
       "[",
-      tracked.region.line_begin,
+      math.max(1, math.min(tracked.region.line_begin, line_count)),
       tracked.region.column_begin,
       {}
     )
     vim.api.nvim_buf_set_mark(
       tracked.region.buffer_number,
       "]",
-      tracked.region.line_end,
+      math.max(1, math.min(tracked.region.line_end, line_count)),
       tracked.region.column_end,
       {}
     )
