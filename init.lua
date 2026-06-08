@@ -1314,18 +1314,16 @@ local function set_bindings()
       vim.cmd.tabclose()
     end
   end, { desc = "Update tab's buffers and close" })
-  vim.keymap.set(
-    "n",
-    [[<leader>tT]],
-    [[<Cmd>-tabmove<CR>]],
-    { desc = "Move tab left" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>tt]],
-    [[<Cmd>+tabmove<CR>]],
-    { desc = "Move tab right" }
-  )
+  vim.keymap.set("n", [[<leader>tT]], function()
+    for _ = 1, vim.v.count1 do
+      vim.cmd "-tabmove"
+    end
+  end, { desc = "Move tab left" })
+  vim.keymap.set("n", [[<leader>tt]], function()
+    for _ = 1, vim.v.count1 do
+      vim.cmd "+tabmove"
+    end
+  end, { desc = "Move tab right" })
 
   -- tags
   vim.keymap.set("n", [[<leader>tg]], function()
