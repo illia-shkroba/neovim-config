@@ -1324,6 +1324,12 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
+    [[<leader>tm]],
+    [[<Cmd>tabclose #<CR>]],
+    { desc = "Close last accessed tab" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>to]],
     [[<Cmd>tabonly<CR>]],
     { desc = "Focus tab" }
