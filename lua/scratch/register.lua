@@ -33,10 +33,10 @@ function M.edit(register_)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
-  vim.keymap.set("n", [[ZW]], [[ZPZQ]], {
+  vim.keymap.set("n", [[ZW]], [[ZXZQ]], {
     buffer = buffer,
     remap = true,
-    desc = "ZP ZQ",
+    desc = "ZX ZQ",
   })
 end
 
