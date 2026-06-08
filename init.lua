@@ -450,12 +450,16 @@ local function set_bindings()
 
   -- other
   local function pick_windows(opts)
-    local windows = {}
+    local palette = require("catppuccin.palettes").get_palette()
+    vim.api.nvim_set_hl(0, "WinMarkedForClose", {
+      bg = palette.surface1,
+      fg = palette.red,
+    })
 
-    local window = window_picker.pick_window(opts)
+    local picked_window = window_picker.pick_window(opts)
 
     -- Handle `autoselect_one = true`.
-    if window ~= nil then
+    if picked_window ~= nil then
       local current_tabpage = vim.api.nvim_get_current_tabpage()
       local all_windows = vim.api.nvim_tabpage_list_wins(current_tabpage)
       if #all_windows == 1 then
@@ -463,12 +467,30 @@ local function set_bindings()
       end
     end
 
-    while window ~= nil do
-      table.insert(windows, window)
-      window = window_picker.pick_window(opts)
+    -- `win_id` -> original `winhighlight`
+    local marked = {}
+
+    local function toggle(window)
+      if marked[window] ~= nil then
+        vim.wo[window].winhighlight = marked[window]
+        marked[window] = nil
+      else
+        marked[window] = vim.wo[window].winhighlight
+        vim.wo[window].winhighlight =
+          "Normal:WinMarkedForClose,NormalNC:WinMarkedForClose"
+      end
     end
 
-    return windows
+    while picked_window ~= nil do
+      toggle(picked_window)
+      picked_window = window_picker.pick_window(opts)
+    end
+
+    for window, winhighlight in pairs(marked) do
+      vim.wo[window].winhighlight = winhighlight
+    end
+
+    return vim.tbl_keys(marked)
   end
 
   local function with_change_marks(buffer_number, function_)
