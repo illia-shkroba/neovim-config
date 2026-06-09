@@ -198,42 +198,36 @@ M.directories_actions = {
   end,
 }
 
----@class RecordingsInput
----@field register string
----@field recordings table<integer, {
+---@class FlowsInput
+---@field flows table<integer, {
 ---  name: string,
----  contents: string,
+---  flow: fun(): nil,
 ---}>
 
----@param recordings_input RecordingsInput
+---@param flows_input FlowsInput
 ---@return nil
-function M.recordings(recordings_input)
+function M.flows(flows_input)
   local names = vim
-    .iter(recordings_input.recordings)
-    :map(function(recording)
-      return recording.name
+    .iter(flows_input.flows)
+    :map(function(flow)
+      return flow.name
     end)
     :totable()
 
-  local name_to_contents = {}
-  for _, recording in ipairs(recordings_input.recordings) do
-    name_to_contents[recording.name] = recording.contents
+  local name_to_flow = {}
+  for _, flow in ipairs(flows_input.flows) do
+    name_to_flow[flow.name] = flow.flow
   end
 
   fzf.fzf_exec(names, {
     winopts = {
-      title = " Prerecorded ",
+      title = " Flows ",
     },
-    preview = function(items)
-      local name = items[1]
-      local contents = name_to_contents[name] or ""
-      return vim.split(contents, "\n", { plain = true })
-    end,
     actions = {
       ["enter"] = function(selected)
         local name = selected[1]
-        local contents = name_to_contents[name] or ""
-        vim.fn.setreg(recordings_input.register, contents)
+        local flow = name_to_flow[name] or function() end
+        flow()
       end,
     },
     fzf_opts = {

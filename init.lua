@@ -7,13 +7,13 @@ local buffer = require "buffer"
 local case = require "text.case"
 local char = require "text.char"
 local completion = require "plugins.fzf.pickers.completion"
+local flows = require "flows"
 local fzf = require "fzf-lua"
 local list = require "list"
 local mark = require "mark"
 local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
-local recordings = require "recordings"
 local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
@@ -889,11 +889,10 @@ local function set_bindings()
     { desc = "Grep files with extension" }
   )
   vim.keymap.set("n", [[<leader>fm]], function()
-    pickers.recordings {
-      register = "f",
-      recordings = recordings,
+    pickers.flows {
+      flows = flows,
     }
-  end, { desc = [[List recordings and paste selected into "f register]] })
+  end, { desc = "List flows" })
   vim.keymap.set(
     "n",
     [[<leader>fv]],
