@@ -1,6 +1,20 @@
 local scratch_register = require "scratch.register"
 
 return {
+  -- args
+  {
+    flow = function()
+      vim.cmd [[cfdo arga]]
+    end,
+    name = "args: populate from quickfix",
+  },
+  {
+    flow = function()
+      vim.cmd [[lfdo arga]]
+    end,
+    name = "args: populate from location",
+  },
+
   -- diff
   {
     flow = function()
@@ -36,7 +50,37 @@ return {
     flow = function()
       vim.fn.setreg("q", [[^"pP$"sp]])
     end,
-    name = [[macro: surround line with ("p)prefix and ("s)uffix]],
+    name = [[macro: "q surround line with ("p)prefix and ("s)uffix]],
+  },
+  {
+    flow = function()
+      vim.cmd [[argdo norm @q]]
+    end,
+    name = "macro: @q across args",
+  },
+  {
+    flow = function()
+      vim.cmd [[cdo norm @q]]
+    end,
+    name = "macro: @q across quickfix",
+  },
+  {
+    flow = function()
+      vim.cmd [[cfdo norm @q]]
+    end,
+    name = "macro: @q across quickfix files",
+  },
+  {
+    flow = function()
+      vim.cmd [[ldo norm @q]]
+    end,
+    name = "macro: @q across location",
+  },
+  {
+    flow = function()
+      vim.cmd [[lfdo norm @q]]
+    end,
+    name = "macro: @q across location files",
   },
 
   -- substitute
