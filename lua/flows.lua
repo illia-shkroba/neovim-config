@@ -6,13 +6,13 @@ return {
     flow = function()
       vim.cmd.windo "diffthis"
     end,
-    name = "Diff all windows",
+    name = "diff: all windows",
   },
   {
     flow = function()
       vim.cmd.windo "diffoff"
     end,
-    name = "Undiff all windows",
+    name = "diff: undiff all windows",
   },
 
   -- file
@@ -20,7 +20,7 @@ return {
     flow = function()
       vim.cmd [[silent !chmod +x %]]
     end,
-    name = "Make current file executable",
+    name = "file: chmod +x",
   },
 
   -- git
@@ -28,7 +28,7 @@ return {
     flow = function()
       vim.cmd [[Git reset --soft HEAD~1]]
     end,
-    name = "git reset --soft HEAD~1",
+    name = "git: reset --soft HEAD~1",
   },
 
   -- macro
@@ -36,7 +36,7 @@ return {
     flow = function()
       vim.fn.setreg("q", [[^"pP$"sp]])
     end,
-    name = [[Macro surrounding line with ("p)prefix and ("s)uffix]],
+    name = [[macro: surround line with ("p)prefix and ("s)uffix]],
   },
 
   -- substitute
@@ -44,19 +44,19 @@ return {
     flow = function()
       vim.cmd [[cfdo %s//\=@s/gce]]
     end,
-    name = [[Substitute last search with "s across quickfix]],
+    name = [[sub: last search with "s across quickfix]],
   },
   {
     flow = function()
       vim.cmd [[argdo %s//\=@s/gce]]
     end,
-    name = [[Substitute last search with "s across args]],
+    name = [[sub: last search with "s across args]],
   },
   {
     flow = function()
       vim.cmd [[windo %s//\=@s/gce]]
     end,
-    name = [[Substitute last search with "s across windows]],
+    name = [[sub: last search with "s across windows]],
   },
 
   -- quickfix/location
@@ -71,7 +71,7 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "Collect quickfix lines",
+    name = "qf: collect lines",
   },
   {
     flow = function()
@@ -84,6 +84,6 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "Collect location lines",
+    name = "loc: collect lines",
   },
 }
