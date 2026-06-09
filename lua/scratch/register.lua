@@ -33,10 +33,23 @@ function M.edit(register_)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
-  vim.keymap.set("n", [[ZW]], [[ZXZQ]], {
+  vim.keymap.set("n", [[ZW]], function()
+    local input_register = vim.v.register:lower()
+    local target_register = input_register == [["]] and register_
+      or input_register
+
+    local scratch_lines = vim.api.nvim_buf_get_lines(
+      buffer,
+      0,
+      vim.api.nvim_buf_line_count(buffer),
+      true
+    )
+
+    register.put(target_register, scratch_lines)
+    vim.cmd.normal [[ZQ]]
+  end, {
     buffer = buffer,
-    remap = true,
-    desc = "ZX ZQ",
+    desc = [[Paste scratch buffer's text into given register (default register if none given) and close scratch window]],
   })
 end
 
