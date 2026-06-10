@@ -653,9 +653,11 @@ local function set_bindings()
     scratch.open_with_current_cursor_as_origin { liveness = "retained" }
   end, { desc = "Empty scratch window" })
   vim.keymap.set("n", { [[<C-w>m]], [[<C-w><C-m>]] }, function()
-    local last_accessed_window = vim.fn.winnr "#"
-    if last_accessed_window > 0 then
-      vim.cmd.wincmd(last_accessed_window .. " q")
+    local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
+    local current_window = vim.api.nvim_get_current_win()
+
+    if last_accessed_window > 0 and last_accessed_window ~= current_window then
+      vim.api.nvim_win_close(last_accessed_window, true)
     else
       vim.notify("No last accessed window.", vim.log.levels.INFO)
     end
