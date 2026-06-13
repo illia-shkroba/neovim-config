@@ -44,6 +44,12 @@ return {
     end,
     name = "git: reset --soft HEAD~1",
   },
+  {
+    flow = function()
+      vim.cmd [[Git reset --hard HEAD~1]]
+    end,
+    name = "git: reset --hard HEAD~1",
+  },
 
   -- macro
   {
