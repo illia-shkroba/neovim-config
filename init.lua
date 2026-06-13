@@ -883,7 +883,7 @@ local function set_bindings()
     },
     {
       expr = true,
-      desc = "Grep files with extension using search",
+      desc = "Grep by filetype with motion/selection as search query",
     }
   )
   vim.keymap.set(
