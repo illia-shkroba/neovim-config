@@ -78,15 +78,11 @@ function M.rg_filetypes(opts)
   fzf.fzf_exec(all_filetypes, opts)
 end
 
----@param region Region
+---@param search string|nil
 ---@param matching_filetypes table<integer, string>|nil
 ---@return nil
-function M.grep_by_filetype(region, matching_filetypes)
-  grep_by_filetype(
-    fzf.grep,
-    table.concat(region.lines, "\n"),
-    matching_filetypes
-  )
+function M.grep_by_filetype(search, matching_filetypes)
+  grep_by_filetype(fzf.grep, search, matching_filetypes)
 end
 
 ---@param matching_filetypes table<integer, string>|nil

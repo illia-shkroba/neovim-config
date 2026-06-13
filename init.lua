@@ -876,7 +876,9 @@ local function set_bindings()
     { "n", "v" },
     [[<leader>g]],
     operator.expr {
-      function_ = pickers.grep_by_filetype,
+      function_ = function(region_)
+        pickers.grep_by_filetype(table.concat(region_.lines, "\n"))
+      end,
       readonly = true,
     },
     {
