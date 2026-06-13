@@ -4,13 +4,13 @@ return {
   -- args
   {
     flow = function()
-      vim.cmd [[cfdo arga]]
+      vim.cmd [[silent cfdo arga]]
     end,
     name = "args: populate from quickfix",
   },
   {
     flow = function()
-      vim.cmd [[lfdo arga]]
+      vim.cmd [[silent lfdo arga]]
     end,
     name = "args: populate from location",
   },
@@ -116,7 +116,7 @@ return {
 
       vim.fn.setreg("a", "")
 
-      vim.cmd [[cdo yank A]]
+      vim.cmd [[silent cdo yank A]]
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
@@ -129,7 +129,7 @@ return {
 
       vim.fn.setreg("a", "")
 
-      vim.cmd [[ldo yank A]]
+      vim.cmd [[silent ldo yank A]]
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
