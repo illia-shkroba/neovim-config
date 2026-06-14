@@ -40,6 +40,26 @@ return {
   -- git
   {
     flow = function()
+      vim.cmd [[Git pull]]
+      vim.cmd [[Git submodule init]]
+      vim.cmd [[Git submodule update]]
+    end,
+    name = "Git pull",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git push --force-with-lease]]
+    end,
+    name = "Git push --force-with-lease",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git reflog]]
+    end,
+    name = "Git reflog",
+  },
+  {
+    flow = function()
       vim.cmd [[Git reset --soft HEAD~1]]
     end,
     name = "Git reset --soft HEAD~1",
@@ -49,6 +69,18 @@ return {
       vim.cmd [[Git reset --hard HEAD~1]]
     end,
     name = "Git reset --hard HEAD~1",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git stash list --patch]]
+    end,
+    name = "Git stash list --patch",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git stash pop]]
+    end,
+    name = "Git stash pop",
   },
 
   -- macro
