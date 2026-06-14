@@ -6,13 +6,13 @@ return {
     flow = function()
       vim.cmd [[silent cfdo arga]]
     end,
-    name = "args: populate from quickfix",
+    name = "cfdo arga",
   },
   {
     flow = function()
       vim.cmd [[silent lfdo arga]]
     end,
-    name = "args: populate from location",
+    name = "lfdo arga",
   },
 
   -- diff
@@ -20,13 +20,13 @@ return {
     flow = function()
       vim.cmd.windo "diffthis"
     end,
-    name = "diff: all windows",
+    name = "windo diffthis",
   },
   {
     flow = function()
       vim.cmd.windo "diffoff"
     end,
-    name = "diff: undiff all windows",
+    name = "windo diffoff",
   },
 
   -- file
@@ -34,7 +34,7 @@ return {
     flow = function()
       vim.cmd [[silent !chmod +x %]]
     end,
-    name = "file: chmod +x",
+    name = "!chmod +x %",
   },
 
   -- git
@@ -42,13 +42,13 @@ return {
     flow = function()
       vim.cmd [[Git reset --soft HEAD~1]]
     end,
-    name = "git: reset --soft HEAD~1",
+    name = "Git reset --soft HEAD~1",
   },
   {
     flow = function()
       vim.cmd [[Git reset --hard HEAD~1]]
     end,
-    name = "git: reset --hard HEAD~1",
+    name = "Git reset --hard HEAD~1",
   },
 
   -- macro
@@ -56,37 +56,37 @@ return {
     flow = function()
       vim.fn.setreg("q", [[^"pP$"sp]])
     end,
-    name = [[macro: "q surround line with ("p)prefix and ("s)uffix]],
+    name = [["q surround line with ("p)prefix and ("s)uffix]],
   },
   {
     flow = function()
       vim.cmd [[argdo norm @q]]
     end,
-    name = "macro: @q across args",
+    name = "argdo norm @q",
   },
   {
     flow = function()
       vim.cmd [[cdo norm @q]]
     end,
-    name = "macro: @q across quickfix",
+    name = "cdo norm @q",
   },
   {
     flow = function()
       vim.cmd [[cfdo norm @q]]
     end,
-    name = "macro: @q across quickfix files",
+    name = "cfdo norm @q",
   },
   {
     flow = function()
       vim.cmd [[ldo norm @q]]
     end,
-    name = "macro: @q across location",
+    name = "ldo norm @q",
   },
   {
     flow = function()
       vim.cmd [[lfdo norm @q]]
     end,
-    name = "macro: @q across location files",
+    name = "lfdo norm @q",
   },
 
   -- substitute
@@ -94,19 +94,19 @@ return {
     flow = function()
       vim.cmd [[cfdo %s//\=@s/gce]]
     end,
-    name = [[sub: last search with "s across quickfix]],
+    name = [[cfdo %s//\=@s/gce]],
   },
   {
     flow = function()
       vim.cmd [[argdo %s//\=@s/gce]]
     end,
-    name = [[sub: last search with "s across args]],
+    name = [[argdo %s//\=@s/gce]],
   },
   {
     flow = function()
       vim.cmd [[windo %s//\=@s/gce]]
     end,
-    name = [[sub: last search with "s across windows]],
+    name = [[windo %s//\=@s/gce]],
   },
 
   -- quickfix/location
@@ -121,7 +121,7 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "qf: collect lines",
+    name = "cdo yank A",
   },
   {
     flow = function()
@@ -134,6 +134,6 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "loc: collect lines",
+    name = "ldo yank A",
   },
 }
