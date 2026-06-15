@@ -517,12 +517,6 @@ local function set_bindings()
     }
   end
 
-  vim.keymap.set("n", [[<leader>E]], function()
-    local window = vim.api.nvim_get_current_win()
-    vim.cmd.windo "wincmd J"
-    vim.api.nvim_set_current_win(window)
-    vim.cmd.wincmd "H"
-  end, { desc = "Apply tall layout" })
   vim.keymap.set("n", [[<leader>J]], function()
     local picked_windows = pick_windows {
       filter_rules = { autoselect_one = true, include_current_win = true },
@@ -649,6 +643,12 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>hh]], function()
     vim.cmd.History()
   end, { desc = "History" })
+  vim.keymap.set("n", { [[<C-w>e]], [[<C-w><C-e>]] }, function()
+    local window = vim.api.nvim_get_current_win()
+    vim.cmd.windo "wincmd J"
+    vim.api.nvim_set_current_win(window)
+    vim.cmd.wincmd "H"
+  end, { desc = "Apply tall layout" })
   vim.keymap.set("n", { [[<C-w>m]], [[<C-w><C-m>]] }, function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
     local current_window = vim.api.nvim_get_current_win()
