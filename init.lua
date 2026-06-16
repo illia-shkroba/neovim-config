@@ -644,10 +644,17 @@ local function set_bindings()
     vim.cmd.History()
   end, { desc = "History" })
   vim.keymap.set("n", { [[<C-w>e]], [[<C-w><C-e>]] }, function()
-    local window = vim.api.nvim_get_current_win()
+    local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
+    local current_window = vim.api.nvim_get_current_win()
+
     vim.cmd.windo "wincmd J"
-    vim.api.nvim_set_current_win(window)
+    vim.api.nvim_set_current_win(current_window)
     vim.cmd.wincmd "H"
+
+    if last_accessed_window > 0 and last_accessed_window ~= current_window then
+      vim.api.nvim_set_current_win(last_accessed_window)
+      vim.api.nvim_set_current_win(current_window)
+    end
   end, { desc = "Apply tall layout" })
   vim.keymap.set("n", { [[<C-w>m]], [[<C-w><C-m>]] }, function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
