@@ -1,3 +1,4 @@
+local buffer = require "buffer"
 local scratch_register = require "scratch.register"
 
 return {
@@ -13,6 +14,12 @@ return {
       vim.cmd [[silent lfdo arga]]
     end,
     name = "lfdo arga",
+  },
+  {
+    flow = function()
+      vim.cmd [[sall]]
+    end,
+    name = "sall",
   },
 
   -- diff
@@ -35,6 +42,17 @@ return {
       vim.cmd [[silent !chmod +x %]]
     end,
     name = "!chmod +x %",
+  },
+  {
+    flow = function()
+      local listed = true
+      local scratch = false
+      local buffer_ = vim.api.nvim_create_buf(listed, scratch)
+
+      vim.cmd.sbuffer(buffer_)
+      buffer.as_temporary(buffer_)
+    end,
+    name = "sp `=tempname()`",
   },
 
   -- git
@@ -60,15 +78,21 @@ return {
   },
   {
     flow = function()
-      vim.cmd [[Git reset --soft HEAD~1]]
+      vim.cmd [[Git reset --soft HEAD~]]
     end,
-    name = "Git reset --soft HEAD~1",
+    name = "Git reset --soft HEAD~",
   },
   {
     flow = function()
-      vim.cmd [[Git reset --hard HEAD~1]]
+      vim.cmd [[Git reset --mixed HEAD~]]
     end,
-    name = "Git reset --hard HEAD~1",
+    name = "Git reset --mixed HEAD~",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git reset --hard HEAD~]]
+    end,
+    name = "Git reset --hard HEAD~",
   },
   {
     flow = function()
