@@ -130,6 +130,7 @@ local function set_bindings()
     vim.notify("Args emptied", vim.log.levels.INFO)
   end, { desc = "argdelete *" })
   vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
+  vim.keymap.set("n", [[<leader>as]], vim.cmd.sall, { desc = "sall" })
 
   -- case
   vim.keymap.set(

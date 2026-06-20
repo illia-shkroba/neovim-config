@@ -77,12 +77,6 @@ return {
     end,
     name = "lfdo arga",
   },
-  {
-    flow = function()
-      vim.cmd [[sall]]
-    end,
-    name = "sall",
-  },
 
   -- file
   {
