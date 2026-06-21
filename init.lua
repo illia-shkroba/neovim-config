@@ -1202,6 +1202,12 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>X]], function()
     scratch_register.edit(vim.v.register)
   end, { desc = "Edit register in a buffer" })
+  vim.keymap.set("n", [[ZC]], function()
+    yank_buffer()
+    vim.cmd.normal [[ZQ]]
+  end, {
+    desc = "Paste buffer's text into register and close window",
+  })
   vim.keymap.set("n", [[ZX]], yank_buffer, {
     desc = "Paste buffer's text into register",
   })
