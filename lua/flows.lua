@@ -50,7 +50,7 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "cdo yank A",
+    name = "cdo yank",
   },
   {
     flow = function()
@@ -63,7 +63,7 @@ return {
 
       vim.fn.setreg("a", register_)
     end,
-    name = "ldo yank A",
+    name = "ldo yank",
   },
 
   -- substitute
