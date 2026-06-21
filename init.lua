@@ -1185,10 +1185,7 @@ local function set_bindings()
   end, { desc = "Load location list from the current buffer" })
 
   -- register
-  vim.keymap.set("n", [[<leader>X]], function()
-    scratch_register.edit(vim.v.register)
-  end, { desc = "Edit register in a buffer" })
-  vim.keymap.set("n", [[ZX]], function()
+  local function yank_buffer()
     local register_ = vim.v.register:lower()
 
     local buffer_ = vim.api.nvim_get_current_buf()
@@ -1200,7 +1197,12 @@ local function set_bindings()
     )
 
     register.put(register_, lines)
-  end, {
+  end
+
+  vim.keymap.set("n", [[<leader>X]], function()
+    scratch_register.edit(vim.v.register)
+  end, { desc = "Edit register in a buffer" })
+  vim.keymap.set("n", [[ZX]], yank_buffer, {
     desc = "Paste buffer's text into register",
   })
   vim.keymap.set("n", [[Z?]], function()
