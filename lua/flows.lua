@@ -16,6 +16,28 @@ return {
     name = "windo diffoff",
   },
 
+  -- delete
+  {
+    flow = function()
+      vim.cmd [[v//d _]]
+    end,
+    name = "v//d _",
+  },
+  {
+    flow = function()
+      vim.cmd [[g//d _]]
+    end,
+    name = "g//d _",
+  },
+
+  -- register
+  {
+    flow = function()
+      vim.fn.setreg("a", "")
+    end,
+    name = "let @a = ''",
+  },
+
   -- quickfix/location
   {
     flow = function()
