@@ -209,12 +209,17 @@ function M.bind_substitute_origin(substitute_origin_input)
     desc = "Enter origin window and restore '[ and '] marks",
   })
 
-  vim.keymap.set("n", [[ZS]], [["sZXZO<C-w>m]], {
+  vim.keymap.set("n", [[ZB]], [[ZO<C-w>m]], {
+    buffer = substitute_origin_input.binding_buffer_number,
+    remap = true,
+    desc = [[Close scratch window and enter origin window]],
+  })
+  vim.keymap.set("n", [[ZS]], [["sZXZB]], {
     buffer = substitute_origin_input.binding_buffer_number,
     remap = true,
     desc = [[Paste buffer's text into register "s, enter origin window and close scratch window]],
   })
-  vim.keymap.set("n", [[ZW]], [[ZPZO<C-w>m]], {
+  vim.keymap.set("n", [[ZW]], [[ZPZB]], {
     buffer = substitute_origin_input.binding_buffer_number,
     remap = true,
     desc = [[Paste buffer's text into origin window, enter origin window and close scratch window]],

@@ -772,6 +772,14 @@ local function set_bindings()
       vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
     end
   end, { desc = "Remove current buffer's file" })
+  vim.keymap.set("n", [[ZB]], function()
+    local last_accessed_window = vim.fn.winnr "#"
+    return last_accessed_window > 0 and [[<C-w>p<C-w>m]] or [[ZQ]]
+  end, {
+    expr = true,
+    remap = true,
+    desc = [[Close window and enter last accessed window]],
+  })
   vim.keymap.set("n", [[@"]], [[<Cmd>@"<CR>]], { desc = [[@"]] })
   vim.keymap.set("n", [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
