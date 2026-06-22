@@ -1224,24 +1224,24 @@ local function set_bindings()
     desc = "Paste buffer's text into register",
   })
   vim.keymap.set("n", [[Z?]], function()
-    local last_accessed_window = vim.fn.winnr "#"
-    return last_accessed_window > 0 and [["/ZX<C-w>p<C-w>m]] or [["/ZXZQ]]
+    yank_buffer "/"
+    return [[ZB]]
   end, {
     expr = true,
     remap = true,
     desc = [[Paste buffer's text into register "/, and close window]],
   })
   vim.keymap.set("n", [[ZG]], function()
-    local last_accessed_window = vim.fn.winnr "#"
-    return last_accessed_window > 0 and [["gZX<C-w>p<C-w>m]] or [["gZXZQ]]
+    yank_buffer "g"
+    return [[ZB]]
   end, {
     expr = true,
     remap = true,
     desc = [[Paste buffer's text into register "g, and close window]],
   })
   vim.keymap.set("n", [[ZS]], function()
-    local last_accessed_window = vim.fn.winnr "#"
-    return last_accessed_window > 0 and [["sZX<C-w>p<C-w>m]] or [["sZXZQ]]
+    yank_buffer "s"
+    return [[ZB]]
   end, {
     expr = true,
     remap = true,

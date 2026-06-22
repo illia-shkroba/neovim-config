@@ -214,11 +214,6 @@ function M.bind_substitute_origin(substitute_origin_input)
     remap = true,
     desc = [[Close scratch window and enter origin window]],
   })
-  vim.keymap.set("n", [[ZS]], [["sZXZB]], {
-    buffer = substitute_origin_input.binding_buffer_number,
-    remap = true,
-    desc = [[Paste buffer's text into register "s, enter origin window and close scratch window]],
-  })
   vim.keymap.set("n", [[ZW]], [[ZPZB]], {
     buffer = substitute_origin_input.binding_buffer_number,
     remap = true,
