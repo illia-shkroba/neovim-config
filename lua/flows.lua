@@ -72,6 +72,34 @@ return {
     name = "ldo yank",
   },
 
+  -- linewise
+  {
+    flow = function()
+      local register_ = vim.fn.getreg "a"
+
+      vim.fn.setreg("a", "")
+
+      vim.cmd [[g//yank A]]
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
+    end,
+    name = "g//yank",
+  },
+  {
+    flow = function()
+      local register_ = vim.fn.getreg "a"
+
+      vim.fn.setreg("a", "")
+
+      vim.cmd [[v//yank A]]
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
+    end,
+    name = "v//yank",
+  },
+
   -- substitute
   {
     flow = function()
