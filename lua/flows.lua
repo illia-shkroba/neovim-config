@@ -29,6 +29,12 @@ return {
     end,
     name = "g//d _",
   },
+  {
+    flow = function()
+      vim.cmd [[g/^$/d _]]
+    end,
+    name = "g/^$/d _",
+  },
 
   -- register
   {
