@@ -19,21 +19,21 @@ return {
   -- delete
   {
     flow = function()
-      vim.cmd [[v//d _]]
+      vim.cmd [[v//delete _]]
     end,
-    name = "v//d _",
+    name = "v//delete _",
   },
   {
     flow = function()
-      vim.cmd [[g//d _]]
+      vim.cmd [[g//delete _]]
     end,
-    name = "g//d _",
+    name = "g//delete _",
   },
   {
     flow = function()
-      vim.cmd [[g/^$/d _]]
+      vim.cmd [[g/^$/delete _]]
     end,
-    name = "g/^$/d _",
+    name = "g/^$/delete _",
   },
 
   -- register
