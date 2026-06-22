@@ -1213,8 +1213,10 @@ local function set_bindings()
   vim.keymap.set("n", [[ZC]], function()
     local register_ = vim.v.register:lower()
     yank_buffer(register_)
-    vim.cmd.normal [[ZQ]]
+    return [[ZB]]
   end, {
+    expr = true,
+    remap = true,
     desc = "Paste buffer's text into register and close window",
   })
   vim.keymap.set("n", [[ZX]], function()
