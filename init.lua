@@ -1241,6 +1241,14 @@ local function set_bindings()
     remap = true,
     desc = [[Paste buffer's text into register "g, and close window]],
   })
+  vim.keymap.set("n", [[ZL]], function()
+    yank_buffer "/"
+    return [[ZB<leader>L]]
+  end, {
+    expr = true,
+    remap = true,
+    desc = [[Paste buffer's text into register "/, close window and then `lvimgrep//gj %`]],
+  })
   vim.keymap.set("n", [[ZS]], function()
     yank_buffer "s"
     return [[ZB]]
