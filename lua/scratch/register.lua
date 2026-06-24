@@ -46,7 +46,7 @@ function M.edit(register_)
     )
 
     register.put(target_register, scratch_lines)
-    vim.cmd.normal [[ZQ]]
+    vim.api.nvim_win_close(vim.api.nvim_get_current_win(), true)
   end, {
     buffer = buffer,
     desc = [[Paste scratch buffer's text into given register (default register if none given) and close scratch window]],
