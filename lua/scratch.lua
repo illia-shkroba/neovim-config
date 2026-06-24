@@ -126,6 +126,43 @@ function M.bind_substitute_origin(substitute_origin_input)
   local function highlight()
     tracked_region.highlight(tracked)
   end
+  ---@return nil
+  local function focus_origin()
+    local origin_lines = tracked_region.lines(tracked)
+
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+
+    local scratch_line, scratch_column = cursor[1], cursor[2]
+
+    local origin_line = math.min(
+      tracked.region.line_begin + scratch_line - 1,
+      vim.api.nvim_buf_line_count(tracked.region.buffer_number)
+    )
+
+    local column_offset
+    if tracked.region.type_ == "line" then
+      column_offset = 0
+    elseif tracked.region.type_ == "char" then
+      column_offset = scratch_line == 1 and tracked.region.column_begin or 0
+    else
+      column_offset = tracked.region.column_begin
+    end
+    local line_offset = origin_line - tracked.region.line_begin + 1
+    local line_text = origin_lines[line_offset <= 0 and #origin_lines or line_offset]
+      or ""
+    local origin_column =
+      math.max(0, math.min(scratch_column + column_offset, #line_text - 1))
+
+    vim.api.nvim_win_set_cursor(
+      substitute_origin_input.origin_window_number,
+      { origin_line, origin_column }
+    )
+
+    vim.api.nvim_set_current_win(substitute_origin_input.origin_window_number)
+
+    fix_marks()
+    highlight()
+  end
 
   vim.keymap.set("n", [[ZP]], function()
     local lines = normalize_substitution(
@@ -169,42 +206,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
   })
-  vim.keymap.set("n", [[ZO]], function()
-    local origin_lines = tracked_region.lines(tracked)
-
-    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-
-    local scratch_line, scratch_column = cursor[1], cursor[2]
-
-    local origin_line = math.min(
-      tracked.region.line_begin + scratch_line - 1,
-      vim.api.nvim_buf_line_count(tracked.region.buffer_number)
-    )
-
-    local column_offset
-    if tracked.region.type_ == "line" then
-      column_offset = 0
-    elseif tracked.region.type_ == "char" then
-      column_offset = scratch_line == 1 and tracked.region.column_begin or 0
-    else
-      column_offset = tracked.region.column_begin
-    end
-    local line_offset = origin_line - tracked.region.line_begin + 1
-    local line_text = origin_lines[line_offset <= 0 and #origin_lines or line_offset]
-      or ""
-    local origin_column =
-      math.max(0, math.min(scratch_column + column_offset, #line_text - 1))
-
-    vim.api.nvim_win_set_cursor(
-      substitute_origin_input.origin_window_number,
-      { origin_line, origin_column }
-    )
-
-    vim.api.nvim_set_current_win(substitute_origin_input.origin_window_number)
-
-    fix_marks()
-    highlight()
-  end, {
+  vim.keymap.set("n", [[ZO]], focus_origin, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Enter origin window and restore '[ and '] marks",
   })
