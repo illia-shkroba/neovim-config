@@ -1149,17 +1149,18 @@ local function set_bindings()
     if #dumped > 0 then
       local title = current_list.get_title()
 
+      local buffer_
       if utils.try(vim.cmd.drop, title) == nil then
         -- Buffer named `title` __is not__ available.
-        local buffer_ = vim.api.nvim_create_buf(true, false)
+        buffer_ = vim.api.nvim_create_buf(true, false)
         vim.cmd.drop(buffer_)
         vim.cmd.file(current_list.get_title())
       else
         -- Buffer named `title` __is__ available.
         -- No need to open it since it was opened with `drop` already.
+        buffer_ = vim.api.nvim_get_current_buf()
       end
 
-      local buffer_ = vim.api.nvim_get_current_buf()
       vim.api.nvim_buf_set_lines(buffer_, 0, -1, false, dumped)
       vim.opt_local.filetype = "sh"
     end
