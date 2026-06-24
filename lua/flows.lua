@@ -242,4 +242,16 @@ return {
     end,
     name = "lfdo norm @q",
   },
+  {
+    flow = function()
+      vim.cmd [[g//norm @q]]
+    end,
+    name = "g//norm @q",
+  },
+  {
+    flow = function()
+      vim.cmd [[v//norm @q]]
+    end,
+    name = "v//norm @q",
+  },
 }
