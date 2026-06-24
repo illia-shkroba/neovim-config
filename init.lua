@@ -738,6 +738,10 @@ local function set_bindings()
     vim.api.nvim_buf_set_lines(buffer_, line, -1, false, {})
     vim.api.nvim_buf_set_lines(buffer_, 0, line - 1, false, {})
   end, { desc = "Keep only the current line" })
+  vim.keymap.set("n", [[<leader>mn]], function()
+    scratch.open { liveness = "retained" }
+    vim.opt_local.filetype = "markdown"
+  end, { desc = "Open markdown note" })
   vim.keymap.set("n", [[<leader>v]], function()
     local mode = vim.fn.visualmode()
     if string.len(mode) == 0 then
