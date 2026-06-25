@@ -222,25 +222,31 @@ function M.bind_substitute_origin(substitute_origin_input)
     desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
   })
   vim.keymap.set("n", [[ZO]], function()
-    if not vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
-      vim.notify("No origin buffer.", vim.log.levels.INFO)
-      return
+    if
+      vim.api.nvim_win_is_valid(substitute_origin_input.origin_window_number)
+    then
+      focus_origin()
+    else
+      vim.notify("No origin window.", vim.log.levels.INFO)
     end
-
-    focus_origin()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Enter origin window and restore '[ and '] marks",
   })
 
   vim.keymap.set("n", [[ZB]], function()
-    if vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
-      local scratch_window = vim.api.nvim_get_current_win()
+    local scratch_window = vim.api.nvim_get_current_win()
+
+    if
+      vim.api.nvim_win_is_valid(substitute_origin_input.origin_window_number)
+    then
       focus_origin()
       vim.api.nvim_win_close(scratch_window, true)
+    elseif vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
+      vim.api.nvim_win_set_buf(scratch_window, tracked.region.buffer_number)
     else
       vim.notify("No origin buffer.", vim.log.levels.INFO)
-      vim.api.nvim_win_close(vim.api.nvim_get_current_win(), true)
+      vim.api.nvim_win_close(scratch_window, true)
     end
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
