@@ -128,7 +128,7 @@ function M.bind_substitute_origin(substitute_origin_input)
   end
   ---@return nil
   local function focus_origin()
-    local origin_lines = tracked_region.lines(tracked)
+    tracked_region.refresh(tracked)
 
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
 
@@ -147,9 +147,12 @@ function M.bind_substitute_origin(substitute_origin_input)
     else
       column_offset = tracked.region.column_begin
     end
-    local line_offset = origin_line - tracked.region.line_begin + 1
-    local line_text = origin_lines[line_offset <= 0 and #origin_lines or line_offset]
-      or ""
+    local line_text = vim.api.nvim_buf_get_lines(
+      tracked.region.buffer_number,
+      origin_line - 1,
+      origin_line,
+      true
+    )[1] or ""
     local origin_column =
       math.max(0, math.min(scratch_column + column_offset, #line_text - 1))
 
