@@ -1613,21 +1613,31 @@ local function set_commands()
     end,
   })
   vim.api.nvim_create_user_command("Mv", function(opts)
+    local buffer_ = vim.api.nvim_get_current_buf()
+
     local dest
+    local stat = vim.uv.fs_stat(opts.fargs[1])
     if
-      vim.fn.isdirectory(opts.fargs[1]) == 1
+      stat and stat.type == "directory"
       or vim.fs.basename(opts.fargs[1]) == ""
     then
-      dest = vim.fs.joinpath(opts.fargs[1], vim.fn.expand "%:t")
+      dest = vim.fs.joinpath(
+        opts.fargs[1],
+        vim.fs.basename(vim.api.nvim_buf_get_name(buffer_))
+      )
     else
       dest = opts.fargs[1]
+    end
+
+    if buffer.type_(buffer_) == "scratch" then
+      buffer.as_temporary(buffer_)
     end
 
     vim.cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. dest)
 
     local previous = vim.fn.expand "#"
     if #previous > 0 then
-      vim.fs.rm(previous)
+      pcall(vim.fs.rm, previous)
       vim.cmd.bwipeout(previous)
     end
   end, { nargs = 1, bang = true, complete = "file" })
