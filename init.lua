@@ -28,6 +28,8 @@ local quickfix = list.quickfix
 local function set_options()
   vim.cmd.filetype "on"
 
+  vim.diagnostic.config { float = { border = "rounded" } }
+
   vim.opt.allowrevins = true
   vim.opt.autoindent = true
   vim.opt.cindent = true
@@ -816,9 +818,6 @@ local function set_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
-  vim.keymap.set("n", { [[<C-w>d]], [[<C-w><C-d>]] }, function()
-    vim.diagnostic.open_float { border = "rounded" }
-  end, { desc = "Show diagnostics under the cursor" })
 
   -- paste
   vim.keymap.set(
