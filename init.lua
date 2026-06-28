@@ -1698,29 +1698,6 @@ local function set_autocommands()
       vim.opt_local.cursorline = false
     end,
   })
-  vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(event)
-      local client = vim.lsp.get_client_by_id(event.data.client_id)
-
-      if client:supports_method "textDocument/definition" then
-        vim.keymap.set(
-          "n",
-          [[gd]],
-          vim.lsp.buf.definition,
-          { buffer = true, desc = "Definition" }
-        )
-      end
-    end,
-  })
-  vim.api.nvim_create_autocmd("LspDetach", {
-    callback = function(event)
-      local function unset_bindings()
-        vim.keymap.del("n", [[gd]], { buffer = event.buf })
-      end
-
-      utils.try(unset_bindings)
-    end,
-  })
   vim.api.nvim_create_autocmd("TermOpen", {
     callback = function()
       vim.opt_local.spell = false
