@@ -1702,21 +1702,7 @@ local function set_autocommands()
     callback = function(event)
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-      if client:supports_method "textDocument/completion" then
-        vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-      end
-
-      if client:supports_method "textDocument/hover" then
-        vim.keymap.set(
-          "n",
-          [[K]],
-          vim.lsp.buf.hover,
-          { buffer = true, desc = "Hover" }
-        )
-      end
-
       if client:supports_method "textDocument/definition" then
-        vim.bo[event.buf].tagfunc = "v:lua.vim.lsp.tagfunc"
         vim.keymap.set(
           "n",
           [[gd]],
@@ -1728,11 +1714,7 @@ local function set_autocommands()
   })
   vim.api.nvim_create_autocmd("LspDetach", {
     callback = function(event)
-      vim.bo[event.buf].omnifunc = "syntaxcomplete#Complete"
-      vim.bo[event.buf].tagfunc = ""
-
       local function unset_bindings()
-        vim.keymap.del("n", [[K]], { buffer = event.buf })
         vim.keymap.del("n", [[gd]], { buffer = event.buf })
       end
 
