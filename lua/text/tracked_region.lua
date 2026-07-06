@@ -44,9 +44,26 @@ function M.refresh(tracked)
     new_column_end = mark_end[2]
   end
 
+  local line_begin = mark_begin[1] + 1
+  local column_begin = mark_begin[2]
+
+  -- If origin edits drifted the extmarks so "begin" lands after "end", the
+  -- region has collapsed. Then, insert at "begin" so `substitute_charwise`
+  -- never passes "start" > "end" to `nvim_buf_set_text` causing (E5108).
+  if
+    tracked.region.type_ == "char"
+    and (
+      line_begin > new_line_end
+      or (line_begin == new_line_end and column_begin > new_column_end + 1)
+    )
+  then
+    new_line_end = line_begin
+    new_column_end = column_begin - 1
+  end
+
   local ok, new_region = pcall(region.update, tracked.region, {
-    line_begin = mark_begin[1] + 1,
-    column_begin = mark_begin[2],
+    line_begin = line_begin,
+    column_begin = column_begin,
     line_end = new_line_end,
     column_end = new_column_end,
   })
