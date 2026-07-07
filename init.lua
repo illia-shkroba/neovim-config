@@ -1676,12 +1676,6 @@ local function set_autocommands()
         [[s///gc<Left><Left><Left>]],
         { buffer = true, desc = "Populate cmdline with s///gc" }
       )
-      vim.keymap.set(
-        { "i", "n", "o" },
-        [[<C-z>]],
-        [[]],
-        { buffer = true, desc = "Skip <C-z> in Cmdwin" }
-      )
       vim.keymap.set("n", [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
         desc = [[Wrap current line with \< and \>]],
       })
