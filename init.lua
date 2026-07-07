@@ -1667,18 +1667,6 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("CmdwinEnter", {
     callback = function()
       vim.opt_local.completeopt = { "fuzzy", "menuone", "noinsert", "popup" }
-      vim.keymap.set("i", [[<C-_>]], [[<Home>\<<End>\><Left><Left>]], {
-        desc = [[Wrap current line with \< and \>]],
-      })
-      vim.keymap.set(
-        "i",
-        [[<C-s>]],
-        [[s///gc<Left><Left><Left>]],
-        { buffer = true, desc = "Populate cmdline with s///gc" }
-      )
-      vim.keymap.set("n", [[<C-_>]], [[i<Home>\<<End>\><Left><Left><Esc>]], {
-        desc = [[Wrap current line with \< and \>]],
-      })
     end,
   })
   vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
