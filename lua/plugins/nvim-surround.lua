@@ -9,6 +9,11 @@ return {
             return { { [["{{ ]] }, { [[ }}"]] } }
           end,
         },
+        ["s"] = {
+          add = function()
+            return { { [[s//]] }, { [[/gc]] } }
+          end,
+        },
         ["w"] = {
           add = function()
             return { { [[\<]] }, { [[\>]] } }
