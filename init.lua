@@ -818,6 +818,12 @@ local function set_bindings()
     [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
     { desc = "<C-l> with :fclose!" }
   )
+  vim.keymap.set(
+    "n",
+    "-",
+    "-",
+    { remap = true, desc = "- (revert NeoVim overload)" }
+  )
 
   -- paste
   vim.keymap.set(
