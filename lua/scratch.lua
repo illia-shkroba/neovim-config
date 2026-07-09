@@ -224,7 +224,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Read origin buffer lines selected by motion in place of the scratch buffer's text",
   })
-  vim.keymap.set("n", [[ZO]], function()
+  vim.keymap.set("n", [[ZI]], function()
     if
       vim.api.nvim_win_is_valid(substitute_origin_input.origin_window_number)
     then
@@ -255,7 +255,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     buffer = substitute_origin_input.binding_buffer_number,
     desc = [[Close scratch window and enter origin window]],
   })
-  vim.keymap.set("n", [[ZW]], [[ZPZB]], {
+  vim.keymap.set("n", [[ZO]], [[ZPZB]], {
     buffer = substitute_origin_input.binding_buffer_number,
     remap = true,
     desc = [[Paste buffer's text into origin window, enter origin window and close scratch window]],

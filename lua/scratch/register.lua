@@ -33,7 +33,7 @@ function M.edit(register_)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
-  vim.keymap.set("n", [[ZW]], function()
+  vim.keymap.set("n", [[ZO]], function()
     local input_register = vim.v.register:lower()
     local target_register = input_register == [["]] and register_
       or input_register
