@@ -1313,11 +1313,7 @@ local function set_bindings()
         return vim.fn.escape(v, [[\]])
       end)
       :totable()
-    local search = [[\V]] .. table.concat(esc_lines, [[\n]])
-
-    vim.fn.setreg("/", search)
-    vim.fn.histadd("/", search)
-    vim.opt.hlsearch = true
+    register.put("/", esc_lines)
   end
 
   vim.keymap.set("n", [[<leader>#]], function()

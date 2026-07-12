@@ -36,11 +36,17 @@ end
 ---@param lines table<integer, string>
 ---@return nil
 function M.put(register, lines)
-  vim.fn.setreg(register, table.concat(lines, "\n"))
-
+  local contents
   if register == "/" then
+    contents = [[\V]] .. table.concat(lines, [[\n]])
+
+    vim.fn.histadd("/", contents)
     vim.opt.hlsearch = true
+  else
+    contents = table.concat(lines, "\n")
   end
+
+  vim.fn.setreg(register, contents)
 
   -- `neoclip` must be invoked directly. It relies on `TextYankPost` and
   -- `vim.v.event`. Although `nvim_exec_autocmds` allows triggering
