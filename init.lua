@@ -1343,6 +1343,32 @@ local function set_bindings()
     },
     { expr = true, desc = "Set selection to / register" }
   )
+  vim.keymap.set("n", [[<leader>//]], function()
+    local origin_buffer = vim.api.nvim_get_current_buf()
+
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    local line = cursor[1]
+
+    local region_ = region.from {
+      buffer_number = origin_buffer,
+      line_begin = line,
+      column_begin = 0,
+      line_end = line - 1 + vim.v.count1,
+      column_end = 0,
+      type_ = "line",
+    }
+
+    vim.api.nvim_buf_set_mark(origin_buffer, "[", line, 0, {})
+    vim.api.nvim_buf_set_mark(
+      origin_buffer,
+      "]",
+      line - 1 + vim.v.count1,
+      0,
+      {}
+    )
+
+    put_region_to_search_register(region_)
+  end, { desc = "Set [count] lines to / register" })
   vim.keymap.set(
     { "n", "v" },
     [[<leader>?]],
