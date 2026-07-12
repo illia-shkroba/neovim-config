@@ -646,6 +646,28 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>hh]], function()
     vim.cmd.History()
   end, { desc = "History" })
+  vim.keymap.set("n", { [[<C-w>g]], [[<C-w><C-g>]] }, function()
+    local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
+    local current_window = vim.api.nvim_get_current_win()
+
+    if last_accessed_window == 0 or last_accessed_window == current_window then
+      vim.notify("No last accessed window.", vim.log.levels.INFO)
+      return
+    end
+
+    local buffer_ = vim.api.nvim_get_current_buf()
+
+    local new_window = vim.api.nvim_open_win(buffer_, true, {
+      split = "right",
+      win = last_accessed_window,
+    })
+    vim.api.nvim_win_close(current_window, true)
+
+    vim.api.nvim_set_current_win(last_accessed_window)
+    vim.api.nvim_set_current_win(new_window)
+  end, {
+    desc = "Move current window to a vertical split right of the origin window",
+  })
   vim.keymap.set("n", { [[<C-w>e]], [[<C-w><C-e>]] }, function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
     local current_window = vim.api.nvim_get_current_win()
