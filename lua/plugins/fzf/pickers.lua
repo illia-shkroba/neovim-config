@@ -212,8 +212,10 @@ function M.flows(flows_input)
     :totable()
 
   local name_to_flow = {}
+  local name_to_key = {}
   for _, flow in ipairs(flows_input.flows) do
     name_to_flow[flow.name] = flow.flow
+    name_to_key[flow.name] = flow.key
   end
 
   fzf.fzf_exec(names, {
@@ -225,6 +227,12 @@ function M.flows(flows_input)
         local name = selected[1]
         local flow = name_to_flow[name] or function() end
         flow()
+      end,
+      ["ctrl-f"] = function(selected)
+        local name = selected[1]
+        local key = name_to_key[name] or ""
+        vim.cmd "stopinsert"
+        vim.fn.feedkeys(":Flow " .. key, "nt")
       end,
     },
     fzf_opts = {
