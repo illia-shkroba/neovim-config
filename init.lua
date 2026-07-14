@@ -1690,6 +1690,32 @@ local function set_commands()
       vim.cmd.bwipeout(previous)
     end
   end, { nargs = 1, bang = true, complete = "file" })
+  vim.api.nvim_create_user_command("Flow", function(opts)
+    local key = opts.fargs[1]
+
+    for _, flow in pairs(flows) do
+      if flow.key == key then
+        flow.flow()
+        return
+      end
+    end
+
+    vim.notify("No flow with key: " .. key, vim.log.levels.ERROR)
+  end, {
+    nargs = 1,
+    complete = function(arg_lead)
+      local keys = {}
+
+      for _, flow in pairs(flows) do
+        if flow.key:sub(1, #arg_lead) == arg_lead then
+          table.insert(keys, flow.key)
+        end
+      end
+
+      return keys
+    end,
+    desc = "Run flow",
+  })
 end
 set_commands()
 

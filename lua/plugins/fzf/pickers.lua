@@ -196,6 +196,7 @@ M.directories_actions = {
 
 ---@class FlowsInput
 ---@field flows table<integer, {
+---  key: string,
 ---  name: string,
 ---  flow: fun(): nil,
 ---}>
