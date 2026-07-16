@@ -132,6 +132,15 @@ local function set_bindings()
 
     vim.notify("Args emptied", vim.log.levels.INFO)
   end, { desc = "argdelete *" })
+  vim.keymap.set("n", [[<leader>ag]], function()
+    vim.cmd.argglobal()
+    vim.notify("Global args restored", vim.log.levels.INFO)
+  end, { desc = "argglobal" })
+  vim.keymap.set("n", [[<leader>al]], function()
+    vim.cmd.arglocal { bang = true }
+    pcall(vim.cmd.argdelete, "*")
+    vim.notify("Local args created", vim.log.levels.INFO)
+  end, { desc = "arglocal" })
   vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
   vim.keymap.set("n", [[<leader>as]], vim.cmd.sall, { desc = "sall" })
 
