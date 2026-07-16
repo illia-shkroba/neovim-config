@@ -217,6 +217,13 @@ return {
   },
   {
     flow = function()
+      vim.cmd [[Git stash drop]]
+    end,
+    key = "git-stash-drop",
+    name = "Git stash drop",
+  },
+  {
+    flow = function()
       vim.cmd [[Git stash list --patch]]
     end,
     key = "git-stash-list",
