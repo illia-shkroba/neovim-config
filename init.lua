@@ -142,6 +142,11 @@ local function set_bindings()
     vim.notify("Local args created", vim.log.levels.INFO)
   end, { desc = "arglocal" })
   vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
+  vim.keymap.set("n", [[<leader>aR]], function()
+    local buffer_ = scratch.open { liveness = "retained" }
+    vim.opt_local.statusline = "args " .. status.statusline
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, vim.fn.argv())
+  end, { desc = "Paste args in a scratch window" })
   vim.keymap.set("n", [[<leader>as]], vim.cmd.sall, { desc = "sall" })
 
   -- case
