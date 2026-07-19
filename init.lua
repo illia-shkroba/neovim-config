@@ -671,13 +671,15 @@ local function set_bindings()
     end
 
     local buffer_ = vim.api.nvim_get_current_buf()
-
     local new_window = vim.api.nvim_open_win(buffer_, true, {
       split = "right",
       win = last_accessed_window,
     })
-    vim.api.nvim_win_close(current_window, true)
 
+    local cursor = vim.api.nvim_win_get_cursor(current_window)
+    vim.api.nvim_win_set_cursor(new_window, cursor)
+
+    vim.api.nvim_win_close(current_window, true)
     vim.api.nvim_set_current_win(last_accessed_window)
     vim.api.nvim_set_current_win(new_window)
   end, {
