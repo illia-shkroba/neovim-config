@@ -1069,6 +1069,18 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
   vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
   vim.keymap.set("n", [[<leader>T]], fzf.tags, { desc = "List tags" })
+  vim.keymap.set("n", [[ZG]], function()
+    local buffer_ = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(
+      buffer_,
+      0,
+      vim.api.nvim_buf_line_count(buffer_),
+      true
+    )
+    pickers.grep_by_filetype(table.concat(lines, "\n"))
+  end, {
+    desc = [[Grep by filetype with buffer text as search query]],
+  })
 
   -- popup-menu
   vim.keymap.set("i", [[<C-k>]], function()
@@ -1281,14 +1293,6 @@ local function set_bindings()
     expr = true,
     remap = true,
     desc = [[Paste buffer's text into register "/, and close window]],
-  })
-  vim.keymap.set("n", [[ZG]], function()
-    yank_buffer "g"
-    return [[ZB]]
-  end, {
-    expr = true,
-    remap = true,
-    desc = [[Paste buffer's text into register "g, and close window]],
   })
   vim.keymap.set("n", [[ZL]], function()
     yank_buffer "/"
