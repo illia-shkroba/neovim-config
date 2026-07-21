@@ -947,6 +947,9 @@ local function set_bindings()
       desc = "Grep by filetype with motion/selection as search query",
     }
   )
+  vim.keymap.set("n", [[<leader>G]], function()
+    pickers.grep_by_filetype(vim.fn.getreg(vim.v.register))
+  end, { desc = "Grep by filetype with register as search query" })
   vim.keymap.set(
     "n",
     [[<leader>fg]],
