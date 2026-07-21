@@ -949,7 +949,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<leader>G]],
+    [[<leader>fg]],
     pickers.live_grep_by_filetype,
     { desc = "Grep files with extension" }
   )
@@ -1045,11 +1045,6 @@ local function set_bindings()
     { desc = "List treesitter symbols for current buffer" }
   )
   vim.keymap.set("n", [[<leader>ff]], fzf.files, { desc = "List files" })
-  vim.keymap.set("n", [[<leader>fg]], function()
-    pickers.grep_by_filetype(vim.fn.getreg "g")
-  end, {
-    desc = [[Grep by filetype with "g as search query]],
-  })
   vim.keymap.set(
     "n",
     [[<leader>fp]],
