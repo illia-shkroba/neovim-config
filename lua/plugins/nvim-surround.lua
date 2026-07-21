@@ -4,6 +4,11 @@ return {
   config = function()
     require("nvim-surround").setup {
       surrounds = {
+        ["W"] = {
+          add = function()
+            return { { [[\b]] }, { [[\b]] } }
+          end,
+        },
         ["j"] = {
           add = function()
             return { { [["{{ ]] }, { [[ }}"]] } }
