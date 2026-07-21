@@ -9,13 +9,24 @@ local filetypes = require "filetypes"
 ---@param search string|nil
 ---@param matching_filetypes table<integer, string>|nil
 ---@param query string|nil
+---@param no_esc boolean|nil
 ---@return nil
-local function grep_by_filetype(picker, search, matching_filetypes, query)
+local function grep_by_filetype(
+  picker,
+  search,
+  matching_filetypes,
+  query,
+  no_esc
+)
   if matching_filetypes == nil then
     local filetype = vim.bo.filetype
     local filename = vim.fs.basename(vim.api.nvim_buf_get_name(0))
 
     matching_filetypes = filetypes.match_rg(filetype, filename)
+  end
+
+  if no_esc == nil then
+    no_esc = false
   end
 
   local actions = {
@@ -27,10 +38,19 @@ local function grep_by_filetype(picker, search, matching_filetypes, query)
         },
         actions = {
           ["enter"] = function(selected, opts)
-            grep_by_filetype(picker, search, selected, opts.__INFO.last_query)
+            grep_by_filetype(
+              picker,
+              search,
+              selected,
+              opts.__INFO.last_query,
+              no_esc
+            )
           end,
         },
       }
+    end,
+    ["alt-e"] = function()
+      grep_by_filetype(picker, search, matching_filetypes, query, not no_esc)
     end,
   }
 
@@ -39,6 +59,7 @@ local function grep_by_filetype(picker, search, matching_filetypes, query)
       actions = actions,
       silent = true,
       search = search,
+      no_esc = no_esc,
       query = query,
     }
   else
@@ -55,6 +76,7 @@ local function grep_by_filetype(picker, search, matching_filetypes, query)
       actions = actions,
       silent = true,
       search = search,
+      no_esc = no_esc,
       query = query,
       rg_opts = table.concat(type_options, " ")
         .. " --column --line-number --no-heading --color=always --smart-case"
