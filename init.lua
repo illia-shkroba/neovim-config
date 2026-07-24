@@ -1637,6 +1637,21 @@ end
 set_bindings()
 
 local function set_commands()
+  --- @param buffer_ integer
+  --- @param dest string
+  --- @return string
+  local function move_target(buffer_, dest)
+    local stat = vim.uv.fs_stat(dest)
+    if stat and stat.type == "directory" or vim.fs.basename(dest) == "" then
+      return vim.fs.joinpath(
+        dest,
+        vim.fs.basename(vim.api.nvim_buf_get_name(buffer_))
+      )
+    end
+
+    return dest
+  end
+
   vim.api.nvim_create_user_command(
     "History",
     function()
@@ -1649,35 +1664,53 @@ local function set_commands()
     end,
     { desc = "Open a scratch window with a Shell history fetched from atuin" }
   )
-  vim.api.nvim_create_user_command("Mv", function(opts)
+  vim.api.nvim_create_user_command("Cp", function(opts)
     local buffer_ = vim.api.nvim_get_current_buf()
-
-    local dest
-    local stat = vim.uv.fs_stat(opts.fargs[1])
-    if
-      stat and stat.type == "directory"
-      or vim.fs.basename(opts.fargs[1]) == ""
-    then
-      dest = vim.fs.joinpath(
-        opts.fargs[1],
-        vim.fs.basename(vim.api.nvim_buf_get_name(buffer_))
-      )
-    else
-      dest = opts.fargs[1]
-    end
+    local dest = move_target(buffer_, opts.fargs[1])
 
     if buffer.type_(buffer_) == "scratch" then
       buffer.as_temporary(buffer_)
     end
 
-    vim.cmd("saveas" .. (opts.bang and "!" or "") .. " ++p " .. dest)
+    vim.cmd(
+      "write"
+        .. (opts.bang and "!" or "")
+        .. " ++p "
+        .. vim.fn.fnameescape(dest)
+    )
+    vim.cmd.edit "#"
+  end, {
+    nargs = 1,
+    bang = true,
+    complete = "file",
+    desc = "Write the current buffer to {file}",
+  })
+  vim.api.nvim_create_user_command("Mv", function(opts)
+    local buffer_ = vim.api.nvim_get_current_buf()
+    local dest = move_target(buffer_, opts.fargs[1])
+
+    if buffer.type_(buffer_) == "scratch" then
+      buffer.as_temporary(buffer_)
+    end
+
+    vim.cmd(
+      "saveas"
+        .. (opts.bang and "!" or "")
+        .. " ++p "
+        .. vim.fn.fnameescape(dest)
+    )
 
     local previous = vim.fn.expand "#"
     if #previous > 0 then
       pcall(vim.fs.rm, previous)
       vim.cmd.bwipeout(previous)
     end
-  end, { nargs = 1, bang = true, complete = "file" })
+  end, {
+    nargs = 1,
+    bang = true,
+    complete = "file",
+    desc = "Rename the current file to {file}",
+  })
   vim.api.nvim_create_user_command("Flow", function(opts)
     local key = opts.fargs[1]
 
