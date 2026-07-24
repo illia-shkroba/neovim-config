@@ -1728,11 +1728,6 @@ local function set_autocommands()
     pattern = "COMMIT_EDITMSG",
     command = "G log --max-count=100 | wincmd k",
   })
-  vim.api.nvim_create_autocmd("CmdwinEnter", {
-    callback = function()
-      vim.opt_local.completeopt = { "fuzzy", "menuone", "noinsert", "popup" }
-    end,
-  })
   vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
     callback = function()
       vim.opt_local.cursorline = true
