@@ -1638,11 +1638,6 @@ set_bindings()
 
 local function set_commands()
   vim.api.nvim_create_user_command(
-    "Config",
-    [[split `=stdpath("config") .. "/init.lua"`]],
-    {}
-  )
-  vim.api.nvim_create_user_command(
     "History",
     function()
       scratch.open { liveness = "retained" }
@@ -1654,33 +1649,6 @@ local function set_commands()
     end,
     { desc = "Open a scratch window with a Shell history fetched from atuin" }
   )
-  vim.api.nvim_create_user_command("Mails", function(opts)
-    local root = vim.env.MAIL
-    if #opts.fargs > 0 then
-      local topic = opts.fargs[1]
-      root = vim.fs.joinpath(root, topic)
-    end
-
-    fzf.live_grep {
-      cwd = root,
-      silent = true,
-      rg_opts = "--column --line-number"
-        .. " --pre markitdown-wrapper --smart-case --text --hidden --no-ignore",
-    }
-  end, {
-    nargs = "?",
-    complete = function(arg_lead)
-      local root = vim.env.MAIL
-      local topics = {}
-
-      for item, type_ in vim.fs.dir(root, { depth = 1 }) do
-        if type_ == "directory" and item:sub(1, #arg_lead) == arg_lead then
-          table.insert(topics, item)
-        end
-      end
-      return topics
-    end,
-  })
   vim.api.nvim_create_user_command("Mv", function(opts)
     local buffer_ = vim.api.nvim_get_current_buf()
 
