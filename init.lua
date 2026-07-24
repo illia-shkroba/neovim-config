@@ -270,6 +270,7 @@ local function set_bindings()
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
       local buffer_ = scratch.open { liveness = "retained" }
+      vim.opt_local.filetype = "markdown"
       vim.opt_local.statusline = "tmux " .. status.statusline
 
       vim.api.nvim_buf_set_lines(
