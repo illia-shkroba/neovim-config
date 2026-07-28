@@ -38,7 +38,7 @@ end
 function M.put(register, lines)
   local contents
   if register == "/" then
-    contents = [[\V]] .. table.concat(lines, [[\n]])
+    contents = table.concat(lines, [[\n]])
 
     vim.fn.histadd("/", contents)
     vim.opt.hlsearch = true
