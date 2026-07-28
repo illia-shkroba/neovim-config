@@ -1041,7 +1041,7 @@ local function set_bindings()
     fzf.quickfix_stack,
     { desc = "List quickfix lists" }
   )
-  vim.keymap.set("n", [[<leader>ft]], fzf.tabs, { desc = "List tabs" })
+  vim.keymap.set("n", [[<leader>T]], fzf.tabs, { desc = "List tabs" })
   vim.keymap.set(
     "n",
     [[<leader>fe]],
@@ -1063,11 +1063,11 @@ local function set_bindings()
     fzf.resume,
     { desc = "Resume most recent picker" }
   )
+  vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
   vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
   vim.keymap.set("n", [[<leader>k]], fzf.changes, { desc = "List changes" })
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })
   vim.keymap.set("n", [[<leader>K]], fzf.manpages, { desc = "List man pages" })
-  vim.keymap.set("n", [[<leader>T]], fzf.tags, { desc = "List tags" })
   vim.keymap.set("n", [[ZG]], function()
     local buffer_ = vim.api.nvim_get_current_buf()
     local lines = vim.api.nvim_buf_get_lines(
