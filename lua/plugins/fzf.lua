@@ -25,6 +25,16 @@ return {
       end
     end
 
+    local function close_tabs(selected)
+      -- `tabs` entries are prefixed with "<tabnr>\t<tabh>\t<winid>)".
+      for _, sel in ipairs(selected) do
+        local tabh = tonumber(sel:match "(%d+)\t%d+%)")
+        if tabh and vim.api.nvim_tabpage_is_valid(tabh) then
+          utils.try(vim.cmd.tabclose, vim.api.nvim_tabpage_get_number(tabh))
+        end
+      end
+    end
+
     fzf.setup {
       defaults = {
         actions = {
@@ -268,6 +278,7 @@ return {
       tabs = {
         actions = {
           ["alt-f"] = false,
+          ["alt-z"] = { fn = close_tabs, reload = true },
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
         },
