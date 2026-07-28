@@ -1416,6 +1416,18 @@ local function set_bindings()
       desc = "Set selection to / register and then `lvimgrep//gj %`",
     }
   )
+  vim.keymap.set("n", [[<leader>??]], function()
+    local region_ = count_lines_region()
+
+    if buffer.type_(region_.buffer_number) == "scratch" then
+      buffer.as_temporary(region_.buffer_number)
+    end
+
+    put_region_to_search_register(region_)
+    lvimgrep_current_buffer()
+  end, {
+    desc = "Set [count] lines to / register and then `lvimgrep//gj %`",
+  })
   vim.keymap.set(
     "v",
     [[<leader>#]],
