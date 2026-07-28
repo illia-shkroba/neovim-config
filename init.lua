@@ -819,8 +819,14 @@ local function set_bindings()
     end
   end, { desc = "Remove current buffer's file" })
   vim.keymap.set("n", [[ZB]], function()
-    local last_accessed_window = vim.fn.winnr "#"
-    return last_accessed_window > 0 and [[<C-w>p<C-w>m]] or [[ZQ]]
+    local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
+    local current_window = vim.api.nvim_get_current_win()
+
+    if last_accessed_window > 0 and last_accessed_window ~= current_window then
+      return [[<C-w>p<C-w>m]]
+    else
+      return [[ZQ]]
+    end
   end, {
     expr = true,
     remap = true,
