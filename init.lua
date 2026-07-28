@@ -1333,7 +1333,7 @@ local function set_bindings()
         return vim.fn.escape(v, [[\]])
       end)
       :totable()
-    register.put("/", esc_lines)
+    register.put("/", { [[\V]] .. table.concat(esc_lines, [[\n]]) })
   end
 
   vim.keymap.set("n", [[<leader>#]], function()
