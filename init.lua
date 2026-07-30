@@ -1562,7 +1562,7 @@ local function set_bindings()
     local window = vim.api.nvim_get_current_win()
     local cursor = vim.api.nvim_win_get_cursor(window)
 
-    vim.cmd.normal [[gqal]]
+    vim.cmd [[keepjumps normal gqal]]
 
     utils.try(vim.api.nvim_win_set_cursor, window, cursor)
   end, { desc = "Format the buffer" })
