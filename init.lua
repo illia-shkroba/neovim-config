@@ -218,34 +218,34 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>cD]],
-    [[<Cmd>execute "cd " .. system("dirname '" .. @% .. "'")<CR>]],
+    [[<Cmd>execute "cd " .. fnameescape(expand('%:p:h'))<CR>]],
     { desc = "cd into current buffer's directory" }
   )
   vim.keymap.set(
     "n",
     [[<leader>cL]],
-    [[<Cmd>execute "lcd " .. system("dirname '" .. @% .. "'")<CR>]],
+    [[<Cmd>execute "lcd " .. fnameescape(expand('%:p:h'))<CR>]],
     { desc = "lcd into current buffer's directory" }
   )
   vim.keymap.set(
     "n",
     [[<leader>cT]],
-    [[<Cmd>execute "tcd " .. system("dirname '" .. @% .. "'")<CR>]],
+    [[<Cmd>execute "tcd " .. fnameescape(expand('%:p:h'))<CR>]],
     { desc = "tcd into current buffer's directory" }
   )
   vim.keymap.set("n", [[<leader>cd]], function()
     for _ = 1, vim.v.count1 do
-      vim.cmd.cd(step_into_buffer_dir())
+      vim.cmd.cd(vim.fn.fnameescape(step_into_buffer_dir()))
     end
   end, { desc = "cd by one level into current buffer's directory" })
   vim.keymap.set("n", [[<leader>cl]], function()
     for _ = 1, vim.v.count1 do
-      vim.cmd.lcd(step_into_buffer_dir())
+      vim.cmd.lcd(vim.fn.fnameescape(step_into_buffer_dir()))
     end
   end, { desc = "lcd by one level into current buffer's directory" })
   vim.keymap.set("n", [[<leader>ct]], function()
     for _ = 1, vim.v.count1 do
-      vim.cmd.tcd(step_into_buffer_dir())
+      vim.cmd.tcd(vim.fn.fnameescape(step_into_buffer_dir()))
     end
   end, { desc = "tcd by one level into current buffer's directory" })
 
@@ -1215,11 +1215,11 @@ local function set_bindings()
       local title = current_list.get_title()
 
       local buffer_
-      if utils.try(vim.cmd.drop, title) == nil then
+      if utils.try(vim.cmd.drop, vim.fn.fnameescape(title)) == nil then
         -- Buffer named `title` __is not__ available.
         buffer_ = vim.api.nvim_create_buf(true, false)
         vim.cmd.drop(buffer_)
-        vim.cmd.file(current_list.get_title())
+        vim.cmd.file(vim.fn.fnameescape(title))
       else
         -- Buffer named `title` __is__ available.
         -- No need to open it since it was opened with `drop` already.
@@ -1724,10 +1724,11 @@ local function set_commands()
         .. vim.fn.fnameescape(dest)
     )
 
+    local previous_buffer = vim.fn.bufnr "#"
     local previous = vim.fn.expand "#"
     if #previous > 0 then
       pcall(vim.fs.rm, previous)
-      vim.cmd.bwipeout(previous)
+      vim.cmd.bwipeout(previous_buffer)
     end
   end, {
     nargs = 1,
@@ -1822,7 +1823,11 @@ local function set_templates()
           true
         )
         if #lines == 1 and lines[1] == "" then
-          vim.cmd([[0r ]] .. template_path .. [[ | normal G"_ddgg]])
+          vim.cmd(
+            [[0r ]]
+              .. vim.fn.fnameescape(template_path)
+              .. [[ | normal G"_ddgg]]
+          )
         end
       end,
     })
