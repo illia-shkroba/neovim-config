@@ -141,6 +141,26 @@ local function set_bindings()
     pcall(vim.cmd.argdelete, "*")
     vim.notify("Local args created", vim.log.levels.INFO)
   end, { desc = "arglocal" })
+  vim.keymap.set("n", [[<leader>aL]], function()
+    local names = vim
+      .iter(vim.api.nvim_buf_get_lines(0, 0, -1, true))
+      :filter(function(line)
+        return not line:match "^%s*$"
+      end)
+      :map(vim.fn.fnameescape)
+      :totable()
+
+    local count = #names
+    if count == 0 then
+      vim.notify("No args in buffer", vim.log.levels.WARN)
+      return
+    end
+
+    vim.cmd.argadd(names)
+    vim.cmd.argdedupe()
+
+    vim.notify("Added to args: " .. count .. " file(s)", vim.log.levels.INFO)
+  end, { desc = "Load args from the current buffer" })
   vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
   vim.keymap.set("n", [[<leader>aR]], function()
     local buffer_ = scratch.open { liveness = "retained" }
