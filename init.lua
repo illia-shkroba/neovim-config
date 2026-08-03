@@ -298,6 +298,8 @@ local function set_bindings()
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
   vim.keymap.set("n", [[<leader>mP]], function()
+    local path_ = buffer.name(vim.api.nvim_get_current_buf())
+
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
 
@@ -308,20 +310,25 @@ local function set_bindings()
       0,
       1,
       false,
-      { vim.fn.expand "#:p:~" .. ":" .. line }
+      { vim.fn.fnamemodify(path_, ":~") .. ":" .. line }
     )
   end, {
     desc = "Paste current buffer's home-relative path with cursor line in a scratch window",
   })
   vim.keymap.set("n", [[<leader>mp]], function()
+    local path_ = buffer.name(vim.api.nvim_get_current_buf())
+
     local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "absolute " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#:p" })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { path_ })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
   vim.keymap.set("n", [[<leader>mt]], function()
+    local name =
+      vim.fn.fnamemodify(buffer.name(vim.api.nvim_get_current_buf()), ":t")
+
     local buffer_ = scratch.open { liveness = "onetime" }
     vim.opt_local.statusline = "filename " .. status.statusline
-    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#:t" })
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { name })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>mw]], function()
     local buffer_ = scratch.open { liveness = "onetime" }
@@ -332,9 +339,11 @@ local function set_bindings()
     "n",
     [[<leader>my]],
     function()
+      local path_ = buffer.short_name(vim.api.nvim_get_current_buf())
+
       local buffer_ = scratch.open { liveness = "onetime" }
       vim.opt_local.statusline = "cwd-relative " .. status.statusline
-      vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.expand "#" })
+      vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { path_ })
     end,
     { desc = "Paste current buffer's cwd-relative path in a scratch window" }
   )
