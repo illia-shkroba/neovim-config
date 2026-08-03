@@ -182,7 +182,7 @@ local function set_bindings()
 
   -- cwd
   local function step_into_buffer_dir()
-    local src_dir, dest_dir = vim.fn.getcwd(), vim.api.nvim_buf_get_name(0)
+    local src_dir, dest_dir = vim.fn.getcwd(), buffer.name(0)
     local step = path.step_into(src_dir, dest_dir)
     if vim.fn.isdirectory(step) == 1 then
       return step
