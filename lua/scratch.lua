@@ -104,6 +104,20 @@ function M.bind_substitute_origin(substitute_origin_input)
     end
   end
 
+  ---@return table<integer, string>
+  local function scratch_lines()
+    return normalize_substitution(
+      vim.api.nvim_buf_get_lines(
+        substitute_origin_input.binding_buffer_number,
+        0,
+        vim.api.nvim_buf_line_count(
+          substitute_origin_input.binding_buffer_number
+        ),
+        true
+      )
+    )
+  end
+
   ---@return nil
   local function fix_marks()
     local line_count = vim.api.nvim_buf_line_count(tracked.region.buffer_number)
@@ -173,24 +187,33 @@ function M.bind_substitute_origin(substitute_origin_input)
       return
     end
 
-    local lines = normalize_substitution(
-      vim.api.nvim_buf_get_lines(
-        substitute_origin_input.binding_buffer_number,
-        0,
-        vim.api.nvim_buf_line_count(
-          substitute_origin_input.binding_buffer_number
-        ),
-        true
-      )
-    )
-
-    tracked = tracked_region.substitute(tracked, lines)
+    tracked = tracked_region.substitute(tracked, scratch_lines())
 
     fix_marks()
     highlight()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Paste scratch buffer's text back to the origin buffer in place of the selected lines by motion",
+  })
+  vim.keymap.set("n", [[ZT]], function()
+    if not vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
+      vim.notify("No origin buffer.", vim.log.levels.INFO)
+      return
+    end
+
+    vim.api.nvim_buf_set_lines(
+      tracked.region.buffer_number,
+      0,
+      -1,
+      false,
+      scratch_lines()
+    )
+
+    vim.api.nvim_win_close(0, true)
+    vim.api.nvim_set_current_buf(tracked.region.buffer_number)
+  end, {
+    buffer = substitute_origin_input.binding_buffer_number,
+    desc = "Paste scratch buffer's text back to the origin buffer in place of its whole contents, enter origin buffer and close scratch window",
   })
   vim.keymap.set("n", [[ZD]], function()
     if not vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
