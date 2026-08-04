@@ -16,6 +16,13 @@ function M.name(buffer)
 end
 
 ---@param buffer integer
+---@return string
+function M.dirname(buffer)
+  return M.netrw_dir(buffer)
+    or vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buffer), ":p:h")
+end
+
+---@param buffer integer
 ---@return string|nil
 function M.netrw_dir(buffer)
   if vim.bo[buffer].filetype ~= "netrw" then
