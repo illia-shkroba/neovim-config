@@ -11,7 +11,7 @@ local namespace = vim.api.nvim_create_namespace "tracked_region"
 
 ---@param tracked TrackedRegion
 ---@return nil
-local function release(tracked)
+local function delete_marks(tracked)
   vim.api.nvim_buf_del_extmark(
     tracked.region.buffer_number,
     namespace,
@@ -107,7 +107,7 @@ end
 ---@param region_ Region
 ---@return nil
 function M.reset(tracked, region_)
-  release(tracked)
+  delete_marks(tracked)
 
   local reset = M.from_region(region_)
 
