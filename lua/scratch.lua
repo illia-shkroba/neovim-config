@@ -94,6 +94,16 @@ function M.bind_substitute_origin(substitute_origin_input)
   local tracked =
     tracked_region.from_region(substitute_origin_input.origin_region)
 
+  vim.api.nvim_create_autocmd("BufWipeout", {
+    buffer = substitute_origin_input.binding_buffer_number,
+    callback = function()
+      if vim.api.nvim_buf_is_valid(tracked.region.buffer_number) then
+        tracked_region.release(tracked)
+      end
+    end,
+    once = true,
+  })
+
   ---@param lines table<integer, string>
   ---@return table<integer, string>
   local function normalize_substitution(lines)
