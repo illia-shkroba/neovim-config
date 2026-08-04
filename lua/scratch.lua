@@ -201,13 +201,22 @@ function M.bind_substitute_origin(substitute_origin_input)
       return
     end
 
-    vim.api.nvim_buf_set_lines(
-      tracked.region.buffer_number,
-      0,
-      -1,
-      false,
-      scratch_lines()
+    tracked_region.reset(
+      tracked,
+      region.from {
+        buffer_number = tracked.region.buffer_number,
+        line_begin = 1,
+        column_begin = 0,
+        line_end = vim.api.nvim_buf_line_count(tracked.region.buffer_number),
+        column_end = 0,
+        type_ = "line",
+      }
     )
+
+    tracked_region.substitute(tracked, scratch_lines())
+
+    fix_marks()
+    highlight()
 
     vim.api.nvim_win_close(0, true)
     vim.api.nvim_set_current_buf(tracked.region.buffer_number)
