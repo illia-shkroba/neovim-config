@@ -235,24 +235,15 @@ local function set_bindings()
       vim.cmd.tcd ".."
     end
   end, { desc = "tcd .." })
-  vim.keymap.set(
-    "n",
-    [[<leader>cD]],
-    [[<Cmd>execute "cd " .. fnameescape(expand('%:p:h'))<CR>]],
-    { desc = "cd into current buffer's directory" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>cL]],
-    [[<Cmd>execute "lcd " .. fnameescape(expand('%:p:h'))<CR>]],
-    { desc = "lcd into current buffer's directory" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>cT]],
-    [[<Cmd>execute "tcd " .. fnameescape(expand('%:p:h'))<CR>]],
-    { desc = "tcd into current buffer's directory" }
-  )
+  vim.keymap.set("n", [[<leader>cD]], function()
+    vim.cmd.cd(vim.fn.fnameescape(buffer.dirname(0)))
+  end, { desc = "cd into current buffer's directory" })
+  vim.keymap.set("n", [[<leader>cL]], function()
+    vim.cmd.lcd(vim.fn.fnameescape(buffer.dirname(0)))
+  end, { desc = "lcd into current buffer's directory" })
+  vim.keymap.set("n", [[<leader>cT]], function()
+    vim.cmd.tcd(vim.fn.fnameescape(buffer.dirname(0)))
+  end, { desc = "tcd into current buffer's directory" })
   vim.keymap.set("n", [[<leader>cd]], function()
     for _ = 1, vim.v.count1 do
       vim.cmd.cd(vim.fn.fnameescape(step_into_buffer_dir()))
