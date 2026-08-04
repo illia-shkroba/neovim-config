@@ -11,6 +11,21 @@ local namespace = vim.api.nvim_create_namespace "tracked_region"
 
 ---@param tracked TrackedRegion
 ---@return nil
+local function release(tracked)
+  vim.api.nvim_buf_del_extmark(
+    tracked.region.buffer_number,
+    namespace,
+    tracked.mark_begin
+  )
+  vim.api.nvim_buf_del_extmark(
+    tracked.region.buffer_number,
+    namespace,
+    tracked.mark_end
+  )
+end
+
+---@param tracked TrackedRegion
+---@return nil
 function M.refresh(tracked)
   local mark_begin = vim.api.nvim_buf_get_extmark_by_id(
     tracked.region.buffer_number,
@@ -80,24 +95,25 @@ end
 
 ---@param tracked TrackedRegion
 ---@param target table<integer, string>
----@return TrackedRegion
+---@return nil
 function M.substitute(tracked, target)
   M.refresh(tracked)
 
   local substitute_region = region.substitute(tracked.region, target)
+  M.reset(tracked, substitute_region)
+end
 
-  vim.api.nvim_buf_del_extmark(
-    tracked.region.buffer_number,
-    namespace,
-    tracked.mark_begin
-  )
-  vim.api.nvim_buf_del_extmark(
-    tracked.region.buffer_number,
-    namespace,
-    tracked.mark_end
-  )
+---@param tracked TrackedRegion
+---@param region_ Region
+---@return nil
+function M.reset(tracked, region_)
+  release(tracked)
 
-  return M.from_region(substitute_region)
+  local reset = M.from_region(region_)
+
+  tracked.mark_begin = reset.mark_begin
+  tracked.mark_end = reset.mark_end
+  tracked.region = reset.region
 end
 
 ---@param region_ Region

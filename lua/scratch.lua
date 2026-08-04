@@ -187,7 +187,7 @@ function M.bind_substitute_origin(substitute_origin_input)
       return
     end
 
-    tracked = tracked_region.substitute(tracked, scratch_lines())
+    tracked_region.substitute(tracked, scratch_lines())
 
     fix_marks()
     highlight()
@@ -221,7 +221,7 @@ function M.bind_substitute_origin(substitute_origin_input)
       return
     end
 
-    tracked = tracked_region.substitute(tracked, {})
+    tracked_region.substitute(tracked, {})
 
     fix_marks()
   end, {
