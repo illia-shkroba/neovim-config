@@ -244,8 +244,7 @@ function M.bind_substitute_origin(substitute_origin_input)
     fix_marks()
     highlight()
 
-    vim.api.nvim_win_close(0, true)
-    vim.api.nvim_set_current_buf(tracked.region.buffer_number)
+    close_scratch()
   end, {
     buffer = substitute_origin_input.binding_buffer_number,
     desc = "Paste scratch buffer's text back to the origin buffer in place of its whole contents, enter origin buffer and close scratch window",
