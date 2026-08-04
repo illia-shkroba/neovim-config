@@ -9,6 +9,23 @@ local namespace = vim.api.nvim_create_namespace "tracked_region"
 ---@field mark_end integer
 ---@field region Region
 
+local released_metatable = {
+  __index = function(_, key)
+    error(
+      "Attempt to read `" .. tostring(key) .. "` on a released `TrackedRegion`.",
+      2
+    )
+  end,
+  __newindex = function(_, key)
+    error(
+      "Attempt to write `"
+        .. tostring(key)
+        .. "` on a released `TrackedRegion`.",
+      2
+    )
+  end,
+}
+
 ---@param tracked TrackedRegion
 ---@return nil
 local function delete_marks(tracked)
@@ -114,6 +131,27 @@ function M.reset(tracked, region_)
   tracked.mark_begin = reset.mark_begin
   tracked.mark_end = reset.mark_end
   tracked.region = reset.region
+end
+
+---Stop tracking `tracked`'s region. Passing `tracked` to any other function
+---afterwards raises an error. Calling `release` again is a no-op.
+---@param tracked TrackedRegion
+---@return nil
+function M.release(tracked)
+  if M.released(tracked) then
+    return
+  end
+
+  delete_marks(tracked)
+
+  tracked.mark_begin, tracked.mark_end, tracked.region = nil, nil, nil
+  setmetatable(tracked, released_metatable)
+end
+
+---@param tracked TrackedRegion
+---@return boolean
+function M.released(tracked)
+  return getmetatable(tracked) == released_metatable
 end
 
 ---@param region_ Region
