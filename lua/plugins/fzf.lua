@@ -25,13 +25,60 @@ return {
       end
     end
 
-    local function close_tabs(selected)
-      -- `tabs` entries are prefixed with "<tabnr>\t<tabh>\t<winid>)".
-      for _, sel in ipairs(selected) do
-        local tabh = tonumber(sel:match "(%d+)\t%d+%)")
-        if tabh and vim.api.nvim_tabpage_is_valid(tabh) then
-          utils.try(vim.cmd.tabclose, vim.api.nvim_tabpage_get_number(tabh))
+    -- Windows of a tab that get an entry in the `tabs` picker list.
+    local function displayed_windows(tabh)
+      return vim.tbl_filter(function(window)
+        local buffer = vim.api.nvim_win_get_buf(window)
+        return vim.fn.buflisted(buffer) == 1
+          and vim.api.nvim_buf_is_loaded(buffer)
+      end, vim.api.nvim_tabpage_list_wins(tabh))
+    end
+
+    -- Position of a tab's topmost window entry in the `tabs` picker list.
+    local function tab_position(target)
+      local position = 0
+      for tabnr, tabh in ipairs(vim.api.nvim_list_tabpages()) do
+        local windows = displayed_windows(tabh)
+
+        if tabnr == target then
+          return position + (#windows > 0 and 2 or 1)
         end
+
+        -- (+1) to skip title entries.
+        position = position + 1 + #windows
+      end
+
+      return position
+    end
+
+    local function close_tabs(selected, opts)
+      local topmost_closed
+      for _, sel in ipairs(selected) do
+        -- `tabs` entries are prefixed with "<tabnr>\t<tabh>\t<winid>)".
+        local tabh = tonumber(sel:match "(%d+)\t%d+%)")
+
+        if tabh and vim.api.nvim_tabpage_is_valid(tabh) then
+          local tabnr = vim.api.nvim_tabpage_get_number(tabh)
+
+          utils.try(vim.cmd.tabclose, tabnr)
+
+          -- `tabclose` may fail, e.g. on a modified buffer with `nohidden`, so
+          -- track only the tabs that are actually gone.
+          if
+            not vim.api.nvim_tabpage_is_valid(tabh)
+            and (not topmost_closed or tabnr < topmost_closed)
+          then
+            topmost_closed = tabnr
+          end
+        end
+      end
+
+      -- `tabs` picker keeps the cursor on `__locate_pos`, which is set on picker
+      -- start to the current tab, on reload point it at the tab that took the
+      -- place of the topmost closed one instead.
+      if topmost_closed then
+        local tabnr = math.min(topmost_closed, #vim.api.nvim_list_tabpages())
+        opts.__locate_pos = tab_position(tabnr)
       end
     end
 
