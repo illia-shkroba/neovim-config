@@ -62,4 +62,48 @@ function M.match_rg(nvim_filetype, filename)
   end, rg_matches)
 end
 
+---@param filetype string
+---@return boolean
+local function known(filetype)
+  return vim.list_contains(vim.fn.getcompletion(filetype, "filetype"), filetype)
+end
+
+---@class Location
+---@field buffer_number integer
+---@field line integer 1-based inclusive.
+---@field column integer 0-based inclusive.
+
+---@param location Location
+---@return string
+function M.at(location)
+  local filetype = vim.bo[location.buffer_number].filetype
+
+  local parser = vim.treesitter.get_parser(location.buffer_number)
+  if parser == nil then
+    return filetype
+  end
+
+  local language = parser
+    :language_for_range({
+      location.line - 1,
+      location.column,
+      location.line - 1,
+      location.column,
+    })
+    :lang()
+  if language == parser:lang() then
+    return filetype
+  end
+
+  for _, inferred_filetype in
+    pairs(vim.treesitter.language.get_filetypes(language))
+  do
+    if known(inferred_filetype) then
+      return inferred_filetype
+    end
+  end
+
+  return filetype
+end
+
 return M
