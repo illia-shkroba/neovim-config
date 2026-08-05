@@ -7,6 +7,7 @@ local buffer = require "buffer"
 local case = require "text.case"
 local char = require "text.char"
 local completion = require "plugins.fzf.pickers.completion"
+local filetypes = require "filetypes"
 local flows = require "flows"
 local fzf = require "fzf-lua"
 local list = require "list"
@@ -631,7 +632,11 @@ local function set_bindings()
       function_ = function(region_)
         local origin_window = vim.api.nvim_get_current_win()
 
-        local filetype = vim.bo.filetype
+        local filetype = filetypes.at {
+          buffer_number = region_.buffer_number,
+          line = origin_line,
+          column = origin_column,
+        }
 
         local buffer_ = scratch.open { liveness = "retained" }
         vim.opt_local.filetype = filetype
@@ -752,7 +757,7 @@ local function set_bindings()
     local origin_window = vim.api.nvim_get_current_win()
 
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-    local line = cursor[1]
+    local line, column = cursor[1], cursor[2]
 
     local region_ = region.from {
       buffer_number = origin_buffer,
@@ -772,7 +777,11 @@ local function set_bindings()
       {}
     )
 
-    local filetype = vim.bo.filetype
+    local filetype = filetypes.at {
+      buffer_number = origin_buffer,
+      line = line,
+      column = column,
+    }
 
     local buffer_ = scratch.open { liveness = "retained" }
     vim.opt_local.filetype = filetype

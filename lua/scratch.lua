@@ -1,6 +1,7 @@
 local M = {}
 
 local buffer = require "buffer"
+local filetypes = require "filetypes"
 local region = require "text.region"
 local status = require "status"
 local tracked_region = require "text.tracked_region"
@@ -30,7 +31,11 @@ function M.open_with_current_cursor_as_origin(scratch_input)
   vim.api.nvim_buf_set_mark(origin_buffer, "[", line, column, {})
   vim.api.nvim_buf_set_mark(origin_buffer, "]", line, column - 1, {})
 
-  local filetype = vim.bo.filetype
+  local filetype = filetypes.at {
+    buffer_number = origin_buffer,
+    line = line,
+    column = column,
+  }
 
   local buffer_ = M.open(scratch_input)
   vim.opt_local.filetype = filetype
