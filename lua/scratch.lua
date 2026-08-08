@@ -185,6 +185,14 @@ function M.bind_substitute_origin(substitute_origin_input)
     local origin_column =
       math.max(0, math.min(scratch_column + column_offset, #line_text - 1))
 
+    -- Add current cursor position in the origin window to a jumplist.
+    vim.api.nvim_win_call(
+      substitute_origin_input.origin_window_number,
+      function()
+        vim.cmd "normal! m'"
+      end
+    )
+
     vim.api.nvim_win_set_cursor(
       substitute_origin_input.origin_window_number,
       { origin_line, origin_column }
