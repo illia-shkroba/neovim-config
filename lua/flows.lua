@@ -1,6 +1,18 @@
 local buffer = require "buffer"
 local scratch_register = require "scratch.register"
 
+--- Yank lines matching (or not matching) the `/` register into `opts.register`.
+--- Keeps `:g` semantics, but avoids the quadratic register append of `:g//yank A`.
+---@param opts { invert: boolean, register: string }
+local function global_yank(opts)
+  vim.cmd(([[
+    let g:global_yank = []
+    silent %s//call add(g:global_yank, getline('.'))
+    call setreg('%s', g:global_yank, 'l')
+    unlet! g:global_yank
+  ]]):format(opts.invert and "v" or "g", opts.register))
+end
+
 return {
   -- diff
   {
@@ -85,9 +97,7 @@ return {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      vim.fn.setreg("a", "")
-
-      vim.cmd [[g//yank A]]
+      global_yank { invert = false, register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
@@ -99,9 +109,7 @@ return {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      vim.fn.setreg("a", "")
-
-      vim.cmd [[v//yank A]]
+      global_yank { invert = true, register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
