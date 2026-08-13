@@ -259,7 +259,7 @@ function M.flows(flows_input)
     },
     fzf_opts = {
       ["--no-multi"] = true,
-      ["--tiebreak"] = "length,end,index",
+      ["--no-sort"] = true,
     },
   })
 end
