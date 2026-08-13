@@ -13,6 +13,25 @@ local function global_yank(opts)
   ]]):format(opts.invert and "v" or "g", opts.register))
 end
 
+--- Yank the lines pointed at by the quickfix or location list into `opts.register`.
+--- Reads the entries directly, since `:cdo` pays a window jump per entry.
+---@param opts { type: "quickfix" | "location", register: string }
+local function list_yank(opts)
+  local lists = { quickfix = "getqflist()", location = "getloclist(0)" }
+
+  vim.cmd(([[
+    let g:list_yank = []
+    for g:list_yank_entry in %s
+      if g:list_yank_entry.valid
+        call bufload(g:list_yank_entry.bufnr)
+        call add(g:list_yank, getbufoneline(g:list_yank_entry.bufnr, g:list_yank_entry.lnum))
+      endif
+    endfor
+    call setreg('%s', g:list_yank, 'l')
+    unlet! g:list_yank g:list_yank_entry
+  ]]):format(lists[opts.type], opts.register))
+end
+
 return {
   -- diff
   {
@@ -67,9 +86,7 @@ return {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      vim.fn.setreg("a", "")
-
-      vim.cmd [[silent cdo yank A]]
+      list_yank { type = "quickfix", register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
@@ -81,9 +98,7 @@ return {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      vim.fn.setreg("a", "")
-
-      vim.cmd [[silent ldo yank A]]
+      list_yank { type = "location", register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
