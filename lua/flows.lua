@@ -52,10 +52,12 @@ return {
   -- linewise
   {
     flow = function()
+      local filetype = vim.bo.filetype
       local register_ = vim.fn.getreg "a"
 
       global_yank { invert = false, register = "a" }
       scratch_register.edit "a"
+      vim.opt_local.filetype = filetype
 
       vim.fn.setreg("a", register_)
     end,
@@ -64,10 +66,12 @@ return {
   },
   {
     flow = function()
+      local filetype = vim.bo.filetype
       local register_ = vim.fn.getreg "a"
 
       global_yank { invert = true, register = "a" }
       scratch_register.edit "a"
+      vim.opt_local.filetype = filetype
 
       vim.fn.setreg("a", register_)
     end,
