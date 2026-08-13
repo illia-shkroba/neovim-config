@@ -305,6 +305,13 @@ return {
   },
   {
     flow = function()
+      vim.cmd [[windo norm @q]]
+    end,
+    key = "windo-q",
+    name = "windo norm @q",
+  },
+  {
+    flow = function()
       vim.cmd [[g//norm @q]]
     end,
     key = "g-q",
