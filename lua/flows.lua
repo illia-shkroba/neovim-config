@@ -49,36 +49,30 @@ return {
     name = "windo diffoff",
   },
 
-  -- delete
+  -- linewise
   {
     flow = function()
-      vim.cmd [[v//delete _]]
-    end,
-    key = "v-delete",
-    name = "v//delete _",
-  },
-  {
-    flow = function()
-      vim.cmd [[g//delete _]]
-    end,
-    key = "g-delete",
-    name = "g//delete _",
-  },
-  {
-    flow = function()
-      vim.cmd [[g/^$/delete _]]
-    end,
-    key = "g-blank-delete",
-    name = "g/^$/delete _",
-  },
+      local register_ = vim.fn.getreg "a"
 
-  -- register
+      global_yank { invert = false, register = "a" }
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
+    end,
+    key = "g-yank",
+    name = "g//yank",
+  },
   {
     flow = function()
-      vim.fn.setreg("a", "")
+      local register_ = vim.fn.getreg "a"
+
+      global_yank { invert = true, register = "a" }
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
     end,
-    key = "clear-a",
-    name = "let @a = ''",
+    key = "v-yank",
+    name = "v//yank",
   },
 
   -- quickfix/location
@@ -107,30 +101,27 @@ return {
     name = "ldo yank",
   },
 
-  -- linewise
+  -- delete
   {
     flow = function()
-      local register_ = vim.fn.getreg "a"
-
-      global_yank { invert = false, register = "a" }
-      scratch_register.edit "a"
-
-      vim.fn.setreg("a", register_)
+      vim.cmd [[v//delete _]]
     end,
-    key = "g-yank",
-    name = "g//yank",
+    key = "v-delete",
+    name = "v//delete _",
   },
   {
     flow = function()
-      local register_ = vim.fn.getreg "a"
-
-      global_yank { invert = true, register = "a" }
-      scratch_register.edit "a"
-
-      vim.fn.setreg("a", register_)
+      vim.cmd [[g//delete _]]
     end,
-    key = "v-yank",
-    name = "v//yank",
+    key = "g-delete",
+    name = "g//delete _",
+  },
+  {
+    flow = function()
+      vim.cmd [[g/^$/delete _]]
+    end,
+    key = "g-blank-delete",
+    name = "g/^$/delete _",
   },
 
   -- substitute
@@ -154,22 +145,6 @@ return {
     end,
     key = "windo-sub",
     name = [[windo %s//\=@s/gce]],
-  },
-
-  -- args
-  {
-    flow = function()
-      vim.cmd [[silent cfdo arga]]
-    end,
-    key = "cfdo-arga",
-    name = "cfdo arga",
-  },
-  {
-    flow = function()
-      vim.cmd [[silent lfdo arga]]
-    end,
-    key = "lfdo-arga",
-    name = "lfdo arga",
   },
 
   -- file
@@ -260,6 +235,22 @@ return {
     name = "Git stash pop",
   },
 
+  -- args
+  {
+    flow = function()
+      vim.cmd [[silent cfdo arga]]
+    end,
+    key = "cfdo-arga",
+    name = "cfdo arga",
+  },
+  {
+    flow = function()
+      vim.cmd [[silent lfdo arga]]
+    end,
+    key = "lfdo-arga",
+    name = "lfdo arga",
+  },
+
   -- macro
   {
     flow = function()
@@ -323,5 +314,14 @@ return {
     end,
     key = "v-q",
     name = "v//norm @q",
+  },
+
+  -- register
+  {
+    flow = function()
+      vim.fn.setreg("a", "")
+    end,
+    key = "clear-a",
+    name = "let @a = ''",
   },
 }
