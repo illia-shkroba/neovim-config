@@ -19,9 +19,27 @@ local function global_yank(opts)
   ]]):format(opts.invert and "v" or "g", opts.register))
 end
 
---- Yank the lines pointed at by the quickfix or location list into `opts.register`.
---- Reads the entries directly, since `:cdo` pays a window jump per entry.
----@param opts { type: "quickfix" | "location", register: string }
+--- Yank every match of the `/` register in the current buffer into `opts.register`.
+--- `matchbufline` reports each match separately, so a line matching twice yields two lines.
+---@param opts { register: string }
+---@return nil
+local function global_yank_match(opts)
+  if vim.fn.getreg "/" == "" then
+    vim.notify("No previous regular expression", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.cmd(([[
+    call setreg('%s', map(
+      \ matchbufline(bufnr(), @/, 1, '$'),
+      \ {_, val -> val.text}
+      \ ), 'l')
+  ]]):format(opts.register))
+end
+
+--- Yank text from the lines pointed at by the quickfix or location list into `opts.register`.
+--- With `opts.match`, yanks each match of the `/` register rather than the whole line.
+---@param opts { type: "quickfix" | "location", match: boolean, register: string }
 ---@return nil
 local function list_yank(opts)
   if vim.fn.getreg "/" == "" then
@@ -30,18 +48,29 @@ local function list_yank(opts)
   end
 
   local lists = { quickfix = "getqflist()", location = "getloclist(0)" }
+  local collect = opts.match
+      and [[extend(g:list_yank, map(matchbufline(
+        \ g:list_yank_entry.bufnr,
+        \ @/,
+        \ g:list_yank_entry.lnum,
+        \ g:list_yank_entry.lnum
+        \ ), {_, val -> val.text}))]]
+    or [[add(g:list_yank, getbufoneline(
+      \ g:list_yank_entry.bufnr,
+      \ g:list_yank_entry.lnum
+      \ ))]]
 
   vim.cmd(([[
     let g:list_yank = []
     for g:list_yank_entry in %s
       if g:list_yank_entry.valid
         call bufload(g:list_yank_entry.bufnr)
-        call add(g:list_yank, getbufoneline(g:list_yank_entry.bufnr, g:list_yank_entry.lnum))
+        call %s
       endif
     endfor
     call setreg('%s', g:list_yank, 'l')
     unlet! g:list_yank g:list_yank_entry
-  ]]):format(lists[opts.type], opts.register))
+  ]]):format(lists[opts.type], collect, opts.register))
 end
 
 return {
@@ -90,13 +119,27 @@ return {
     key = "v-yank",
     name = "v//yank",
   },
+  {
+    flow = function()
+      local filetype = vim.bo.filetype
+      local register_ = vim.fn.getreg "a"
+
+      global_yank_match { register = "a" }
+      scratch_register.edit "a"
+      vim.opt_local.filetype = filetype
+
+      vim.fn.setreg("a", register_)
+    end,
+    key = "g-yank-match",
+    name = "g//yank match",
+  },
 
   -- quickfix/location
   {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      list_yank { type = "quickfix", register = "a" }
+      list_yank { type = "quickfix", match = false, register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
@@ -108,13 +151,37 @@ return {
     flow = function()
       local register_ = vim.fn.getreg "a"
 
-      list_yank { type = "location", register = "a" }
+      list_yank { type = "location", match = false, register = "a" }
       scratch_register.edit "a"
 
       vim.fn.setreg("a", register_)
     end,
     key = "ldo-yank",
     name = "ldo yank",
+  },
+  {
+    flow = function()
+      local register_ = vim.fn.getreg "a"
+
+      list_yank { type = "quickfix", match = true, register = "a" }
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
+    end,
+    key = "cdo-yank-match",
+    name = "cdo yank match",
+  },
+  {
+    flow = function()
+      local register_ = vim.fn.getreg "a"
+
+      list_yank { type = "location", match = true, register = "a" }
+      scratch_register.edit "a"
+
+      vim.fn.setreg("a", register_)
+    end,
+    key = "ldo-yank-match",
+    name = "ldo yank match",
   },
 
   -- delete
