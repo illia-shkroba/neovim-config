@@ -4,7 +4,13 @@ local scratch_register = require "scratch.register"
 --- Yank lines matching (or not matching) the `/` register into `opts.register`.
 --- Keeps `:g` semantics, but avoids the quadratic register append of `:g//yank A`.
 ---@param opts { invert: boolean, register: string }
+---@return nil
 local function global_yank(opts)
+  if vim.fn.getreg "/" == "" then
+    vim.notify("No previous regular expression", vim.log.levels.ERROR)
+    return
+  end
+
   vim.cmd(([[
     let g:global_yank = []
     silent %s//call add(g:global_yank, getline('.'))
@@ -16,7 +22,13 @@ end
 --- Yank the lines pointed at by the quickfix or location list into `opts.register`.
 --- Reads the entries directly, since `:cdo` pays a window jump per entry.
 ---@param opts { type: "quickfix" | "location", register: string }
+---@return nil
 local function list_yank(opts)
+  if vim.fn.getreg "/" == "" then
+    vim.notify("No previous regular expression", vim.log.levels.ERROR)
+    return
+  end
+
   local lists = { quickfix = "getqflist()", location = "getloclist(0)" }
 
   vim.cmd(([[
