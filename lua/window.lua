@@ -22,6 +22,8 @@ function M.to_vertical(window)
   local cursor = vim.api.nvim_win_get_cursor(window)
   vim.api.nvim_win_set_cursor(new_window, cursor)
 
+  vim.wo[new_window].statusline = vim.wo[window].statusline
+
   vim.api.nvim_win_close(window, true)
   vim.api.nvim_set_current_win(last_accessed_window)
   vim.api.nvim_set_current_win(new_window)
