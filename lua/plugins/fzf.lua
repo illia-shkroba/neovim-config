@@ -99,6 +99,7 @@ return {
     fzf.setup {
       defaults = {
         actions = {
+          ["alt-n"] = pickers.yank,
           ["ctrl-s"] = false,
         },
       },

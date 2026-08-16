@@ -1,9 +1,10 @@
 local M = {}
 
+local filetypes = require "filetypes"
 local fzf = require "fzf-lua"
 local path = require "fzf-lua.path"
+local register = require "text.register"
 local utils = require "fzf-lua.utils"
-local filetypes = require "filetypes"
 
 ---@param picker any
 ---@param search string|nil
@@ -162,10 +163,31 @@ function M.directories_cwd(directories_input)
   }
 end
 
+-- Entries are colored with ANSI codes and may be prefixed with git/file icons
+-- separated from the entry with `utils.nbsp`.
+---@param e string
+---@return string
+local function strip_entry(e)
+  local stripped = utils.strip_ansi_coloring(e)
+  return stripped:match(".*" .. utils.nbsp .. "(.*)") or stripped
+end
+
 ---@param e string
 ---@return string
 local function absolute_path_from_entry(e)
   return path.entry_to_file(e:match "[^\t]+$" or e, { cwd = utils.cwd() }).path
+end
+
+---@param selected table<integer, string>
+---@return nil
+function M.yank(selected)
+  register.put([["]], vim.tbl_map(strip_entry, selected))
+end
+
+---@param selected table<integer, string>
+---@return nil
+local function yank_directories(selected)
+  register.put([["]], vim.tbl_map(absolute_path_from_entry, selected))
 end
 
 M.directories_actions = {
@@ -176,6 +198,7 @@ M.directories_actions = {
     opts.scope = "tab"
     fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
   end,
+  ["alt-n"] = yank_directories,
   ["alt-t"] = function(selected)
     if #selected == 0 then
       return
