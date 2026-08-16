@@ -189,7 +189,6 @@ M.directories_actions = {
     opts.scope = "local"
     fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
   end,
-  ["ctrl-s"] = false,
   ["ctrl-t"] = function(selected, opts)
     if #selected == 0 then
       return

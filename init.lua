@@ -1081,6 +1081,12 @@ local function set_bindings()
     { desc = "Resume most recent picker" }
   )
   vim.keymap.set("n", [[<leader>ft]], fzf.tags, { desc = "List tags" })
+  vim.keymap.set(
+    "n",
+    [[<leader>fx]],
+    fzf.registers,
+    { desc = "List registers" }
+  )
   vim.keymap.set("n", [[<leader>j]], fzf.jumps, { desc = "List jumplist" })
   vim.keymap.set("n", [[<leader>k]], fzf.changes, { desc = "List changes" })
   vim.keymap.set("n", [[<leader>x]], fzf.zoxide, { desc = "Open zoxide" })

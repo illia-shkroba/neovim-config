@@ -10,6 +10,8 @@ return {
     local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
     local pickers = require "plugins.fzf.pickers"
+    local scratch_register = require "scratch.register"
+    local window = require "window"
 
     local function args(selected, opts)
       utils.try(vim.cmd, [[argdelete *]])
@@ -27,8 +29,8 @@ return {
 
     -- Windows of a tab that get an entry in the `tabs` picker list.
     local function displayed_windows(tabh)
-      return vim.tbl_filter(function(window)
-        local buffer = vim.api.nvim_win_get_buf(window)
+      return vim.tbl_filter(function(window_)
+        local buffer = vim.api.nvim_win_get_buf(window_)
         return vim.fn.buflisted(buffer) == 1
           and vim.api.nvim_buf_is_loaded(buffer)
       end, vim.api.nvim_tabpage_list_wins(tabh))
@@ -49,6 +51,18 @@ return {
       end
 
       return position
+    end
+
+    local function edit_register(selected)
+      if #selected == 0 then
+        return
+      end
+
+      -- `registers` entries are prefixed with "[<register>] [<regtype>] ".
+      local register_ = selected[1]:match "%[(.-)%]"
+      if register_ then
+        scratch_register.edit(register_)
+      end
     end
 
     local function close_tabs(selected, opts)
@@ -320,6 +334,20 @@ return {
       quickfix_stack = {
         actions = {
           ["ctrl-x"] = fzf.actions.file_split,
+        },
+      },
+      registers = {
+        actions = {
+          ["enter"] = edit_register,
+          ["ctrl-t"] = function(selected)
+            edit_register(selected)
+            vim.cmd.wincmd "T"
+          end,
+          ["ctrl-v"] = function(selected)
+            edit_register(selected)
+            window.to_vertical(vim.api.nvim_get_current_win())
+          end,
+          ["ctrl-x"] = edit_register,
         },
       },
       tabs = {
