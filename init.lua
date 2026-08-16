@@ -21,6 +21,7 @@ local scratch = require "scratch"
 local scratch_register = require "scratch.register"
 local status = require "status"
 local utils = require "utils"
+local window = require "window"
 local window_picker = require "window-picker"
 
 local location = list.location
@@ -510,13 +511,13 @@ local function set_bindings()
     -- `win_id` -> original `winhighlight`
     local marked = {}
 
-    local function toggle(window)
-      if marked[window] ~= nil then
-        vim.wo[window].winhighlight = marked[window]
-        marked[window] = nil
+    local function toggle(window_)
+      if marked[window_] ~= nil then
+        vim.wo[window_].winhighlight = marked[window_]
+        marked[window_] = nil
       else
-        marked[window] = vim.wo[window].winhighlight
-        vim.wo[window].winhighlight =
+        marked[window_] = vim.wo[window_].winhighlight
+        vim.wo[window_].winhighlight =
           "Normal:WinMarkedForClose,NormalNC:WinMarkedForClose"
       end
     end
@@ -526,8 +527,8 @@ local function set_bindings()
       picked_window = window_picker.pick_window(opts)
     end
 
-    for window, winhighlight in pairs(marked) do
-      vim.wo[window].winhighlight = winhighlight
+    for window_, winhighlight in pairs(marked) do
+      vim.wo[window_].winhighlight = winhighlight
     end
 
     return vim.tbl_keys(marked)
@@ -591,18 +592,18 @@ local function set_bindings()
 
     local target_tabpage_current_window = vim.api.nvim_get_current_win()
 
-    for _, window in pairs(windows) do
-      local buffer_ = vim.api.nvim_win_get_buf(window)
+    for _, window_ in pairs(windows) do
+      local buffer_ = vim.api.nvim_win_get_buf(window_)
       vim.cmd.sbuffer(buffer_)
 
       -- Ensuring scratch windows `statusline`s are preserved.
-      vim.opt_local.statusline = vim.wo[window].statusline
+      vim.opt_local.statusline = vim.wo[window_].statusline
 
       vim.api.nvim_set_current_win(target_tabpage_current_window)
     end
 
-    for _, window in pairs(windows) do
-      vim.api.nvim_set_current_win(window)
+    for _, window_ in pairs(windows) do
+      vim.api.nvim_set_current_win(window_)
       vim.cmd.wincmd "q"
     end
 
@@ -679,35 +680,16 @@ local function set_bindings()
     return expr()
   end, { expr = true, desc = "Open a scratch window with selected lines" })
   vim.keymap.set("n", { [[<C-w>a]], [[<C-w><C-a>]] }, function()
-    local window = window_picker.pick_window()
-    if window ~= nil then
-      vim.api.nvim_set_current_win(window)
+    local window_ = window_picker.pick_window()
+    if window_ ~= nil then
+      vim.api.nvim_set_current_win(window_)
     end
   end, { desc = "Pick window" })
   vim.keymap.set("n", [[<leader>hh]], function()
     vim.cmd.History()
   end, { desc = "History" })
   vim.keymap.set("n", { [[<C-w>g]], [[<C-w><C-g>]] }, function()
-    local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
-    local current_window = vim.api.nvim_get_current_win()
-
-    if last_accessed_window == 0 or last_accessed_window == current_window then
-      vim.notify("No last accessed window.", vim.log.levels.INFO)
-      return
-    end
-
-    local buffer_ = vim.api.nvim_get_current_buf()
-    local new_window = vim.api.nvim_open_win(buffer_, true, {
-      split = "right",
-      win = last_accessed_window,
-    })
-
-    local cursor = vim.api.nvim_win_get_cursor(current_window)
-    vim.api.nvim_win_set_cursor(new_window, cursor)
-
-    vim.api.nvim_win_close(current_window, true)
-    vim.api.nvim_set_current_win(last_accessed_window)
-    vim.api.nvim_set_current_win(new_window)
+    window.to_vertical(vim.api.nvim_get_current_win())
   end, {
     desc = "Move current window to a vertical split right of the origin window",
   })
@@ -743,8 +725,8 @@ local function set_bindings()
 
     local current_window = vim.api.nvim_get_current_win()
 
-    for _, window in pairs(windows) do
-      vim.api.nvim_set_current_win(window)
+    for _, window_ in pairs(windows) do
+      vim.api.nvim_set_current_win(window_)
       vim.cmd.wincmd "q"
     end
 
@@ -1588,12 +1570,12 @@ local function set_bindings()
     }
   )
   vim.keymap.set("n", [[<leader>tf]], function()
-    local window = vim.api.nvim_get_current_win()
-    local cursor = vim.api.nvim_win_get_cursor(window)
+    local window_ = vim.api.nvim_get_current_win()
+    local cursor = vim.api.nvim_win_get_cursor(window_)
 
     vim.cmd [[keepjumps normal gqal]]
 
-    utils.try(vim.api.nvim_win_set_cursor, window, cursor)
+    utils.try(vim.api.nvim_win_set_cursor, window_, cursor)
   end, { desc = "Format the buffer" })
 
   -- text objects
