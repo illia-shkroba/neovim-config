@@ -679,6 +679,12 @@ local function set_bindings()
     }
     return expr()
   end, { expr = true, desc = "Open a scratch window with selected lines" })
+  vim.keymap.set(
+    "n",
+    [[<C-k>]],
+    [[<C-w>yiv]],
+    { remap = true, desc = [[Alias for: <C-w>yiv]] }
+  )
   vim.keymap.set("n", { [[<C-w>a]], [[<C-w><C-a>]] }, function()
     local window_ = window_picker.pick_window()
     if window_ ~= nil then
