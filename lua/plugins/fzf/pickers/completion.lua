@@ -1,123 +1,16 @@
 local M = {}
 
 local fzf = require "fzf-lua"
+local region = require "text.region"
 
-local function common_prefix(strings)
-  local column_uniques = function(i)
-    local result = {}
-    for _, x in pairs(strings) do
-      local key = x:sub(i, i)
-      result[key] = true
-    end
-    return vim.tbl_keys(result)
-  end
+-- The `cursor_begin` is where the text replaced by the completion begins, as
+-- captured by `completion_expr`.
+---@param cursor_begin table<integer, integer>
+---@param prioritize_init boolean
+---@return nil
+function M.completion(cursor_begin, prioritize_init)
+  local line_begin, column_begin = cursor_begin[1], cursor_begin[2]
 
-  local result = ""
-  local i = 1
-  while true do
-    local uniques = column_uniques(i)
-    if #uniques == 1 and #uniques[1] > 0 then
-      result = result .. uniques[1]
-    else
-      return result
-    end
-    i = i + 1
-  end
-end
-
-local function find_prefix_of(str, prefix)
-  local sub_str = str
-  local offset = 0
-  while true do
-    local begin, _ = sub_str:find(prefix:sub(1, 1), 1, true)
-    if begin == nil then
-      return nil
-    end
-    offset = offset + begin
-
-    local suffix = sub_str:sub(begin)
-    if suffix == prefix:sub(1, #suffix) then
-      return offset - 1
-    else
-      sub_str = sub_str:sub(begin + 1)
-    end
-  end
-end
-
-local remove_inserted = function(completions, buffer, cursor)
-  -- The `common_prefix` is used to find a common prefix for a list of
-  -- completions. Then the text on the left side of the current cursor position
-  -- is matched for the common prefix that was found. If the text "partially"
-  -- matches the common prefix (see `find_prefix_of`), then the text is assumed
-  -- to be "inserted" by the user before triggering the completion.
-  local prefix = common_prefix(completions)
-  local line, column_end = cursor[1], cursor[2] + 1
-  local column_begin = math.max(column_end - #prefix, 0)
-
-  local lines = vim.api.nvim_buf_get_text(
-    buffer,
-    line - 1,
-    column_begin,
-    line - 1,
-    column_end,
-    {}
-  )
-
-  local offset = find_prefix_of(lines[1], prefix)
-  if offset ~= nil and #prefix > 0 then
-    local remove_column = column_begin + offset
-    vim.api.nvim_buf_set_text(
-      buffer,
-      line - 1,
-      remove_column,
-      line - 1,
-      column_end,
-      {}
-    )
-    return { column = remove_column }
-  else
-    return nil
-  end
-end
-
-local paste_completion = function(
-  selected,
-  completions,
-  completed_buffer,
-  cursor
-)
-  local line, column = cursor[1], cursor[2]
-
-  local removed_location =
-    remove_inserted(completions, completed_buffer, cursor)
-  if removed_location ~= nil then
-    -- Shift the cursor one character after the inserted text.
-    vim.api.nvim_win_set_cursor(
-      vim.api.nvim_get_current_win(),
-      { line, removed_location.column }
-    )
-  end
-
-  -- The cursor captured in the insert mode is positioned one character after
-  -- the inserted text.
-  vim.api.nvim_put({ selected[1] }, "c", false, false)
-
-  -- Shift the cursor at the end of the inserted text.
-  local inserted_column_end
-  if removed_location ~= nil then
-    inserted_column_end = removed_location.column + #selected[1] - 1
-  else
-    inserted_column_end = column + #selected[1]
-  end
-
-  vim.api.nvim_win_set_cursor(
-    vim.api.nvim_get_current_win(),
-    { line, inserted_column_end }
-  )
-end
-
--- It should only be used when: `vim.fn.pumvisible() == 1`.
-M.completion = function(prioritize_init)
   local completions = vim
     .iter(vim.fn.complete_info({ "items", "matches" }).items)
     :filter(function(item)
@@ -128,21 +21,26 @@ M.completion = function(prioritize_init)
     end)
     :totable()
 
-  local completed_buffer = vim.api.nvim_get_current_buf()
-  local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+  local window = vim.api.nvim_get_current_win()
+  local cursor = vim.api.nvim_win_get_cursor(window)
+  local column = cursor[2]
 
-  local line, column = cursor[1], cursor[2]
-  -- In the insert mode the cursor's column is shifted by one character to the
-  -- right if the cursor has no characters before it.
-  --
-  -- Meaning, that when the cursor is at the beginning of the line, the
-  -- `column` is 0. Otherwise, it is a `column` a position (index +1) and not
-  -- an index.
-  column = math.max(column - 1, 0)
-  cursor = { line, column }
+  local completed_region = region.from {
+    buffer_number = vim.api.nvim_get_current_buf(),
+    line_begin = line_begin,
+    column_begin = column_begin,
+    line_end = line_begin,
+    column_end = column - 1,
+    type_ = "char",
+  }
 
-  local paste_completion_action = function(selected)
-    paste_completion(selected, completions, completed_buffer, cursor)
+  local function paste_completion(selected)
+    local pasted_region = region.substitute(completed_region, { selected[1] })
+
+    vim.api.nvim_win_set_cursor(
+      window,
+      { pasted_region.line_end, math.max(pasted_region.column_end, 0) }
+    )
   end
 
   fzf.fzf_exec(completions, {
@@ -155,8 +53,8 @@ M.completion = function(prioritize_init)
       width = 0.30,
     },
     actions = {
-      ["enter"] = paste_completion_action,
-      ["ctrl-y"] = paste_completion_action,
+      ["enter"] = paste_completion,
+      ["ctrl-y"] = paste_completion,
       ["ctrl-e"] = fzf.actions.dummy_abort,
     },
     fzf_opts = {
@@ -167,9 +65,10 @@ M.completion = function(prioritize_init)
   })
 end
 
--- To be called in `vim.keymap.set` with `expr = true`. It should only be used
--- when: `vim.fn.pumvisible() == 1`.
-M.completion_expr = function(opts)
+-- Called in `vim.keymap.set` with `expr = true` on `vim.fn.pumvisible() == 1`.
+---@param opts? { popup_menu_down_key: string, popup_menu_up_key: string }
+---@return string
+function M.completion_expr(opts)
   opts = vim.tbl_deep_extend(
     "keep",
     opts or {},
@@ -177,6 +76,23 @@ M.completion_expr = function(opts)
   )
 
   local info = vim.fn.complete_info { "items", "selected" }
+  if info.selected < 0 then
+    vim.notify(
+      "No popup-menu item is selected, so the text the completion replaces "
+        .. "cannot be located. Select an item first.",
+      vim.log.levels.WARN
+    )
+    return ""
+  end
+
+  -- The popup menu is still live while an `expr = true` mapping is being
+  -- evaluated, so the buffer holds the selected item's `word` ending exactly
+  -- at the cursor, and the completion begins at `column - #word`.
+  local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+  local line, column = cursor[1], cursor[2]
+  local word = info.items[info.selected + 1].word
+  local cursor_begin = { line, math.max(column - #word, 0) }
+
   local expr
   local prioritize_init
   if info.selected < #info.items / 2 then
@@ -188,7 +104,7 @@ M.completion_expr = function(opts)
   end
 
   vim.schedule(function()
-    M.completion(prioritize_init)
+    M.completion(cursor_begin, prioritize_init)
   end)
 
   return expr
