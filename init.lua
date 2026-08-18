@@ -624,6 +624,11 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
+  vim.keymap.set("n", [[<leader>Z]], function()
+    scratch.open { liveness = "retained" }
+    vim.opt_local.filetype = "markdown"
+    vim.cmd.startinsert()
+  end, { desc = "Open markdown scratch buffer in insert mode" })
   vim.keymap.set({ "n", "v" }, { [[<C-w>y]], [[<C-w><C-y>]] }, function()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
 
@@ -797,10 +802,6 @@ local function set_bindings()
     vim.api.nvim_buf_set_lines(buffer_, line, -1, false, {})
     vim.api.nvim_buf_set_lines(buffer_, 0, line - 1, false, {})
   end, { desc = "Keep only the current line" })
-  vim.keymap.set("n", [[<leader>mn]], function()
-    scratch.open { liveness = "retained" }
-    vim.opt_local.filetype = "markdown"
-  end, { desc = "Open markdown note" })
   vim.keymap.set("n", [[<leader>v]], function()
     local mode = vim.fn.visualmode()
     if string.len(mode) == 0 then
