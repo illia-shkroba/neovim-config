@@ -33,6 +33,22 @@ function M.edit(register_)
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
   })
+  vim.keymap.set("n", [[ZE]], function()
+    local input_register = vim.v.register:lower()
+    local target_register = input_register == [["]] and register_
+      or input_register
+
+    vim.api.nvim_buf_set_lines(
+      buffer,
+      0,
+      vim.api.nvim_buf_line_count(buffer),
+      false,
+      vim.split(vim.fn.getreg(target_register), "\n")
+    )
+  end, {
+    buffer = buffer,
+    desc = "Read register in place of the scratch buffer's text",
+  })
   vim.keymap.set("n", [[ZO]], function()
     local input_register = vim.v.register:lower()
     local target_register = input_register == [["]] and register_
