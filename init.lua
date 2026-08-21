@@ -686,6 +686,12 @@ local function set_bindings()
   end, { expr = true, desc = "Open a scratch window with selected lines" })
   vim.keymap.set(
     "n",
+    [[<C-_>]],
+    [[<C-w>yav]],
+    { remap = true, desc = [[Alias for: <C-w>yav]] }
+  )
+  vim.keymap.set(
+    "n",
     [[<C-k>]],
     [[<C-w>yiv]],
     { remap = true, desc = [[Alias for: <C-w>yiv]] }
