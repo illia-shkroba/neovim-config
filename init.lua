@@ -1503,12 +1503,13 @@ local function set_bindings()
   })
 
   -- tabs
-  vim.keymap.set(
-    "n",
-    [[<leader>tc]],
-    [[<Cmd>tabclose<CR>]],
-    { desc = "Close tab" }
-  )
+  vim.keymap.set("n", [[<leader>tc]], function()
+    if #vim.api.nvim_list_tabpages() == 1 then
+      vim.cmd.qall { bang = true }
+    else
+      vim.cmd.tabclose()
+    end
+  end, { desc = "Close tab" })
   vim.keymap.set(
     "n",
     [[<leader>tm]],
