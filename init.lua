@@ -880,7 +880,7 @@ local function set_bindings()
   -- overloads
   vim.keymap.set({ "n", "v" }, [["]], register.normalized_expr, {
     expr = true,
-    desc = [[Same as "{register} binding but "unshifts" 1-0 and ? keys]],
+    desc = [[Same as "{register} binding but "unshifts" 1-0, ? and > keys]],
   })
   vim.keymap.set(
     "n",

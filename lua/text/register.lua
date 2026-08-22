@@ -29,6 +29,7 @@ function M.normalize(register)
     ["("] = "9",
     [")"] = "0",
     ["?"] = "/",
+    [">"] = ".",
   })[register] or register
 end
 
