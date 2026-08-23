@@ -89,24 +89,32 @@ local function set_options()
     end
 
     local data_home = vim.env["XDG_DATA_HOME"] or "~/.local/share"
-    local dict_file = vim.fs.joinpath(vim.fs.normalize(data_home), "dict.txt")
+    local dict_file = vim.fs.joinpath(vim.fs.normalize(data_home), "dict.json")
 
     local handle = io.open(dict_file)
     if handle == nil then
       return {}
     end
 
-    -- Keep lines starting from `base`.
-    local lines = vim
-      .iter(handle:lines())
-      :filter(function(line)
-        return vim.startswith(line, base)
-      end)
-      :totable()
-
+    local contents = handle:read "*a"
     handle:close()
 
-    return lines
+    local ok, entries = pcall(vim.json.decode, contents)
+    if not ok or type(entries) ~= "table" then
+      return {}
+    end
+
+    return vim
+      .iter(entries)
+      :filter(function(entry)
+        return type(entry) == "table"
+          and type(entry.text) == "string"
+          and vim.startswith(entry.text, base)
+      end)
+      :map(function(entry)
+        return entry.text
+      end)
+      :totable()
   end
 end
 set_options()
