@@ -83,23 +83,31 @@ local function set_options()
   vim.g.netrw_banner = 0
   vim.g.no_python_maps = 1
 
-  vim.cmd [[
-    func! Thesaurus(findstart, base)
-      if a:findstart
-        return searchpos('\<', 'bnW', line('.'))[1] - 1
-      endif
-      let xdg_data_home = getenv("XDG_DATA_HOME")
-      let data_home = expand(empty(xdg_data_home) ? "~/.local/share" : xdg_data_home)
-      let dict_file = data_home .. "/dict.txt"
-      let lines = readfile(dict_file)
-      call filter(lines, {_, line -> stridx(line, a:base) == 0}) " Keep lines starting from `a:base`.
-      return lines
-    endfunc
+  function vim.o.thesaurusfunc(findstart, base)
+    if findstart == 1 then
+      return vim.fn.searchpos([[\<]], "bnW", vim.fn.line ".")[2] - 1
+    end
 
-    if exists('+thesaurusfunc')
-      set thesaurusfunc=Thesaurus
-    endif
-  ]]
+    local data_home = vim.env["XDG_DATA_HOME"] or "~/.local/share"
+    local dict_file = vim.fs.joinpath(vim.fs.normalize(data_home), "dict.txt")
+
+    local handle = io.open(dict_file)
+    if handle == nil then
+      return {}
+    end
+
+    -- Keep lines starting from `base`.
+    local lines = vim
+      .iter(handle:lines())
+      :filter(function(line)
+        return vim.startswith(line, base)
+      end)
+      :totable()
+
+    handle:close()
+
+    return lines
+  end
 end
 set_options()
 
