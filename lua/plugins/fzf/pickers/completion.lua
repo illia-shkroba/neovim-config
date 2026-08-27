@@ -47,6 +47,10 @@ function M.completion(cursor_begin, prioritize_init)
     paste(selected[1])
   end
 
+  local function append_query(_, opts)
+    paste(completed_region.lines[1] .. (opts.last_query or ""))
+  end
+
   fzf.fzf_exec(completions, {
     winopts = {
       title = " Completions ",
@@ -59,6 +63,7 @@ function M.completion(cursor_begin, prioritize_init)
     actions = {
       ["enter"] = paste_completion,
       ["ctrl-y"] = paste_completion,
+      ["ctrl-i"] = append_query,
       ["ctrl-e"] = fzf.actions.dummy_abort,
     },
     fzf_opts = {
