@@ -34,13 +34,17 @@ function M.completion(cursor_begin, prioritize_init)
     type_ = "char",
   }
 
-  local function paste_completion(selected)
-    local pasted_region = region.substitute(completed_region, { selected[1] })
+  local function paste(text)
+    local pasted_region = region.substitute(completed_region, { text })
 
     vim.api.nvim_win_set_cursor(
       window,
       { pasted_region.line_end, math.max(pasted_region.column_end, 0) }
     )
+  end
+
+  local function paste_completion(selected)
+    paste(selected[1])
   end
 
   fzf.fzf_exec(completions, {
