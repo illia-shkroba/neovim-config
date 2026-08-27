@@ -37,6 +37,21 @@ function M.completion(cursor_begin, prioritize_init)
   local function paste(text)
     local pasted_region = region.substitute(completed_region, { text })
 
+    vim.api.nvim_buf_set_mark(
+      pasted_region.buffer_number,
+      "[",
+      pasted_region.line_begin,
+      pasted_region.column_begin,
+      {}
+    )
+    vim.api.nvim_buf_set_mark(
+      pasted_region.buffer_number,
+      "]",
+      pasted_region.line_end,
+      pasted_region.column_end,
+      {}
+    )
+
     vim.api.nvim_win_set_cursor(
       window,
       { pasted_region.line_end, math.max(pasted_region.column_end, 0) }
