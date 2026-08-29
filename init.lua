@@ -721,7 +721,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>hh]], function()
     vim.cmd.History()
   end, { desc = "History" })
-  vim.keymap.set("n", { [[<C-w>g]], [[<C-w><C-g>]] }, function()
+  vim.keymap.set("n", { [[<C-w><C-g>]] }, function()
     window.to_vertical(vim.api.nvim_get_current_win())
   end, {
     desc = "Move current window to a vertical split right of the origin window",
