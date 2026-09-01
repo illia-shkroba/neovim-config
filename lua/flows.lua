@@ -1,4 +1,5 @@
 local buffer = require "buffer"
+local scratch = require "scratch"
 local scratch_register = require "scratch.register"
 
 --- Yank lines matching (or not matching) the `/` register into `opts.register`.
@@ -316,6 +317,23 @@ return {
     end,
     key = "git-stash-pop",
     name = "Git stash pop",
+  },
+  {
+    flow = function()
+      local timestamp = vim.fn.strftime "%Y-%m-%dT%H:%M:%S%z"
+
+      local buffer_ = scratch.open { liveness = "retained" }
+      vim.opt_local.filetype = "sh"
+
+      vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, {
+        ([[GIT_COMMITTER_DATE='%s' git commit --date='%s' --no-edit --amend]]):format(
+          timestamp,
+          timestamp
+        ),
+      })
+    end,
+    key = "git-commit-date-amend",
+    name = "Git commit --date --amend",
   },
 
   -- args
