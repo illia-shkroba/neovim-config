@@ -901,8 +901,10 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<C-l>]],
-    [[<Cmd>mode | nohlsearch | diffupdate | fclose!<CR>]],
-    { desc = "<C-l> with :fclose!" }
+    [[<Cmd>mode | nohlsearch | diffupdate]]
+      .. [[ | call nvim_buf_clear_namespace(0, nvim_create_namespace("nvim.multicursor"), 0, -1)]]
+      .. [[ | fclose!<CR>]],
+    { desc = "<C-l> with :fclose! (clears multicursors)" }
   )
   vim.keymap.set(
     "n",
