@@ -74,6 +74,53 @@ local function list_yank(opts)
   ]]):format(lists[opts.type], collect, opts.register))
 end
 
+---@param opts { staged: boolean }
+---@return nil
+local function git_diff_args(opts)
+  local toplevel = vim
+    .system({ "git", "rev-parse", "--show-toplevel" }, { text = true })
+    :wait()
+  if toplevel.code ~= 0 then
+    vim.notify(toplevel.stderr, vim.log.levels.ERROR)
+    return
+  end
+  local root = vim.trim(toplevel.stdout)
+
+  local result = vim
+    .system({
+      "git",
+      "-C",
+      root,
+      "diff",
+      "--name-only",
+      "--diff-filter=d",
+      opts.staged and "--staged" or nil,
+    }, { text = true })
+    :wait()
+  if result.code ~= 0 then
+    vim.notify(result.stderr, vim.log.levels.ERROR)
+    return
+  end
+
+  local names = vim.tbl_map(function(line)
+    return vim.fn.fnameescape(root .. "/" .. line)
+  end, vim.split(result.stdout, "\n", { trimempty = true }))
+
+  local count = #names
+  if count == 0 then
+    vim.notify("No changed files", vim.log.levels.WARN)
+    return
+  end
+
+  vim.cmd.arglocal { bang = true }
+  pcall(vim.cmd.argdelete, "*")
+  vim.cmd.argadd(names)
+  vim.cmd.argdedupe()
+  vim.cmd.first()
+
+  vim.notify("Local args set to " .. count .. " file(s)", vim.log.levels.INFO)
+end
+
 return {
   -- diff
   {
@@ -337,6 +384,20 @@ return {
   },
 
   -- args
+  {
+    flow = function()
+      git_diff_args { staged = false }
+    end,
+    key = "arglocal-git-unstaged",
+    name = "arglocal git diff --name-only",
+  },
+  {
+    flow = function()
+      git_diff_args { staged = true }
+    end,
+    key = "arglocal-git-staged",
+    name = "arglocal git diff --name-only --staged",
+  },
   {
     flow = function()
       vim.cmd [[silent cfdo arga]]
