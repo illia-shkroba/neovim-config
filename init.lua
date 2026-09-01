@@ -121,7 +121,7 @@ set_options()
 
 local function set_bindings()
   -- args
-  vim.keymap.set("n", [[<leader>A]], function()
+  vim.keymap.set("n", { [[<leader>aa]] }, function()
     vim.cmd.argadd()
     vim.cmd.argdedupe()
 
