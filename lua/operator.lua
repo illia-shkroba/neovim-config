@@ -15,6 +15,11 @@ local mode = {
 local readonly = true
 local force_type = nil
 
+---@return boolean
+local function is_visual()
+  return vim.tbl_contains({ "v", "V", "" }, mode.mode)
+end
+
 ---@param region_ Region
 ---@return nil
 local function restore_marks(region_)
@@ -32,7 +37,7 @@ local function restore_marks(region_)
     region_.column_end,
     {}
   )
-  if vim.tbl_contains({ "v", "V", "" }, mode.mode) then
+  if is_visual() then
     vim.api.nvim_buf_set_mark(
       region_.buffer_number,
       "<",
@@ -85,6 +90,7 @@ function M.operatorfunc(type_)
     mark_begin = "[",
     mark_end = "]",
     type_ = force_type or type_,
+    visual = is_visual(),
   }
 
   if readonly then
