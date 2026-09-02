@@ -240,15 +240,16 @@ return {
         actions = {
           ["alt-f"] = false,
           ["alt-y"] = function(_, opts)
-            local args_ = vim
-              .iter(vim.fn.argv())
-              :map(function(arg)
-                return vim.fs.abspath(vim.fs.normalize(arg))
-              end)
-              :totable()
+            local args_only = not opts.__args_only
 
             opts.__call_fn(vim.tbl_extend("keep", {
-              search_paths = args_,
+              __args_only = args_only,
+              search_paths = args_only and vim
+                .iter(vim.fn.argv())
+                :map(function(arg)
+                  return vim.fs.abspath(vim.fs.normalize(arg))
+                end)
+                :totable() or false,
               resume = true, -- keeps current query
             }, opts.__call_opts or {}))
           end,
