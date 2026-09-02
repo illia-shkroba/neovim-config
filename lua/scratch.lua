@@ -181,7 +181,7 @@ function M.bind_substitute_origin(substitute_origin_input)
       origin_line - 1,
       origin_line,
       true
-    )[1] or ""
+    )[1]
     local origin_column =
       math.max(0, math.min(scratch_column + column_offset, #line_text - 1))
 

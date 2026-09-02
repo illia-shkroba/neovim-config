@@ -26,6 +26,16 @@ local released_metatable = {
   end,
 }
 
+---@param buffer_number integer
+---@param line integer 1-based.
+---@param column integer 0-based.
+---@return integer
+local function clamp_column(buffer_number, line, column)
+  local line_text =
+    vim.api.nvim_buf_get_lines(buffer_number, line - 1, line, true)[1]
+  return math.max(0, math.min(column, #line_text))
+end
+
 ---@param tracked TrackedRegion
 ---@return nil
 local function delete_marks(tracked)
@@ -168,19 +178,22 @@ function M.from_region(region_)
     region_.buffer_number,
     namespace,
     region_.line_begin - 1,
-    column_begin,
+    clamp_column(region_.buffer_number, region_.line_begin, column_begin),
     { right_gravity = true, undo_restore = true }
   )
+
+  -- If `substitute_linewise` is called with a region having `line_begin = 1`
+  -- and an empty `target`, then resulting `Region` will have `line_end = 0`.
+  local line_end = math.max(region_.line_end, 1)
+
   local mark_end = vim.api.nvim_buf_set_extmark(
     region_.buffer_number,
     namespace,
-    -- If `substitute_linewise` is called with a region having `line_begin = 1`
-    -- and an empty `target`, then resulting `Region` will have `line_end = 0`.
-    math.max(region_.line_end - 1, 0),
+    line_end - 1,
     -- If `substitute_charwise` is called with a region having `column_begin = 0`
     -- and an empty `target`, then resulting `Region` will have `column_end = -1`.
     -- According to the `:help api-indexing` -1 denotes the last column.
-    math.max(column_end, 0),
+    clamp_column(region_.buffer_number, line_end, column_end),
     { right_gravity = true, undo_restore = true }
   )
 
