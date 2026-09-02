@@ -10,6 +10,7 @@ return {
     local win = require "fzf-lua.win"
     local path = require "fzf-lua.path"
     local pickers = require "plugins.fzf.pickers"
+    local register = require "text.register"
     local scratch_register = require "scratch.register"
     local window = require "window"
 
@@ -349,6 +350,24 @@ return {
             window.to_vertical(vim.api.nvim_get_current_win())
           end,
           ["ctrl-x"] = edit_register,
+        },
+      },
+      search_history = {
+        actions = {
+          ["enter"] = function(selected)
+            if not selected[1] then
+              return
+            end
+            register.put("/", { selected[1] })
+          end,
+          ["ctrl-e"] = false,
+          ["ctrl-f"] = fzf.actions.search,
+          ["ctrl-x"] = false,
+          ["ctrl-z"] = {
+            fn = fzf.actions.search_del,
+            field_index = "{+n}",
+            reload = true,
+          },
         },
       },
       tabs = {

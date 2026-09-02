@@ -971,6 +971,12 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
+    [[<leader>f/]],
+    fzf.search_history,
+    { desc = "Search history" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>fA]],
     fzf.builtin,
     { desc = "All builtin pickers" }
