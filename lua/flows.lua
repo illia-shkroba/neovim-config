@@ -137,6 +137,13 @@ return {
     key = "diffoff",
     name = "windo diffoff",
   },
+  {
+    flow = function()
+      vim.cmd.argdo "diffoff"
+    end,
+    key = "argdo-diffoff",
+    name = "argdo diffoff",
+  },
 
   -- linewise
   {
@@ -262,6 +269,13 @@ return {
     end,
     key = "cfdo-sub",
     name = [[cfdo %s//\=@s/gce]],
+  },
+  {
+    flow = function()
+      vim.cmd [[cdo s//\=@s/ge]]
+    end,
+    key = "cdo-sub",
+    name = [[cdo s//\=@s/ge]],
   },
   {
     flow = function()
