@@ -492,6 +492,22 @@ return {
     name = "v//norm @q",
   },
 
+  -- multicursor
+  {
+    flow = function()
+      vim.cmd [[cdo norm Q]]
+    end,
+    key = "cdo-Q",
+    name = "cdo norm Q",
+  },
+  {
+    flow = function()
+      vim.cmd [[ldo norm Q]]
+    end,
+    key = "ldo-Q",
+    name = "ldo norm Q",
+  },
+
   -- register
   {
     flow = function()
