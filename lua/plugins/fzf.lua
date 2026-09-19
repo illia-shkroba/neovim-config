@@ -28,6 +28,11 @@ return {
       end
     end
 
+    -- Switch to the `files` picker with the current query.
+    local function to_files(_, opts)
+      fzf.files { query = opts.last_query }
+    end
+
     -- Windows of a tab that get an entry in the `tabs` picker list.
     local function displayed_windows(tabh)
       return vim.tbl_filter(function(window_)
@@ -162,6 +167,7 @@ return {
       buffers = {
         actions = {
           ["alt-f"] = false,
+          ["alt-t"] = to_files,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
@@ -319,6 +325,7 @@ return {
       oldfiles = {
         actions = {
           ["alt-f"] = false,
+          ["alt-t"] = to_files,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = {
