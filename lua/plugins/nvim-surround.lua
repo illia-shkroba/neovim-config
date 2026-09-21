@@ -6,7 +6,7 @@ return {
       surrounds = {
         ["?"] = {
           add = function()
-            return { { [[(?-i) ]] }, { "" } }
+            return { { [[(?-i)]] }, { "" } }
           end,
         },
         ["W"] = {
