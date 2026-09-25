@@ -1,4 +1,5 @@
 local buffer = require "buffer"
+local pickers = require "plugins.fzf.pickers"
 local scratch = require "scratch"
 local scratch_register = require "scratch.register"
 
@@ -336,6 +337,11 @@ return {
     end,
     key = "git-reflog",
     name = "Git reflog",
+  },
+  {
+    flow = pickers.git_recent_branches,
+    key = "git-checkout-recent",
+    name = "Git checkout recent branch",
   },
   {
     flow = function()

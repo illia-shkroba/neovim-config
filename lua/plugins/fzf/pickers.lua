@@ -286,4 +286,44 @@ function M.flows(flows_input)
   })
 end
 
+---@return nil
+function M.git_recent_branches()
+  local result = vim
+    .system({
+      "git",
+      "reflog",
+      "--grep-reflog=checkout:",
+      "--format=%gs",
+    }, { text = true })
+    :wait()
+  if result.code ~= 0 then
+    vim.notify(result.stderr, vim.log.levels.ERROR)
+    return
+  end
+
+  local seen, branches = {}, {}
+  for line in vim.gsplit(result.stdout, "\n", { trimempty = true }) do
+    local branch = line:match "%S+$"
+    if not seen[branch] and not branch:match "^%x%x%x%x%x%x%x+$" then
+      table.insert(branches, branch)
+      seen[branch] = true
+    end
+  end
+
+  fzf.fzf_exec(branches, {
+    winopts = {
+      title = " Recent Branches ",
+    },
+    actions = {
+      ["enter"] = function(selected)
+        vim.cmd.Git { "checkout", selected[1] }
+      end,
+    },
+    fzf_opts = {
+      ["--no-multi"] = true,
+      ["--no-sort"] = true,
+    },
+  })
+end
+
 return M
