@@ -15,6 +15,7 @@ local mark = require "mark"
 local operator = require "operator"
 local path = require "path"
 local pickers = require "plugins.fzf.pickers"
+local quote = require "text.quote"
 local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
@@ -1645,6 +1646,9 @@ local function set_bindings()
     [[Vie]],
     { remap = true, desc = "Leap select treesitter node linewise" }
   )
+  vim.keymap.set({ "o", "v" }, "aq", function()
+    return "a" .. quote.nearest_at_cursor()
+  end, { expr = true, desc = "Around nearest quote" })
   vim.keymap.set({ "o", "v" }, "ar", "a[", { desc = "a[" })
   vim.keymap.set(
     { "o", "v" },
@@ -1661,6 +1665,9 @@ local function set_bindings()
       opts = require("leap.user").with_traversal_keys("<C-n>", "<C-p>"),
     }
   end, { desc = "Leap select treesitter node" })
+  vim.keymap.set({ "o", "v" }, "iq", function()
+    return "i" .. quote.nearest_at_cursor()
+  end, { expr = true, desc = "Inside nearest quote" })
   vim.keymap.set({ "o", "v" }, "ir", "i[", { desc = "i[" })
   vim.keymap.set(
     { "o", "v" },
