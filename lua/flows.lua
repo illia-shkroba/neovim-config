@@ -146,6 +146,22 @@ return {
     name = "argdo diffoff",
   },
 
+  -- git-diff-args
+  {
+    flow = function()
+      git_diff_args { staged = false }
+    end,
+    key = "arglocal-git-unstaged",
+    name = "arglocal git diff --name-only",
+  },
+  {
+    flow = function()
+      git_diff_args { staged = true }
+    end,
+    key = "arglocal-git-staged",
+    name = "arglocal git diff --name-only --staged",
+  },
+
   -- linewise
   {
     flow = function()
@@ -404,20 +420,6 @@ return {
   },
 
   -- args
-  {
-    flow = function()
-      git_diff_args { staged = false }
-    end,
-    key = "arglocal-git-unstaged",
-    name = "arglocal git diff --name-only",
-  },
-  {
-    flow = function()
-      git_diff_args { staged = true }
-    end,
-    key = "arglocal-git-staged",
-    name = "arglocal git diff --name-only --staged",
-  },
   {
     flow = function()
       vim.cmd [[silent cfdo arga]]
