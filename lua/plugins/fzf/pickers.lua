@@ -4,6 +4,7 @@ local filetypes = require "filetypes"
 local fzf = require "fzf-lua"
 local path = require "fzf-lua.path"
 local register = require "text.register"
+local scratch = require "scratch"
 local utils = require "fzf-lua.utils"
 
 ---@param picker any
@@ -317,6 +318,10 @@ function M.git_recent_branches()
     actions = {
       ["enter"] = function(selected)
         vim.cmd.Git("checkout " .. selected[1])
+      end,
+      ["ctrl-f"] = function(selected)
+        local buffer_ = scratch.open { liveness = "retained" }
+        vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { selected[1] })
       end,
     },
     fzf_opts = {
