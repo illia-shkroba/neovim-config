@@ -316,7 +316,7 @@ function M.git_recent_branches()
     },
     actions = {
       ["enter"] = function(selected)
-        vim.cmd.Git { "checkout", selected[1] }
+        vim.cmd.Git("checkout " .. selected[1])
       end,
     },
     fzf_opts = {
