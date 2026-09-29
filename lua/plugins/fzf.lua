@@ -11,6 +11,7 @@ return {
     local path = require "fzf-lua.path"
     local pickers = require "plugins.fzf.pickers"
     local register = require "text.register"
+    local scratch = require "scratch"
     local scratch_register = require "scratch.register"
     local window = require "window"
 
@@ -405,7 +406,14 @@ return {
         },
       },
       zoxide = {
-        actions = pickers.directories_actions,
+        actions = vim.tbl_deep_extend("keep", {
+          ["ctrl-f"] = function(selected)
+            local buffer_ = scratch.open { liveness = "retained" }
+            vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, {
+              selected[1]:match "[^\t]+$" or selected[1],
+            })
+          end,
+        }, pickers.directories_actions),
       },
     }
   end,
