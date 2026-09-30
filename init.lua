@@ -581,6 +581,8 @@ local function set_bindings()
       vim.fs.rm(buffer_)
       vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
       vim.cmd.bwipeout(buffer_)
+    else
+      vim.cmd.bwipeout()
     end
   end, { desc = "Remove current buffer's file and wipe the buffer" })
   vim.keymap.set("n", [[<leader>J]], function()
