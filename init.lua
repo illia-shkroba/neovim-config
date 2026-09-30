@@ -575,6 +575,14 @@ local function set_bindings()
     }
   end
 
+  vim.keymap.set("n", [[<leader>B]], function()
+    local buffer_ = vim.api.nvim_buf_get_name(0)
+    if #buffer_ > 0 then
+      vim.fs.rm(buffer_)
+      vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
+      vim.cmd.bwipeout(buffer_)
+    end
+  end, { desc = "Remove current buffer's file and wipe the buffer" })
   vim.keymap.set("n", [[<leader>J]], function()
     local picked_windows = pick_windows {
       filter_rules = { autoselect_one = true, include_current_win = true },
@@ -852,14 +860,6 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
-  vim.keymap.set("n", [[<leader>z]], function()
-    local buffer_ = vim.api.nvim_buf_get_name(0)
-    if #buffer_ > 0 then
-      vim.fs.rm(buffer_)
-      vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
-      vim.cmd.bwipeout(buffer_)
-    end
-  end, { desc = "Remove current buffer's file and wipe the buffer" })
   vim.keymap.set("n", [[ZB]], function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
     local current_window = vim.api.nvim_get_current_win()
