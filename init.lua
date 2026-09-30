@@ -860,6 +860,10 @@ local function set_bindings()
       end
     end)
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
+  vim.keymap.set("n", [[<leader>z]], function()
+    scratch.open { liveness = "retained" }
+    vim.opt_local.filetype = "markdown"
+  end, { desc = "Open markdown scratch buffer" })
   vim.keymap.set("n", [[ZB]], function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
     local current_window = vim.api.nvim_get_current_win()
