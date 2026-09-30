@@ -575,14 +575,27 @@ local function set_bindings()
     }
   end
 
+  local function close_window_to_last_accessed()
+    local windows = vim.tbl_filter(function(window)
+      return vim.api.nvim_win_get_config(window).relative == ""
+    end, vim.api.nvim_tabpage_list_wins(0))
+
+    if #windows > 1 then
+      -- Without bang to use `ZB`
+      vim.cmd.normal [[ZB]]
+    end
+  end
+
   vim.keymap.set("n", [[<leader>B]], function()
-    local buffer_ = vim.api.nvim_buf_get_name(0)
-    if #buffer_ > 0 then
-      vim.fs.rm(buffer_)
-      vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
-      vim.cmd.bwipeout(buffer_)
-    else
-      vim.cmd.bwipeout()
+    local buffer_ = vim.api.nvim_get_current_buf()
+    local path = vim.api.nvim_buf_get_name(buffer_)
+    if #path > 0 then
+      vim.fs.rm(path)
+      vim.notify("Removed file: " .. path, vim.log.levels.INFO)
+    end
+    close_window_to_last_accessed()
+    if vim.api.nvim_buf_is_valid(buffer_) then
+      vim.cmd.bwipeout { buffer_, bang = true }
     end
   end, { desc = "Remove current buffer's file and wipe the buffer" })
   vim.keymap.set("n", [[<leader>J]], function()
@@ -821,12 +834,13 @@ local function set_bindings()
       origin_window_number = origin_window,
     }
   end, { desc = "Open a scratch window with [count] lines" })
-  vim.keymap.set(
-    "n",
-    [[<leader>b]],
-    [[<Cmd>bwipeout!<CR>]],
-    { desc = "bwipeout!" }
-  )
+  vim.keymap.set("n", [[<leader>b]], function()
+    local buffer_ = vim.api.nvim_get_current_buf()
+    close_window_to_last_accessed()
+    if vim.api.nvim_buf_is_valid(buffer_) then
+      vim.cmd.bwipeout { buffer_, bang = true }
+    end
+  end, { desc = "Wipe buffer and enter last accessed window" })
   vim.keymap.set("n", [[<leader>lo]], function()
     local buffer_ = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
