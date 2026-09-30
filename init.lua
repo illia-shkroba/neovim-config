@@ -857,8 +857,9 @@ local function set_bindings()
     if #buffer_ > 0 then
       vim.fs.rm(buffer_)
       vim.notify("Removed file: " .. buffer_, vim.log.levels.INFO)
+      vim.cmd.bwipeout(buffer_)
     end
-  end, { desc = "Remove current buffer's file" })
+  end, { desc = "Remove current buffer's file and wipe the buffer" })
   vim.keymap.set("n", [[ZB]], function()
     local last_accessed_window = vim.fn.win_getid(vim.fn.winnr "#")
     local current_window = vim.api.nvim_get_current_win()
