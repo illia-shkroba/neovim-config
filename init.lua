@@ -904,6 +904,12 @@ local function set_bindings()
   })
   vim.keymap.set(
     "i",
+    [[<C-g><C-f>]],
+    [[<C-f>]],
+    { remap = false, desc = "Builtin <C-f>" }
+  )
+  vim.keymap.set(
+    "i",
     [[<C-g><C-s>]],
     vim.lsp.buf.signature_help,
     { desc = "Signature help" }
