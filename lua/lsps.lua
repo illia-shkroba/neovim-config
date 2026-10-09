@@ -3,7 +3,6 @@ return {
   bashls = { install = true },
   dockerls = { install = true },
   dotls = {},
-  harper_ls = { install = true },
   hls = {},
   lua_ls = { install = true },
   perlpls = {},
@@ -12,7 +11,6 @@ return {
   rust_analyzer = {},
   terraformls = {},
   ty = { install = true },
-  typos_lsp = { install = true },
   vimls = { install = true },
   yamlls = {
     install = true,
