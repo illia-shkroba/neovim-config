@@ -589,7 +589,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>B]], function()
     local buffer_ = vim.api.nvim_get_current_buf()
     local path = vim.api.nvim_buf_get_name(buffer_)
-    if #path > 0 then
+    if #path > 0 and vim.uv.fs_stat(path) then
       vim.fs.rm(path)
       vim.notify("Removed file: " .. path, vim.log.levels.INFO)
     end
