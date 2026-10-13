@@ -182,7 +182,7 @@ local function set_bindings()
   end, { desc = "Load args from the current buffer" })
   vim.keymap.set("n", [[<leader>ar]], vim.cmd.args, { desc = "args" })
   vim.keymap.set("n", [[<leader>aR]], function()
-    local buffer_ = scratch.open { liveness = "retained" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "args " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, vim.fn.argv())
   end, { desc = "Paste args in a scratch window" })
@@ -299,7 +299,7 @@ local function set_bindings()
 
     local result = vim.system(command, { text = true }):wait()
     if result.code == 0 then
-      local buffer_ = scratch.open { liveness = "retained" }
+      local buffer_ = scratch.open()
       vim.opt_local.filetype = "markdown"
       vim.opt_local.statusline = "tmux " .. status.statusline
 
@@ -323,7 +323,7 @@ local function set_bindings()
     end
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
-    local buffer_ = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "date " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
@@ -333,7 +333,7 @@ local function set_bindings()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
 
-    local buffer_ = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "home-relative-line " .. status.statusline
     vim.api.nvim_buf_set_lines(
       buffer_,
@@ -348,7 +348,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>mp]], function()
     local path_ = buffer.name(vim.api.nvim_get_current_buf())
 
-    local buffer_ = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "absolute " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { path_ })
   end, { desc = "Paste current buffer's absolute path in a scratch window" })
@@ -356,12 +356,12 @@ local function set_bindings()
     local name =
       vim.fn.fnamemodify(buffer.name(vim.api.nvim_get_current_buf()), ":t")
 
-    local buffer_ = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "filename " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { name })
   end, { desc = "Paste current buffer's filename in a scratch window" })
   vim.keymap.set("n", [[<leader>mw]], function()
-    local buffer_ = scratch.open { liveness = "onetime" }
+    local buffer_ = scratch.open()
     vim.opt_local.statusline = "cwd " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { vim.fn.getcwd() })
   end, { desc = "Paste current working directory in a scratch window" })
@@ -371,7 +371,7 @@ local function set_bindings()
     function()
       local path_ = buffer.short_name(vim.api.nvim_get_current_buf())
 
-      local buffer_ = scratch.open { liveness = "onetime" }
+      local buffer_ = scratch.open()
       vim.opt_local.statusline = "cwd-relative " .. status.statusline
       vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { path_ })
     end,
@@ -665,7 +665,7 @@ local function set_bindings()
     end)
   end, { desc = "Like write ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>Z]], function()
-    scratch.open { liveness = "retained" }
+    scratch.open()
     vim.opt_local.filetype = "markdown"
     vim.cmd.startinsert()
   end, { desc = "Open markdown scratch buffer in insert mode" })
@@ -684,7 +684,7 @@ local function set_bindings()
           column = origin_column,
         }
 
-        local buffer_ = scratch.open { liveness = "retained" }
+        local buffer_ = scratch.open()
         vim.opt_local.filetype = filetype
         vim.opt_local.statusline =
           status.buffer_statusline(region_.buffer_number)
@@ -822,7 +822,7 @@ local function set_bindings()
       column = column,
     }
 
-    local buffer_ = scratch.open { liveness = "retained" }
+    local buffer_ = scratch.open()
     vim.opt_local.filetype = filetype
     vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
@@ -877,7 +877,7 @@ local function set_bindings()
     end)
   end, { desc = "Like update ++p, but keep the [ and ] marks" })
   vim.keymap.set("n", [[<leader>z]], function()
-    scratch.open { liveness = "retained" }
+    scratch.open()
     vim.opt_local.filetype = "markdown"
   end, { desc = "Open markdown scratch buffer" })
   vim.keymap.set("n", [[ZB]], function()
@@ -898,7 +898,7 @@ local function set_bindings()
   vim.keymap.set("n", [[@+]], [[<Cmd>@+<CR>]], { desc = [[@+]] })
   vim.keymap.set({ "n", "v" }, [[<leader>']], [["_]], { desc = [["_]] })
   vim.keymap.set("i", [[<C-f>]], function()
-    scratch.open_with_current_cursor_as_origin { liveness = "retained" }
+    scratch.open_with_current_cursor_as_origin()
   end, {
     desc = "Open a scratch window for insertion into current cursor position",
   })
@@ -1768,7 +1768,7 @@ local function set_commands()
   vim.api.nvim_create_user_command(
     "History",
     function()
-      scratch.open { liveness = "retained" }
+      scratch.open()
       vim.opt_local.filetype = "sh"
       vim.opt_local.statusline = "history " .. status.statusline
 
@@ -1863,7 +1863,7 @@ local function set_autocommands()
   vim.api.nvim_create_autocmd("BufWinEnter", {
     pattern = "*.msg",
     callback = function()
-      scratch.open { liveness = "retained" }
+      scratch.open()
       vim.opt_local.filetype = "markdown"
 
       vim.cmd [[0r !markitdown-wrapper '#']]

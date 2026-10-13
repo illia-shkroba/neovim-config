@@ -320,7 +320,7 @@ function M.git_recent_branches()
         vim.cmd.Git("checkout " .. selected[1])
       end,
       ["ctrl-f"] = function(selected)
-        local buffer_ = scratch.open { liveness = "retained" }
+        local buffer_ = scratch.open()
         vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { selected[1] })
       end,
     },

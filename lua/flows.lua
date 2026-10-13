@@ -405,7 +405,7 @@ return {
     flow = function()
       local timestamp = vim.fn.strftime "%Y-%m-%dT%H:%M:%S%z"
 
-      local buffer_ = scratch.open { liveness = "retained" }
+      local buffer_ = scratch.open()
       vim.opt_local.filetype = "sh"
 
       vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, {

@@ -7,12 +7,8 @@ local status = require "status"
 local tracked_region = require "text.tracked_region"
 local utils = require "utils"
 
----@class ScratchInput
----@field liveness "retained"|"onetime"
-
----@param scratch_input ScratchInput
 ---@return integer
-function M.open_with_current_cursor_as_origin(scratch_input)
+function M.open_with_current_cursor_as_origin()
   local origin_buffer = vim.api.nvim_get_current_buf()
   local origin_window = vim.api.nvim_get_current_win()
 
@@ -37,7 +33,7 @@ function M.open_with_current_cursor_as_origin(scratch_input)
     column = column,
   }
 
-  local buffer_ = M.open(scratch_input)
+  local buffer_ = M.open()
   vim.opt_local.filetype = filetype
   vim.opt_local.statusline = status.buffer_statusline(region_.buffer_number)
 
@@ -52,16 +48,8 @@ function M.open_with_current_cursor_as_origin(scratch_input)
   return buffer_
 end
 
----@param scratch_input ScratchInput
 ---@return integer
-function M.open(scratch_input)
-  local events
-  if scratch_input.liveness == "retained" then
-    events = { "BufWinLeave" }
-  elseif scratch_input.liveness == "onetime" then
-    events = { "BufLeave" }
-  end
-
+function M.open()
   local listed = false
   local scratch = true
   local buffer_ = vim.api.nvim_create_buf(listed, scratch)
@@ -69,7 +57,7 @@ function M.open(scratch_input)
 
   vim.cmd.clearjumps()
 
-  vim.api.nvim_create_autocmd(events, {
+  vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer_,
     callback = function()
       vim.schedule(function()

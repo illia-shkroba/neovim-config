@@ -408,7 +408,7 @@ return {
       zoxide = {
         actions = vim.tbl_deep_extend("keep", {
           ["ctrl-f"] = function(selected)
-            local buffer_ = scratch.open { liveness = "retained" }
+            local buffer_ = scratch.open()
             vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, {
               selected[1]:match "[^\t]+$" or selected[1],
             })
