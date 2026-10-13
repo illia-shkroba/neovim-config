@@ -56,6 +56,7 @@ end
 function M.as_temporary(buffer)
   vim.bo[buffer].buflisted = true
   vim.bo[buffer].buftype = ""
+  vim.bo[buffer].bufhidden = ""
   vim.api.nvim_buf_set_name(buffer, vim.fn.tempname())
 end
 

@@ -57,7 +57,7 @@ function M.open()
 
   vim.cmd.clearjumps()
 
-  vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+  local wipeout = vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
     buffer = buffer_,
     callback = function()
       vim.schedule(function()
@@ -67,6 +67,7 @@ function M.open()
     once = true,
   })
   vim.keymap.set("n", [[ZM]], function()
+    utils.try(vim.api.nvim_del_autocmd, wipeout)
     buffer.as_temporary(buffer_)
   end, {
     buffer = buffer_,
