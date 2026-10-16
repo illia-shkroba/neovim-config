@@ -296,6 +296,20 @@ return {
   },
   {
     flow = function()
+      vim.cmd [[lfdo %s//\=@s/gce]]
+    end,
+    key = "lfdo-sub",
+    name = [[lfdo %s//\=@s/gce]],
+  },
+  {
+    flow = function()
+      vim.cmd [[ldo s//\=@s/ge]]
+    end,
+    key = "ldo-sub",
+    name = [[ldo s//\=@s/ge]],
+  },
+  {
+    flow = function()
       vim.cmd [[argdo %s//\=@s/gce]]
     end,
     key = "argdo-sub",
