@@ -57,6 +57,7 @@ return {
         vim.opt_local.signcolumn = "yes"
 
         local gitsigns = require "gitsigns"
+        local operator = require "operator"
 
         local function set(mode, left, right, opts)
           opts = opts or {}
@@ -98,6 +99,17 @@ return {
         set("v", "<leader>hr", function()
           gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
         end, { desc = "Reset hunk" })
+        set(
+          "n",
+          "<leader>hS",
+          operator.expr {
+            function_ = function(region_)
+              gitsigns.stage_hunk { region_.line_begin, region_.line_end }
+            end,
+            readonly = true,
+          },
+          { expr = true, desc = "Stage/unstage hunks with motion" }
+        )
         set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
         set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
