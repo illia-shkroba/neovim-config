@@ -98,13 +98,6 @@ return {
         set("v", "<leader>hr", function()
           gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
         end, { desc = "Reset hunk" })
-        set("n", "<leader>hS", gitsigns.stage_buffer, { desc = "Stage buffer" })
-        set(
-          "n",
-          "<leader>hu",
-          gitsigns.undo_stage_hunk,
-          { desc = "Undo stage hunk" }
-        )
         set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
         set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
