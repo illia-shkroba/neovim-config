@@ -105,6 +105,20 @@ return {
           operator.expr {
             function_ = function(region_)
               gitsigns.stage_hunk { region_.line_begin, region_.line_end }
+              vim.api.nvim_buf_set_mark(
+                region_.buffer_number,
+                "[",
+                region_.line_begin,
+                region_.column_begin,
+                {}
+              )
+              vim.api.nvim_buf_set_mark(
+                region_.buffer_number,
+                "]",
+                region_.line_end,
+                region_.column_end,
+                {}
+              )
             end,
             readonly = true,
           },
