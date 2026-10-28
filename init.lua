@@ -934,12 +934,6 @@ local function set_bindings()
       .. [[ | fclose!<CR>]],
     { desc = "<C-l> with :fclose! (clears multicursors)" }
   )
-  vim.keymap.set(
-    "n",
-    "-",
-    "-",
-    { remap = true, desc = "- (revert NeoVim overload)" }
-  )
 
   -- paste
   vim.keymap.set(
