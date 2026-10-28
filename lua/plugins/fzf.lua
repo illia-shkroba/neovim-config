@@ -38,8 +38,8 @@ return {
     local function displayed_windows(tabh)
       return vim.tbl_filter(function(window_)
         local buffer = vim.api.nvim_win_get_buf(window_)
-        return vim.fn.buflisted(buffer) == 1
-          and vim.api.nvim_buf_is_loaded(buffer)
+        return vim.api.nvim_buf_is_loaded(buffer)
+          and vim.bo[buffer].filetype ~= "qf"
       end, vim.api.nvim_tabpage_list_wins(tabh))
     end
 
@@ -380,6 +380,7 @@ return {
         },
       },
       tabs = {
+        show_unlisted = true,
         actions = {
           ["alt-f"] = false,
           ["alt-z"] = { fn = close_tabs, reload = true },
