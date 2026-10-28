@@ -91,17 +91,14 @@ return {
         end, { desc = "Go to previous hunk" })
 
         -- Actions
-        set("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+        set("n", "<leader>hS", gitsigns.stage_hunk, { desc = "Stage hunk" })
         set("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
-        set("v", "<leader>hs", function()
-          gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end, { desc = "Stage hunk" })
         set("v", "<leader>hr", function()
           gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
         end, { desc = "Reset hunk" })
         set(
-          "n",
-          "<leader>hS",
+          { "n", "v" },
+          "<leader>hs",
           operator.expr {
             function_ = function(region_)
               gitsigns.stage_hunk { region_.line_begin, region_.line_end }
