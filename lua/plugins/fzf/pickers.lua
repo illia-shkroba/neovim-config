@@ -7,19 +7,19 @@ local register = require "text.register"
 local scratch = require "scratch"
 local utils = require "fzf-lua.utils"
 
+-- "escaped": search is regex-escaped, so it matches as is within one line.
+-- "regex": search is a regex.
+-- "literal": search matches as is across lines; it isn't split into globs on
+-- " --" (`rg_glob`).
+---@alias GrepMode "escaped"|"regex"|"literal"
+
 ---@param picker any
 ---@param search string|nil
 ---@param matching_filetypes table<integer, string>|nil
 ---@param query string|nil
----@param no_esc boolean|nil
+---@param mode GrepMode|nil
 ---@return nil
-local function grep_by_filetype(
-  picker,
-  search,
-  matching_filetypes,
-  query,
-  no_esc
-)
+local function grep_by_filetype(picker, search, matching_filetypes, query, mode)
   if matching_filetypes == nil then
     local filetype = vim.bo.filetype
     local filename = vim.fs.basename(vim.api.nvim_buf_get_name(0))
@@ -27,9 +27,7 @@ local function grep_by_filetype(
     matching_filetypes = filetypes.match_rg(filetype, filename)
   end
 
-  if no_esc == nil then
-    no_esc = false
-  end
+  mode = mode or "escaped"
 
   local actions = {
     ["alt-t"] = function()
@@ -45,46 +43,62 @@ local function grep_by_filetype(
               search,
               selected,
               opts.__INFO.last_query,
-              no_esc
+              mode
             )
           end,
         },
       }
     end,
     ["alt-e"] = function()
-      grep_by_filetype(picker, search, matching_filetypes, query, not no_esc)
+      grep_by_filetype(
+        picker,
+        search,
+        matching_filetypes,
+        query,
+        mode == "regex" and "escaped" or "regex"
+      )
+    end,
+    ["alt-l"] = function()
+      grep_by_filetype(
+        picker,
+        search,
+        matching_filetypes,
+        query,
+        mode == "literal" and "escaped" or "literal"
+      )
     end,
   }
 
-  if #matching_filetypes == 0 or vim.tbl_contains(matching_filetypes, "") then
-    picker {
-      actions = actions,
-      silent = true,
-      search = search,
-      no_esc = no_esc,
-      query = query,
-    }
-  else
-    local type_options = {}
+  local options = {}
+  local title = " Grep "
 
+  if
+    #matching_filetypes > 0 and not vim.tbl_contains(matching_filetypes, "")
+  then
     for _, sel in ipairs(matching_filetypes) do
-      table.insert(type_options, "--type=" .. sel)
+      table.insert(options, "--type=" .. sel)
     end
-
-    picker {
-      winopts = {
-        title = " Grep (" .. table.concat(matching_filetypes, ", ") .. ") ",
-      },
-      actions = actions,
-      silent = true,
-      search = search,
-      no_esc = no_esc,
-      query = query,
-      rg_opts = table.concat(type_options, " ")
-        .. " --column --line-number --no-heading --color=always --smart-case"
-        .. " --max-columns=4096 -e",
-    }
+    title = " Grep (" .. table.concat(matching_filetypes, ", ") .. ") "
   end
+
+  if mode == "literal" then
+    table.insert(options, "--multiline --fixed-strings")
+  end
+
+  picker {
+    winopts = {
+      title = title .. "(" .. mode .. ") ",
+    },
+    actions = actions,
+    silent = true,
+    search = search,
+    no_esc = mode ~= "escaped",
+    rg_glob = mode ~= "literal",
+    query = query,
+    rg_opts = table.concat(options, " ")
+      .. " --column --line-number --no-heading --color=always --smart-case"
+      .. " --max-columns=4096 -e",
+  }
 end
 
 ---@param opts table<string, any>|nil
