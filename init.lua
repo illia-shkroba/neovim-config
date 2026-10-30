@@ -965,14 +965,14 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>+]],
-    require "neoclip.fzf",
-    { desc = "Open neoclip" }
+    fzf.tmux_buffers,
+    { desc = "Tmux buffers" }
   )
   vim.keymap.set(
     "n",
     [[<leader>=]],
-    fzf.tmux_buffers,
-    { desc = "Tmux buffers" }
+    require "neoclip.fzf",
+    { desc = "Open neoclip" }
   )
   vim.keymap.set(
     "n",
