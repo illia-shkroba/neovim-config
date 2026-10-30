@@ -1393,17 +1393,32 @@ local function set_bindings()
   })
 
   -- search
-  local function lvimgrep_current_buffer()
-    if vim.api.nvim_buf_get_name(0) == "" then
-      vim.notify(
-        "Cannot call `lvimgrep` in unnamed buffer.",
-        vim.log.levels.WARN
-      )
+  ---@param opts { type: "quickfix" | "location" }
+  ---@return nil
+  local function global_list_match(opts)
+    local pattern = vim.fn.getreg "/"
+    if pattern == "" then
+      vim.notify("No previous regular expression", vim.log.levels.ERROR)
       return
     end
 
-    vim.cmd [[lvimgrep//gj %]]
-    vim.opt.hlsearch = true
+    local buffer_ = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(buffer_, 0, -1, true)
+    local items = vim.tbl_map(function(match)
+      return {
+        bufnr = buffer_,
+        lnum = match.lnum,
+        col = match.byteidx + 1,
+        end_col = match.byteidx + #match.text + 1,
+        text = lines[match.lnum],
+      }
+    end, vim.fn.matchbufline(buffer_, pattern, 1, "$"))
+
+    if opts.type == "quickfix" then
+      vim.fn.setqflist({}, " ", { items = items, title = "/" .. pattern })
+    else
+      vim.fn.setloclist(0, {}, " ", { items = items, title = "/" .. pattern })
+    end
   end
 
   ---@param region_ Region
@@ -1453,13 +1468,11 @@ local function set_bindings()
     return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
   vim.keymap.set("n", [[<leader>L]], function()
-    local buffer_ = vim.api.nvim_get_current_buf()
-    if buffer.type_(buffer_) == "scratch" then
-      buffer.as_temporary(buffer_)
-    end
-
-    lvimgrep_current_buffer()
+    global_list_match { type = "location" }
   end, { desc = "lvimgrep//gj %" })
+  vim.keymap.set("n", [[<leader>Q]], function()
+    global_list_match { type = "quickfix" }
+  end, { desc = "vimgrep//gj %" })
   vim.keymap.set(
     { "n", "v" },
     [[<leader>/]],
@@ -1478,12 +1491,8 @@ local function set_bindings()
     [[<leader>?]],
     operator.expr {
       function_ = function(region_)
-        if buffer.type_(region_.buffer_number) == "scratch" then
-          buffer.as_temporary(region_.buffer_number)
-        end
-
         put_region_to_search_register(region_)
-        lvimgrep_current_buffer()
+        global_list_match { type = "location" }
       end,
       readonly = true,
     },
@@ -1494,13 +1503,8 @@ local function set_bindings()
   )
   vim.keymap.set("n", [[<leader>??]], function()
     local region_ = count_lines_region()
-
-    if buffer.type_(region_.buffer_number) == "scratch" then
-      buffer.as_temporary(region_.buffer_number)
-    end
-
     put_region_to_search_register(region_)
-    lvimgrep_current_buffer()
+    global_list_match { type = "location" }
   end, {
     desc = "Set [count] lines to / register and then `lvimgrep//gj %`",
   })

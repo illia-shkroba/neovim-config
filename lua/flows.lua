@@ -75,36 +75,6 @@ local function list_yank(opts)
   ]]):format(lists[opts.type], collect, opts.register))
 end
 
----@param opts { type: "quickfix" | "location" }
----@return nil
-local function global_list_match(opts)
-  local pattern = vim.fn.getreg "/"
-  if pattern == "" then
-    vim.notify("No previous regular expression", vim.log.levels.ERROR)
-    return
-  end
-
-  local buffer_ = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(buffer_, 0, -1, true)
-  local items = vim.tbl_map(function(match)
-    return {
-      bufnr = buffer_,
-      lnum = match.lnum,
-      col = match.byteidx + 1,
-      end_col = match.byteidx + #match.text + 1,
-      text = lines[match.lnum],
-    }
-  end, vim.fn.matchbufline(buffer_, pattern, 1, "$"))
-
-  if opts.type == "quickfix" then
-    vim.fn.setqflist({}, " ", { items = items, title = "/" .. pattern })
-    vim.cmd.copen()
-  else
-    vim.fn.setloclist(0, {}, " ", { items = items, title = "/" .. pattern })
-    vim.cmd.lopen()
-  end
-end
-
 ---@param opts { staged: boolean }
 ---@return nil
 local function git_diff_args(opts)
@@ -237,20 +207,6 @@ return {
   },
 
   -- quickfix/location
-  {
-    flow = function()
-      global_list_match { type = "quickfix" }
-    end,
-    key = "vimgrep",
-    name = "vimgrep//gj %",
-  },
-  {
-    flow = function()
-      global_list_match { type = "location" }
-    end,
-    key = "lvimgrep",
-    name = "lvimgrep//gj %",
-  },
   {
     flow = function()
       local register_ = vim.fn.getreg "a"
