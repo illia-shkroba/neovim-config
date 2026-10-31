@@ -13,6 +13,7 @@ return {
     local register = require "text.register"
     local scratch = require "scratch"
     local scratch_register = require "scratch.register"
+    local scratch_tmux = require "scratch.tmux"
     local window = require "window"
 
     local function args(selected, opts)
@@ -69,6 +70,18 @@ return {
       local register_ = selected[1]:match "%[(.-)%]"
       if register_ then
         scratch_register.edit(register_)
+      end
+    end
+
+    local function edit_tmux_buffer(selected)
+      if #selected == 0 then
+        return
+      end
+
+      -- `tmux_buffers` entries are prefixed with "[<buffer>]: ".
+      local buffer_name = selected[1]:match "^%[(.-)%]"
+      if buffer_name then
+        return scratch_tmux.edit(buffer_name)
       end
     end
 
@@ -384,6 +397,23 @@ return {
             fn = fzf.actions.search_del,
             field_index = "{+n}",
             reload = true,
+          },
+        },
+      },
+      tmux = {
+        buffers = {
+          actions = {
+            ["ctrl-t"] = function(selected)
+              if edit_tmux_buffer(selected) then
+                vim.cmd.wincmd "T"
+              end
+            end,
+            ["ctrl-v"] = function(selected)
+              if edit_tmux_buffer(selected) then
+                window.to_vertical(vim.api.nvim_get_current_win())
+              end
+            end,
+            ["ctrl-x"] = edit_tmux_buffer,
           },
         },
       },
