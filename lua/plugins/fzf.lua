@@ -177,6 +177,10 @@ return {
       },
       changes = {
         actions = {
+          ["ctrl-t"] = function(selected, opts)
+            vim.cmd "tab split"
+            fzf.actions.goto_jump(selected, opts)
+          end,
           ["ctrl-v"] = function(selected, opts)
             vim.cmd.vsplit()
             fzf.actions.goto_jump(selected, opts)
@@ -267,6 +271,10 @@ return {
       },
       jumps = {
         actions = {
+          ["ctrl-t"] = function(selected, opts)
+            vim.cmd "tab split"
+            fzf.actions.goto_jump(selected, opts)
+          end,
           ["ctrl-v"] = function(selected, opts)
             vim.cmd.vsplit()
             fzf.actions.goto_jump(selected, opts)
