@@ -20,6 +20,7 @@ local region = require "text.region"
 local register = require "text.register"
 local scratch = require "scratch"
 local scratch_register = require "scratch.register"
+local scratch_tmux = require "scratch.tmux"
 local status = require "status"
 local utils = require "utils"
 local window = require "window"
@@ -295,32 +296,7 @@ local function set_bindings()
 
   -- expression
   vim.keymap.set("n", [[<leader>mb]], function()
-    local command = { "tmux", "show-buffer" }
-
-    local result = vim.system(command, { text = true }):wait()
-    if result.code == 0 then
-      local buffer_ = scratch.open()
-      vim.opt_local.filetype = "markdown"
-      vim.opt_local.statusline = "tmux " .. status.statusline
-
-      vim.api.nvim_buf_set_lines(
-        buffer_,
-        0,
-        1,
-        false,
-        vim.split(result.stdout, "\n")
-      )
-    else
-      vim.notify(
-        "Command `"
-          .. table.concat(command, " ")
-          .. "` has failed with code "
-          .. result.code
-          .. " and stderr:\n"
-          .. result.stderr,
-        vim.log.levels.ERROR
-      )
-    end
+    scratch_tmux.edit()
   end, { desc = "Paste tmux buffer's contents in a scratch window" })
   vim.keymap.set("n", [[<leader>md]], function()
     local buffer_ = scratch.open()
