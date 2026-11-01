@@ -1834,7 +1834,7 @@ local function set_autocommands()
       vim.opt_local.include = ""
     end,
   })
-  vim.api.nvim_create_autocmd("BufWinEnter", {
+  vim.api.nvim_create_autocmd("BufReadPost", {
     pattern = "*.msg",
     callback = function()
       scratch.open()
@@ -1845,7 +1845,7 @@ local function set_autocommands()
     end,
   })
   -- Show most recent commit when entering "COMMIT_EDITMSG".
-  vim.api.nvim_create_autocmd("BufWinEnter", {
+  vim.api.nvim_create_autocmd("BufReadPost", {
     pattern = "COMMIT_EDITMSG",
     command = "G log --max-count=100 | wincmd k",
   })
