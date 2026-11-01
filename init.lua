@@ -65,11 +65,6 @@ local function set_options()
   vim.opt.shiftwidth = 2
   vim.opt.tabclose = { "uselast", "left" }
   vim.opt.timeout = false
-
-  -- Enable insertion of an indent on a next line after {, before } (with "O",
-  -- and after 'cinwords'. Also, disables ">>" on lines starting with #.
-  vim.opt.smartindent = true
-
   vim.opt.softtabstop = 2
   vim.opt.spell = true
   vim.opt.splitbelow = true
@@ -894,7 +889,7 @@ local function set_bindings()
     "i",
     [[#]],
     [[<C-v>#]],
-    { desc = "Prevent indent removal when 'smartindent' is on" }
+    { desc = "Prevent indent removal when 'cindent' is on" }
   )
 
   -- overloads
