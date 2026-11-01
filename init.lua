@@ -1398,15 +1398,21 @@ local function set_bindings()
   end
 
   ---@param region_ Region
-  ---@return nil
-  local function put_region_to_search_register(region_)
+  ---@return string
+  local function region_pattern(region_)
     local esc_lines = vim
       .iter(region_.lines)
       :map(function(v)
         return vim.fn.escape(v, [[\]])
       end)
       :totable()
-    register.put("/", { [[\V]] .. table.concat(esc_lines, [[\n]]) })
+    return [[\V]] .. table.concat(esc_lines, [[\n]])
+  end
+
+  ---@param region_ Region
+  ---@return nil
+  local function put_region_to_search_register(region_)
+    register.put("/", { region_pattern(region_) })
   end
 
   ---@return Region
@@ -1489,7 +1495,7 @@ local function set_bindings()
     [[<leader>#]],
     operator.expr {
       function_ = function(region_)
-        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
+        vim.fn.setreg("/", region_pattern(region_) .. [[\c]])
         vim.v.searchforward = false
         vim.cmd.normal "n"
       end,
@@ -1502,7 +1508,7 @@ local function set_bindings()
     [[<leader>*]],
     operator.expr {
       function_ = function(region_)
-        vim.fn.setreg("/", table.concat(region_.lines, "\n") .. "\\c")
+        vim.fn.setreg("/", region_pattern(region_) .. [[\c]])
         vim.v.searchforward = true
         vim.cmd.normal "n"
       end,
