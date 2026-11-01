@@ -13,6 +13,7 @@ return {
     end
 
     mason_lspconfig.setup {
+      automatic_enable = false,
       ensure_installed = ensure_installed,
     }
   end,
