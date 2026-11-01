@@ -1168,14 +1168,14 @@ local function set_bindings()
     end
   end, { desc = "Remove current location item" })
 
-  vim.keymap.set("n", [[<leader>qX]], function()
+  vim.keymap.set("n", [[<leader>qe]], function()
     quickfix.reset()
     vim.notify(
       "Removed all quickfix items: " .. quickfix.get_title(),
       vim.log.levels.INFO
     )
   end, { desc = "Remove all quickfix items" })
-  vim.keymap.set("n", [[<leader>lX]], function()
+  vim.keymap.set("n", [[<leader>le]], function()
     location.reset()
     vim.notify(
       "Removed all location items: " .. location.get_title(),
