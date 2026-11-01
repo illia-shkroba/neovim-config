@@ -125,13 +125,28 @@ return {
         set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
-        end)
+        end, { desc = "Blame line" })
         set("n", "<leader>hQ", function()
           gitsigns.setqflist "all"
-        end)
-        set("n", "<leader>hq", gitsigns.setqflist)
-        set("n", "<leader>hl", gitsigns.setloclist)
-        set("n", "<leader>hw", gitsigns.toggle_word_diff)
+        end, { desc = "Load all repository hunks to quickfix list" })
+        set(
+          "n",
+          "<leader>hq",
+          gitsigns.setqflist,
+          { desc = "Load buffer hunks to quickfix list" }
+        )
+        set(
+          "n",
+          "<leader>hl",
+          gitsigns.setloclist,
+          { desc = "Load buffer hunks to location list" }
+        )
+        set(
+          "n",
+          "<leader>hw",
+          gitsigns.toggle_word_diff,
+          { desc = "Toggle word diff" }
+        )
 
         -- Text object
         set({ "o", "v" }, "ih", gitsigns.select_hunk, { desc = "Hunk" })
