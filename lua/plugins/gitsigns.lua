@@ -121,6 +121,12 @@ return {
           },
           { expr = true, desc = "Stage/unstage hunks with motion" }
         )
+        set(
+          "n",
+          "<leader>hss",
+          "<leader>hs_",
+          { remap = true, desc = "Stage/unstage hunks in [count] lines" }
+        )
         set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
         set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
