@@ -253,12 +253,13 @@ M.directories_actions = {
   end,
 }
 
+---@class Flow
+---@field key string
+---@field name string
+---@field flow fun(): nil
+
 ---@class FlowsInput
----@field flows table<integer, {
----  key: string,
----  name: string,
----  flow: fun(): nil,
----}>
+---@field flows Flow[]
 
 ---@param flows_input FlowsInput
 ---@return nil

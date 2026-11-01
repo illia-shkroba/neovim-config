@@ -3,7 +3,7 @@ local M = {}
 local config = vim.fn.stdpath "config"
 
 ---@param path string
----@return string|nil
+---@return table|nil
 local function read(path)
   local handle = io.open(path)
 

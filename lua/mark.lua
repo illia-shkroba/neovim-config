@@ -10,13 +10,14 @@ local M = {}
 ---@field line integer
 ---@field column integer
 
+---@class FrozenMark
+---@field name string
+---@field adjustment? fun(Mark): Position
+---@field on_error? fun(Mark): Position
+
 ---@class FrozenMarks
 ---@field buffer_number integer
----@field marks table<integer, {
----  name: string,
----  adjustment?: (fun(Mark): Position),
----  on_error?: (fun(Mark): Position),
----}>
+---@field marks FrozenMark[]
 ---@field function_ fun(): nil
 
 ---@param frozen_marks FrozenMarks
