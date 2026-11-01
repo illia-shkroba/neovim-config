@@ -1193,32 +1193,6 @@ local function set_bindings()
   end, { desc = "Add current line as location item" })
 
   vim.keymap.set(
-    "n",
-    [[<leader>qe]],
-    vim.diagnostic.setqflist,
-    { desc = "Load diagnostic to quickfix list" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>le]],
-    vim.diagnostic.setloclist,
-    { desc = "Load diagnostic to location list" }
-  )
-
-  vim.keymap.set(
-    "n",
-    [[<leader>qi]],
-    vim.lsp.buf.incoming_calls,
-    { desc = "Incoming calls" }
-  )
-  vim.keymap.set(
-    "n",
-    [[<leader>qo]],
-    vim.lsp.buf.outgoing_calls,
-    { desc = "Outgoing calls" }
-  )
-
-  vim.keymap.set(
     { "n", "o" },
     [[<leader>qj]],
     [[<Cmd>execute v:count1 .. 'cbelow'<CR>]],
