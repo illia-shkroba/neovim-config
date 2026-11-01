@@ -298,6 +298,9 @@ local function set_bindings()
     vim.opt_local.statusline = "date " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, { os.date "%F" })
   end, { desc = "Paste current date in a scratch window" })
+  vim.keymap.set("n", [[<leader>mh]], function()
+    vim.cmd.History()
+  end, { desc = "Paste shell history in a scratch window" })
   vim.keymap.set("n", [[<leader>mP]], function()
     local path_ = buffer.name(vim.api.nvim_get_current_buf())
 
@@ -713,9 +716,6 @@ local function set_bindings()
       vim.api.nvim_set_current_win(window_)
     end
   end, { desc = "Pick window" })
-  vim.keymap.set("n", [[<leader>hh]], function()
-    vim.cmd.History()
-  end, { desc = "History" })
   vim.keymap.set("n", { [[<C-w><C-g>]] }, function()
     window.to_vertical(vim.api.nvim_get_current_win())
   end, {
