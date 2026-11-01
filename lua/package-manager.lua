@@ -1,7 +1,3 @@
-vim.cmd [[
-  packadd cfilter
-]]
-
 -- Bootstrap
 local path = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(path) then
@@ -16,10 +12,16 @@ if not vim.uv.fs_stat(path) then
 end
 vim.opt.runtimepath:prepend(path)
 
-return require("lazy").setup("plugins", {
+local lazy = require("lazy").setup("plugins", {
   root = vim.fn.stdpath "data" .. "/lazy", -- directory where plugins will be installed
   lockfile = vim.fn.stdpath "config" .. "/lazy-lock.json", -- lockfile generated after running update.
   change_detection = {
     enabled = false,
   },
 })
+
+vim.cmd [[
+  packadd cfilter
+]]
+
+return lazy
