@@ -448,20 +448,20 @@ local function set_bindings()
   vim.keymap.set(
     "i",
     [[<C-s>]],
-    "<Plug>(leap)",
+    "<Esc><Plug>(leap)",
     { silent = true, desc = "Leap" }
   )
   vim.keymap.set(
     "i",
     [[<C-q>]],
-    "<Plug>(leap-from-window)",
+    "<Esc><Plug>(leap-from-window)",
     { silent = true, desc = "Leap to other windows" }
   )
   vim.keymap.set("i", [[<C-z>]], function()
     if vim.fn.pumvisible() == 1 then
       return completion.completion_expr()
     else
-      return [[:lua require("leap.remote").action()<CR>]]
+      return [[<Esc>:lua require("leap.remote").action()<CR>]]
     end
   end, {
     expr = true,
@@ -829,7 +829,7 @@ local function set_bindings()
     local mode = vim.fn.visualmode()
     if string.len(mode) == 0 then
       mode = "v"
-    elseif mode == "" then
+    elseif mode == "\22" then
       mode = "<C-v>"
     end
     return "`[" .. mode .. "`]"

@@ -26,7 +26,7 @@ function M.substitute_prompt(region)
   -- `substitution == vim.fn.nr2char(128)` is `false`.
   local backspace_number = 128 -- kb
   if
-    substitution == "" or vim.fn.char2nr(substitution) == backspace_number
+    substitution == "\8" or vim.fn.char2nr(substitution) == backspace_number
   then
     substitution = ""
   end
@@ -87,7 +87,7 @@ function M.prepend_prompt(region)
   -- converted to `128` with `vim.fn.char2nr`, but vim.fn.nr2char(128) is "". Thus,
   -- `prefix == vim.fn.nr2char(128)` is `false`.
   local backspace_number = 128 -- kb
-  if prefix == "" or vim.fn.char2nr(prefix) == backspace_number then
+  if prefix == "\8" or vim.fn.char2nr(prefix) == backspace_number then
     return table.concat(region.lines, "\n")
   end
 
@@ -147,7 +147,7 @@ function M.append_prompt(region)
   -- converted to `128` with `vim.fn.char2nr`, but vim.fn.nr2char(128) is "". Thus,
   -- `suffix == vim.fn.nr2char(128)` is `false`.
   local backspace_number = 128 -- kb
-  if suffix == "" or vim.fn.char2nr(suffix) == backspace_number then
+  if suffix == "\8" or vim.fn.char2nr(suffix) == backspace_number then
     return table.concat(region.lines, "\n")
   end
 

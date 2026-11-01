@@ -36,7 +36,7 @@ vim.keymap.set(
 vim.keymap.set(
   "ia",
   [[def]],
-  [[def() -> None:pass<Left><Left><Left><Left><Left><Up>]],
+  [[def() -> None:<CR>pass<Left><Left><Left><Left><Left><Up>]],
   { buffer = true, desc = "Populate buffer with function definition" }
 )
 vim.keymap.set("n", [[<leader><CR>]], function()

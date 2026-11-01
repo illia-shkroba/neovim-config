@@ -17,7 +17,7 @@ local force_type = nil
 
 ---@return boolean
 local function is_visual()
-  return vim.tbl_contains({ "v", "V", "" }, mode.mode)
+  return vim.tbl_contains({ "v", "V", "\22" }, mode.mode)
 end
 
 ---@param region_ Region
