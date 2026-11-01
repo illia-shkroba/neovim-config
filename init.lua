@@ -1143,7 +1143,7 @@ local function set_bindings()
   end, { expr = true, desc = "Go down in popup-menu" })
 
   -- quickfix/location
-  vim.keymap.set("n", [[<leader>qA]], function()
+  vim.keymap.set("n", [[<leader>qd]], function()
     local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
     quickfix.remove(index)
@@ -1155,7 +1155,7 @@ local function set_bindings()
       )
     end
   end, { desc = "Remove current quickfix item" })
-  vim.keymap.set("n", [[<leader>lA]], function()
+  vim.keymap.set("n", [[<leader>ld]], function()
     local index = location.get_current_item_index()
     local item = location.get_current_item()
     location.remove(index)
