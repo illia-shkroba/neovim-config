@@ -1663,6 +1663,12 @@ local function set_bindings()
   -- undo
   vim.keymap.set(
     "n",
+    [[<leader>U]],
+    [[<Cmd>Undotree<CR>]],
+    { desc = "Undotree" }
+  )
+  vim.keymap.set(
+    "n",
     [[<leader>r]],
     [[<Cmd>execute 'later ' .. v:count1 .. 'f'<CR>]],
     { desc = "later [count]f" }
