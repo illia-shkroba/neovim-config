@@ -38,6 +38,10 @@ function with_list.add_item(list, item)
   list.set({ item }, "a")
 end
 
+function with_list.get_items(list)
+  return list.get()
+end
+
 function with_list.get_current_item(list)
   local items = list.get()
   return items[with_list.get_current_item_index(list)] or {}

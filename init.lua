@@ -1230,28 +1230,6 @@ local function set_bindings()
     end
   end, { desc = "Create new location list" })
 
-  local function dump_list(current_list)
-    local dumped = current_list.dump()
-    if #dumped > 0 then
-      local title = current_list.get_title()
-
-      local buffer_
-      if utils.try(vim.cmd.drop, vim.fn.fnameescape(title)) == nil then
-        -- Buffer named `title` __is not__ available.
-        buffer_ = vim.api.nvim_create_buf(true, false)
-        vim.cmd.drop(buffer_)
-        vim.cmd.file(vim.fn.fnameescape(title))
-      else
-        -- Buffer named `title` __is__ available.
-        -- No need to open it since it was opened with `drop` already.
-        buffer_ = vim.api.nvim_get_current_buf()
-      end
-
-      vim.api.nvim_buf_set_lines(buffer_, 0, -1, false, dumped)
-      vim.opt_local.filetype = "sh"
-    end
-  end
-
   local function load_list(current_list, buffer_)
     local title = current_list.get_title()
     if #title == 0 then
@@ -1266,12 +1244,55 @@ local function set_bindings()
     )
   end
 
+  ---@param type_ "quickfix"|"location"
+  local function dump_list(type_)
+    local current_list = list[type_]
+    local dumped = current_list.dump()
+    if #dumped == 0 then
+      return
+    end
+
+    local origin_window = vim.api.nvim_get_current_win()
+
+    local buffer_ = scratch.open()
+    vim.opt_local.filetype = "sh"
+    vim.opt_local.statusline = type_ .. " " .. status.statusline
+
+    vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, dumped)
+
+    vim.keymap.set("n", [[ZP]], function()
+      load_list(current_list, buffer_)
+
+      -- The scratch window holds its own copy of the origin window's location
+      -- list, so copy the loaded list back.
+      if type_ == "location" and vim.api.nvim_win_is_valid(origin_window) then
+        local items = location.get_items()
+        local title = location.get_title()
+
+        vim.api.nvim_win_call(origin_window, function()
+          location.set_items(items)
+          location.set_title(title)
+        end)
+      end
+    end, {
+      buffer = buffer_,
+      desc = "Load scratch buffer's text into the " .. type_ .. " list",
+    })
+    vim.keymap.set("n", [[ZO]], [[ZPZB]], {
+      buffer = buffer_,
+      remap = true,
+      desc = "Load scratch buffer's text into the "
+        .. type_
+        .. " list and close scratch window",
+    })
+  end
+
   vim.keymap.set("n", [[<leader>qR]], function()
-    dump_list(quickfix)
-  end, { desc = "Dump quickfix list to a buffer" })
+    dump_list "quickfix"
+  end, { desc = "Dump quickfix list in a scratch window" })
   vim.keymap.set("n", [[<leader>lR]], function()
-    dump_list(location)
-  end, { desc = "Dump location list to a buffer" })
+    dump_list "location"
+  end, { desc = "Dump location list in a scratch window" })
   vim.keymap.set("n", [[<leader>qL]], function()
     load_list(quickfix, vim.api.nvim_get_current_buf())
   end, { desc = "Load quickfix list from the current buffer" })
