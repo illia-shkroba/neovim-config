@@ -22,6 +22,7 @@ local lazy = require("lazy").setup("plugins", {
 
 vim.cmd [[
   packadd cfilter
+  packadd nvim.undotree
 ]]
 
 return lazy
