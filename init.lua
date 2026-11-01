@@ -1146,7 +1146,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>qA]], function()
     local index = quickfix.get_current_item_index()
     local item = quickfix.get_current_item()
-    quickfix.remove_item(item)
+    quickfix.remove(index)
     utils.try(vim.cmd, [[cc ]] .. index)
     if item.text then
       vim.notify(
@@ -1158,7 +1158,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>lA]], function()
     local index = location.get_current_item_index()
     local item = location.get_current_item()
-    location.remove_item(item)
+    location.remove(index)
     utils.try(vim.cmd, [[ll ]] .. index)
     if item.text then
       vim.notify(

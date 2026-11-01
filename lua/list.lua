@@ -10,13 +10,11 @@ function with_list.reset(list)
   with_list.set_items(list, {})
 end
 
-function with_list.remove_item(list, item)
-  local items = vim.deepcopy(list.get(), 1)
-  local filtered = vim.tbl_filter(function(x)
-    return not vim.deep_equal(x, item)
-  end, items)
+function with_list.remove(list, index)
+  local items = list.get()
+  table.remove(items, index)
 
-  with_list.set_items(list, filtered)
+  with_list.set_items(list, items)
 end
 
 function with_list.set_items(list, items)
