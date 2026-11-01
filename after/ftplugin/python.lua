@@ -13,7 +13,7 @@ local function find_venv()
   return vim.fs.find({ "env", "venv", ".env", ".venv" }, {
     path = vim.api.nvim_buf_get_name(0),
     upward = true,
-    stop = vim.loop.os_homedir(),
+    stop = vim.uv.os_homedir(),
     type = "directory",
   })[1]
 end
