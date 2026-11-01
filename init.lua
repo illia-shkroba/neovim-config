@@ -352,19 +352,19 @@ local function set_bindings()
   -- git
   vim.keymap.set(
     "n",
-    [[<leader>hD]],
+    [[<leader>iD]],
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>hP]],
+    [[<leader>iP]],
     [[<Cmd>update ++p | Git add --patch -- %<CR>]],
     { desc = "git add --patch" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>hd]],
+    [[<leader>id]],
     [[<Cmd>vertical Gdiffsplit!<CR>]],
     { desc = "Show git diff" }
   )
