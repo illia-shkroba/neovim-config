@@ -58,17 +58,19 @@ function with_list.set_title(list, title)
 end
 
 function with_list.dump(list)
-  local items = list.get()
   local dumped = {}
 
-  for _, item in pairs(items) do
-    local d = {
-      vim.api.nvim_buf_get_name(item["bufnr"]),
-      item["lnum"],
-      vim.trim(item["text"]),
-    }
+  for _, item in ipairs(list.get()) do
+    if item.valid == 1 then
+      local d = {
+        vim.api.nvim_buf_get_name(item.bufnr),
+        item.lnum,
+        item.col,
+        vim.trim(item.text),
+      }
 
-    table.insert(dumped, table.concat(d, ":"))
+      table.insert(dumped, table.concat(d, ":"))
+    end
   end
 
   return dumped
