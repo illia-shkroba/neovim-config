@@ -1217,13 +1217,13 @@ local function set_bindings()
     { desc = "labove" }
   )
 
-  vim.keymap.set("n", [[<leader>qx]], function()
+  vim.keymap.set("n", [[<leader>ql]], function()
     local name = utils.try(vim.fn.input, "Enter quickfix list: ")
     if name then
       quickfix.create(name)
     end
   end, { desc = "Create new quickfix list" })
-  vim.keymap.set("n", [[<leader>lx]], function()
+  vim.keymap.set("n", [[<leader>ll]], function()
     local name = utils.try(vim.fn.input, "Enter location list: ")
     if name then
       location.create(name)
