@@ -39,6 +39,8 @@ local function set_options()
   vim.opt.cindent = true
   vim.opt.complete = { ".", "w", "b", "u", "k" }
   vim.opt.completeopt = { "menuone", "popup" }
+  vim.opt.concealcursor = ""
+  vim.opt.conceallevel = 0
   vim.opt.cpoptions = "aABceFMs%>"
   vim.opt.cursorline = true
   vim.opt.encoding = "utf-8"
