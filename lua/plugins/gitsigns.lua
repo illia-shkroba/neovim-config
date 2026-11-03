@@ -91,14 +91,14 @@ return {
         end, { desc = "Go to previous hunk" })
 
         -- Actions
-        set("n", "<leader>iS", gitsigns.stage_hunk, { desc = "Stage hunk" })
-        set("n", "<leader>ir", gitsigns.reset_hunk, { desc = "Reset hunk" })
-        set("v", "<leader>ir", function()
+        set("n", "<leader>hS", gitsigns.stage_hunk, { desc = "Stage hunk" })
+        set("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
+        set("v", "<leader>hr", function()
           gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
         end, { desc = "Reset hunk" })
         set(
           { "n", "v" },
-          "<leader>is",
+          "<leader>hs",
           operator.expr {
             function_ = function(region_)
               gitsigns.stage_hunk { region_.line_begin, region_.line_end }
@@ -123,33 +123,33 @@ return {
         )
         set(
           "n",
-          "<leader>iss",
-          "<leader>is_",
+          "<leader>hss",
+          "<leader>hs_",
           { remap = true, desc = "Stage/unstage hunks in [count] lines" }
         )
-        set("n", "<leader>iR", gitsigns.reset_buffer, { desc = "Reset buffer" })
-        set("n", "<leader>ip", gitsigns.preview_hunk, { desc = "Preview hunk" })
-        set("n", "<leader>ib", function()
+        set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+        set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
+        set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
         end, { desc = "Blame line" })
-        set("n", "<leader>iQ", function()
+        set("n", "<leader>hQ", function()
           gitsigns.setqflist "all"
         end, { desc = "Load all repository hunks to quickfix list" })
         set(
           "n",
-          "<leader>iq",
+          "<leader>hq",
           gitsigns.setqflist,
           { desc = "Load buffer hunks to quickfix list" }
         )
         set(
           "n",
-          "<leader>il",
+          "<leader>hl",
           gitsigns.setloclist,
           { desc = "Load buffer hunks to location list" }
         )
         set(
           "n",
-          "<leader>if",
+          "<leader>hf",
           gitsigns.toggle_word_diff,
           { desc = "Toggle word diff" }
         )

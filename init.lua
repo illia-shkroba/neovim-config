@@ -356,36 +356,36 @@ local function set_bindings()
   -- git
   vim.keymap.set(
     "n",
-    [[<leader>iD]],
+    [[<leader>hD]],
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>iP]],
+    [[<leader>hP]],
     [[<Cmd>update ++p | Git add --patch -- %<CR>]],
     { desc = "git add --patch" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>id]],
+    [[<leader>hd]],
     [[<Cmd>vertical Gdiffsplit!<CR>]],
     { desc = "Show git diff" }
   )
   vim.keymap.set(
     "n",
-    [[<leader>iB]],
+    [[<leader>hB]],
     [[<Cmd>Git blame<CR>]],
     { desc = "Git blame" }
   )
-  vim.keymap.set("n", [[<leader>iw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
+  vim.keymap.set("n", [[<leader>hw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
   vim.keymap.set(
     "n",
-    [[<leader>io]],
+    [[<leader>hl]],
     [[<Cmd>Git log<CR>]],
     { desc = "Git log" }
   )
-  vim.keymap.set("n", [[<leader>ii]], [[<Cmd>Git<CR>]], { desc = "Git" })
+  vim.keymap.set("n", [[<leader>hh]], [[<Cmd>Git<CR>]], { desc = "Git" })
 
   -- indent
   local function align(size, region_)
