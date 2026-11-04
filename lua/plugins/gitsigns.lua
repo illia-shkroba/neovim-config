@@ -92,10 +92,37 @@ return {
 
         -- Actions
         set("n", "<leader>hS", gitsigns.stage_hunk, { desc = "Stage hunk" })
-        set("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset hunk" })
-        set("v", "<leader>hr", function()
-          gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end, { desc = "Reset hunk" })
+        set(
+          { "n", "v" },
+          "<leader>hr",
+          operator.expr {
+            function_ = function(region_)
+              gitsigns.reset_hunk { region_.line_begin, region_.line_end }
+              vim.api.nvim_buf_set_mark(
+                region_.buffer_number,
+                "[",
+                region_.line_begin,
+                region_.column_begin,
+                {}
+              )
+              vim.api.nvim_buf_set_mark(
+                region_.buffer_number,
+                "]",
+                region_.line_end,
+                region_.column_end,
+                {}
+              )
+            end,
+            readonly = true,
+          },
+          { expr = true, desc = "Reset hunks with motion" }
+        )
+        set(
+          "n",
+          "<leader>hrr",
+          "<leader>hr_",
+          { remap = true, desc = "Reset hunks in [count] lines" }
+        )
         set(
           { "n", "v" },
           "<leader>hs",
