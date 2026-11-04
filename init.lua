@@ -1371,17 +1371,44 @@ local function set_bindings()
       return
     end
 
+    local ok, error_ = pcall(vim.fn.searchpos, pattern, "n")
+    if not ok then
+      vim.notify(error_, vim.log.levels.ERROR)
+      return
+    end
+
     local buffer_ = vim.api.nvim_get_current_buf()
     local lines = vim.api.nvim_buf_get_lines(buffer_, 0, -1, true)
-    local items = vim.tbl_map(function(match)
-      return {
+
+    local view = vim.fn.winsaveview()
+    vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { 1, 0 })
+
+    local items = {}
+    local begin = vim.fn.searchpos(pattern, "cW")
+    while begin[1] ~= 0 do
+      local end_ = vim.fn.searchpos(pattern, "cenW")
+      if end_[1] == 0 then
+        end_ = begin
+      end
+
+      local end_line = lines[end_[1]]
+      local end_offset = end_[2] <= #end_line
+          and vim.str_utf_end(end_line, end_[2])
+        or 0
+
+      table.insert(items, {
         bufnr = buffer_,
-        lnum = match.lnum,
-        col = match.byteidx + 1,
-        end_col = match.byteidx + #match.text + 1,
-        text = lines[match.lnum],
-      }
-    end, vim.fn.matchbufline(buffer_, pattern, 1, "$"))
+        lnum = begin[1],
+        col = begin[2],
+        end_lnum = end_[1],
+        end_col = end_[2] + end_offset + 1,
+        text = lines[begin[1]],
+      })
+
+      begin = vim.fn.searchpos(pattern, "W")
+    end
+
+    vim.fn.winrestview(view)
 
     if opts.type == "quickfix" then
       vim.fn.setqflist({}, " ", { items = items, title = "/" .. pattern })
