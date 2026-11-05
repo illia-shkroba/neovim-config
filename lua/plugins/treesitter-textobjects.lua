@@ -52,6 +52,33 @@ return {
     -- move keymaps
     local move = require "nvim-treesitter-textobjects.move"
 
+    -- Use `nvim-treesitter-textobjects` buffer bindings over `$VIMRUNTIME/ftplugin/*`.
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(args)
+        local lang = vim.treesitter.language.get_lang(args.match)
+        local query = lang
+          and vim.treesitter.language.add(lang)
+          and vim.treesitter.query.get(lang, "textobjects")
+
+        if not query then
+          return
+        end
+
+        for capture, bindings in pairs {
+          ["class.outer"] = { "]]", "][", "[[", "[]" },
+          ["function.outer"] = { "]m", "]M", "[m", "[M" },
+        } do
+          if vim.list_contains(query.captures, capture) then
+            for _, mode in ipairs { "n", "v", "o" } do
+              for _, binding in ipairs(bindings) do
+                pcall(vim.api.nvim_buf_del_keymap, args.buf, mode, binding)
+              end
+            end
+          end
+        end
+      end,
+    })
+
     vim.keymap.set({ "n", "v", "o" }, "]m", function()
       move.goto_next_start("@function.outer", "textobjects")
     end, { desc = "Next function start" })
