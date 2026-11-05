@@ -383,7 +383,7 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>hw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
   vim.keymap.set(
     "n",
-    [[<leader>hl]],
+    [[<leader>hj]],
     [[<Cmd>Git log<CR>]],
     { desc = "Git log" }
   )
