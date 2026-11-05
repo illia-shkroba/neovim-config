@@ -355,6 +355,30 @@ local function set_bindings()
     { desc = "Paste current buffer's cwd-relative path in a scratch window" }
   )
 
+  local function with_change_marks(buffer_number, function_)
+    mark.with_marks {
+      buffer_number = buffer_number,
+      marks = {
+        {
+          name = "[",
+          on_error = function()
+            return { line = 1, column = 0 }
+          end,
+        },
+        {
+          name = "]",
+          on_error = function()
+            return {
+              line = vim.api.nvim_buf_line_count(buffer_number),
+              column = 0,
+            }
+          end,
+        },
+      },
+      function_ = function_,
+    }
+  end
+
   -- git
   vim.keymap.set(
     "n",
@@ -362,12 +386,11 @@ local function set_bindings()
     [[<Cmd>vertical Gdiffsplit! HEAD<CR>]],
     { desc = "Show git diff with HEAD" }
   )
-  vim.keymap.set(
-    "n",
-    [[<leader>hP]],
-    [[<Cmd>update ++p | Git add --patch -- %<CR>]],
-    { desc = "git add --patch" }
-  )
+  vim.keymap.set("n", [[<leader>hP]], function()
+    with_change_marks(vim.api.nvim_get_current_buf(), function()
+      vim.cmd [[update ++p | Git add --patch -- %]]
+    end)
+  end, { desc = "git add --patch" })
   vim.keymap.set(
     "n",
     [[<leader>hd]],
@@ -380,7 +403,11 @@ local function set_bindings()
     [[<Cmd>Git blame<CR>]],
     { desc = "Git blame" }
   )
-  vim.keymap.set("n", [[<leader>hw]], [[<Cmd>Gwrite<CR>]], { desc = "Gwrite" })
+  vim.keymap.set("n", [[<leader>hw]], function()
+    with_change_marks(vim.api.nvim_get_current_buf(), function()
+      vim.cmd [[Gwrite]]
+    end)
+  end, { desc = "Gwrite, but keep the [ and ] marks" })
   vim.keymap.set(
     "n",
     [[<leader>hj]],
@@ -526,30 +553,6 @@ local function set_bindings()
     end
 
     return vim.tbl_keys(marked)
-  end
-
-  local function with_change_marks(buffer_number, function_)
-    mark.with_marks {
-      buffer_number = buffer_number,
-      marks = {
-        {
-          name = "[",
-          on_error = function()
-            return { line = 1, column = 0 }
-          end,
-        },
-        {
-          name = "]",
-          on_error = function()
-            return {
-              line = vim.api.nvim_buf_line_count(buffer_number),
-              column = 0,
-            }
-          end,
-        },
-      },
-      function_ = function_,
-    }
   end
 
   local function close_window_to_last_accessed()
