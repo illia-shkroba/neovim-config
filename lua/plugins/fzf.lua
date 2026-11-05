@@ -30,6 +30,15 @@ return {
       end
     end
 
+    local function wipeout_buffers(selected, opts)
+      for _, sel in ipairs(selected) do
+        local entry = path.entry_to_file(sel, opts)
+        if entry.bufnr then
+          vim.api.nvim_buf_delete(entry.bufnr, { force = true })
+        end
+      end
+    end
+
     -- Switch to the `files` picker with the current query.
     local function to_files(_, opts)
       fzf.files { query = opts.last_query }
@@ -182,6 +191,7 @@ return {
         actions = {
           ["alt-f"] = false,
           ["alt-t"] = to_files,
+          ["alt-z"] = { fn = wipeout_buffers, reload = true },
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-y"] = args,
           ["ctrl-z"] = { fn = fzf.actions.buf_del, reload = true },
