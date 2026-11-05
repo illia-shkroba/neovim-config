@@ -6,9 +6,8 @@ vim.b.did_markdown_ftplugin = true
 vim.opt_local.formatprg = "mdformat --number -"
 vim.opt_local.spell = true
 vim.opt_local.wrap = false
-vim.opt_local.shiftwidth = 2
-vim.opt_local.softtabstop = 2
-vim.opt_local.tabstop = 2
+-- 'expandtab' along with 'shiftwidth', 'softtabstop', 'tabstop' set to `4` is defined at
+-- `$VIMRUNTIME/ftplugin/markdown.vim`, because `g:markdown_recommended_style` is not disabled.
 
 vim.treesitter.start()
 
