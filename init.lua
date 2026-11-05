@@ -1641,12 +1641,14 @@ local function set_bindings()
     return "a" .. vim.fn.getcharsearch().char
   end, { expr = true, desc = "Around last search char" })
   vim.keymap.set({ "o", "v" }, "aa", "a<", { desc = "a<" })
-  vim.keymap.set(
-    { "o", "v" },
-    "ae",
-    [[Vie]],
-    { remap = true, desc = "Leap select treesitter node linewise" }
-  )
+  vim.keymap.set({ "o", "v" }, "ae", function()
+    require("leap.treesitter").select {
+      opts = require("leap.user").with_traversal_keys("<C-n>", "<C-p>"),
+    }
+    if vim.fn.mode() == "v" then
+      vim.cmd "normal! V"
+    end
+  end, { desc = "Leap select treesitter node linewise" })
   vim.keymap.set({ "o", "v" }, "aq", function()
     return "a" .. quote.nearest_at_cursor()
   end, { expr = true, desc = "Around nearest quote" })
