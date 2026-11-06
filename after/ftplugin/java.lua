@@ -17,3 +17,11 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     vim.treesitter.start()
   end,
 })
+
+vim.keymap.set("n", [[<leader><CR>]], function()
+  vim.cmd.update()
+  vim.cmd.new()
+
+  vim.cmd.terminal "java '#'"
+  vim.cmd.startinsert()
+end, { buffer = true, desc = "Run current buffer" })
