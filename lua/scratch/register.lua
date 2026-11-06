@@ -12,13 +12,20 @@ function M.edit(register_)
   local buffer = scratch.open()
   vim.opt_local.statusline = "@" .. register_ .. " " .. status.statusline
 
-  vim.api.nvim_buf_set_lines(
-    buffer,
-    0,
-    1,
-    false,
-    vim.split(vim.fn.getreg(register_), "\n")
-  )
+  ---@param name string
+  ---@return Regtype
+  local function fill(name)
+    vim.api.nvim_buf_set_lines(
+      buffer,
+      0,
+      -1,
+      false,
+      vim.fn.getreg(name, 1, true)
+    )
+    return vim.fn.getregtype(name):sub(1, 1)
+  end
+
+  local regtype = fill(register_)
 
   vim.keymap.set("n", [[ZP]], function()
     local scratch_lines = vim.api.nvim_buf_get_lines(
@@ -28,7 +35,7 @@ function M.edit(register_)
       true
     )
 
-    register.put(register_, scratch_lines)
+    register.put(register_, scratch_lines, regtype)
   end, {
     buffer = buffer,
     desc = [[Paste scratch buffer's text into register]],
@@ -38,13 +45,7 @@ function M.edit(register_)
     local target_register = input_register == [["]] and register_
       or input_register
 
-    vim.api.nvim_buf_set_lines(
-      buffer,
-      0,
-      vim.api.nvim_buf_line_count(buffer),
-      false,
-      vim.split(vim.fn.getreg(target_register), "\n")
-    )
+    regtype = fill(target_register)
   end, {
     buffer = buffer,
     desc = "Read register in place of the scratch buffer's text",
@@ -61,7 +62,7 @@ function M.edit(register_)
       true
     )
 
-    register.put(target_register, scratch_lines)
+    register.put(target_register, scratch_lines, regtype)
     vim.api.nvim_win_close(vim.api.nvim_get_current_win(), true)
   end, {
     buffer = buffer,

@@ -3,6 +3,9 @@ local M = {}
 local neoclip_storage = require "neoclip.storage"
 local utils = require "utils"
 
+---Values of `getregtype()` without blockwise width
+---@alias Regtype "v"|"V"|"\22"|""
+
 ---@return nil
 function M.normalized_expr()
   local raw_register = utils.try(vim.fn.getcharstr)
@@ -35,8 +38,9 @@ end
 
 ---@param register string
 ---@param lines table<integer, string>
+---@param regtype? Regtype
 ---@return nil
-function M.put(register, lines)
+function M.put(register, lines, regtype)
   local contents
   if register == "/" then
     contents = table.concat(lines, [[\n]])
@@ -47,7 +51,7 @@ function M.put(register, lines)
     contents = table.concat(lines, "\n")
   end
 
-  vim.fn.setreg(register, contents)
+  vim.fn.setreg(register, contents, regtype or "")
 
   -- `neoclip` must be invoked directly. It relies on `TextYankPost` and
   -- `vim.v.event`. Although `nvim_exec_autocmds` allows triggering
