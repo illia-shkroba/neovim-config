@@ -4,6 +4,7 @@ return {
   dockerls = { install = true },
   dotls = {},
   hls = {},
+  jdtls = { install = true },
   lua_ls = { install = true },
   perlpls = {},
   purescriptls = { install = true },
