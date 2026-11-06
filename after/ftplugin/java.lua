@@ -18,6 +18,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+vim.keymap.set(
+  "n",
+  [[<leader>tf]],
+  [[<Cmd>up | !palantir-java-format --palantir --replace %<CR>]],
+  { buffer = true, desc = "Call `palantir-java-format` on current buffer" }
+)
 vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.update()
   vim.cmd.new()
