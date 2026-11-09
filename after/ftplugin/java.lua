@@ -21,13 +21,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.keymap.set(
   "n",
   [[<leader>tf]],
-  [[<Cmd>up | !palantir-java-format --palantir --replace %<CR>]],
+  [[<Cmd>up | !palantir-java-format --palantir --replace %:S<CR>]],
   { buffer = true, desc = "Call `palantir-java-format` on current buffer" }
 )
 vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal "java '#'"
+  vim.cmd.terminal "java #:S"
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })

@@ -58,7 +58,7 @@ end, {
 vim.keymap.set(
   "n",
   [[<leader><Tab>]],
-  [[<Cmd>up<CR>:new<CR>:terminal bash --init-file #<CR>]],
+  [[<Cmd>up<CR>:new<CR>:terminal bash --init-file #:S<CR>]],
   { buffer = true, desc = "Load current buffer to bash" }
 )
 vim.keymap.set(

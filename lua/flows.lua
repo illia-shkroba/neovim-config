@@ -326,7 +326,7 @@ return {
   -- file
   {
     flow = function()
-      vim.cmd [[silent !chmod +x %]]
+      vim.cmd [[silent !chmod +x %:S]]
     end,
     key = "chmod-x",
     name = "!chmod +x %",

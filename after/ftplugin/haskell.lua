@@ -54,7 +54,7 @@ vim.keymap.set(
 vim.keymap.set(
   "n",
   [[<leader><Tab>]],
-  [[<Cmd>up<CR>:new<CR>:terminal stack ghci #<CR>]],
+  [[<Cmd>up<CR>:new<CR>:terminal stack ghci #:S<CR>]],
   { buffer = true, desc = "Load current buffer to ghci" }
 )
 vim.keymap.set(

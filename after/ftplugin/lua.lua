@@ -28,6 +28,6 @@ vim.keymap.set(
 vim.keymap.set(
   "n",
   [[<leader><Tab>]],
-  [[<Cmd>up<CR>:new<CR>:terminal lua -i #<CR>]],
+  [[<Cmd>up<CR>:new<CR>:terminal lua -i #:S<CR>]],
   { buffer = true, desc = "Load current buffer to lua" }
 )

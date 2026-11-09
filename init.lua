@@ -1681,13 +1681,13 @@ local function set_bindings()
   vim.keymap.set(
     "n",
     [[<leader>"]],
-    [[<Cmd>execute "silent !tmux split-window -v -c '" .. getcwd() .. "'"<CR>]],
+    [[<Cmd>execute "silent !tmux split-window -v -c " .. shellescape(getcwd(), v:true)<CR>]],
     { desc = "Spawn new tmux pane vertically" }
   )
   vim.keymap.set(
     "n",
     [[<leader>l"]],
-    [[<Cmd>execute "silent !tmux split-window -v -c '" .. expand('%:p:h') .. "'"<CR>]],
+    [[<Cmd>execute "silent !tmux split-window -v -c " .. shellescape(expand('%:p:h'), v:true)<CR>]],
     {
       desc = "Spawn new tmux pane vertically with buffer's parent directory as CWD",
     }
@@ -1846,7 +1846,7 @@ local function set_autocommands()
       scratch.open()
       vim.opt_local.filetype = "markdown"
 
-      vim.cmd [[0r !markitdown-wrapper '#']]
+      vim.cmd [[0r !markitdown-wrapper #:S]]
       vim.cmd.normal [[gg]]
     end,
   })

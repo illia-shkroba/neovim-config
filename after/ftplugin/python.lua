@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.keymap.set(
   "n",
   [[<leader>tf]],
-  [[<Cmd>up | !ruff format % | ruff check --fix %<CR>]],
+  [[<Cmd>up | !ruff format %:S && ruff check --fix %:S<CR>]],
   { buffer = true, desc = "Call `ruff format` on current buffer" }
 )
 vim.keymap.set(
@@ -49,7 +49,7 @@ vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(venv_activation .. "python '#'")
+  vim.cmd.terminal(venv_activation .. "python #:S")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
 vim.keymap.set("n", [[<leader><Tab>]], function()
@@ -62,6 +62,6 @@ vim.keymap.set("n", [[<leader><Tab>]], function()
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(venv_activation .. "ipython --no-banner -i '#'")
+  vim.cmd.terminal(venv_activation .. "ipython --no-banner -i #:S")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Load current buffer to ipython" })
