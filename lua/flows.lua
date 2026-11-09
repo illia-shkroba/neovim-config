@@ -517,17 +517,45 @@ return {
   -- multicursor
   {
     flow = function()
-      vim.cmd [[cdo norm Q]]
+      vim.cmd [[cdo norm 1Q]]
+      vim.cmd [[norm 1q=]]
     end,
     key = "cdo-Q",
     name = "cdo norm Q",
   },
   {
     flow = function()
-      vim.cmd [[ldo norm Q]]
+      vim.cmd [[ldo norm 1Q]]
+      vim.cmd [[norm 1q=]]
     end,
     key = "ldo-Q",
     name = "ldo norm Q",
+  },
+  {
+    flow = function()
+      vim.cmd [[g//norm 1Q]]
+      vim.cmd [[norm 1q=]]
+    end,
+    key = "g-Q",
+    name = "g//norm Q",
+  },
+  {
+    flow = function()
+      vim.cmd [[v//norm 1Q]]
+      vim.cmd [[norm 1q=]]
+    end,
+    key = "v-Q",
+    name = "v//norm Q",
+  },
+  {
+    flow = function()
+      local view = vim.fn.winsaveview()
+      vim.cmd [[keepjumps norm gg0zqgn]]
+      vim.fn.winrestview(view)
+      vim.cmd [[norm 1q=]]
+    end,
+    key = "match-Q",
+    name = "zqgn",
   },
 
   -- register
