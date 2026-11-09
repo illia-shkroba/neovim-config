@@ -20,6 +20,14 @@ local function find_venv()
   })[1]
 end
 
+local function venv_bin(name)
+  local venv = find_venv()
+  if not venv then
+    return name
+  end
+  return vim.fs.joinpath(venv, "bin", name)
+end
+
 vim.treesitter.start()
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -42,28 +50,16 @@ vim.keymap.set(
   { buffer = true, desc = "Populate buffer with function definition" }
 )
 vim.keymap.set("n", [[<leader><CR>]], function()
-  local venv = find_venv()
-
-  local venv_activation = venv
-      and "source " .. vim.fs.joinpath(venv, "bin", "activate") .. " && "
-    or ""
-
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(venv_activation .. "python #:S")
+  vim.cmd.terminal(venv_bin "python" .. " #:S")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
 vim.keymap.set("n", [[<leader><Tab>]], function()
-  local venv = find_venv()
-
-  local venv_activation = venv
-      and "source " .. vim.fs.joinpath(venv, "bin", "activate") .. " && "
-    or ""
-
   vim.cmd.update()
   vim.cmd.new()
 
-  vim.cmd.terminal(venv_activation .. "ipython --no-banner -i #:S")
+  vim.cmd.terminal(venv_bin "ipython" .. " --no-banner -i #:S")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Load current buffer to ipython" })
