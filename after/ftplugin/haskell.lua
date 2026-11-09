@@ -1,8 +1,3 @@
-if vim.b.did_haskell_ftplugin then
-  return
-end
-vim.b.did_haskell_ftplugin = true
-
 vim.opt_local.equalprg = "fourmolu"
   .. " --indentation 2"
   .. " --column-limit 80"
@@ -37,13 +32,6 @@ local stylish_config = vim.fn.stdpath "config"
 vim.opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
 vim.treesitter.start()
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  buf = vim.api.nvim_get_current_buf(),
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
 
 vim.keymap.set(
   { "n", "v" },

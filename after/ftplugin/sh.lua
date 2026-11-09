@@ -1,8 +1,3 @@
-if vim.b.did_sh_ftplugin then
-  return
-end
-vim.b.did_sh_ftplugin = true
-
 local operator = require "operator"
 local region = require "text.region"
 
@@ -15,13 +10,6 @@ vim.opt_local.tabstop = 2
 vim.opt_local.formatprg = "shfmt -s -i " .. vim.bo.tabstop .. " -bn -ci -sr"
 
 vim.treesitter.start()
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  buf = vim.api.nvim_get_current_buf(),
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
 
 vim.keymap.set(
   "n",

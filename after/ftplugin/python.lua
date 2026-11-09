@@ -1,8 +1,3 @@
-if vim.b.did_python_ftplugin then
-  return
-end
-vim.b.did_python_ftplugin = true
-
 vim.opt_local.errorformat = "%f:%l:%c: %m"
 vim.opt_local.expandtab = true
 vim.opt_local.makeprg =
@@ -29,13 +24,6 @@ local function venv_bin(name)
 end
 
 vim.treesitter.start()
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  buf = vim.api.nvim_get_current_buf(),
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
 
 vim.keymap.set("n", [[<leader>tf]], function()
   vim.lsp.buf.format { name = "ruff" }

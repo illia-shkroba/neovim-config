@@ -1,8 +1,3 @@
-if vim.b.did_purescript_ftplugin then
-  return
-end
-vim.b.did_purescript_ftplugin = true
-
 vim.opt_local.expandtab = true
 vim.opt_local.makeprg = "spago build"
 vim.opt_local.shiftwidth = 2
@@ -21,13 +16,6 @@ vim.opt_local.formatprg = "purs-tidy format --import-sort-ide --import-wrap-auto
   .. " --width 80"
 
 vim.treesitter.start()
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  buf = vim.api.nvim_get_current_buf(),
-  callback = function()
-    vim.treesitter.start()
-  end,
-})
 
 vim.keymap.set(
   "n",
