@@ -75,3 +75,10 @@ vim.keymap.set(
   },
   { expr = true, buffer = true, desc = "Paste selected lines' output below" }
 )
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl et< mp< sw< sts< ts< fp<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <CR>|sil! nunmap <buffer> <leader><CR>"
+  .. "|sil! nunmap <buffer> <leader><Tab>"
+  .. "|sil! vunmap <buffer> <CR>|sil! vunmap <buffer> <leader><CR>"

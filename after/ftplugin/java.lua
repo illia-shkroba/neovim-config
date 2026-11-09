@@ -19,3 +19,8 @@ vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.terminal "java #:S"
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl et< mp< sw< sts< ts<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader>tf|sil! nunmap <buffer> <leader><CR>"

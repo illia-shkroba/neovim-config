@@ -15,3 +15,8 @@ vim.keymap.set("n", [[<leader><CR>]], function()
   vim.cmd.terminal "cargo run --quiet"
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Run current buffer" })
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl cc< et< fp< sw< sts< ts< mp<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader><CR>"

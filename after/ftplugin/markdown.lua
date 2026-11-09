@@ -5,3 +5,7 @@ vim.opt_local.wrap = false
 -- `$VIMRUNTIME/ftplugin/markdown.vim`, because `g:markdown_recommended_style` is not disabled.
 
 vim.treesitter.start()
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl fp< spell< wrap<"
+  .. "|call v:lua.vim.treesitter.stop()"

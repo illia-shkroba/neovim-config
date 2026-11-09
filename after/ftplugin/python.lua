@@ -52,3 +52,9 @@ vim.keymap.set("n", [[<leader><Tab>]], function()
   vim.cmd.terminal(venv_bin "ipython" .. " --no-banner -i #:S")
   vim.cmd.startinsert()
 end, { buffer = true, desc = "Load current buffer to ipython" })
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl efm< et< mp< sw< sts< ts<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader>tf|sil! nunmap <buffer> <leader><CR>"
+  .. "|sil! nunmap <buffer> <leader><Tab>|sil! iunabbrev <buffer> def"

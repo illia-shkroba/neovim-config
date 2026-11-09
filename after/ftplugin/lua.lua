@@ -19,3 +19,9 @@ vim.keymap.set(
   [[<Cmd>up<CR>:new<CR>:terminal lua -i #:S<CR>]],
   { buffer = true, desc = "Load current buffer to lua" }
 )
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl et< fp< sw< sts< ts<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader><CR>|sil! vunmap <buffer> <leader><CR>"
+  .. "|sil! nunmap <buffer> <leader><Tab>"

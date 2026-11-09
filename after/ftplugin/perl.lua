@@ -12,3 +12,8 @@ vim.keymap.set(
   [[:w !perl<CR>]],
   { buffer = true, desc = "Run current buffer" }
 )
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl et< fp< sw< sts< ts<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader><CR>|sil! vunmap <buffer> <leader><CR>"

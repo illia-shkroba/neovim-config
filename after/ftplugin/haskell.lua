@@ -51,3 +51,9 @@ vim.keymap.set(
   [[:!fast-tags -R --qualified .]],
   { buffer = true, desc = "Generate tags" }
 )
+
+vim.b.undo_ftplugin = (vim.b.undo_ftplugin and vim.b.undo_ftplugin .. "|" or "")
+  .. "setl ep< et< mp< sw< sts< ts< efm< fp<"
+  .. "|call v:lua.vim.treesitter.stop()"
+  .. "|sil! nunmap <buffer> <leader><CR>|sil! vunmap <buffer> <leader><CR>"
+  .. "|sil! nunmap <buffer> <leader><Tab>|sil! nunmap <buffer> <leader>tg"
