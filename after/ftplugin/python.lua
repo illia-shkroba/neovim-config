@@ -3,8 +3,10 @@ if vim.b.did_python_ftplugin then
 end
 vim.b.did_python_ftplugin = true
 
+vim.opt_local.errorformat = "%f:%l:%c: %m"
 vim.opt_local.expandtab = true
-vim.opt_local.makeprg = "pylint"
+vim.opt_local.makeprg =
+  "ruff check --output-format=concise --extend-exclude '*.ipynb'"
 vim.opt_local.shiftwidth = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.tabstop = 4
