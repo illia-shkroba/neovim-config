@@ -3,6 +3,7 @@ if vim.b.did_plaintex_ftplugin then
 end
 vim.b.did_plaintex_ftplugin = true
 
+vim.treesitter.language.register("latex", "plaintex")
 vim.treesitter.start()
 
 vim.api.nvim_create_autocmd("BufReadPost", {
