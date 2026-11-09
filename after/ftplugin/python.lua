@@ -37,12 +37,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
-vim.keymap.set(
-  "n",
-  [[<leader>tf]],
-  [[<Cmd>up | !ruff format %:S && ruff check --fix %:S<CR>]],
-  { buffer = true, desc = "Call `ruff format` on current buffer" }
-)
+vim.keymap.set("n", [[<leader>tf]], function()
+  vim.lsp.buf.format { name = "ruff" }
+  vim.lsp.buf.code_action {
+    context = { only = { "source.fixAll" } },
+    apply = true,
+  }
+end, { buffer = true, desc = "Format and fix with `ruff`" })
 vim.keymap.set(
   "ia",
   [[def]],
