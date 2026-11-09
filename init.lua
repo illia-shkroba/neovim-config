@@ -494,6 +494,14 @@ local function set_bindings()
     desc = "Display popup-menu completions using fzf when the menu is visible; otherwise, perform remote action with Leap",
   })
 
+  -- lsp
+  vim.keymap.set("n", [[<leader>i]], function()
+    vim.lsp.inlay_hint.enable(true)
+  end, { desc = "Enable inlay hints" })
+  vim.keymap.set("n", [[<leader>I]], function()
+    vim.lsp.inlay_hint.enable(false)
+  end, { desc = "Disable inlay hints" })
+
   -- move
   vim.keymap.set(
     "v",
