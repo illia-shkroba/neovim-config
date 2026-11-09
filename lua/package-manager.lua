@@ -1,5 +1,5 @@
 -- Bootstrap
-local path = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+local path = vim.fs.joinpath(vim.fn.stdpath "data", "lazy", "lazy.nvim")
 if not vim.uv.fs_stat(path) then
   vim.fn.system {
     "git",
@@ -13,8 +13,8 @@ end
 vim.opt.runtimepath:prepend(path)
 
 local lazy = require("lazy").setup("plugins", {
-  root = vim.fn.stdpath "data" .. "/lazy", -- directory where plugins will be installed
-  lockfile = vim.fn.stdpath "config" .. "/lazy-lock.json", -- lockfile generated after running update.
+  root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"), -- directory where plugins will be installed
+  lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lazy-lock.json"), -- lockfile generated after running update.
   change_detection = {
     enabled = false,
   },

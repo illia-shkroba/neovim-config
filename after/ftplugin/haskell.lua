@@ -27,8 +27,16 @@ vim.opt_local.errorformat = "%-G,"
   .. "%E%>%f:%l:%c:,"
   .. "%W%>%f:%l:%c:,"
 
-local stylish_config = vim.fn.stdpath "config"
-  .. "/etc/options/filetype-options/haskell/stylish-haskell.yaml"
+local stylish_config = vim.fn.shellescape(
+  vim.fs.joinpath(
+    vim.fn.stdpath "config",
+    "etc",
+    "options",
+    "filetype-options",
+    "haskell",
+    "stylish-haskell.yaml"
+  )
+)
 vim.opt_local.formatprg = "stylish-haskell --config " .. stylish_config
 
 vim.treesitter.start()

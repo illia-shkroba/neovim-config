@@ -104,7 +104,7 @@ local function git_diff_args(opts)
   end
 
   local names = vim.tbl_map(function(line)
-    return vim.fn.fnameescape(root .. "/" .. line)
+    return vim.fn.fnameescape(vim.fs.joinpath(root, line))
   end, vim.split(result.stdout, "\n", { trimempty = true }))
 
   local count = #names
