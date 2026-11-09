@@ -11,7 +11,7 @@ end
 
 -- Current working directory in a concise format.
 local function get_cwd()
-  return [[substitute(getcwd(0, 0), '^' .. expand('~'), '~', '')]]
+  return [[fnamemodify(getcwd(0, 0), ':~')]]
 end
 
 local function get_statusline()
