@@ -244,7 +244,6 @@ end
 ---@field mark_begin string
 ---@field mark_end string
 ---@field type_ "line"|"char"|"block"
----@field visual? boolean Whether the marks come from a visual selection.
 
 ---@param marks_region_input MarksRegionInput
 ---@return Region
@@ -259,21 +258,13 @@ function M.from_marks(marks_region_input)
     marks_region_input.buffer_number,
     marks_region_input.mark_end
   )
-  local line_end, column_end = end_[1], end_[2]
-
-  -- Vim sets the `mark_end` column exclusively for a blockwise region's when
-  -- the region comes from an operator-pending motion, but inclusively when it
-  -- comes from a blockwise visual selection.
-  if marks_region_input.type_ == "block" and not marks_region_input.visual then
-    column_end = column_end + 1
-  end
 
   return M.from {
     buffer_number = marks_region_input.buffer_number,
     line_begin = line_begin,
     column_begin = column_begin,
-    line_end = line_end,
-    column_end = column_end,
+    line_end = end_[1],
+    column_end = end_[2],
     type_ = marks_region_input.type_,
   }
 end

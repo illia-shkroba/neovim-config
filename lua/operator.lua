@@ -90,7 +90,6 @@ function M.operatorfunc(type_)
     mark_begin = "[",
     mark_end = "]",
     type_ = force_type or type_,
-    visual = is_visual(),
   }
 
   if readonly then
