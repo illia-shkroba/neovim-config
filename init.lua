@@ -30,8 +30,6 @@ local location = list.location
 local quickfix = list.quickfix
 
 local function set_options()
-  vim.cmd.filetype "on"
-
   vim.diagnostic.config { float = { border = "rounded" } }
 
   vim.opt.allowrevins = true
@@ -116,6 +114,55 @@ local function set_options()
   end
 end
 set_options()
+
+local function set_filetypes()
+  vim.cmd.filetype "on"
+
+  ---@param filetype string
+  ---@return vim.filetype.maptbl
+  local function if_in_chart(filetype)
+    ---@type vim.filetype.mapfn
+    local function match(path)
+      if vim.fs.root(path, "Chart.yaml") then
+        return filetype
+      end
+    end
+
+    -- `1` beats the K8s check `0`. Equal priorities tie in random order and
+    -- negative ones run after the `yaml` extension has already matched.
+    return { match, { priority = 1 } }
+  end
+
+  ---@type vim.filetype.mapfn
+  local function kubernetes(_, bufnr)
+    if not bufnr then
+      return
+    end
+
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)
+    local text = "\n" .. table.concat(lines, "\n")
+
+    if text:find "\napiVersion:" and text:find "\nkind:" then
+      return "yaml.kubernetes"
+    end
+  end
+
+  vim.filetype.add {
+    filename = {
+      ["kustomization.yaml"] = "yaml",
+      ["kustomization.yml"] = "yaml",
+    },
+    pattern = {
+      [".*/templates/.*%.ya?ml"] = if_in_chart "helm",
+      [".*/templates/.*%.tpl"] = if_in_chart "helm",
+      [".*/values[^/]*%.ya?ml"] = if_in_chart "yaml.helm-values",
+
+      [".*%.k8s%.ya?ml"] = "yaml.kubernetes",
+      [".*%.ya?ml"] = kubernetes,
+    },
+  }
+end
+set_filetypes()
 
 local function set_bindings()
   -- args
