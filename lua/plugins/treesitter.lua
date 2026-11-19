@@ -12,6 +12,7 @@ return {
       "dockerfile",
       "dot",
       "haskell",
+      "helm",
       "java",
       "json",
       "latex",
