@@ -1,11 +1,10 @@
 {
   "": [
     "agda",
-    "asciidoc",
     "asp",
     "ats",
     "avro",
-    "bazel",
+    "boxlang",
     "brotli",
     "bzip2",
     "c",
@@ -54,11 +53,13 @@
     "php",
     "prolog",
     "qmake",
+    "qrc",
     "raku",
     "rdoc",
     "readme",
     "reasonml",
     "red",
+    "scdoc",
     "seed7",
     "sh",
     "slim",
@@ -89,6 +90,9 @@
   "aidl": [
     "aidl"
   ],
+  "ascendc": [
+    "asciidoc"
+  ],
   "asciidoc": [
     "asciidoc"
   ],
@@ -100,6 +104,9 @@
   ],
   "awk": [
     "awk"
+  ],
+  "bazelrc": [
+    "bazel"
   ],
   "bib": [
     "tex"
@@ -117,8 +124,17 @@
     "bazel",
     "pants"
   ],
+  "c": [
+    "h",
+    "objc",
+    "objcpp",
+    "sv"
+  ],
   "cabal": [
     "cabal"
+  ],
+  "cf": [
+    "cfml"
   ],
   "cfg": [
     "config"
@@ -137,10 +153,7 @@
   ],
   "cpp": [
     "cpp",
-    "h",
-    "objc",
-    "objcpp",
-    "sv"
+    "h"
   ],
   "crystal": [
     "crystal"
@@ -206,6 +219,9 @@
   "elm": [
     "elm"
   ],
+  "env": [
+    "sh"
+  ],
   "epuppet": [
     "puppet"
   ],
@@ -232,7 +248,11 @@
     "motoko"
   ],
   "gdscript": [
-    "gap"
+    "gap",
+    "gdscript"
+  ],
+  "gleam": [
+    "gleam"
   ],
   "gn": [
     "gn"
@@ -267,7 +287,6 @@
     "elixir"
   ],
   "html": [
-    "cshtml",
     "html",
     "minified"
   ],
@@ -308,6 +327,7 @@
     "json",
     "jupyter",
     "lock",
+    "msbuild",
     "tf"
   ],
   "jsonl": [
@@ -320,6 +340,9 @@
     "jl",
     "julia",
     "lisp"
+  ],
+  "kconfig": [
+    "kconfig"
   ],
   "kotlin": [
     "gradle",
@@ -340,6 +363,9 @@
   ],
   "lidris2": [
     "idris"
+  ],
+  "lifelines": [
+    "llvm"
   ],
   "lilypond": [
     "lilypond"
@@ -462,6 +488,9 @@
   "raku": [
     "raku"
   ],
+  "razor": [
+    "cshtml"
+  ],
   "rc": [
     "tf"
   ],
@@ -532,11 +561,17 @@
   "sql": [
     "sql"
   ],
+  "ssa": [
+    "ssa"
+  ],
   "st": [
     "tex"
   ],
   "stylus": [
     "stylus"
+  ],
+  "supercollider": [
+    "scdoc"
   ],
   "svelte": [
     "svelte"
@@ -587,6 +622,7 @@
     "twig"
   ],
   "typescript": [
+    "svelte",
     "ts",
     "typescript",
     "typoscript"
@@ -594,6 +630,9 @@
   "typescriptreact": [
     "ts",
     "typescript"
+  ],
+  "typst": [
+    "typst"
   ],
   "usd": [
     "usd"
@@ -632,6 +671,7 @@
     "csproj",
     "msbuild",
     "ps",
+    "qui",
     "xml"
   ],
   "xsd": [

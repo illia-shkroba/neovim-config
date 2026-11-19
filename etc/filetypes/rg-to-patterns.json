@@ -64,7 +64,8 @@
     "BUILD",
     "MODULE.bazel",
     "WORKSPACE",
-    "WORKSPACE.bazel"
+    "WORKSPACE.bazel",
+    "WORKSPACE.bzlmod"
   ],
   "bitbake": [
     "*.bb",
@@ -72,6 +73,11 @@
     "*.bbclass",
     "*.conf",
     "*.inc"
+  ],
+  "boxlang": [
+    "*.bx",
+    "*.bxm",
+    "*.bxs"
   ],
   "brotli": [
     "*.br"
@@ -102,6 +108,10 @@
   ],
   "ceylon": [
     "*.ceylon"
+  ],
+  "cfml": [
+    "*.cfc",
+    "*.cfm"
   ],
   "clojure": [
     "*.clj",
@@ -190,7 +200,8 @@
   ],
   "devicetree": [
     "*.dts",
-    "*.dtsi"
+    "*.dtsi",
+    "*.dtso"
   ],
   "dhall": [
     "*.dhall"
@@ -284,6 +295,12 @@
     "*.gd",
     "*.gi",
     "*.tst"
+  ],
+  "gdscript": [
+    "*.gd"
+  ],
+  "gleam": [
+    "*.gleam"
   ],
   "gn": [
     "*.gn",
@@ -394,6 +411,10 @@
   "k": [
     "*.k"
   ],
+  "kconfig": [
+    "Kconfig",
+    "Kconfig.*"
+  ],
   "kotlin": [
     "*.kt",
     "*.kts"
@@ -449,6 +470,9 @@
     "*.sc",
     "*.scm"
   ],
+  "llvm": [
+    "*.ll"
+  ],
   "lock": [
     "*.lock",
     "package-lock.json"
@@ -472,6 +496,7 @@
   "make": [
     "*.mak",
     "*.mk",
+    "Makefile.*",
     "[Gg][Nn][Uu]makefile",
     "[Gg][Nn][Uu]makefile.am",
     "[Gg][Nn][Uu]makefile.in",
@@ -536,6 +561,7 @@
     "*.proj",
     "*.props",
     "*.sln",
+    "*.slnf",
     "*.targets",
     "*.vcxproj"
   ],
@@ -649,11 +675,19 @@
   "qml": [
     "*.qml"
   ],
+  "qrc": [
+    "*.qrc"
+  ],
+  "qui": [
+    "*.ui"
+  ],
   "r": [
     "*.R",
     "*.Rmd",
     "*.Rnw",
-    "*.r"
+    "*.r",
+    "*.rmd",
+    "*.rnw"
   ],
   "racket": [
     "*.rkt"
@@ -695,6 +729,7 @@
   ],
   "ruby": [
     "*.gemspec",
+    "*.rake",
     "*.rb",
     "*.rbw",
     ".irbrc",
@@ -713,6 +748,10 @@
     "*.sbt",
     "*.scala"
   ],
+  "scdoc": [
+    "*.scd",
+    "*.scdoc"
+  ],
   "seed7": [
     "*.s7i",
     "*.sd7"
@@ -722,6 +761,7 @@
     "*.bashrc",
     "*.csh",
     "*.cshrc",
+    "*.env",
     "*.ksh",
     "*.kshrc",
     "*.sh",
@@ -732,6 +772,7 @@
     ".bash_profile",
     ".bashrc",
     ".cshrc",
+    ".env",
     ".kshrc",
     ".login",
     ".logout",
@@ -781,6 +822,9 @@
     "*.psql",
     "*.sql"
   ],
+  "ssa": [
+    "*.ssa"
+  ],
   "stylus": [
     "*.styl"
   ],
@@ -792,7 +836,8 @@
     "*.vg"
   ],
   "svelte": [
-    "*.svelte"
+    "*.svelte",
+    "*.svelte.ts"
   ],
   "svg": [
     "*.svg"
@@ -841,16 +886,14 @@
     "*.textile"
   ],
   "tf": [
-    "*.auto.tfvars",
-    "*.auto.tfvars.json",
     "*.terraform.lock.hcl",
     "*.terraformrc",
     "*.tf",
     "*.tf.json",
     "*.tfrc",
-    "terraform.rc",
-    "terraform.tfvars",
-    "terraform.tfvars.json"
+    "*.tfvars",
+    "*.tfvars.json",
+    "terraform.rc"
   ],
   "thrift": [
     "*.thrift"
@@ -880,6 +923,9 @@
   "typoscript": [
     "*.ts",
     "*.typoscript"
+  ],
+  "typst": [
+    "*.typ"
   ],
   "usd": [
     "*.usd",
