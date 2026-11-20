@@ -176,6 +176,27 @@ return {
       },
       args = {
         actions = {
+          ["enter"] = function(selected, opts)
+            if #selected ~= 1 then
+              return fzf.actions.file_edit_or_qf(selected, opts)
+            end
+
+            local entry = path.entry_to_file(selected[1], opts)
+            local target = vim.fs.abspath(vim.fs.normalize(entry.path))
+
+            local count = vim
+              .iter(vim.fn.argv())
+              :enumerate()
+              :find(function(_, arg)
+                return vim.fs.abspath(vim.fs.normalize(arg)) == target
+              end)
+
+            if count then
+              vim.cmd.argument(count)
+            else
+              fzf.actions.file_edit(selected, opts)
+            end
+          end,
           ["alt-f"] = false,
           ["ctrl-x"] = fzf.actions.file_split,
           ["ctrl-z"] = { fn = fzf.actions.arg_del, reload = true },
