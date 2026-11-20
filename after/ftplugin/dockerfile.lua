@@ -1,6 +1,6 @@
-vim.opt_local.errorformat = "hadolint:%f:%l: %m"
+vim.opt_local.errorformat = "%f:%l %m"
 vim.opt_local.expandtab = true
-vim.opt_local.makeprg = "hadolint -f gnu"
+vim.opt_local.makeprg = "hadolint --no-color"
 vim.opt_local.shiftwidth = 2
 vim.opt_local.softtabstop = 2
 vim.opt_local.tabstop = 2
