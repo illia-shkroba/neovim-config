@@ -49,6 +49,13 @@ return {
       select.select_textobject("@local.scope", "locals")
     end, { desc = "Around scope" })
 
+    vim.keymap.set({ "o", "v" }, "ax", function()
+      select.select_textobject("@assignment.outer", "textobjects")
+    end, { desc = "Around assignment" })
+    vim.keymap.set({ "o", "v" }, "ix", function()
+      select.select_textobject("@assignment.inner", "textobjects")
+    end, { desc = "Inside assignment" })
+
     -- move keymaps
     local move = require "nvim-treesitter-textobjects.move"
 
@@ -137,6 +144,19 @@ return {
     vim.keymap.set({ "n", "v", "o" }, "[O", function()
       move.goto_previous_end("@local.scope", "locals")
     end, { desc = "Previous scope end" })
+
+    vim.keymap.set({ "n", "v", "o" }, "]x", function()
+      move.goto_next_start("@assignment.outer", "textobjects")
+    end, { desc = "Next assignment start" })
+    vim.keymap.set({ "n", "v", "o" }, "]X", function()
+      move.goto_next_end("@assignment.outer", "textobjects")
+    end, { desc = "Next assignment end" })
+    vim.keymap.set({ "n", "v", "o" }, "[x", function()
+      move.goto_previous_start("@assignment.outer", "textobjects")
+    end, { desc = "Previous assignment start" })
+    vim.keymap.set({ "n", "v", "o" }, "[X", function()
+      move.goto_previous_end("@assignment.outer", "textobjects")
+    end, { desc = "Previous assignment end" })
 
     -- ;, and fFtT keymaps
     local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
