@@ -285,8 +285,16 @@ function M.flows(flows_input)
     actions = {
       ["enter"] = function(selected)
         local name = selected[1]
-        local flow = name_to_flow[name] or function() end
-        flow()
+        local flow = name_to_flow[name]
+
+        -- `fzf-lua` runs actions in terminal mode. `cmdline` is cleared when terminal mode is left.
+        if vim.api.nvim_get_mode().mode == "t" then
+          vim.api.nvim_create_autocmd("ModeChanged", {
+            pattern = "t:*",
+            once = true,
+            callback = flow,
+          })
+        end
       end,
       ["ctrl-f"] = function(selected)
         local name = selected[1]
