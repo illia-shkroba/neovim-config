@@ -255,6 +255,7 @@ return {
       },
       files = {
         actions = {
+          ["alt-n"] = pickers.yank_paths,
           ["alt-t"] = function(_, opts)
             local cwd_only = not opts.__cwd_only
             opts.__call_fn(vim.tbl_deep_extend("keep", {

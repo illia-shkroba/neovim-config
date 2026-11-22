@@ -201,7 +201,7 @@ end
 
 ---@param selected table<integer, string>
 ---@return nil
-local function yank_directories(selected)
+function M.yank_paths(selected)
   register.put([["]], vim.tbl_map(absolute_path_from_entry, selected))
 end
 
@@ -213,7 +213,7 @@ M.directories_actions = {
     opts.scope = "tab"
     fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
   end,
-  ["alt-n"] = yank_directories,
+  ["alt-n"] = M.yank_paths,
   ["alt-t"] = function(selected)
     if #selected == 0 then
       return
