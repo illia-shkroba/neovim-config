@@ -149,7 +149,7 @@ function M.directories(directories_input)
       title = " Directories ",
     },
     actions = vim.tbl_deep_extend("keep", {
-      ["alt-t"] = function()
+      ["alt-space"] = function()
         M.directories_cwd(directories_input)
       end,
     }, M.directories_actions),
@@ -169,7 +169,7 @@ function M.directories_cwd(directories_input)
       title = " Directories (cwd) ",
     },
     actions = vim.tbl_deep_extend("keep", {
-      ["alt-t"] = function()
+      ["alt-space"] = function()
         M.directories(directories_input)
       end,
     }, M.directories_actions),
