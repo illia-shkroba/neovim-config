@@ -9,11 +9,6 @@ return {
             return { { [[(?-i)]] }, { "" } }
           end,
         },
-        ["W"] = {
-          add = function()
-            return { { [[\b]] }, { [[\b]] } }
-          end,
-        },
         ["j"] = {
           add = function()
             return { { [["{{ ]] }, { [[ }}"]] } }
@@ -29,7 +24,7 @@ return {
             return { { [[s//]] }, { [[/gc]] } }
           end,
         },
-        ["w"] = {
+        ["/"] = {
           add = function()
             return { { [[\<]] }, { [[\>]] } }
           end,
