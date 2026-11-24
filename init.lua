@@ -1741,10 +1741,24 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<leader>l"]],
+    [[<leader>%]],
+    [[<Cmd>execute "silent !tmux split-window -h -c " .. shellescape(getcwd(), v:true)<CR>]],
+    { desc = "Spawn new tmux pane horizontally" }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>c"]],
     [[<Cmd>execute "silent !tmux split-window -v -c " .. shellescape(expand('%:p:h'), v:true)<CR>]],
     {
       desc = "Spawn new tmux pane vertically with buffer's parent directory as CWD",
+    }
+  )
+  vim.keymap.set(
+    "n",
+    [[<leader>c%]],
+    [[<Cmd>execute "silent !tmux split-window -h -c " .. shellescape(expand('%:p:h'), v:true)<CR>]],
+    {
+      desc = "Spawn new tmux pane horizontally with buffer's parent directory as CWD",
     }
   )
 
