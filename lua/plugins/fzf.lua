@@ -295,7 +295,7 @@ return {
       grep = {
         actions = {
           ["alt-f"] = false,
-          ["alt-y"] = function(_, opts)
+          ["alt-space"] = function(_, opts)
             local args_only = not opts.__args_only
 
             opts.__call_fn(vim.tbl_extend("keep", {
