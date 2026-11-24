@@ -30,7 +30,7 @@ local function grep_by_filetype(picker, search, matching_filetypes, query, mode)
   mode = mode or "escaped"
 
   local actions = {
-    ["alt-t"] = function()
+    ["alt-p"] = function()
       M.rg_filetypes {
         winopts = {
           title = search and " Filetypes Grep (" .. search .. ") "
