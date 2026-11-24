@@ -45,7 +45,7 @@ return {
       select.select_textobject("@parameter.inner", "textobjects")
     end, { desc = "Inside parameter" })
 
-    vim.keymap.set({ "o", "v" }, "aS", function()
+    vim.keymap.set({ "o", "v" }, "ao", function()
       select.select_textobject("@local.scope", "locals")
     end, { desc = "Around scope" })
 
