@@ -31,10 +31,10 @@ return {
       select.select_textobject("@class.inner", "textobjects")
     end, { desc = "Inside class" })
 
-    vim.keymap.set({ "o", "v" }, "af", function()
+    vim.keymap.set({ "o", "v" }, "am", function()
       select.select_textobject("@function.outer", "textobjects")
     end, { desc = "Around function" })
-    vim.keymap.set({ "o", "v" }, "if", function()
+    vim.keymap.set({ "o", "v" }, "im", function()
       select.select_textobject("@function.inner", "textobjects")
     end, { desc = "Inside function" })
 
