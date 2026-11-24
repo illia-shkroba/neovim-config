@@ -75,9 +75,9 @@ local function list_yank(opts)
   ]]):format(lists[opts.type], collect, opts.register))
 end
 
----@param opts { staged: boolean }
+---@param diff_args string[]
 ---@return nil
-local function git_diff_args(opts)
+local function git_diff_args(diff_args)
   local toplevel = vim
     .system({ "git", "rev-parse", "--show-toplevel" }, { text = true })
     :wait()
@@ -88,15 +88,13 @@ local function git_diff_args(opts)
   local root = vim.trim(toplevel.stdout)
 
   local result = vim
-    .system({
-      "git",
-      "-C",
-      root,
-      "diff",
-      "--name-only",
-      "--diff-filter=d",
-      opts.staged and "--staged" or nil,
-    }, { text = true })
+    .system(
+      vim.list_extend(
+        { "git", "-C", root, "diff", "--name-only", "--diff-filter=d" },
+        diff_args
+      ),
+      { text = true }
+    )
     :wait()
   if result.code ~= 0 then
     vim.notify(result.stderr, vim.log.levels.ERROR)
@@ -149,17 +147,24 @@ return {
   -- git-diff-args
   {
     flow = function()
-      git_diff_args { staged = false }
+      git_diff_args {}
     end,
     key = "arglocal-git-unstaged",
     name = "arglocal git diff --name-only",
   },
   {
     flow = function()
-      git_diff_args { staged = true }
+      git_diff_args { "--staged" }
     end,
     key = "arglocal-git-staged",
     name = "arglocal git diff --name-only --staged",
+  },
+  {
+    flow = function()
+      git_diff_args { "--merge-base", "origin/HEAD" }
+    end,
+    key = "arglocal-git-diff-origin",
+    name = "arglocal git diff --name-only --merge-base origin/HEAD",
   },
 
   -- linewise
@@ -360,6 +365,13 @@ return {
     end,
     key = "git-push-force",
     name = "Git push --force-with-lease",
+  },
+  {
+    flow = function()
+      vim.cmd [[Git diff --merge-base origin/HEAD]]
+    end,
+    key = "git-diff-origin",
+    name = "Git diff --merge-base origin/HEAD",
   },
   {
     flow = function()
