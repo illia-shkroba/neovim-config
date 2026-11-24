@@ -135,7 +135,6 @@ return {
       keymap = {
         fzf = {
           ["alt-a"] = win.toggle_fullscreen,
-          ["alt-s"] = win.toggle_preview,
         },
       },
       winopts = {
