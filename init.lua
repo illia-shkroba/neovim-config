@@ -235,13 +235,13 @@ local function set_bindings()
   -- case
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>cF]],
+    [[<leader>~c]],
     operator.expr { function_ = case.to_camel },
     { expr = true, desc = "Format selection to camel case" }
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>cf]],
+    [[<leader>~s]],
     operator.expr { function_ = case.to_snake },
     { expr = true, desc = "Format selection to snake case" }
   )
@@ -283,17 +283,17 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>-t]], function()
     vim.cmd.tcd "-"
   end, { desc = "tcd -" })
-  vim.keymap.set("n", [[<leader>CD]], function()
+  vim.keymap.set("n", [[<leader>.d]], function()
     for _ = 1, vim.v.count1 do
       vim.cmd.cd ".."
     end
   end, { desc = "cd .." })
-  vim.keymap.set("n", [[<leader>CL]], function()
+  vim.keymap.set("n", [[<leader>.l]], function()
     for _ = 1, vim.v.count1 do
       vim.cmd.lcd ".."
     end
   end, { desc = "lcd .." })
-  vim.keymap.set("n", [[<leader>CT]], function()
+  vim.keymap.set("n", [[<leader>.t]], function()
     for _ = 1, vim.v.count1 do
       vim.cmd.tcd ".."
     end
@@ -759,7 +759,7 @@ local function set_bindings()
   end, { expr = true, desc = "Open a scratch window with selected lines" })
   vim.keymap.set(
     "n",
-    [[<C-_>]],
+    [[<C-j>]],
     [[<C-w>yav]],
     { remap = true, desc = [[Alias for: <C-w>yav]] }
   )
@@ -871,7 +871,7 @@ local function set_bindings()
       vim.cmd.bwipeout { buffer_, bang = true }
     end
   end, { desc = "Wipe buffer and enter last accessed window" })
-  vim.keymap.set("n", [[<leader>lo]], function()
+  vim.keymap.set("n", [[<leader>n]], function()
     local buffer_ = vim.api.nvim_get_current_buf()
     local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
     local line = cursor[1]
@@ -891,9 +891,9 @@ local function set_bindings()
     expr = true,
     desc = "Visually select previously changed or yanked text region",
   })
-  vim.keymap.set("n", [[<leader>qQ]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
-  vim.keymap.set("n", [[<leader>qq]], [[<Cmd>qall<CR>]], { desc = "qall" })
-  vim.keymap.set("n", [[<leader>qw]], [[<Cmd>xall<CR>]], { desc = "xall" })
+  vim.keymap.set("n", [[Z!]], [[<Cmd>qall!<CR>]], { desc = "qall!" })
+  vim.keymap.set("n", [[ZA]], [[<Cmd>qall<CR>]], { desc = "qall" })
+  vim.keymap.set("n", [[ZW]], [[<Cmd>xall<CR>]], { desc = "xall" })
   vim.keymap.set("n", [[<leader>e]], [[<Cmd>e!<CR>]], { desc = "e!" })
   vim.keymap.set("n", [[<leader>w]], function()
     with_change_marks(vim.api.nvim_get_current_buf(), function()
