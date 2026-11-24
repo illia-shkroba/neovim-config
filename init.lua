@@ -1402,7 +1402,7 @@ local function set_bindings()
   })
   vim.keymap.set("n", [[ZL]], function()
     yank_buffer "/"
-    return [[ZB<leader>L]]
+    return [[ZB<leader>l/]]
   end, {
     expr = true,
     remap = true,
@@ -1497,10 +1497,10 @@ local function set_bindings()
   vim.keymap.set("n", [[<leader>*]], function()
     return "/" .. vim.fn.expand "<cword>" .. "\\c<CR>"
   end, { expr = true, desc = "Same as *, but without \\< and \\>" })
-  vim.keymap.set("n", [[<leader>L]], function()
+  vim.keymap.set("n", [[<leader>l/]], function()
     global_list_match { type = "location" }
   end, { desc = "lvimgrep//gj %" })
-  vim.keymap.set("n", [[<leader>Q]], function()
+  vim.keymap.set("n", [[<leader>q/]], function()
     global_list_match { type = "quickfix" }
   end, { desc = "vimgrep//gj %" })
   vim.keymap.set(
