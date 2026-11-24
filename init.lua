@@ -542,10 +542,10 @@ local function set_bindings()
   })
 
   -- lsp
-  vim.keymap.set("n", [[<leader>i]], function()
+  vim.keymap.set("n", [[grh]], function()
     vim.lsp.inlay_hint.enable(true)
   end, { desc = "Enable inlay hints" })
-  vim.keymap.set("n", [[<leader>I]], function()
+  vim.keymap.set("n", [[grH]], function()
     vim.lsp.inlay_hint.enable(false)
   end, { desc = "Disable inlay hints" })
 
@@ -1629,7 +1629,7 @@ local function set_bindings()
   -- text manipulation
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>ta]],
+    [[<leader>A]],
     operator.expr { function_ = char.append_prompt },
     {
       expr = true,
@@ -1638,7 +1638,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     { "n", "v" },
-    [[<leader>tp]],
+    [[<leader>I]],
     operator.expr { function_ = char.prepend_prompt },
     {
       expr = true,
@@ -1647,7 +1647,7 @@ local function set_bindings()
   )
   vim.keymap.set(
     "n",
-    [[<leader>cs]],
+    [[<leader>$]],
     [[<Cmd>keeppatterns %substitute/\s\+$//gc<CR>]],
     { desc = "Remove trailing whitespaces" }
   )
