@@ -563,6 +563,20 @@ local function set_bindings()
     { desc = "Shift up" }
   )
 
+  -- multicursor
+  vim.keymap.set("n", [[<leader>Q]], function()
+    local pattern = vim.fn.getreg "/"
+    if pattern == "" then
+      vim.notify("No previous regular expression", vim.log.levels.ERROR)
+      return
+    end
+
+    local view = vim.fn.winsaveview()
+    vim.cmd [[keepjumps normal gg0zqgn]]
+    vim.fn.winrestview(view)
+    vim.cmd.normal [[1q=]]
+  end, { desc = "Multicursor on every match with 'follow'" })
+
   -- other
   local function pick_windows(opts)
     local palette = require("catppuccin.palettes").get_palette()

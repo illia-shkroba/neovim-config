@@ -559,16 +559,6 @@ return {
     key = "v-Q",
     name = "v//norm Q",
   },
-  {
-    flow = function()
-      local view = vim.fn.winsaveview()
-      vim.cmd [[keepjumps norm gg0zqgn]]
-      vim.fn.winrestview(view)
-      vim.cmd [[norm 1q=]]
-    end,
-    key = "match-Q",
-    name = "zqgn",
-  },
 
   -- register
   {
