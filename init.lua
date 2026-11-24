@@ -229,6 +229,7 @@ local function set_bindings()
     local buffer_ = scratch.open()
     vim.opt_local.statusline = "args " .. status.statusline
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, vim.fn.argv())
+    vim.api.nvim_win_set_cursor(0, { vim.fn.argidx() + 1, 0 })
   end, { desc = "Paste args in a scratch window" })
   vim.keymap.set("n", [[<leader>as]], vim.cmd.sall, { desc = "sall" })
 
