@@ -72,9 +72,7 @@ return {
               vim.cmd.normal { "]c", bang = true }
             end
           else
-            for _ = 1, vim.v.count1 do
-              gitsigns.nav_hunk "next"
-            end
+            gitsigns.nav_hunk "next"
           end
         end, { desc = "Go to next hunk" })
 
@@ -84,9 +82,7 @@ return {
               vim.cmd.normal { "[c", bang = true }
             end
           else
-            for _ = 1, vim.v.count1 do
-              gitsigns.nav_hunk "prev"
-            end
+            gitsigns.nav_hunk "prev"
           end
         end, { desc = "Go to previous hunk" })
 
