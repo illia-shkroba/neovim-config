@@ -163,6 +163,12 @@ return {
           { remap = true, desc = "Stage/unstage hunks in [count] lines" }
         )
         set("n", "<leader>hR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+        set(
+          "n",
+          "<leader>hu",
+          gitsigns.reset_buffer_index,
+          { desc = "Reset buffer index" }
+        )
         set("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview hunk" })
         set("n", "<leader>hb", function()
           gitsigns.blame_line { full = true }
