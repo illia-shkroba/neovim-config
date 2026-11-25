@@ -90,6 +90,14 @@ return {
           end
         end, { desc = "Go to previous hunk" })
 
+        set("n", "]h", function()
+          gitsigns.nav_hunk("next", { target = "staged" })
+        end, { desc = "Go to next staged hunk" })
+
+        set("n", "[h", function()
+          gitsigns.nav_hunk("prev", { target = "staged" })
+        end, { desc = "Go to previous staged hunk" })
+
         -- Actions
         set("n", "<leader>hS", gitsigns.stage_hunk, { desc = "Stage hunk" })
         set(
