@@ -108,7 +108,7 @@ local function set_options()
           and vim.startswith(entry.text, base)
       end)
       :map(function(entry)
-        return entry.text
+        return { word = entry.text, menu = entry.topic }
       end)
       :totable()
   end
