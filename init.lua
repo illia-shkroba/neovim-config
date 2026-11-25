@@ -81,7 +81,11 @@ local function set_options()
 
   function vim.o.thesaurusfunc(findstart, base)
     if findstart == 1 then
-      return vim.fn.searchpos([[\<]], "bnW", vim.fn.line ".")[2] - 1
+      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+      local column = cursor[2]
+
+      local line = vim.api.nvim_get_current_line()
+      return column - #line:sub(1, column):match "%S*$"
     end
 
     local data_home = vim.env["XDG_DATA_HOME"] or "~/.local/share"
@@ -105,7 +109,7 @@ local function set_options()
       :filter(function(entry)
         return type(entry) == "table"
           and type(entry.text) == "string"
-          and vim.startswith(entry.text, base)
+          and entry.text:lower():find(base:lower(), 1, true) ~= nil
       end)
       :map(function(entry)
         return { word = entry.text, menu = entry.topic }
