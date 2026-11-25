@@ -97,7 +97,11 @@ return {
           "<leader>hr",
           operator.expr {
             function_ = function(region_)
+              -- `reset_hunk` hijacks `operatorfunc` and breaks `.`.
+              local operatorfunc = vim.go.operatorfunc
               gitsigns.reset_hunk { region_.line_begin, region_.line_end }
+              vim.go.operatorfunc = operatorfunc
+
               vim.api.nvim_buf_set_mark(
                 region_.buffer_number,
                 "[",
@@ -128,7 +132,11 @@ return {
           "<leader>hs",
           operator.expr {
             function_ = function(region_)
+              -- `stage_hunk` hijacks `operatorfunc` and breaks `.`.
+              local operatorfunc = vim.go.operatorfunc
               gitsigns.stage_hunk { region_.line_begin, region_.line_end }
+              vim.go.operatorfunc = operatorfunc
+
               vim.api.nvim_buf_set_mark(
                 region_.buffer_number,
                 "[",
