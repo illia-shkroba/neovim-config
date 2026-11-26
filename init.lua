@@ -1337,6 +1337,7 @@ local function set_bindings()
     vim.opt_local.statusline = type_ .. " " .. status.statusline
 
     vim.api.nvim_buf_set_lines(buffer_, 0, 1, false, dumped)
+    vim.api.nvim_win_set_cursor(0, { current_list.get_current_item_index(), 0 })
 
     vim.keymap.set("n", [[ZP]], function()
       load_list(current_list, buffer_)
