@@ -210,6 +210,14 @@ M.directories_actions = {
     if #selected == 0 then
       return
     end
+
+    if #selected > 1 then
+      return fzf.actions.file_sel_to_qf(
+        vim.tbl_map(absolute_path_from_entry, selected),
+        opts
+      )
+    end
+
     opts.scope = "tab"
     fzf.actions.zoxide_cd({ absolute_path_from_entry(selected[1]) }, opts)
   end,
