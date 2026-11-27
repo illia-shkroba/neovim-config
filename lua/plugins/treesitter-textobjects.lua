@@ -165,6 +165,16 @@ return {
       move.goto_previous_start("@parameter.inner", "textobjects")
     end, { desc = "Previous parameter start" })
 
+    -- swap keymaps
+    local swap = require "nvim-treesitter-textobjects.swap"
+
+    vim.keymap.set("n", ">,", function()
+      swap.swap_next("@parameter.inner", "textobjects")
+    end, { desc = "Swap parameter with next" })
+    vim.keymap.set("n", "<,", function()
+      swap.swap_previous("@parameter.inner", "textobjects")
+    end, { desc = "Swap parameter with previous" })
+
     -- ;, and fFtT keymaps
     local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
 
