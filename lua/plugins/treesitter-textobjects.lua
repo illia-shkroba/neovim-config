@@ -38,13 +38,6 @@ return {
       select.select_textobject("@function.inner", "textobjects")
     end, { desc = "Inside function" })
 
-    vim.keymap.set({ "o", "v" }, "aP", function()
-      select.select_textobject("@parameter.outer", "textobjects")
-    end, { desc = "Around parameter" })
-    vim.keymap.set({ "o", "v" }, "iP", function()
-      select.select_textobject("@parameter.inner", "textobjects")
-    end, { desc = "Inside parameter" })
-
     vim.keymap.set({ "o", "v" }, "ao", function()
       select.select_textobject("@local.scope", "locals")
     end, { desc = "Around scope" })
@@ -55,6 +48,13 @@ return {
     vim.keymap.set({ "o", "v" }, "ix", function()
       select.select_textobject("@assignment.inner", "textobjects")
     end, { desc = "Inside assignment" })
+
+    vim.keymap.set({ "o", "v" }, "a,", function()
+      select.select_textobject("@parameter.outer", "textobjects")
+    end, { desc = "Around parameter" })
+    vim.keymap.set({ "o", "v" }, "i,", function()
+      select.select_textobject("@parameter.inner", "textobjects")
+    end, { desc = "Inside parameter" })
 
     -- move keymaps
     local move = require "nvim-treesitter-textobjects.move"
@@ -157,6 +157,13 @@ return {
     vim.keymap.set({ "n", "v", "o" }, "[X", function()
       move.goto_previous_end("@assignment.outer", "textobjects")
     end, { desc = "Previous assignment end" })
+
+    vim.keymap.set({ "n", "v", "o" }, "],", function()
+      move.goto_next_start("@parameter.inner", "textobjects")
+    end, { desc = "Next parameter start" })
+    vim.keymap.set({ "n", "v", "o" }, "[,", function()
+      move.goto_previous_start("@parameter.inner", "textobjects")
+    end, { desc = "Previous parameter start" })
 
     -- ;, and fFtT keymaps
     local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
